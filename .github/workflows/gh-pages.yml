@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # ou 'master', dependendo do seu repositório
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Se for um site puro (HTML/CSS/JS na raiz ou /docs), pule o build.
+      # Caso use build (ex: React/Vite), adicione os passos de instalação e build aqui.
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload para GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./  # Use './docs' se seu site estiver na pasta /docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
