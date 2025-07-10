@@ -1,231 +1,70 @@
 
+/* START OF THEMEABLE BASE STYLES */
+/* These variables will be overridden by theme files */
 :root {
-  /* Colors */
-  --color-background: rgba(252, 252, 249, 1);
-  --color-surface: rgba(255, 255, 253, 1);
-  --color-text: rgba(19, 52, 59, 1);
-  --color-text-secondary: rgba(98, 108, 113, 1);
-  --color-primary: rgba(33, 128, 141, 1);
-  --color-primary-hover: rgba(29, 116, 128, 1);
-  --color-primary-active: rgba(26, 104, 115, 1);
-  --color-secondary: rgba(94, 82, 64, 0.12);
-  --color-secondary-hover: rgba(94, 82, 64, 0.2);
-  --color-secondary-active: rgba(94, 82, 64, 0.25);
-  --color-border: rgba(94, 82, 64, 0.2);
-  --color-btn-primary-text: rgba(252, 252, 249, 1);
-  --color-card-border: rgba(94, 82, 64, 0.12);
-  --color-card-border-inner: rgba(94, 82, 64, 0.12);
-  --color-error: rgba(192, 21, 47, 1);
-  --color-success: rgba(33, 128, 141, 1);
-  --color-warning: rgba(168, 75, 47, 1);
-  --color-info: rgba(98, 108, 113, 1);
-  --color-focus-ring: rgba(33, 128, 141, 0.4);
-  --color-select-caret: rgba(19, 52, 59, 0.8);
+  /* Default/Fallback Colors (Broken Reality Theme) */
+  --color-background: #000000;
+  --color-surface: rgba(0, 255, 65, 0.05); /* Example, will be themed */
+  --color-text: #00FF41;
+  --color-text-secondary: #00FFFF;
+  --color-primary: #FF0080;
+  --color-primary-hover: #ff3399;
+  --color-primary-active: #cc0066;
+  --color-secondary: rgba(0, 255, 255, 0.1);
+  --color-secondary-hover: rgba(0, 255, 255, 0.2);
+  --color-secondary-active: rgba(0, 255, 255, 0.3);
+  --color-border: #00FF41;
+  --color-btn-primary-text: #000000;
+  --color-card-border: #00FFFF;
+  --color-card-border-inner: #FF0080;
+  --color-error: #FF0000;
+  --color-success: #00FF00;
+  --color-warning: #FFFF00;
+  --color-info: #00FFFF;
+  --color-focus-ring: rgba(255, 0, 128, 0.5);
 
-  /* Common style patterns */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --font-family-base: 'Courier New', monospace;
+  --font-family-titles: 'Impact', sans-serif;
+  --font-family-logo: 'Arial Black', sans-serif;
 
-  /* RGB versions for opacity control */
-  --color-success-rgb: 33, 128, 141;
-  --color-error-rgb: 192, 21, 47;
-  --color-warning-rgb: 168, 75, 47;
-  --color-info-rgb: 98, 108, 113;
+  /* Spacing and Radius can be themed too if desired */
+  --space-base: 20px;
+  --radius-base: 0px; /* Broken reality often has sharp edges */
+}
+/* END OF THEMEABLE BASE STYLES */
 
-  /* Typography */
-  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
-    Monaco, Consolas, monospace;
-  --font-size-xs: 11px;
-  --font-size-sm: 12px;
-  --font-size-base: 14px;
-  --font-size-md: 14px;
-  --font-size-lg: 16px;
-  --font-size-xl: 18px;
-  --font-size-2xl: 20px;
-  --font-size-3xl: 24px;
-  --font-size-4xl: 30px;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 550;
-  --font-weight-bold: 600;
-  --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --letter-spacing-tight: -0.01em;
 
-  /* Spacing */
-  --space-0: 0;
-  --space-1: 1px;
-  --space-2: 2px;
-  --space-4: 4px;
-  --space-6: 6px;
-  --space-8: 8px;
-  --space-10: 10px;
-  --space-12: 12px;
-  --space-16: 16px;
-  --space-20: 20px;
-  --space-24: 24px;
-  --space-32: 32px;
+/* Original Broken Reality Theme Specifics (can be moved to its own theme file later) */
+/* For now, these are the "default" specific styles if no other theme is chosen */
+body[data-theme="broken-reality"] {
+  --color-background: #000000;
+  --color-text: #00FF41;
+  --color-text-secondary: #00FFFF;
+  --color-primary: #FF0080;
+  --color-primary-hover: #ff3399;
+  --color-primary-active: #cc0066;
+  --color-border: #00FF41;
+  --color-btn-primary-text: #000;
 
-  /* Border Radius */
-  --radius-sm: 6px;
-  --radius-base: 8px;
-  --radius-md: 10px;
-  --radius-lg: 12px;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
-    0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
-    0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
-
-  /* Animation */
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Layout */
-  --container-sm: 640px;
-  --container-md: 768px;
-  --container-lg: 1024px;
-  --container-xl: 1280px;
+  --font-family-base: 'Courier New', monospace;
+  --font-family-titles: 'Impact', sans-serif;
+  --font-family-logo: 'Arial Black', sans-serif;
 }
 
-/* Dark mode colors */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: rgba(31, 33, 33, 1);
-    --color-surface: rgba(38, 40, 40, 1);
-    --color-text: rgba(245, 245, 245, 1);
-    --color-text-secondary: rgba(167, 169, 169, 0.7);
-    --color-primary: rgba(50, 184, 198, 1);
-    --color-primary-hover: rgba(45, 166, 178, 1);
-    --color-primary-active: rgba(41, 150, 161, 1);
-    --color-secondary: rgba(119, 124, 124, 0.15);
-    --color-secondary-hover: rgba(119, 124, 124, 0.25);
-    --color-secondary-active: rgba(119, 124, 124, 0.3);
-    --color-border: rgba(119, 124, 124, 0.3);
-    --color-error: rgba(255, 84, 89, 1);
-    --color-success: rgba(50, 184, 198, 1);
-    --color-warning: rgba(230, 129, 97, 1);
-    --color-info: rgba(167, 169, 169, 1);
-    --color-focus-ring: rgba(50, 184, 198, 0.4);
-    --color-btn-primary-text: rgba(19, 52, 59, 1);
-    --color-card-border: rgba(119, 124, 124, 0.2);
-    --color-card-border-inner: rgba(119, 124, 124, 0.15);
-    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-    --button-border-secondary: rgba(119, 124, 124, 0.2);
-    --color-border-secondary: rgba(119, 124, 124, 0.2);
-    --color-select-caret: rgba(245, 245, 245, 0.8);
 
-    /* Common style patterns - updated for dark mode */
-    --focus-ring: 0 0 0 3px var(--color-focus-ring);
-    --focus-outline: 2px solid var(--color-primary);
-    --status-bg-opacity: 0.15;
-    --status-border-opacity: 0.25;
-    --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-    /* RGB versions for dark mode */
-    --color-success-rgb: 50, 184, 198;
-    --color-error-rgb: 255, 84, 89;
-    --color-warning-rgb: 230, 129, 97;
-    --color-info-rgb: 167, 169, 169;
-  }
-}
-
-/* Data attribute for manual theme switching */
-[data-color-scheme="dark"] {
-  --color-background: rgba(31, 33, 33, 1);
-  --color-surface: rgba(38, 40, 40, 1);
-  --color-text: rgba(245, 245, 245, 1);
-  --color-text-secondary: rgba(167, 169, 169, 0.7);
-  --color-primary: rgba(50, 184, 198, 1);
-  --color-primary-hover: rgba(45, 166, 178, 1);
-  --color-primary-active: rgba(41, 150, 161, 1);
-  --color-secondary: rgba(119, 124, 124, 0.15);
-  --color-secondary-hover: rgba(119, 124, 124, 0.25);
-  --color-secondary-active: rgba(119, 124, 124, 0.3);
-  --color-border: rgba(119, 124, 124, 0.3);
-  --color-error: rgba(255, 84, 89, 1);
-  --color-success: rgba(50, 184, 198, 1);
-  --color-warning: rgba(230, 129, 97, 1);
-  --color-info: rgba(167, 169, 169, 1);
-  --color-focus-ring: rgba(50, 184, 198, 0.4);
-  --color-btn-primary-text: rgba(19, 52, 59, 1);
-  --color-card-border: rgba(119, 124, 124, 0.15);
-  --color-card-border-inner: rgba(119, 124, 124, 0.15);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  --color-border-secondary: rgba(119, 124, 124, 0.2);
-  --color-select-caret: rgba(245, 245, 245, 0.8);
-
-  /* Common style patterns - updated for dark mode */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-  /* RGB versions for dark mode */
-  --color-success-rgb: 50, 184, 198;
-  --color-error-rgb: 255, 84, 89;
-  --color-warning-rgb: 230, 129, 97;
-  --color-info-rgb: 167, 169, 169;
-}
-
-[data-color-scheme="light"] {
-  --color-background: rgba(252, 252, 249, 1);
-  --color-surface: rgba(255, 255, 253, 1);
-  --color-text: rgba(19, 52, 59, 1);
-  --color-text-secondary: rgba(98, 108, 113, 1);
-  --color-primary: rgba(33, 128, 141, 1);
-  --color-primary-hover: rgba(29, 116, 128, 1);
-  --color-primary-active: rgba(26, 104, 115, 1);
-  --color-secondary: rgba(94, 82, 64, 0.12);
-  --color-secondary-hover: rgba(94, 82, 64, 0.2);
-  --color-secondary-active: rgba(94, 82, 64, 0.25);
-  --color-border: rgba(94, 82, 64, 0.2);
-  --color-btn-primary-text: rgba(252, 252, 249, 1);
-  --color-card-border: rgba(94, 82, 64, 0.12);
-  --color-card-border-inner: rgba(94, 82, 64, 0.12);
-  --color-error: rgba(192, 21, 47, 1);
-  --color-success: rgba(33, 128, 141, 1);
-  --color-warning: rgba(168, 75, 47, 1);
-  --color-info: rgba(98, 108, 113, 1);
-  --color-focus-ring: rgba(33, 128, 141, 0.4);
-
-  /* RGB versions for light mode */
-  --color-success-rgb: 33, 128, 141;
-  --color-error-rgb: 192, 21, 47;
-  --color-warning-rgb: 168, 75, 47;
-  --color-info-rgb: 98, 108, 113;
-}
-
-/* Base styles */
+/* General Styles (Applied to all themes, using CSS variables) */
 html {
-  font-size: var(--font-size-base);
-  font-family: var(--font-family-base);
-  line-height: var(--line-height-normal);
-  color: var(--color-text);
-  background-color: var(--color-background);
-  -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
 
 body {
+  font-family: var(--font-family-base);
+  background: var(--color-background);
+  color: var(--color-text);
+  overflow-x: hidden;
+  cursor: none; /* This might be overridden by themes */
+  position: relative;
+  min-height: 100vh; /* Use min-height */
   margin: 0;
   padding: 0;
 }
@@ -234,427 +73,732 @@ body {
 *::before,
 *::after {
   box-sizing: inherit;
+  margin: 0; /* Moved from global reset for better control */
+  padding: 0; /* Moved from global reset */
 }
 
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--color-text);
-  letter-spacing: var(--letter-spacing-tight);
+/* Cursor Customizado - Theming potential */
+.cursor-trail {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    /* background: radial-gradient(circle, #00FFFF 0%, transparent 70%); Theme this */
+    background: radial-gradient(circle, var(--color-text-secondary, #00FFFF) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: screen; /* This is a strong stylistic choice, maybe themeable */
+    transition: all 0.1s ease;
 }
 
-h1 {
-  font-size: var(--font-size-4xl);
-}
-h2 {
-  font-size: var(--font-size-3xl);
-}
-h3 {
-  font-size: var(--font-size-2xl);
-}
-h4 {
-  font-size: var(--font-size-xl);
-}
-h5 {
-  font-size: var(--font-size-lg);
-}
-h6 {
-  font-size: var(--font-size-md);
+.cursor-trail::before {
+    content: '⛰️'; /* Themeable content */
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    font-size: 16px;
+    animation: rotate 2s linear infinite;
 }
 
-p {
-  margin: 0 0 var(--space-16) 0;
+/* Glitch Overlay - Theming potential */
+.glitch-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: repeating-linear-gradient(...); Theme this */
+    background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 255, 0.03) 2px, /* Use var for color */
+        rgba(0, 255, 255, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 8888;
+    animation: scanlines 0.1s linear infinite;
 }
 
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color var(--duration-fast) var(--ease-standard);
+/* Matrix Rain Effect - Themeable */
+.matrix-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-background); /* Use theme background */
+    z-index: 9998;
+    pointer-events: none;
 }
 
-a:hover {
-  color: var(--color-primary-hover);
+.matrix-rain::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-image: radial-gradient(... var(--color-text) ...); Theme this */
+    background-image:
+        radial-gradient(circle at 20% 20%, var(--color-text) 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, var(--color-text) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: matrix-fall 1s linear infinite;
 }
 
-code,
-pre {
-  font-family: var(--font-family-mono);
-  font-size: calc(var(--font-size-base) * 0.95);
-  background-color: var(--color-secondary);
-  border-radius: var(--radius-sm);
+
+/* Navegação Caótica */
+.chaos-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px; /* Or make it dynamic */
+    z-index: 9000;
+    pointer-events: none;
 }
 
-code {
-  padding: var(--space-1) var(--space-4);
+.nav-item {
+    position: absolute; /* JS will override this for broken-reality */
+    font-family: var(--font-family-titles);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    pointer-events: all;
+    transition: all 0.3s ease;
+    color: var(--color-text-secondary);
+    text-shadow: 0 0 10px var(--color-text-secondary);
+}
+/* Original positions for broken-reality, can be default or moved to its theme */
+.nav-1 { top: 20px; left: 20px; transform: rotate(-15deg); }
+.nav-2 { top: 60px; right: 200px; transform: rotate(25deg); }
+.nav-3 { top: 30px; right: 80px; transform: rotate(-8deg); }
+.nav-4 { top: 80px; left: 150px; transform: rotate(12deg); }
+
+.nav-item:hover {
+    /* transform: scale(1.5) rotate(0deg); JS will handle some of this */
+    color: var(--color-primary);
+    text-shadow: 0 0 20px var(--color-primary);
+    /* animation: glitch-text 0.5s ease-in-out; Theme specific animation */
+}
+body[data-theme="broken-reality"] .nav-item:hover {
+    animation: glitch-text 0.5s ease-in-out;
 }
 
-pre {
-  padding: var(--space-16);
-  margin: var(--space-16) 0;
-  overflow: auto;
-  border: 1px solid var(--color-border);
+
+/* Hero Section Quebrada */
+.hero-chaos {
+    min-height: 100vh; /* Use min-height */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background: linear-gradient(45deg, #000000, #001122, #000000); Theme this */
+    background: linear-gradient(45deg, var(--color-background), color-mix(in srgb, var(--color-background) 80%, var(--color-text) 20%), var(--color-background));
+    overflow: hidden;
+    padding: var(--space-base);
 }
 
-pre code {
-  background: none;
-  padding: 0;
+.logo-fragments {
+    position: relative;
+    width: 100%;
+    height: 200px; /* Or dynamic */
+    margin-bottom: calc(var(--space-base) * 2.5);
 }
 
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-base);
-  font-size: var(--font-size-base);
-  font-weight: 500;
-  line-height: 1.5;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-standard);
-  border: none;
-  text-decoration: none;
-  position: relative;
+.logo-piece {
+    position: absolute; /* JS will override this for broken-reality */
+    font-family: var(--font-family-logo);
+    font-size: 4rem; /* Responsive units might be better */
+    font-weight: 900;
+    color: var(--color-text);
+    text-shadow: 0 0 20px var(--color-text);
+    /* animation: float 3s ease-in-out infinite; Theme specific */
+}
+body[data-theme="broken-reality"] .logo-piece {
+    animation: float 3s ease-in-out infinite;
+}
+/* Original positions for broken-reality */
+.logo-1 { top: 0; left: 10%; transform: rotate(-45deg); animation-delay: 0s; }
+.logo-2 { top: 20px; left: 25%; transform: rotate(15deg); animation-delay: 0.5s; font-size: 2.5rem; }
+.logo-3 { top: 80px; right: 30%; transform: rotate(-20deg); animation-delay: 1s; }
+.logo-4 { top: 50px; right: 10%; transform: rotate(30deg); animation-delay: 1.5s; font-size: 3rem; }
+
+
+.hero-info {
+    text-align: center;
+    margin-bottom: calc(var(--space-base) * 2.5);
 }
 
-.btn:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
+.date-distorted {
+    font-family: var(--font-family-titles);
+    font-size: 8rem; /* Responsive units */
+    color: var(--color-primary);
+    text-shadow: 0 0 30px var(--color-primary);
+    /* transform: perspective(500px) rotateX(30deg); Theme specific */
+    /* animation: pulse 2s ease-in-out infinite; Theme specific */
+}
+body[data-theme="broken-reality"] .date-distorted {
+    transform: perspective(500px) rotateX(30deg);
+    animation: pulse 2s ease-in-out infinite;
 }
 
-.btn--primary {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
+
+.location-fragmented {
+    font-family: var(--font-family-base);
+    font-size: 1.5rem;
+    margin-top: var(--space-base);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
-.btn--primary:hover {
-  background: var(--color-primary-hover);
+.location-fragmented span {
+    display: inline-block;
+    color: var(--color-text-secondary); /* Default, can be themed */
+    text-shadow: 0 0 10px var(--color-text-secondary);
+    /* animation: bounce 1s ease-in-out infinite; Theme specific */
+}
+body[data-theme="broken-reality"] .location-fragmented span {
+    animation: bounce 1s ease-in-out infinite;
+}
+body[data-theme="broken-reality"] .loc-1 { animation-delay: 0s; }
+body[data-theme="broken-reality"] .loc-2 { animation-delay: 0.1s; color: var(--color-text-secondary); } /* Was #00FFFF */
+body[data-theme="broken-reality"] .loc-3 { animation-delay: 0.2s; }
+body[data-theme="broken-reality"] .loc-4 { animation-delay: 0.3s; color: var(--color-primary); } /* Was #FF0080 */
+body[data-theme="broken-reality"] .loc-5 { animation-delay: 0.4s; }
+body[data-theme="broken-reality"] .loc-6 { animation-delay: 0.5s; color: var(--color-text); } /* Was #00FF41 */
+
+
+.cta-container {
+    position: relative;
 }
 
-.btn--primary:active {
-  background: var(--color-primary-active);
+.cta-dissolve {
+    /* background: linear-gradient(45deg, #FF0080, #00FFFF); Theme this */
+    background: linear-gradient(45deg, var(--color-primary), var(--color-text-secondary));
+    color: var(--color-btn-primary-text);
+    border: none;
+    padding: var(--space-base) calc(var(--space-base) * 2);
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: var(--radius-base); /* Use theme variable */
+    /* clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%); Theme specific */
+    transition: all 0.3s ease;
+    /* animation: dissolve 3s ease-in-out infinite; Theme specific */
+}
+body[data-theme="broken-reality"] .cta-dissolve {
+    clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+    animation: dissolve 3s ease-in-out infinite;
 }
 
-.btn--secondary {
-  background: var(--color-secondary);
-  color: var(--color-text);
+.cta-dissolve:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px var(--color-primary);
 }
 
-.btn--secondary:hover {
-  background: var(--color-secondary-hover);
+/* Seção Programação Caótica */
+.program-chaos {
+    min-height: 100vh;
+    padding: calc(var(--space-base) * 5) var(--space-base);
+    /* background: linear-gradient(135deg, #000000, #1a0033, #000000); Theme this */
+    background: linear-gradient(135deg, var(--color-background), color-mix(in srgb, var(--color-background) 70%, var(--color-primary) 30%), var(--color-background));
+    position: relative;
 }
 
-.btn--secondary:active {
-  background: var(--color-secondary-active);
+.chaos-title {
+    font-family: var(--font-family-titles);
+    font-size: 3rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: calc(var(--space-base) * 2.5);
+    text-shadow: 0 0 20px var(--color-text-secondary);
+    /* animation: glitch-text 2s ease-in-out infinite; Theme specific */
+}
+body[data-theme="broken-reality"] .chaos-title {
+    animation: glitch-text 2s ease-in-out infinite;
 }
 
-.btn--outline {
-  background: transparent;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
+
+.day-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Responsive: 1fr for mobile */
+    gap: calc(var(--space-base) * 2.5);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.btn--outline:hover {
-  background: var(--color-secondary);
+.day-1, .day-2 {
+    /* background: rgba(0, 255, 255, 0.1); Theme this */
+    background: var(--color-secondary);
+    padding: calc(var(--space-base) * 1.5);
+    border: 2px solid var(--color-text-secondary);
+    /* clip-path: polygon(0 0, 90% 0, 100% 100%, 10% 100%); Theme specific */
+    /* transform: skew(-5deg); Theme specific */
+}
+body[data-theme="broken-reality"] .day-1 {
+    clip-path: polygon(0 0, 90% 0, 100% 100%, 10% 100%);
+    transform: skew(-5deg);
+}
+body[data-theme="broken-reality"] .day-2 {
+    transform: skew(5deg);
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    border-color: var(--color-primary);
+    clip-path: polygon(0 0, 90% 0, 100% 100%, 10% 100%); /* Ensure consistent clip-path if desired */
 }
 
-.btn--sm {
-  padding: var(--space-4) var(--space-12);
-  font-size: var(--font-size-sm);
-  border-radius: var(--radius-sm);
+.day-title {
+    font-family: var(--font-family-logo);
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: calc(var(--space-base) * 1.5);
+    text-shadow: 0 0 15px var(--color-text);
 }
 
-.btn--lg {
-  padding: var(--space-10) var(--space-20);
-  font-size: var(--font-size-lg);
-  border-radius: var(--radius-md);
+/* .shake-text, .trembling, etc. should be theme specific classes or applied via JS for a specific theme */
+body[data-theme="broken-reality"] .shake-text { animation: shake 0.5s ease-in-out infinite; }
+body[data-theme="broken-reality"] .trembling { animation: tremble 0.3s ease-in-out infinite; color: var(--color-text-secondary); }
+body[data-theme="broken-reality"] .glitched { animation: glitch-text 0.5s ease-in-out infinite; color: var(--color-primary); }
+body[data-theme="broken-reality"] .upside-down { transform: rotate(180deg); color: #7B68EE; } /* Keep or theme this color */
+body[data-theme="broken-reality"] .diagonal { transform: rotate(45deg); color: var(--color-text); }
+body[data-theme="broken-reality"] .circular { animation: rotate 2s linear infinite; color: var(--color-text-secondary); }
+body[data-theme="broken-reality"] .vertical { writing-mode: vertical-lr; color: var(--color-primary); }
+
+
+.schedule-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-base);
+    font-family: var(--font-family-base);
+    font-size: 1.1rem;
 }
 
-.btn--full-width {
-  width: 100%;
+.time {
+    width: 100px; /* Or auto */
+    margin-right: var(--space-base);
+    font-weight: bold;
 }
 
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* Pacotes Impossíveis */
+.packages-chaos {
+    min-height: 100vh;
+    padding: calc(var(--space-base) * 5) var(--space-base);
+    /* background: radial-gradient(circle, #000000, #330066, #000000); Theme this */
+    background: radial-gradient(circle, var(--color-background), color-mix(in srgb, var(--color-background) 60%, var(--color-primary) 40%), var(--color-background));
 }
 
-/* Form elements */
-.form-control {
-  display: block;
-  width: 100%;
-  padding: var(--space-8) var(--space-12);
-  font-size: var(--font-size-md);
-  line-height: 1.5;
-  color: var(--color-text);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-base);
-  transition: border-color var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
+.packages-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: calc(var(--space-base) * 2.5);
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-textarea.form-control {
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-base);
+.package-card {
+    position: relative;
+    padding: calc(var(--space-base) * 1.5);
+    /* background: rgba(255, 255, 255, 0.05); Theme this */
+    background: color-mix(in srgb, var(--color-text) 5%, transparent);
+    border: 2px solid var(--color-text-secondary);
+    transition: all 0.3s ease;
+    min-height: 400px; /* Use min-height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-select.form-control {
-  padding: var(--space-8) var(--space-12);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: var(--select-caret-light);
-  background-repeat: no-repeat;
-  background-position: right var(--space-12) center;
-  background-size: 16px;
-  padding-right: var(--space-32);
+/* Theme specific card styles */
+body[data-theme="broken-reality"] .silver-triangle {
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform: rotate(15deg);
+    border-color: var(--color-text);
+}
+body[data-theme="broken-reality"] .gold-3d {
+    transform: perspective(1000px) rotateY(15deg);
+    animation: rotate-3d 5s linear infinite;
+    border-color: var(--color-primary);
+}
+body[data-theme="broken-reality"] .premium-layered {
+    position: relative;
+    border-color: #7B68EE; /* Keep or theme */
+}
+body[data-theme="broken-reality"] .premium-layered::before {
+    content: '';
+    position: absolute;
+    top: -10px; left: -10px; right: -10px; bottom: -10px;
+    background: linear-gradient(45deg, #7B68EE, var(--color-text-secondary));
+    z-index: -1;
+    border-radius: 10px; /* Themeable radius */
+}
+body[data-theme="broken-reality"] .premium-layered::after {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px; right: -20px; bottom: -20px;
+    background: linear-gradient(45deg, var(--color-primary), var(--color-text));
+    z-index: -2;
+    border-radius: 15px; /* Themeable radius */
 }
 
-/* Add a dark mode specific caret */
-@media (prefers-color-scheme: dark) {
-  select.form-control {
-    background-image: var(--select-caret-dark);
-  }
+
+.package-name {
+    font-family: var(--font-family-titles);
+    font-size: 2rem;
+    color: var(--color-text-secondary);
+    text-shadow: 0 0 15px var(--color-text-secondary);
+    margin-bottom: var(--space-base);
 }
 
-/* Also handle data-color-scheme */
-[data-color-scheme="dark"] select.form-control {
-  background-image: var(--select-caret-dark);
+.package-price {
+    font-family: var(--font-family-logo);
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    text-shadow: 0 0 20px var(--color-primary);
+    margin-bottom: var(--space-base);
+}
+body[data-theme="broken-reality"] .glowing { animation: glow 2s ease-in-out infinite alternate; }
+
+
+.package-features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: calc(var(--space-base) * 1.5);
 }
 
-[data-color-scheme="light"] select.form-control {
-  background-image: var(--select-caret-light);
+.package-features span {
+    font-family: var(--font-family-base);
+    color: var(--color-text);
+    font-size: 0.9rem;
 }
 
-.form-control:focus {
-  border-color: var(--color-primary);
-  outline: var(--focus-outline);
+.btn-chaos {
+    padding: calc(var(--space-base) * 0.75) calc(var(--space-base) * 1.5);
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-family-titles);
+    font-size: 1rem;
+    color: var(--color-btn-primary-text); /* Default, can be overridden */
+}
+/* Theme specific button styles */
+body[data-theme="broken-reality"] .btn-silver {
+    background: linear-gradient(45deg, var(--color-text), var(--color-text-secondary));
+    color: var(--color-background); /* Contrasting text */
+    clip-path: polygon(0 0, 80% 0, 100% 100%, 20% 100%);
+}
+body[data-theme="broken-reality"] .btn-gold {
+    background: linear-gradient(45deg, var(--color-primary), #7B68EE); /* Theme #7B68EE or use a var */
+    color: #fff; /* Ensure contrast */
+    transform: perspective(500px) rotateX(20deg);
+}
+body[data-theme="broken-reality"] .btn-premium {
+    background: linear-gradient(45deg, #7B68EE, var(--color-text)); /* Theme #7B68EE */
+    color: var(--color-background); /* Contrasting text */
+    animation: morph 2s ease-in-out infinite;
 }
 
-.form-label {
-  display: block;
-  margin-bottom: var(--space-8);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
+
+/* Formulário Surrealista */
+.form-chaos {
+    min-height: 100vh;
+    padding: calc(var(--space-base) * 5) var(--space-base);
+    /* background: linear-gradient(90deg, #000000, #001a33, #000000); Theme this */
+    background: linear-gradient(90deg, var(--color-background), color-mix(in srgb, var(--color-background) 70%, var(--color-text-secondary) 30%), var(--color-background));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.surreal-form {
+    max-width: 600px;
+    width: 100%;
 }
 
 .form-group {
-  margin-bottom: var(--space-16);
+    margin-bottom: calc(var(--space-base) * 2);
+    position: relative; /* Needed for floating label */
+}
+body[data-theme="broken-reality"] .morphing { transition: all 0.3s ease; }
+body[data-theme="broken-reality"] .morphing:hover { transform: scale(1.05) rotate(2deg); }
+
+
+.floating-label {
+    position: absolute; /* Theme specific positioning */
+    top: -10px; left: 20px; /* Theme specific */
+    background: var(--color-background); /* To cover border */
+    padding: 0 10px;
+    color: var(--color-text-secondary);
+    font-weight: bold;
+    font-family: var(--font-family-titles);
+    transition: all 0.3s ease;
 }
 
-/* Card component */
-.card {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-card-border);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: box-shadow var(--duration-normal) var(--ease-standard);
+.expanding-input {
+    width: 100%;
+    padding: var(--space-base);
+    /* background: rgba(0, 255, 255, 0.1); Theme this */
+    background: var(--color-secondary);
+    border: 2px solid var(--color-text-secondary);
+    color: var(--color-text);
+    font-family: var(--font-family-base);
+    font-size: 1.1rem;
+    transition: all 0.3s ease; /* For general transitions */
 }
 
-.card:hover {
-  box-shadow: var(--shadow-md);
+.expanding-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 20px var(--color-primary);
+    /* transform: scale(1.1); Theme specific, handled by JS for broken-reality */
+}
+body[data-theme="broken-reality"] .expanding-input:focus {
+     /* transform: scale(1.1); This is handled by JS for dynamic scaling */
 }
 
-.card__body {
-  padding: var(--space-16);
+
+.expanding-input:focus + .floating-label { /* Only if label is positioned absolutely and after input */
+    color: var(--color-primary);
+    /* transform: scale(1.2); Theme specific */
+}
+body[data-theme="broken-reality"] .expanding-input:focus + .floating-label {
+    transform: scale(1.2);
 }
 
-.card__header,
-.card__footer {
-  padding: var(--space-16);
-  border-bottom: 1px solid var(--color-card-border-inner);
+
+.submit-container {
+    text-align: center;
+    position: relative; /* For multiplied buttons */
 }
 
-/* Status indicators - simplified with CSS variables */
-.status {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--space-6) var(--space-12);
-  border-radius: var(--radius-full);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-sm);
+.submit-multiplier {
+    /* background: linear-gradient(45deg, #00FF41, #FF0080); Theme this */
+    background: linear-gradient(45deg, var(--color-text), var(--color-primary));
+    color: var(--color-btn-primary-text);
+    border: none;
+    padding: var(--space-base) calc(var(--space-base) * 2);
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: var(--font-family-titles);
+    transition: all 0.3s ease;
+    position: relative; /* Base button */
+}
+body[data-theme="broken-reality"] .submit-multiplier:hover {
+    animation: multiply 0.5s ease-in-out; /* JS also handles cloning */
 }
 
-.status--success {
-  background-color: rgba(
-    var(--color-success-rgb, 33, 128, 141),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-success);
-  border: 1px solid
-    rgba(var(--color-success-rgb, 33, 128, 141), var(--status-border-opacity));
+
+/* Parceiros Fragmentados */
+.partners-chaos {
+    min-height: 80vh;
+    padding: calc(var(--space-base) * 5) var(--space-base);
+    /* background: radial-gradient(ellipse, #000000, #1a1a00, #000000); Theme this */
+    background: radial-gradient(ellipse, var(--color-background), color-mix(in srgb, var(--color-background) 70%, yellow 10%), var(--color-background));
 }
 
-.status--error {
-  background-color: rgba(
-    var(--color-error-rgb, 192, 21, 47),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-error);
-  border: 1px solid
-    rgba(var(--color-error-rgb, 192, 21, 47), var(--status-border-opacity));
+.partners-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: calc(var(--space-base) * 2);
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.status--warning {
-  background-color: rgba(
-    var(--color-warning-rgb, 168, 75, 47),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-warning);
-  border: 1px solid
-    rgba(var(--color-warning-rgb, 168, 75, 47), var(--status-border-opacity));
+.partner-card {
+    /* background: rgba(255, 255, 255, 0.05); Theme this */
+    background: color-mix(in srgb, var(--color-text) 5%, transparent);
+    padding: calc(var(--space-base) * 1.5);
+    text-align: center;
+    transition: all 0.3s ease;
+    min-height: 150px; /* Use min-height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid var(--color-border); /* Add subtle border */
+}
+/* Theme specific partner card styles */
+body[data-theme="broken-reality"] .icmbio-holographic {
+    background: linear-gradient(45deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 128, 0.2));
+    animation: holographic 3s ease-in-out infinite;
+}
+body[data-theme="broken-reality"] .boulder-glitch {
+    animation: glitch-card 2s ease-in-out infinite;
+    background: rgba(0, 255, 65, 0.1);
+}
+body[data-theme="broken-reality"] .republica-iso {
+    transform: perspective(1000px) rotateX(30deg) rotateY(15deg);
+    background: rgba(123, 104, 238, 0.1); /* Theme this color */
+}
+body[data-theme="broken-reality"] .flona-pixelated {
+    background: rgba(255, 0, 128, 0.1);
+    filter: contrast(2) brightness(1.2);
+    image-rendering: pixelated;
 }
 
-.status--info {
-  background-color: rgba(
-    var(--color-info-rgb, 98, 108, 113),
-    var(--status-bg-opacity)
-  );
-  color: var(--color-info);
-  border: 1px solid
-    rgba(var(--color-info-rgb, 98, 108, 113), var(--status-border-opacity));
+
+.partner-name {
+    font-family: var(--font-family-titles);
+    font-size: 1.5rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 10px;
 }
 
-/* Container layout */
-.container {
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: var(--space-16);
-  padding-left: var(--space-16);
+.partner-desc {
+    font-family: var(--font-family-base);
+    color: var(--color-text);
+    font-size: 0.9rem;
 }
 
-@media (min-width: 640px) {
-  .container {
-    max-width: var(--container-sm);
-  }
-}
-@media (min-width: 768px) {
-  .container {
-    max-width: var(--container-md);
-  }
-}
-@media (min-width: 1024px) {
-  .container {
-    max-width: var(--container-lg);
-  }
-}
-@media (min-width: 1280px) {
-  .container {
-    max-width: var(--container-xl);
-  }
+/* Contato */
+.contact-chaos {
+    padding: calc(var(--space-base) * 2.5) var(--space-base);
+    /* background: linear-gradient(135deg, #000000, #330000, #000000); Theme this */
+    background: linear-gradient(135deg, var(--color-background), color-mix(in srgb, var(--color-background) 70%, red 10%), var(--color-background));
+    text-align: center;
 }
 
-/* Utility classes */
-.flex {
-  display: flex;
-}
-.flex-col {
-  flex-direction: column;
-}
-.items-center {
-  align-items: center;
-}
-.justify-center {
-  justify-content: center;
-}
-.justify-between {
-  justify-content: space-between;
-}
-.gap-4 {
-  gap: var(--space-4);
-}
-.gap-8 {
-  gap: var(--space-8);
-}
-.gap-16 {
-  gap: var(--space-16);
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: calc(var(--space-base) * 2.5);
+    flex-wrap: wrap;
 }
 
-.m-0 {
-  margin: 0;
-}
-.mt-8 {
-  margin-top: var(--space-8);
-}
-.mb-8 {
-  margin-bottom: var(--space-8);
-}
-.mx-8 {
-  margin-left: var(--space-8);
-  margin-right: var(--space-8);
-}
-.my-8 {
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-8);
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
-.p-0 {
-  padding: 0;
-}
-.py-8 {
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-8);
-}
-.px-8 {
-  padding-left: var(--space-8);
-  padding-right: var(--space-8);
-}
-.py-16 {
-  padding-top: var(--space-16);
-  padding-bottom: var(--space-16);
-}
-.px-16 {
-  padding-left: var(--space-16);
-  padding-right: var(--space-16);
+.contact-label {
+    font-family: var(--font-family-titles);
+    color: var(--color-text-secondary);
+    font-size: 1rem;
 }
 
-.block {
-  display: block;
-}
-.hidden {
-  display: none;
-}
-
-/* Accessibility */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
+.contact-value {
+    font-family: var(--font-family-base);
+    color: var(--color-text);
+    font-size: 1.1rem;
 }
 
-:focus-visible {
-  outline: var(--focus-outline);
-  outline-offset: 2px;
+/* Mountain Emojis - Themeable container for JS */
+.mountain-emojis {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 7000;
 }
 
-/* Dark mode specifics */
-[data-color-scheme="dark"] .btn--outline {
-  border: 1px solid var(--color-border-secondary);
+.mountain-emoji { /* Styled by JS, but base class can be here */
+    position: absolute;
+    font-size: 2rem; /* JS might override */
+    /* animation: fall 3s linear forwards; Theme specific animation */
+}
+body[data-theme="broken-reality"] .mountain-emoji {
+    animation: fall 3s linear forwards;
 }
 
-@font-face {
-  font-family: 'FKGroteskNeue';
-  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
-    format('woff2');
+
+/* Theme Selector Styles */
+.theme-selector {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 5px; /* Space between buttons */
 }
 
-/* Reset e Base - Quebrada */
+.theme-selector button {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text, #00FF41); /* Fallback to a visible color */
+    border: 1px solid var(--color-border, #00FF41);
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: var(--font-family-base, 'Courier New', monospace);
+    font-size: 12px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+.theme-selector button:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.theme-selector button.active-theme {
+    background: var(--color-primary, #FF0080);
+    color: var(--color-btn-primary-text, #000);
+    opacity: 1;
+    font-weight: bold;
+}
+
+
+/* Utility Classes */
+.hidden { display: none !important; } /* Important to override other displays */
+
+/* Animations (General definitions, can be overridden by themes) */
+@keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes scanlines { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } } /* May not be used by all themes */
+@keyframes matrix-fall { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } } /* May not be used by all themes */
+
+/* Broken Reality Specific Animations (can be moved to its theme file) */
+@keyframes glitch-text {
+    0% { transform: translate(0); } 10% { transform: translate(-2px, 2px); } 20% { transform: translate(-2px, -2px); }
+    30% { transform: translate(2px, 2px); } 40% { transform: translate(2px, -2px); } 50% { transform: translate(-2px, 2px); }
+    60% { transform: translate(-2px, -2px); } 70% { transform: translate(2px, 2px); } 80% { transform: translate(-2px, -2px); }
+    90% { transform: translate(2px, 2px); } 100% { transform: translate(0); }
+}
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+@keyframes dissolve { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+@keyframes shake { 0%, 100% { transform: translateX(0px); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
+@keyframes tremble { 0%, 100% { transform: translate(0px, 0px); } 25% { transform: translate(-1px, -1px); } 50% { transform: translate(1px, -1px); } 75% { transform: translate(-1px, 1px); } }
+@keyframes rotate-3d { 0% { transform: perspective(1000px) rotateY(0deg); } 100% { transform: perspective(1000px) rotateY(360deg); } }
+@keyframes glow { 0% { text-shadow: 0 0 20px currentColor; } 100% { text-shadow: 0 0 30px currentColor, 0 0 40px currentColor; } }
+@keyframes morph { 0%, 100% { border-radius: 0; } 50% { border-radius: 50px; } } /* Themeable radius */
+@keyframes multiply { 0% { transform: scale(1); } 50% { transform: scale(0.8); } 100% { transform: scale(1); } }
+@keyframes holographic { 0%, 100% { filter: hue-rotate(0deg); } 50% { filter: hue-rotate(180deg); } }
+@keyframes glitch-card { /* Similar to glitch-text, can be combined or kept separate */
+    0%, 100% { transform: translate(0); } 10% { transform: translate(-2px, 2px); } 20% { transform: translate(-2px, -2px); }
+    30% { transform: translate(2px, 2px); } 40% { transform: translate(2px, -2px); } 50% { transform: translate(-2px, 2px); }
+    60% { transform: translate(-2px, -2px); } 70% { transform: translate(2px, 2px); } 80% { transform: translate(-2px, -2px); }
+    90% { transform: translate(2px, 2px); }
+}
+@keyframes fall { 0% { transform: translateY(-100px); opacity: 1; } 100% { transform: translateY(100vh); opacity: 0; } }
+
+
+/* Responsive Caótico (Base responsive, themes can add more) */
+@media (max-width: 768px) {
+    .logo-piece { font-size: 2rem; /* Adjust base size */ }
+    .date-distorted { font-size: 4rem; /* Adjust base size */ }
+    .day-container { grid-template-columns: 1fr; } /* Common responsive pattern */
+    .packages-container { grid-template-columns: 1fr; } /* Common responsive pattern */
+    .contact-info { flex-direction: column; gap: calc(var(--space-base) * 1.5); }
+
+    /* Broken Reality specific responsive adjustments */
+    body[data-theme="broken-reality"] .logo-1 { left: -20px; /* Adjust for smaller screens */ }
+    body[data-theme="broken-reality"] .nav-2 { right: 20px; top: 100px; /* Reposition for smaller screens */ }
+}
+
+/* Broken Reality specific orientation styles */
+@media (orientation: landscape) and (max-width: 768px) {
+    body[data-theme="broken-reality"] {
+        filter: hue-rotate(45deg) contrast(1.2);
+    }
+}
 * {
     margin: 0;
     padding: 0;

@@ -412,6 +412,51 @@ function bindSubmitButton(btn) {
     });
 }
 
+// Theme Switching Logic
+const themeButtons = document.querySelectorAll('.theme-selector button');
+const body = document.body;
+const themeStyleLink = document.createElement('link');
+themeStyleLink.rel = 'stylesheet';
+document.head.appendChild(themeStyleLink);
+
+function setActiveButton(selectedButton) {
+    themeButtons.forEach(btn => btn.classList.remove('active-theme'));
+    selectedButton.classList.add('active-theme');
+}
+
+function setTheme(themeName) {
+    body.setAttribute('data-theme', themeName);
+    if (themeName === 'broken-reality') {
+        // For "Broken Reality", we might not need an external CSS file if its styles are the default in style.css
+        // Or, if we created a specific broken-reality.css:
+        // themeStyleLink.href = `themes/broken-reality.css`;
+        themeStyleLink.href = ''; // Assuming broken-reality is the base style in style.css
+    } else {
+        themeStyleLink.href = `themes/${themeName}.css`;
+    }
+    localStorage.setItem('selectedTheme', themeName);
+
+    // Find the button corresponding to the theme and set it as active
+    const activeButton = document.querySelector(`.theme-selector button[data-theme="${themeName}"]`);
+    if (activeButton) {
+        setActiveButton(activeButton);
+    }
+}
+
+themeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const themeName = button.getAttribute('data-theme');
+        setTheme(themeName);
+    });
+});
+
+// Load saved theme or default to broken-reality
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('selectedTheme') || 'broken-reality';
+    setTheme(savedTheme);
+});
+
+
 // Palavras que mudam de cor aleatoriamente
 setInterval(() => {
     const textElements = document.querySelectorAll('h1, h2, h3, .package-name, .partner-name');
