@@ -412,6 +412,54 @@ function bindSubmitButton(btn) {
     });
 }
 
+// Theme Switching Logic
+const bodyElementForTheme = document.body; // Renamed to avoid conflict if 'body' is used elsewhere
+const themeStyleLinkElement = document.createElement('link');
+themeStyleLinkElement.rel = 'stylesheet';
+document.head.appendChild(themeStyleLinkElement);
+
+function setActiveButtonState(buttonsNodeList, selectedButton) {
+    buttonsNodeList.forEach(btn => btn.classList.remove('active-theme'));
+    if (selectedButton) { // Ensure selectedButton is not null
+        selectedButton.classList.add('active-theme');
+    }
+}
+
+function applyTheme(themeName) {
+    bodyElementForTheme.setAttribute('data-theme', themeName);
+    if (themeName === 'broken-reality') {
+        themeStyleLinkElement.href = '';
+    } else {
+        themeStyleLinkElement.href = `themes/${themeName}.css`;
+    }
+    localStorage.setItem('selectedTheme', themeName);
+
+    const themeButtonsNodeList = document.querySelectorAll('.theme-selector button'); // Query inside function or ensure it's up-to-date
+    const activeButton = document.querySelector(`.theme-selector button[data-theme="${themeName}"]`);
+    setActiveButtonState(themeButtonsNodeList, activeButton);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Store original transforms for nav items (if this is still relevant to all themes)
+    const navItemsForTransform = document.querySelectorAll('.nav-item');
+    navItemsForTransform.forEach(item => {
+        item.dataset.originalTransform = window.getComputedStyle(item).transform;
+    });
+
+    // Theme switcher initialization
+    const themeButtons = document.querySelectorAll('.theme-selector button');
+    themeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const themeName = button.getAttribute('data-theme');
+            applyTheme(themeName);
+        });
+    });
+
+    const savedTheme = localStorage.getItem('selectedTheme') || 'broken-reality';
+    applyTheme(savedTheme);
+});
+
+
 // Palavras que mudam de cor aleatoriamente
 setInterval(() => {
     const textElements = document.querySelectorAll('h1, h2, h3, .package-name, .partner-name');
