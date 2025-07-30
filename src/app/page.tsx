@@ -1,6 +1,6 @@
 import { Navigation } from '@/components/layout';
 import { HeroSection, PackagesSection } from '@/components/sections';
-import { CartButton } from '@/components/cart';
+import { CartButton, CartModal } from '@/components/cart';
 
 export default function Home() {
   return (

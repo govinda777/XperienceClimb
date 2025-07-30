@@ -16,4 +16,5 @@ export * from './services/IPaymentService';
 export * from './use-cases/auth/LoginUser';
 export * from './use-cases/auth/GetUserProfile';
 export * from './use-cases/packages/GetAllPackages';
-export * from './use-cases/packages/GetPackageAvailability'; 
+export * from './use-cases/packages/GetPackageAvailability';
+export * from './use-cases/orders/CreateOrder'; 
