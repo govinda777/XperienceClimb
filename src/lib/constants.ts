@@ -60,11 +60,12 @@ export const PACKAGES: Record<string, PackageType> = {
 
 export const NAVIGATION_ITEMS = [
   { id: 'hero', label: 'Início', icon: '🏔️' },
-  { id: 'programacao', label: 'Programação', icon: '📅' },
-  { id: 'galeria', label: 'Galeria', icon: '📸' },
+  { id: 'sobre', label: 'Sobre', icon: '🌿' },
   { id: 'pacotes', label: 'Pacotes', icon: '💎' },
-  { id: 'parceiros', label: 'Parceiros', icon: '🤝' },
-  { id: 'inscricao', label: 'Inscrição', icon: '📝' },
+  { id: 'galeria', label: 'Galeria', icon: '📸' },
+  { id: 'seguranca', label: 'Segurança', icon: '🛡️' },
+  { id: 'localizacao', label: 'Local', icon: '📍' },
+  { id: 'depoimentos', label: 'Depoimentos', icon: '⭐' },
 ] as const;
 
 export const CONTACT_INFO = {
