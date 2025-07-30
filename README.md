@@ -197,8 +197,19 @@ Após configurar as APIs:
 
 ### Erro TypeScript: "Property 'name' does not exist on type 'Apple'"
 - ✅ Privy Apple login não fornece propriedade `name`
-- ✅ Use apenas `user.google?.name` e `user.email?.address`
-- ✅ Arquivo `LoginButton.tsx` já corrigido
+- ✅ Use apenas `user.google?.name` e `user.email?.address`  
+- ✅ Corrija também `user.google?.pictureUrl` → `user.google?.picture`
+- ✅ Arquivos `LoginButton.tsx` e `useAuth.ts` já corrigidos
+
+### Erro: "Module has already exported a member named 'Money'"
+- ✅ Remova exportação duplicada de `Money` do arquivo `Order.ts`
+- ✅ Importe `Money` de `Package.ts` no `Order.ts`
+- ✅ Mantenha `Money` apenas em um arquivo para evitar conflitos
+
+### Erro: "This expression is not callable" (PackageRepository)
+- ✅ `PACKAGES` é um `Record<string, PackageType>`, não array
+- ✅ Use `PACKAGES[id]` ao invés de `PACKAGES.find()`
+- ✅ Use `Object.values(PACKAGES)` ao invés de `PACKAGES.map()`
 
 ### Build falha por lint
 ```bash
@@ -266,6 +277,20 @@ Se encontrar problemas:
    - [Vercel](https://vercel.com/docs)
    - [Privy](https://docs.privy.io/)
    - [MercadoPago](https://www.mercadopago.com.br/developers/pt/docs)
+
+---
+
+## 🎯 **Status do Deploy**
+
+✅ **APLICAÇÃO ONLINE!**
+
+**URL de Produção:** https://xperience-climb-1fk4unbis-govinda777s-projects.vercel.app
+
+**Próximos passos:**
+1. Configure as variáveis de ambiente com valores reais
+2. Configurar Privy App ID
+3. Configurar credenciais do MercadoPago
+4. Testar funcionalidades completas
 
 ---
 
