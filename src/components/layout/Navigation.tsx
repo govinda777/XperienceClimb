@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { NAVIGATION_ITEMS } from '@/lib/constants';
+import { LoginButton } from '@/components/auth';
 
 export function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -62,6 +63,11 @@ export function Navigation() {
               <span className="text-sm font-medium hidden sm:inline">{item.label}</span>
             </button>
           ))}
+          
+          {/* Login Button */}
+          <div className="border-l border-white/20 pl-2 ml-2">
+            <LoginButton variant="outline" size="sm" />
+          </div>
         </div>
       </div>
     </nav>

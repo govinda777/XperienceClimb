@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { PrivyProvider } from '@/components/providers/PrivyProvider'
 import '../styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -38,7 +39,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="scroll-smooth">
       <body className={inter.className}>
-        {children}
+        <PrivyProvider>
+          {children}
+        </PrivyProvider>
       </body>
     </html>
   )
