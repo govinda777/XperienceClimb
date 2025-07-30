@@ -5,7 +5,7 @@ import { PACKAGES } from '@/lib/constants';
 export class PackageRepository implements IPackageRepository {
   async findById(id: string): Promise<Package | null> {
     try {
-      const packageData = PACKAGES.find(pkg => pkg.id === id);
+      const packageData = PACKAGES[id];
       
       if (!packageData) {
         return null;
@@ -21,7 +21,7 @@ export class PackageRepository implements IPackageRepository {
 
   async findAll(): Promise<Package[]> {
     try {
-      return PACKAGES.map(pkg => this.mapToPackageEntity(pkg));
+      return Object.values(PACKAGES).map(pkg => this.mapToPackageEntity(pkg));
     } catch (error) {
       console.error('Error finding all packages:', error);
       return [];

@@ -29,7 +29,7 @@ export function LoginButton({ variant = 'primary', size = 'md' }: LoginButtonPro
     return (
       <div className="flex items-center space-x-3">
         <div className="hidden sm:block text-sm text-neutral-700">
-          Olá, {user.google?.name || user.apple?.name || user.email?.address || 'Usuário'}
+          Olá, {user.google?.name || user.email?.address || 'Usuário'}
         </div>
         <Button
           variant="ghost"

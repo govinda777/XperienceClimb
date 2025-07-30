@@ -1,3 +1,5 @@
+import { Money } from './Package';
+
 export interface Order {
   id: string;
   userId: string;
@@ -48,7 +50,4 @@ export interface PaymentInfo {
 
 export type OrderStatus = 'pending_payment' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled';
 
-export interface Money {
-  amount: number; // in cents
-  currency: 'BRL';
-} 
+ 
