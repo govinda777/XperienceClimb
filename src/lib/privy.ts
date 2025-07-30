@@ -1,4 +1,5 @@
 import { PrivyClientConfig } from '@privy-io/react-auth';
+import { mainnet } from 'viem/chains';
 
 export const privyConfig: PrivyClientConfig = {
   loginMethods: ['email', 'google', 'apple'],
@@ -11,7 +12,5 @@ export const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
     createOnLogin: 'off',
   },
-  supportedChains: [], // No blockchain needed for this app
-  // Optional: customize the login modal
-  modalSize: 'compact',
+  supportedChains: [mainnet], // Minimal chain config (required by Privy)
 }; 
