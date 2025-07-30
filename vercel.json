@@ -6,7 +6,7 @@
   "outputDirectory": ".next",
   "functions": {
     "src/app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
+      "runtime": "@vercel/node"
     }
   },
   "rewrites": [
@@ -33,10 +33,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "NEXT_PUBLIC_APP_URL": "@next_public_app_url",
-    "NEXT_PUBLIC_PRIVY_APP_ID": "@next_public_privy_app_id",
-    "NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY": "@next_public_mercadopago_public_key"
-  }
+  ]
 }
