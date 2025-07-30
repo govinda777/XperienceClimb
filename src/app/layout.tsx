@@ -5,6 +5,7 @@ import '../styles/globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://xperienceclimb.vercel.app'),
   title: 'XperienceClimb - Escalada no Morro Araçoiaba',
   description: 'Experiências únicas de escalada na Floresta Nacional de Ipanema',
   keywords: 'escalada, climbing, aventura, morro araçoiaba, ipanema, são paulo',
@@ -21,8 +22,12 @@ export const metadata: Metadata = {
     description: 'Experiências únicas de escalada na Floresta Nacional de Ipanema',
     images: ['/images/site.png'],
   },
-  viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({

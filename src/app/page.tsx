@@ -1,67 +1,62 @@
+import { Navigation } from '@/components/layout';
+import { HeroSection, PackagesSection } from '@/components/sections';
+import { CartButton } from '@/components/cart';
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-neutral-50">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-climb-500 text-center mb-8">
-          🧗‍♂️ XperienceClimb
-        </h1>
-        
-        <div className="max-w-2xl mx-auto text-center">
-          <p className="text-lg text-neutral-700 mb-6">
-            Bem-vindo ao XperienceClimb! Estamos migrando para uma nova experiência em Next.js.
-          </p>
-          
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-2xl font-semibold text-climb-600 mb-4">
+    <main className="min-h-screen">
+      <Navigation />
+      <HeroSection />
+      <PackagesSection />
+      <CartButton />
+      
+      {/* Temporary Development Status */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-climb-600 mb-6">
               🚀 Status da Migração
             </h2>
-            <div className="space-y-3 text-left">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✅</span>
-                <span>Repositório Git configurado</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✅</span>
-                <span>Next.js 14 configurado</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✅</span>
-                <span>Tailwind CSS configurado</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✅</span>
-                <span>TypeScript configurado</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-orange-500 mr-2">🔄</span>
-                <span>Componentes React em desenvolvimento</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-gray-400 mr-2">⏳</span>
-                <span>Sistema de autenticação (Privy)</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-gray-400 mr-2">⏳</span>
-                <span>Carrinho de compras</span>
-              </div>
-              <div className="flex items-center">
-                <span className="text-gray-400 mr-2">⏳</span>
-                <span>Integração Mercado Pago</span>
+            <div className="bg-neutral-50 rounded-lg p-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">✅</span>
+                  <span>Navegação interativa</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">✅</span>
+                  <span>Seção Hero responsiva</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">✅</span>
+                  <span>Pacotes de escalada</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">✅</span>
+                  <span>Carrinho de compras (Zustand)</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-orange-500 mr-2">🔄</span>
+                  <span>Seções restantes</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-gray-400 mr-2">⏳</span>
+                  <span>Autenticação Privy</span>
+                </div>
               </div>
             </div>
-          </div>
-          
-          <div className="bg-climb-50 rounded-lg p-6 border border-climb-200">
-            <h3 className="text-xl font-semibold text-climb-700 mb-2">
-              🎯 Próximos Passos
-            </h3>
-            <p className="text-climb-600">
-              Continuamos implementando os componentes React, sistema de autenticação e carrinho de compras. 
-              Em breve teremos a experiência completa!
-            </p>
+            
+            <div className="bg-climb-50 rounded-lg p-6 border border-climb-200">
+              <h3 className="text-xl font-semibold text-climb-700 mb-2">
+                ⚡ Próximos Passos
+              </h3>
+              <p className="text-climb-600">
+                Implementação da programação, galeria, parceiros e sistema de autenticação.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   )
 } 
