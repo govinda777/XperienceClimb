@@ -4,7 +4,7 @@ import { PackageType } from '@/types';
 export const CONTACT_INFO = {
   address: 'Floresta Nacional de Ipanema',
   distance: '120km de São Paulo',
-  phone: '(11) 99999-9999',
+  phone: '(11) 99541-3539',
   email: 'contato@xperienceclimb.com',
   instagram: '@xperienceclimb'
 };

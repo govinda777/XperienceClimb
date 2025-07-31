@@ -1,13 +1,16 @@
 import { IOrderRepository } from '@/core/repositories/IOrderRepository';
 import { Order } from '@/core/entities/Order';
 import { PaymentService } from '../services/PaymentService';
+import { WhatsAppService } from '../services/WhatsAppService';
 import { generateId } from '@/lib/utils';
 
 export class OrderRepository implements IOrderRepository {
   private paymentService: PaymentService;
+  private whatsAppService: WhatsAppService;
 
   constructor() {
     this.paymentService = new PaymentService();
+    this.whatsAppService = new WhatsAppService();
   }
 
   async create(order: Order): Promise<string> {
@@ -44,6 +47,30 @@ export class OrderRepository implements IOrderRepository {
     } catch (error) {
       console.error('Error creating order:', error);
       throw new Error('Failed to create order');
+    }
+  }
+
+  async createWhatsAppOrder(order: Order): Promise<string> {
+    try {
+      // Store order locally with WhatsApp method
+      const orderId = order.id;
+      this.storeOrderLocally(order, orderId);
+      
+      // Send WhatsApp message with order details
+      await this.whatsAppService.sendOrderConfirmation({
+        order,
+        paymentData: {
+          id: 'whatsapp_' + orderId,
+          status: 'pending_whatsapp',
+          date_approved: new Date().toISOString()
+        }
+      });
+      
+      console.log(`WhatsApp order created: ${orderId}`);
+      return orderId;
+    } catch (error) {
+      console.error('Error creating WhatsApp order:', error);
+      throw new Error('Failed to create WhatsApp order');
     }
   }
 
@@ -101,6 +128,18 @@ export class OrderRepository implements IOrderRepository {
       // Update order status based on payment status
       if (order.payment.status === 'completed') {
         order.status = 'confirmed';
+        
+        // Send WhatsApp notification when payment is approved
+        try {
+          await this.whatsAppService.sendOrderConfirmation({
+            order,
+            paymentData
+          });
+          console.log(`WhatsApp notification sent for order ${order.id}`);
+        } catch (error) {
+          console.error('Failed to send WhatsApp notification:', error);
+          // Don't throw - webhook should still complete successfully
+        }
       } else if (order.payment.status === 'failed') {
         order.status = 'cancelled';
       }

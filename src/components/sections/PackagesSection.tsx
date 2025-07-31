@@ -4,7 +4,6 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Button } from '@/components/ui';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/store/useCartStore';
-import { usePackages } from '@/hooks/usePackages';
 
 // Interface for API package data (includes styling information)
 interface ApiPackage {
@@ -34,20 +33,36 @@ const getColorClass = (color: string) => {
 
 export function PackagesSection() {
   const { addItem, openCart } = useCartStore();
-  const { packages, loading } = usePackages();
   const [apiPackages, setApiPackages] = React.useState<ApiPackage[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   // Fetch API data with styling information
   React.useEffect(() => {
+    console.log('🔍 useEffect executado - iniciando fetch dos pacotes');
+    
     const fetchApiData = async () => {
       try {
+        console.log('📡 Iniciando fetch para /api/packages');
+        setLoading(true);
+        
         const response = await fetch('/api/packages');
+        console.log('📨 Response recebida:', response.status, response.statusText);
+        
         const result = await response.json();
+        console.log('📦 Dados recebidos:', result);
+        
         if (result.success) {
+          console.log('✅ Setando pacotes:', result.data.length, 'pacotes');
           setApiPackages(result.data);
+        } else {
+          console.error('❌ API retornou success: false');
         }
       } catch (error) {
-        console.error('Error fetching API packages:', error);
+        console.error('💥 Erro no fetch:', error);
+        // Let the error be visible - no masking with fallbacks
+      } finally {
+        console.log('🏁 Finalizando loading');
+        setLoading(false);
       }
     };
 
@@ -55,7 +70,10 @@ export function PackagesSection() {
   }, []);
 
   const handleAddToCart = (packageId: string) => {
+    console.log('Adding to cart:', packageId);
     const apiPkg = apiPackages.find(p => p.id === packageId);
+    console.log('Found package:', apiPkg);
+    
     if (apiPkg) {
       addItem({
         packageId,
@@ -64,6 +82,7 @@ export function PackagesSection() {
         quantity: 1,
         participantName: 'Participante', // This will be updated in checkout
       });
+      console.log('Item added, opening cart...');
       // Open cart modal automatically after adding item
       openCart();
     }
@@ -82,9 +101,25 @@ export function PackagesSection() {
           </p>
         </div>
 
-        {loading || apiPackages.length === 0 ? (
+        {loading ? (
           <div className="text-center">
-            <p className="text-neutral-600">Carregando pacotes...</p>
+            <div className="animate-pulse space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-neutral-200 h-96 rounded-lg"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : apiPackages.length === 0 ? (
+          <div className="text-center">
+            <p className="text-neutral-600">Erro ao carregar pacotes. Verifique a conexão.</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="mt-2 text-climb-600 hover:text-climb-700 underline"
+            >
+              Tentar novamente
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -153,13 +188,16 @@ export function PackagesSection() {
                     className="w-full"
                     variant={pkg.popular ? 'primary' : 'outline'}
                     size="lg"
-                    onClick={() => handleAddToCart(pkg.id)}
+                    onClick={() => {
+                      console.log('Button clicked for package:', pkg.id);
+                      handleAddToCart(pkg.id);
+                    }}
                   >
                     Adicionar ao Carrinho
                   </Button>
                 </CardFooter>
               </Card>
-            );
+              );
             })}
           </div>
         )}

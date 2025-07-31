@@ -23,3 +23,12 @@ NEXT_PUBLIC_PENDING_URL=https://your-app.vercel.app/checkout/pending
 # 1. Acesse: https://developers.mercadopago.com/
 # 2. Crie uma aplicação
 # 3. Copie Public Key e Access Token
+
+# === WHATSAPP ===
+WHATSAPP_PHONE_NUMBER=5511999999999
+# 
+# CONFIGURAÇÃO WHATSAPP:
+# 1. Por padrão usa o telefone de CONTACT_INFO das constantes
+# 2. Configure aqui apenas se quiser sobrescrever o número padrão
+# 3. Formato: código_país + código_área + número (ex: 5511999999999)
+# 4. Para integração real, use WhatsApp Business API ou Twilio

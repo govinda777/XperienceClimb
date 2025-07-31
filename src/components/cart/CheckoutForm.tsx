@@ -116,9 +116,24 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
         climbingDetails: formData.climbingDetails
       });
 
-      if (result.success && result.checkoutUrl) {
-        // Redirect to Mercado Pago checkout
-        window.location.href = result.checkoutUrl;
+      if (result.success) {
+        if (result.whatsappUrl) {
+          // Close checkout modal first
+          onSuccess();
+          
+          // Create invisible link and auto-click to avoid popup blockers
+          const link = document.createElement('a');
+          link.href = result.whatsappUrl;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+        } else if (result.checkoutUrl) {
+          // Fallback to Mercado Pago if WhatsApp fails
+          window.location.href = result.checkoutUrl;
+        }
       } else {
         alert(result.error || 'Erro ao processar pedido');
       }

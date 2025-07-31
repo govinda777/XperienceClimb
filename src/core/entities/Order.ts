@@ -41,7 +41,7 @@ export interface ClimbingDetails {
 }
 
 export interface PaymentInfo {
-  method: 'mercadopago';
+  method: 'mercadopago' | 'whatsapp';
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
   transactionId?: string;
   mercadoPagoPreferenceId?: string;

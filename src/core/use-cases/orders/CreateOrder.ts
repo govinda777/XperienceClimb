@@ -2,6 +2,7 @@ import { IOrderRepository } from '@/core/repositories/IOrderRepository';
 import { Order, OrderItem, ParticipantDetails, ClimbingDetails } from '@/core/entities/Order';
 import { generateId } from '@/lib/utils';
 import { CartItem } from '@/types';
+import { CONTACT_INFO } from '@/lib/constants';
 
 export interface CreateOrderRequest {
   userId: string;
@@ -15,6 +16,7 @@ export interface CreateOrderResult {
   orderId?: string;
   preferenceId?: string;
   checkoutUrl?: string;
+  whatsappUrl?: string;
   error?: string;
 }
 
@@ -55,7 +57,7 @@ export class CreateOrder {
         items: orderItems,
         status: 'pending_payment',
         payment: {
-          method: 'mercadopago',
+          method: 'whatsapp' as any, // Changed from mercadopago to whatsapp
           status: 'pending'
         },
         climbingDetails: request.climbingDetails,
@@ -67,17 +69,18 @@ export class CreateOrder {
         updatedAt: new Date()
       };
 
-      // Create payment preference
-      const preferenceId = await this.orderRepository.create(order);
+      // Use WhatsApp flow instead of Mercado Pago
+      const orderId = await this.orderRepository.createWhatsAppOrder(order);
 
-      // Get checkout URL from the payment service
-      const checkoutUrl = await this.orderRepository.getCheckoutUrl(preferenceId);
+      // Format phone for WhatsApp URL
+      const whatsappPhone = this.formatPhoneForWhatsApp(CONTACT_INFO.phone);
+      const whatsappMessage = this.formatCompleteOrderMessage(order, orderId);
 
       return {
         success: true,
         orderId: order.id,
-        preferenceId,
-        checkoutUrl
+        preferenceId: orderId,
+        whatsappUrl: `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodeURIComponent(whatsappMessage)}`
       };
 
     } catch (error) {
@@ -128,5 +131,76 @@ export class CreateOrder {
     return cartItems.reduce((total, item) => {
       return total + (item.price * item.quantity * 100); // Convert to cents
     }, 0);
+  }
+
+  private formatPhoneForWhatsApp(phone: string): string {
+    // Convert "(11) 99999-9999" to "5511999999999"
+    const cleanPhone = phone.replace(/\D/g, ''); // Remove all non-digits
+    
+    // If it's a Brazilian number without country code, add 55
+    if (cleanPhone.length === 11 && cleanPhone.startsWith('11')) {
+      return '55' + cleanPhone;
+    }
+    
+    // If it's already complete or different format, return as is
+    return cleanPhone;
+  }
+
+  private formatCurrency(amountInCents: number): string {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(amountInCents / 100);
+  }
+
+  private formatCompleteOrderMessage(order: Order, orderId: string): string {
+    let message = `🧗‍♂️ *NOVA RESERVA* 🧗‍♂️\n\n`;
+    
+    // Order info
+    message += `📋 *Dados do Pedido:*\n`;
+    message += `• ID: #${orderId}\n`;
+    message += `• Data: ${new Date().toLocaleString('pt-BR')}\n`;
+    message += `• Total: ${this.formatCurrency(order.total.amount)}\n\n`;
+
+    // Climbing details
+    message += `📅 *Detalhes da Escalada:*\n`;
+    message += `• Data: ${order.climbingDetails.selectedDate.toLocaleDateString('pt-BR', {
+      weekday: 'long',
+      year: 'numeric', 
+      month: 'long',
+      day: 'numeric'
+    })}\n`;
+
+    if (order.climbingDetails.specialRequests) {
+      message += `• Solicitações especiais: ${order.climbingDetails.specialRequests}\n`;
+    }
+    message += '\n';
+
+    // Participants
+    message += `👥 *Participantes (${order.items.length}):*\n`;
+    order.items.forEach((item: any, index: number) => {
+      const participant = item.participantDetails;
+      message += `\n${index + 1}. *${participant.name}*\n`;
+      message += `   • Pacote: ${item.packageName}\n`;
+      message += `   • Idade: ${participant.age} anos\n`;
+      message += `   • Nível: ${this.translateExperience(participant.experienceLevel)}\n`;
+      message += `   • Contato emergência: ${participant.emergencyContact.name}\n`;
+      message += `   • Telefone: ${participant.emergencyContact.phone}\n`;
+      message += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
+    });
+
+    message += `\n💰 *Pagamento:* Aguardando confirmação via WhatsApp`;
+    message += `\n\n🔔 *Próximo passo:* Confirme os dados e método de pagamento`;
+
+    return message;
+  }
+
+  private translateExperience(level: string): string {
+    const levelMap: Record<string, string> = {
+      'beginner': 'Iniciante',
+      'intermediate': 'Intermediário', 
+      'advanced': 'Avançado'
+    };
+    return levelMap[level] || level;
   }
 } 
