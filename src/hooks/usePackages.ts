@@ -64,11 +64,6 @@ export function usePackages() {
     getPackageById,
     getPackagesByType,
     
-    // Computed values
-    silverPackage: packages.find(p => p.id === 'silver'),
-    goldPackage: packages.find(p => p.id === 'gold'),
-    premiumPackage: packages.find(p => p.id === 'premium'),
-    
     // Refetch function
     refetch: async () => {
       try {
@@ -82,4 +77,4 @@ export function usePackages() {
       }
     }
   };
-} 
+}

@@ -12,8 +12,7 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
   const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
   if (!appId) {
-    console.error('NEXT_PUBLIC_PRIVY_APP_ID is not set');
-    return <div>Authentication not configured</div>;
+    throw new Error('NEXT_PUBLIC_PRIVY_APP_ID is required. Please configure your Privy App ID.');
   }
 
   return (
@@ -24,4 +23,4 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
       {children}
     </BasePrivyProvider>
   );
-} 
+}

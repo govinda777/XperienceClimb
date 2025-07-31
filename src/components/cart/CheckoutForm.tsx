@@ -9,6 +9,7 @@ import { CreateOrder } from '@/core/use-cases/orders/CreateOrder';
 import { OrderRepository } from '@/infrastructure/repositories/OrderRepository';
 import { CartItem } from '@/types';
 import { ParticipantDetails, ClimbingDetails } from '@/core/entities/Order';
+import { AVAILABLE_DATES } from '@/lib/constants';
 
 interface CheckoutFormProps {
   cartItems: CartItem[];
@@ -28,7 +29,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
   const [formData, setFormData] = useState<FormData>({
     participantDetails: {},
     climbingDetails: {
-      selectedDate: new Date(),
+      selectedDate: new Date(AVAILABLE_DATES.singleDateISO),
       specialRequests: '',
       dietaryRestrictions: []
     }
@@ -77,8 +78,8 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
                  details.healthDeclaration;
         });
       case 1: // Climbing details
-        return formData.climbingDetails.selectedDate && 
-               formData.climbingDetails.selectedDate > new Date();
+        return formData.climbingDetails.selectedDate &&
+               formData.climbingDetails.selectedDate.toISOString().split('T')[0] === AVAILABLE_DATES.singleDateISO;
       case 2: // Confirmation
         return true;
       default:
@@ -333,15 +334,12 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
 }
 
 function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
-  const minDate = new Date();
-  minDate.setDate(minDate.getDate() + 1); // Tomorrow
-
   return (
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-semibold mb-2">Data da Escalada</h3>
         <p className="text-sm text-neutral-600 mb-4">
-          Escolha a data desejada para sua experiência de escalada.
+          Data única disponível para sua experiência de escalada.
         </p>
       </div>
 
@@ -350,15 +348,22 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
           <Calendar className="inline h-4 w-4 mr-1" />
           Data da Escalada *
         </label>
-        <input
-          type="date"
-          min={minDate.toISOString().split('T')[0]}
-          className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-climb-500"
-          value={climbingDetails.selectedDate?.toISOString().split('T')[0] || ''}
-          onChange={(e) => onChange('selectedDate', new Date(e.target.value))}
-        />
+        <div className="relative">
+          <input
+            type="text"
+            className="w-full px-3 py-2 border border-neutral-300 rounded-md bg-neutral-50 text-neutral-700 cursor-not-allowed"
+            value={AVAILABLE_DATES.singleDateDisplay}
+            disabled
+            readOnly
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            <div className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+              Disponível
+            </div>
+          </div>
+        </div>
         <p className="text-xs text-neutral-500 mt-1">
-          A escalada deve ser agendada com pelo menos 24h de antecedência.
+          Data única disponível: {AVAILABLE_DATES.singleDateDisplay}
         </p>
       </div>
 

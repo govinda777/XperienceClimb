@@ -8,7 +8,7 @@ export interface User {
 }
 
 export interface PackageType {
-  id: 'silver' | 'gold' | 'premium';
+  id: string; // Dynamic package ID - can be any string
   name: string;
   price: number;
   originalPrice?: number;
@@ -19,6 +19,9 @@ export interface PackageType {
   popular?: boolean;
   duration: string;
   maxParticipants: number;
+  requiresExperience?: boolean; // Dynamic property instead of hardcoded logic
+  minAge?: number; // Dynamic minimum age
+  cancellationPolicy?: string; // Dynamic cancellation policy
 }
 
 export interface CartItem {
@@ -48,4 +51,4 @@ export interface MercadoPagoPreference {
   id: string;
   init_point: string;
   sandbox_init_point: string;
-} 
+}

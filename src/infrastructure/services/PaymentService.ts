@@ -40,8 +40,6 @@ export class PaymentService implements IPaymentService {
         external_reference: request.orderId,
       };
 
-      // In a real implementation, you would call Mercado Pago API
-      // For now, we'll simulate the response
       const response = await this.callMercadoPagoAPI('/checkout/preferences', preference);
       
       return {
@@ -102,7 +100,7 @@ export class PaymentService implements IPaymentService {
 
   private async callMercadoPagoAPI(endpoint: string, data: any = null, method: 'GET' | 'POST' = 'POST'): Promise<any> {
     if (!this.accessToken) {
-      throw new Error('Mercado Pago access token not configured');
+      throw new Error('MercadoPago access token not configured');
     }
 
     try {
@@ -132,4 +130,5 @@ export class PaymentService implements IPaymentService {
       throw error;
     }
   }
+
 } 

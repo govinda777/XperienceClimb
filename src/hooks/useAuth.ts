@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 export function useAuth() {
   const { ready, authenticated, user, login, logout } = usePrivy();
 
-  // Convert Privy user to our domain User entity
+  // Convert user to our domain User entity
   const domainUser: User | null = useMemo(() => {
     if (!authenticated || !user) return null;
 
@@ -22,12 +22,15 @@ export function useAuth() {
       language: 'pt' as const
     };
 
+    // Extract email from Privy user object
+    const emailAddress = user.email?.address || '';
+
     return {
       id: user.id,
-      email: user.email?.address || '',
-      name: user.email?.address?.split('@')[0] || '',
-      avatar: undefined, // Privy doesn't provide avatar URLs directly
-      createdAt: user.createdAt || new Date(),
+      email: emailAddress,
+      name: emailAddress.split('@')[0] || 'Usuário',
+      avatar: undefined,
+      createdAt: new Date(),
       preferences
     };
   }, [authenticated, user]);
@@ -70,4 +73,4 @@ export function useAuth() {
     userAvatar: domainUser?.avatar,
     userPreferences: domainUser?.preferences
   };
-} 
+}

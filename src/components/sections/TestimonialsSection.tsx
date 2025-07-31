@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, Button } from '@/components/ui';
 
 interface Testimonial {
   id: number;
   name: string;
   age: number;
   city: string;
-  package: string;
+  package: string; // Dynamic package name
   rating: number;
   comment: string;
   date: string;
@@ -21,7 +21,7 @@ const testimonials: Testimonial[] = [
     name: 'Ana Carolina',
     age: 28,
     city: 'São Paulo, SP',
-    package: 'Gold',
+    package: 'Intermediário',
     rating: 5,
     comment: 'Experiência incrível! Foi minha primeira vez escalando e me senti super segura. Os instrutores são muito atenciosos e o local é deslumbrante. Já quero voltar!',
     date: '2024-01-15',
@@ -32,9 +32,9 @@ const testimonials: Testimonial[] = [
     name: 'Roberto Silva',
     age: 35,
     city: 'Campinas, SP',
-    package: 'Premium',
+    package: 'Avançado',
     rating: 5,
-    comment: 'O pacote premium valeu cada centavo. A hospedagem, as refeições e principalmente a experiência de escalada foram perfeitas. Equipe profissional e local único!',
+    comment: 'O pacote avançado valeu cada centavo. A hospedagem, as refeições e principalmente a experiência de escalada foram perfeitas. Equipe profissional e local único!',
     date: '2024-01-10',
     experience: 'intermediate'
   },
@@ -43,7 +43,7 @@ const testimonials: Testimonial[] = [
     name: 'Mariana Costa',
     age: 24,
     city: 'Sorocaba, SP',
-    package: 'Silver',
+    package: 'Básico',
     rating: 5,
     comment: 'Perfeito para iniciantes! Me senti super acolhida e segura. O instrutor teve muita paciência para ensinar as técnicas. Vista incrível lá de cima!',
     date: '2024-01-08',
@@ -54,7 +54,7 @@ const testimonials: Testimonial[] = [
     name: 'João Pedro',
     age: 31,
     city: 'São Paulo, SP',
-    package: 'Gold',
+    package: 'Intermediário',
     rating: 5,
     comment: 'Já escalei em vários lugares, mas o Araçoiaba tem algo especial. A rocha é única e a vista da Mata Atlântica é espetacular. Recomendo muito!',
     date: '2024-01-05',
@@ -65,7 +65,7 @@ const testimonials: Testimonial[] = [
     name: 'Família Oliveira',
     age: 42,
     city: 'Jundiaí, SP',
-    package: 'Gold',
+    package: 'Intermediário',
     rating: 5,
     comment: 'Trouxemos nossos filhos (14 e 16 anos) e foi perfeito! Atividade segura, educativa e divertida. Os meninos não param de falar da experiência.',
     date: '2024-01-03',
@@ -76,7 +76,7 @@ const testimonials: Testimonial[] = [
     name: 'Carla Mendes',
     age: 29,
     city: 'Bauru, SP',
-    package: 'Silver',
+    package: 'Básico',
     rating: 5,
     comment: 'Superou todas as expectativas! Estava nervosa no início, mas a equipe me deixou super confortável. É viciante, já agendei a próxima!',
     date: '2023-12-28',
@@ -92,48 +92,34 @@ const experienceLabels = {
 };
 
 export function TestimonialsSection() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [filter, setFilter] = useState<'all' | 'first-time' | 'beginner' | 'intermediate' | 'advanced'>('all');
 
-  // Auto-play functionality
-  useEffect(() => {
-    if (!isAutoPlaying) return;
+  const filteredTestimonials = filter === 'all' 
+    ? testimonials 
+    : testimonials.filter(t => t.experience === filter);
 
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [isAutoPlaying]);
-
-  const renderStars = (rating: number) => {
-    return Array.from({ length: 5 }, (_, i) => (
-      <span
-        key={i}
-        className={`text-lg ${
-          i < rating ? 'text-yellow-400' : 'text-neutral-300'
-        }`}
-      >
-        ⭐
-      </span>
-    ));
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) => 
+      prev === filteredTestimonials.length - 1 ? 0 : prev + 1
+    );
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000); // Resume auto-play after 10s
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) => 
+      prev === 0 ? filteredTestimonials.length - 1 : prev - 1
+    );
   };
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  const goToTestimonial = (index: number) => {
+    setCurrentTestimonial(index);
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  const currentTest = filteredTestimonials[currentTestimonial];
 
-  const current = testimonials[currentIndex];
+  if (!currentTest) {
+    return null;
+  }
 
   return (
     <section id="depoimentos" className="py-20 bg-gradient-to-br from-orange-50 to-climb-50">
@@ -143,62 +129,93 @@ export function TestimonialsSection() {
             O Que Nossos Aventureiros Dizem
           </h2>
           <p className="text-xl text-neutral-700 max-w-3xl mx-auto">
-            Mais de 500 pessoas já viveram essa experiência única. 
-            Confira alguns dos depoimentos dos nossos escaladores!
+            Mais de 500 pessoas já viveram essa experiência única. Confira alguns dos depoimentos dos nossos escaladores!
           </p>
+        </div>
+
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <Button
+            variant={filter === 'all' ? 'primary' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('all')}
+          >
+            Todas
+          </Button>
+          <Button
+            variant={filter === 'first-time' ? 'primary' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('first-time')}
+          >
+            Primeira vez
+          </Button>
+          <Button
+            variant={filter === 'beginner' ? 'primary' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('beginner')}
+          >
+            Iniciante
+          </Button>
+          <Button
+            variant={filter === 'intermediate' ? 'primary' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('intermediate')}
+          >
+            Intermediário
+          </Button>
+          <Button
+            variant={filter === 'advanced' ? 'primary' : 'outline'}
+            size="sm"
+            onClick={() => setFilter('advanced')}
+          >
+            Avançado
+          </Button>
         </div>
 
         {/* Main Testimonial */}
         <div className="max-w-4xl mx-auto mb-12">
-          <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
-            {/* Background Pattern */}
+          <Card className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-climb-500/5 rounded-full -translate-y-8 translate-x-8"></div>
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-400/5 rounded-full translate-y-8 -translate-x-8"></div>
-
+            
             <div className="relative z-10">
-              {/* Quote Icon */}
               <div className="text-6xl text-climb-500/20 mb-6 leading-none">"</div>
-
-              {/* Rating */}
+              
               <div className="flex items-center justify-center space-x-1 mb-6">
-                {renderStars(current.rating)}
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-lg text-yellow-400">⭐</span>
+                ))}
               </div>
-
-              {/* Comment */}
+              
               <blockquote className="text-xl md:text-2xl text-neutral-700 text-center leading-relaxed mb-8 italic">
-                {current.comment}
+                {currentTest.comment}
               </blockquote>
-
-              {/* Author Info */}
+              
               <div className="text-center">
                 <div className="flex items-center justify-center space-x-4 mb-4">
                   <div className="w-16 h-16 bg-gradient-to-br from-climb-500 to-climb-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                    {current.name.split(' ').map(n => n[0]).join('')}
+                    {currentTest.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <div className="text-left">
-                    <h4 className="text-lg font-bold text-climb-600">
-                      {current.name}
-                    </h4>
-                    <p className="text-neutral-600">
-                      {current.age} anos • {current.city}
-                    </p>
+                    <h4 className="text-lg font-bold text-climb-600">{currentTest.name}</h4>
+                    <p className="text-neutral-600">{currentTest.age} anos • {currentTest.city}</p>
                   </div>
                 </div>
-
+                
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <span className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-medium">
-                    Pacote {current.package}
+                    Pacote {currentTest.package}
                   </span>
                   <span className="px-3 py-1 bg-climb-100 text-climb-600 rounded-full text-sm font-medium">
-                    {experienceLabels[current.experience]}
+                    {experienceLabels[currentTest.experience]}
                   </span>
                   <span className="px-3 py-1 bg-neutral-100 text-neutral-600 rounded-full text-sm">
-                    {new Date(current.date).toLocaleDateString('pt-BR')}
+                    {new Date(currentTest.date).toLocaleDateString('pt-BR')}
                   </span>
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
 
         {/* Navigation */}
@@ -206,30 +223,30 @@ export function TestimonialsSection() {
           <Button
             variant="outline"
             size="sm"
-            onClick={prevSlide}
+            onClick={prevTestimonial}
             className="w-10 h-10 rounded-full p-0"
           >
             ←
           </Button>
-
+          
           <div className="flex space-x-2">
-            {testimonials.map((_, index) => (
+            {filteredTestimonials.map((_, index) => (
               <button
                 key={index}
-                onClick={() => goToSlide(index)}
+                onClick={() => goToTestimonial(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? 'bg-climb-500 w-8'
+                  index === currentTestimonial 
+                    ? 'bg-climb-500 w-8' 
                     : 'bg-neutral-300 hover:bg-neutral-400'
                 }`}
               />
             ))}
           </div>
-
+          
           <Button
             variant="outline"
             size="sm"
-            onClick={nextSlide}
+            onClick={nextTestimonial}
             className="w-10 h-10 rounded-full p-0"
           >
             →
@@ -256,26 +273,14 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        {/* Call to Action */}
+        {/* CTA */}
         <div className="text-center">
           <div className="bg-climb-500 text-white p-8 rounded-2xl shadow-xl max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold mb-4">
-              Seja o Próximo a Viver Essa Experiência!
-            </h3>
+            <h3 className="text-2xl font-bold mb-4">Seja o Próximo a Viver Essa Experiência!</h3>
             <p className="mb-6 opacity-90">
-              Junte-se aos centenas de aventureiros que já descobriram 
-              a paixão pela escalada no Morro Araçoiaba.
+              Junte-se aos centenas de aventureiros que já descobriram a paixão pela escalada no Morro Araçoiaba.
             </p>
-            <Button 
-              variant="secondary" 
-              size="lg"
-              onClick={() => {
-                const element = document.getElementById('pacotes');
-                if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-            >
+            <Button variant="secondary" size="lg">
               Quero Escalar Também!
             </Button>
           </div>

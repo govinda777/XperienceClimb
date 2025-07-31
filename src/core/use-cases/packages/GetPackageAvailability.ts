@@ -45,9 +45,11 @@ export class GetPackageAvailability {
     date?: Date
   ): Promise<PackageAvailability> {
     // Business logic specific to climbing experiences
+    const spotsLeft = await this.getSpotsLeft(packageId);
+    
     const baseAvailability: PackageAvailability = {
       available: true,
-      spotsLeft: this.getSpotsLeft(packageId),
+      spotsLeft: spotsLeft,
       restrictions: [],
     };
 
@@ -81,35 +83,37 @@ export class GetPackageAvailability {
     return baseAvailability;
   }
 
-  private getSpotsLeft(packageId: string): number {
-    // Mock implementation - in real app would check bookings
-    const maxSpots = {
-      silver: 8,
-      gold: 6,
-      premium: 4,
-    };
+  private async getSpotsLeft(packageId: string): Promise<number> {
+    // Get dynamic package data instead of hardcoded values
+    const packageData = await this.packageRepository.findById(packageId);
     
+    if (!packageData) {
+      return 0;
+    }
+    
+    const maxSpots = packageData.rules.maxParticipants;
+    
+    // Mock implementation - in real app would check actual bookings
     // Simulate some bookings
     const bookedSpots = Math.floor(Math.random() * 3);
-    return Math.max(0, (maxSpots[packageId as keyof typeof maxSpots] || 8) - bookedSpots);
+    return Math.max(0, maxSpots - bookedSpots);
   }
 
   private getWeatherConditions(date: Date): 'good' | 'warning' | 'poor' {
     // Mock weather API - in real app would call weather service
-    const conditions = ['good', 'good', 'good', 'warning', 'poor'];
-    const index = Math.floor(Math.random() * conditions.length);
-    return conditions[index] as 'good' | 'warning' | 'poor';
+    const conditions: ('good' | 'warning' | 'poor')[] = ['good', 'good', 'warning', 'poor'];
+    return conditions[Math.floor(Math.random() * conditions.length)];
   }
 
   private getNextAvailableDate(fromDate: Date): Date {
     const nextDate = new Date(fromDate);
     nextDate.setDate(nextDate.getDate() + 1);
     
-    // Skip to Tuesday if it's a Monday
-    if (nextDate.getDay() === 1) {
+    // Skip Mondays
+    while (nextDate.getDay() === 1) {
       nextDate.setDate(nextDate.getDate() + 1);
     }
     
     return nextDate;
   }
-} 
+}

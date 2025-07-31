@@ -70,8 +70,8 @@ export class CreateOrder {
       // Create payment preference
       const preferenceId = await this.orderRepository.create(order);
 
-      // Generate checkout URL (this would be implemented in the repository)
-      const checkoutUrl = `https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=${preferenceId}`;
+      // Get checkout URL from the payment service
+      const checkoutUrl = await this.orderRepository.getCheckoutUrl(preferenceId);
 
       return {
         success: true,

@@ -1,18 +1,17 @@
 import { IPackageRepository } from '@/core/repositories/IPackageRepository';
-import { Package, PackageAvailability, Money } from '@/core/entities/Package';
-import { PACKAGES } from '@/lib/constants';
+import { Package } from '@/core/entities/Package';
+import { PackageType } from '@/types';
 
 export class PackageRepository implements IPackageRepository {
+  private packagesCache: Package[] | null = null;
+  private cacheExpiry: number = 0;
+  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
   async findById(id: string): Promise<Package | null> {
     try {
-      const packageData = PACKAGES[id];
-      
-      if (!packageData) {
-        return null;
-      }
-
-      // Convert static package data to domain entity
-      return this.mapToPackageEntity(packageData);
+      const packages = await this.getPackagesData();
+      const packageData = packages.find(pkg => pkg.id === id);
+      return packageData ? this.mapToPackageEntity(packageData) : null;
     } catch (error) {
       console.error('Error finding package by ID:', error);
       return null;
@@ -21,28 +20,42 @@ export class PackageRepository implements IPackageRepository {
 
   async findAll(): Promise<Package[]> {
     try {
-      return Object.values(PACKAGES).map(pkg => this.mapToPackageEntity(pkg));
+      const packages = await this.getPackagesData();
+      return packages.map(pkg => this.mapToPackageEntity(pkg));
     } catch (error) {
       console.error('Error finding all packages:', error);
       return [];
     }
   }
 
-  async checkAvailability(packageId: string, date?: Date): Promise<PackageAvailability> {
+  async checkAvailability(packageId: string, date?: Date): Promise<{
+    available: boolean;
+    spotsLeft: number;
+    nextAvailableDate?: Date;
+    weatherConditions?: 'good' | 'warning' | 'poor';
+    restrictions: string[];
+  }> {
     try {
-      // Mock availability logic - in real app would check actual bookings
-      const baseAvailability: PackageAvailability = {
+      const packageData = await this.findById(packageId);
+      if (!packageData) {
+        return {
+          available: false,
+          spotsLeft: 0,
+          restrictions: ['Pacote não encontrado']
+        };
+      }
+
+      const baseAvailability = {
         available: true,
-        spotsLeft: this.getSpotsLeft(packageId),
-        restrictions: []
+        spotsLeft: packageData.availability.spotsLeft,
+        restrictions: [] as string[],
+        nextAvailableDate: undefined as Date | undefined,
+        weatherConditions: undefined as 'good' | 'warning' | 'poor' | undefined
       };
 
-      // Check date-specific restrictions
       if (date) {
-        const dayOfWeek = date.getDay();
-        
-        // No climbing on Mondays (maintenance)
-        if (dayOfWeek === 1) {
+        // Check if it's a Monday (maintenance day)
+        if (date.getDay() === 1) {
           baseAvailability.available = false;
           baseAvailability.restrictions.push('Escalada não disponível às segundas-feiras (manutenção)');
           baseAvailability.nextAvailableDate = this.getNextAvailableDate(date);
@@ -67,43 +80,85 @@ export class PackageRepository implements IPackageRepository {
     }
   }
 
-  private mapToPackageEntity(packageData: any): Package {
-    const price: Money = {
-      amount: packageData.price * 100, // Convert to cents
-      currency: 'BRL'
-    };
+  private async getPackagesData(): Promise<PackageType[]> {
+    const now = Date.now();
+    
+    // Return cached data if still valid
+    if (this.packagesCache && now < this.cacheExpiry) {
+      return this.packagesCache.map(pkg => ({
+        id: pkg.id,
+        name: pkg.name,
+        price: pkg.price.amount / 100, // Convert back to reais for API consistency
+        description: pkg.description,
+        features: pkg.features,
+        shape: 'hexagon' as const, // Default shape for cached data
+        color: 'climb-300',
+        duration: '1 dia',
+        maxParticipants: pkg.rules.maxParticipants,
+        requiresExperience: pkg.rules.requiresExperience,
+        minAge: pkg.rules.minAge,
+        cancellationPolicy: pkg.rules.cancellationPolicy,
+        popular: false
+      }));
+    }
 
+    // Fetch fresh data
+    const packagesData = await this.fetchPackagesFromAPI();
+    
+    // Cache the mapped entities
+    this.packagesCache = packagesData.map(pkg => this.mapToPackageEntity(pkg));
+    this.cacheExpiry = now + this.CACHE_DURATION;
+    
+    return packagesData;
+  }
+
+  private async fetchPackagesFromAPI(): Promise<PackageType[]> {
+    const response = await fetch('/api/packages');
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch packages: ${response.statusText}`);
+    }
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+      throw new Error('API returned error');
+    }
+    
+    return result.data;
+  }
+
+  private mapToPackageEntity(packageData: PackageType): Package {
     return {
       id: packageData.id,
       name: packageData.name,
-      price,
+      price: {
+        amount: packageData.price * 100, // Convert to cents for Money entity
+        currency: 'BRL'
+      },
       description: packageData.description,
       features: packageData.features,
       availability: {
         available: true,
-        spotsLeft: this.getSpotsLeft(packageData.id),
+        spotsLeft: this.getSpotsLeft(packageData),
         restrictions: []
       },
       rules: {
-        minAge: 12, // Default minimum age
+        minAge: packageData.minAge || 12, // Use dynamic value or default
         maxParticipants: packageData.maxParticipants || 8,
-        requiresExperience: packageData.id === 'premium',
-        cancellationPolicy: 'Cancelamento gratuito até 24h antes da atividade'
+        requiresExperience: packageData.requiresExperience || false, // Use dynamic value
+        cancellationPolicy: packageData.cancellationPolicy || 'Cancelamento gratuito até 24h antes da atividade'
       }
     };
   }
 
-  private getSpotsLeft(packageId: string): number {
+  private getSpotsLeft(packageData: PackageType): number {
     // Mock logic - in real app would check actual bookings
-    const maxSpots = {
-      silver: 8,
-      gold: 6,
-      premium: 4
-    };
+    const maxSpots = packageData.maxParticipants || 8; // Use dynamic maxParticipants
     
     // Simulate some random bookings
     const bookedSpots = Math.floor(Math.random() * 3);
-    return Math.max(0, (maxSpots[packageId as keyof typeof maxSpots] || 8) - bookedSpots);
+    return Math.max(0, maxSpots - bookedSpots);
   }
 
   private mockWeatherConditions(): 'good' | 'warning' | 'poor' {
@@ -116,11 +171,11 @@ export class PackageRepository implements IPackageRepository {
     const nextDate = new Date(fromDate);
     nextDate.setDate(nextDate.getDate() + 1);
     
-    // Skip to Tuesday if it's a Monday
+    // Skip Mondays
     if (nextDate.getDay() === 1) {
       nextDate.setDate(nextDate.getDate() + 1);
     }
     
     return nextDate;
   }
-} 
+}

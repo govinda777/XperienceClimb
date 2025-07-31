@@ -1,33 +1,36 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui';
-import { CheckCircle, Calendar, ArrowLeft } from 'lucide-react';
-import { formatPrice } from '@/lib/utils';
+import { CheckCircle, Download, Calendar, CreditCard } from 'lucide-react';
+
+interface OrderDetails {
+  orderId: string;
+  total: number;
+  items: { name: string; participant: string }[];
+  climbingDate: string;
+  paymentId?: string;
+}
 
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
-  const [orderDetails, setOrderDetails] = useState<any>(null);
-  
   const paymentId = searchParams.get('payment_id');
-  const status = searchParams.get('status');
   const externalReference = searchParams.get('external_reference');
+  const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
 
   useEffect(() => {
-    // In a real implementation, fetch order details from your backend
+    // In a real app, you would fetch the order details from your backend
     // using the payment_id or external_reference
     if (externalReference) {
-      // Mock order details
+      // Mock order details with dynamic package name
       setOrderDetails({
         orderId: externalReference,
         total: 25000, // R$ 250,00 in cents
         items: [
-          { name: 'Pacote Gold - Escalada Intermediária', participant: 'João Silva' }
+          { name: 'Pacote Intermediário - Escalada Completa', participant: 'João Silva' }
         ],
         climbingDate: '2024-08-15',
-        paymentId: paymentId
+        paymentId: paymentId || undefined
       });
     }
   }, [paymentId, externalReference]);
@@ -41,79 +44,92 @@ export default function CheckoutSuccessPage() {
         </div>
 
         {/* Success Message */}
-        <h1 className="text-2xl font-bold text-neutral-900 mb-2">
-          Pagamento Aprovado!
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          Pagamento Confirmado!
         </h1>
-        <p className="text-neutral-600 mb-6">
-          Sua compra foi processada com sucesso. Em breve você receberá um e-mail com todos os detalhes.
+        <p className="text-gray-600 mb-8">
+          Sua reserva foi processada com sucesso. Prepare-se para uma aventura incrível!
         </p>
 
         {/* Order Details */}
         {orderDetails && (
-          <div className="bg-neutral-50 rounded-lg p-4 mb-6 text-left">
-            <h3 className="font-semibold text-neutral-900 mb-3">Detalhes do Pedido</h3>
+          <div className="bg-gray-50 rounded-lg p-6 mb-6 text-left">
+            <h3 className="font-semibold text-gray-900 mb-4">Detalhes da Reserva</h3>
             
-            <div className="space-y-2 text-sm">
+            <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-neutral-600">Pedido:</span>
-                <span className="font-medium">#{orderDetails.orderId.slice(-8)}</span>
+                <span className="text-gray-600">Pedido:</span>
+                <span className="font-medium">#{orderDetails.orderId}</span>
               </div>
               
-              {paymentId && (
-                <div className="flex justify-between">
-                  <span className="text-neutral-600">Pagamento:</span>
-                  <span className="font-medium">#{paymentId}</span>
-                </div>
-              )}
-              
               <div className="flex justify-between">
-                <span className="text-neutral-600">Total:</span>
-                <span className="font-semibold text-climb-600">
-                  {formatPrice(orderDetails.total)}
+                <span className="text-gray-600">Total:</span>
+                <span className="font-medium">
+                  {new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }).format(orderDetails.total / 100)}
                 </span>
               </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-neutral-200">
-              <div className="flex items-center text-sm text-neutral-600">
-                <Calendar className="w-4 h-4 mr-2" />
-                <span>Data da escalada: {new Date(orderDetails.climbingDate).toLocaleDateString('pt-BR')}</span>
+              
+              <div className="border-t pt-3">
+                <span className="text-gray-600 block mb-2">Itens:</span>
+                {orderDetails.items.map((item, index) => (
+                  <div key={index} className="text-sm">
+                    <div className="font-medium">{item.name}</div>
+                    <div className="text-gray-500">Participante: {item.participant}</div>
+                  </div>
+                ))}
               </div>
+              
+              <div className="flex justify-between border-t pt-3">
+                <span className="text-gray-600">Data da escalada:</span>
+                <span className="font-medium">
+                  {new Date(orderDetails.climbingDate).toLocaleDateString('pt-BR')}
+                </span>
+              </div>
+              
+              {orderDetails.paymentId && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">ID do pagamento:</span>
+                  <span className="font-medium text-xs">{orderDetails.paymentId}</span>
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {/* Instructions */}
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-          <h4 className="font-medium text-amber-800 mb-2">Próximos Passos:</h4>
-          <ul className="text-sm text-amber-700 space-y-1 text-left">
-            <li>• Você receberá um e-mail de confirmação</li>
-            <li>• Nosso time entrará em contato para coordenar os detalhes</li>
-            <li>• Apresente-se no local com 30 minutos de antecedência</li>
-            <li>• Traga documento com foto e roupas adequadas</li>
+        {/* Action Buttons */}
+        <div className="space-y-3">
+          <button className="w-full bg-climb-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-climb-600 transition-colors flex items-center justify-center space-x-2">
+            <Download className="w-4 h-4" />
+            <span>Baixar Comprovante</span>
+          </button>
+          
+          <button className="w-full bg-orange-100 text-orange-700 py-3 px-6 rounded-lg font-medium hover:bg-orange-200 transition-colors flex items-center justify-center space-x-2">
+            <Calendar className="w-4 h-4" />
+            <span>Adicionar ao Calendário</span>
+          </button>
+        </div>
+
+        {/* Important Information */}
+        <div className="mt-8 p-4 bg-blue-50 rounded-lg">
+          <h4 className="font-semibold text-blue-900 mb-2">Informações Importantes</h4>
+          <ul className="text-sm text-blue-800 space-y-1 text-left">
+            <li>• Chegue 30 minutos antes do horário agendado</li>
+            <li>• Traga roupas confortáveis e tênis fechado</li>
+            <li>• Água e protetor solar são obrigatórios</li>
+            <li>• Equipamentos de segurança serão fornecidos</li>
           </ul>
         </div>
 
-        {/* Actions */}
-        <div className="space-y-3">
-          <Link href="/" className="w-full">
-            <Button size="lg" className="w-full">
-              Voltar ao Início
-            </Button>
-          </Link>
-          
-          <Link href="/meus-pedidos" className="w-full">
-            <Button variant="outline" size="lg" className="w-full">
-              Ver Meus Pedidos
-            </Button>
-          </Link>
+        {/* Footer */}
+        <div className="mt-6 pt-6 border-t text-center">
+          <p className="text-sm text-gray-500">
+            Em caso de dúvidas, entre em contato conosco pelo WhatsApp: (15) 99999-9999
+          </p>
         </div>
-
-        {/* Support */}
-        <p className="text-xs text-neutral-500 mt-6">
-          Precisa de ajuda? Entre em contato conosco pelo WhatsApp: (15) 99999-9999
-        </p>
       </div>
     </div>
   );
-} 
+}

@@ -1,5 +1,5 @@
 export interface Package {
-  id: PackageType;
+  id: string; // Dynamic package ID
   name: string;
   price: Money;
   description: string;
@@ -7,8 +7,6 @@ export interface Package {
   availability: PackageAvailability;
   rules: BookingRules;
 }
-
-export type PackageType = 'silver' | 'gold' | 'premium';
 
 export interface Money {
   amount: number; // in cents
@@ -28,4 +26,4 @@ export interface BookingRules {
   maxParticipants: number;
   requiresExperience: boolean;
   cancellationPolicy: string;
-} 
+}

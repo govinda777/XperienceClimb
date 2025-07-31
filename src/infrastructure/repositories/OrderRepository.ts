@@ -247,4 +247,13 @@ export class OrderRepository implements IOrderRepository {
 
     return statusMap[mpStatus] || 'failed';
   }
+
+  async getCheckoutUrl(preferenceId: string): Promise<string> {
+    try {
+      return await this.paymentService.getCheckoutUrl(preferenceId);
+    } catch (error) {
+      console.error('Error getting checkout URL:', error);
+      throw new Error('Failed to get checkout URL');
+    }
+  }
 } 

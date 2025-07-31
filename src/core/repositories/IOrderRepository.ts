@@ -6,4 +6,5 @@ export interface IOrderRepository {
   findByUserId(userId: string): Promise<Order[]>; // From MP search
   updateFromWebhook(paymentData: any): Promise<void>; // Update from MP webhook
   updateStatus(orderId: string, status: Order['status']): Promise<void>;
+  getCheckoutUrl(preferenceId: string): Promise<string>; // Get checkout URL from preference
 } 
