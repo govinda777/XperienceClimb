@@ -2,7 +2,7 @@ import { PrivyClientConfig } from '@privy-io/react-auth';
 import { mainnet } from 'viem/chains';
 
 export const privyConfig: PrivyClientConfig = {
-  loginMethods: ['email', 'google', 'apple'],
+  loginMethods: ['email'],
   appearance: {
     theme: 'light',
     accentColor: '#21808D',

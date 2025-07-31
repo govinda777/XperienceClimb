@@ -87,7 +87,7 @@ export const MERCADOPAGO_CONFIG = {
 
 export const PRIVY_CONFIG = {
   app_id: process.env.NEXT_PUBLIC_PRIVY_APP_ID!,
-  login_methods: ['email', 'google', 'apple'] as const,
+  login_methods: ['email'] as const,
   theme: {
     accentColor: '#21808D',
     borderRadius: 'lg',

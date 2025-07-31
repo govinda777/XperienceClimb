@@ -110,6 +110,7 @@ export const useCartStore = create<CartStore>()(
     {
       name: 'xperience-climb-cart',
       version: 1,
+      partialize: (state) => ({ items: state.items }), // Only persist items, not isOpen
     }
   )
 ); 

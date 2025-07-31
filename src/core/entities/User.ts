@@ -15,7 +15,7 @@ export interface UserPreferences {
 
 export interface LoginCredentials {
   email?: string;
-  provider?: 'google' | 'apple' | 'email';
+  provider?: 'email';
 }
 
 export interface LoginResult {

@@ -7,7 +7,7 @@ import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/store/useCartStore';
 
 export function PackagesSection() {
-  const { addItem } = useCartStore();
+  const { addItem, openCart } = useCartStore();
 
   const handleAddToCart = (packageId: string) => {
     const pkg = PACKAGES[packageId];
@@ -19,6 +19,8 @@ export function PackagesSection() {
         quantity: 1,
         participantName: 'Participante', // This will be updated in checkout
       });
+      // Open cart modal automatically after adding item
+      openCart();
     }
   };
 

@@ -25,7 +25,7 @@ export function useAuth() {
     return {
       id: user.id,
       email: user.email?.address || '',
-      name: user.google?.name || user.email?.address?.split('@')[0] || '',
+      name: user.email?.address?.split('@')[0] || '',
       avatar: undefined, // Privy doesn't provide avatar URLs directly
       createdAt: user.createdAt || new Date(),
       preferences

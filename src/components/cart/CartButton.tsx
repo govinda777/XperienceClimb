@@ -1,12 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui';
 import { useCartStore } from '@/store/useCartStore';
 import { ShoppingCart } from 'lucide-react';
 
 export function CartButton() {
   const { items, getTotalItems, toggleCart } = useCartStore();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
   const totalItems = getTotalItems();
 
   if (totalItems === 0) return null;

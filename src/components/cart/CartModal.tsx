@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCartStore } from '@/store/useCartStore';
 import { useAuth } from '@/hooks/useAuth';
 import { Button, Card } from '@/components/ui';
@@ -22,8 +22,14 @@ export function CartModal() {
   
   const { isLoggedIn, login } = useAuth();
   const [showCheckout, setShowCheckout] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent hydration mismatch
+  if (!mounted || !isOpen) return null;
 
   const handleCheckout = () => {
     if (!isLoggedIn) {
