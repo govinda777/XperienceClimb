@@ -104,7 +104,7 @@ export function AboutSection() {
             <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-lg p-6 border border-neutral-200">
               <div className="grid grid-cols-2 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-climb-600">15+</div>
+                  <div className="text-2xl font-bold text-climb-600">50+</div>
                   <div className="text-sm text-neutral-600">Vias Diferentes</div>
                 </div>
                 <div>
