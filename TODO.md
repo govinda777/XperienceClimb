@@ -26,6 +26,8 @@ Adicionar : Whatsapp do escalador
 em `Nível de Experiência` * adicionar "Primeira vez"
 
 Remover : Contato de Emergência - Nome * - Telefone *
+
+Todos os dados do formulario devem ser obrigatórios
 ---
 
 - [] - Na finalização do pedido encaminhar o usuário para o whatsapp para concluir o pagamento
