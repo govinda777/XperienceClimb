@@ -29,7 +29,7 @@ export default function CheckoutSuccessPage() {
         items: [
           { name: 'Pacote Intermediário - Escalada Completa', participant: 'João Silva' }
         ],
-        climbingDate: '2024-08-15',
+        climbingDate: '2025-08-16',
         paymentId: paymentId || undefined
       });
     }
@@ -85,7 +85,7 @@ export default function CheckoutSuccessPage() {
               <div className="flex justify-between border-t pt-3">
                 <span className="text-gray-600">Data da escalada:</span>
                 <span className="font-medium">
-                  {new Date(orderDetails.climbingDate).toLocaleDateString('pt-BR')}
+                  {new Date(orderDetails.climbingDate + 'T12:00:00').toLocaleDateString('pt-BR')}
                 </span>
               </div>
               

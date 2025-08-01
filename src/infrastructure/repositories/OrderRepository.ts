@@ -221,7 +221,7 @@ export class OrderRepository implements IOrderRepository {
         updatedAt: new Date(orderData.updatedAt),
         climbingDetails: {
           ...orderData.climbingDetails,
-          selectedDate: new Date(orderData.climbingDetails.selectedDate),
+          selectedDate: new Date(orderData.climbingDetails.selectedDate + (orderData.climbingDetails.selectedDate.includes('T') ? '' : 'T12:00:00')),
         },
       };
     } catch (error) {
@@ -242,7 +242,7 @@ export class OrderRepository implements IOrderRepository {
         updatedAt: new Date(orderData.updatedAt),
         climbingDetails: {
           ...orderData.climbingDetails,
-          selectedDate: new Date(orderData.climbingDetails.selectedDate),
+          selectedDate: new Date(orderData.climbingDetails.selectedDate + (orderData.climbingDetails.selectedDate.includes('T') ? '' : 'T12:00:00')),
         },
       }));
     } catch (error) {
@@ -262,7 +262,7 @@ export class OrderRepository implements IOrderRepository {
         status: 'pending',
       },
       climbingDetails: {
-        selectedDate: new Date(metadata.climbing_date),
+        selectedDate: new Date(metadata.climbing_date + (metadata.climbing_date.includes('T') ? '' : 'T12:00:00')),
         specialRequests: metadata.special_requests,
       },
       total: {

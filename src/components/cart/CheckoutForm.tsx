@@ -29,7 +29,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
   const [formData, setFormData] = useState<FormData>({
     participantDetails: {},
     climbingDetails: {
-      selectedDate: new Date(AVAILABLE_DATES.singleDateISO),
+      selectedDate: new Date(AVAILABLE_DATES.singleDateISO + 'T12:00:00'),
       specialRequests: '',
       dietaryRestrictions: []
     }
@@ -402,7 +402,6 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
             <p className="font-medium text-amber-800 mb-1">Informações Importantes:</p>
             <ul className="text-amber-700 space-y-1">
               <li>• Atividade sujeita às condições climáticas</li>
-              <li>• Cancelamento gratuito até 24h antes</li>
               <li>• Equipamentos de segurança inclusos</li>
               <li>• Idade mínima: 12 anos</li>
             </ul>
