@@ -7,15 +7,8 @@ import { CONTACT_INFO } from '@/lib/constants';
 
 export function LocationSection() {
   const openMaps = () => {
-    const address = 'Floresta Nacional de Ipanema, Iperó, SP';
-    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    const mapsUrl = `https://www.google.com/maps/place/Centro+de+Visitantes/@-23.4255562,-47.5980568,775m/data=!3m1!1e3!4m9!1m2!2m1!1sFloresta+Nacional+de+Ipanema,+Iper%C3%B3,+SP!3m5!1s0x94c5f172812051e1:0xc9ab288d76797fad!8m2!3d-23.4254791!4d-47.5979779!16s%2Fg%2F11gj_vn973!5m1!1e1?entry=ttu&g_ep=EgoyMDI1MDcyOS4wIKXMDSoASAFQAw%3D%3D`;
     window.open(mapsUrl, '_blank');
-  };
-
-  const openWaze = () => {
-    const address = 'Floresta Nacional de Ipanema, Iperó, SP';
-    const wazeUrl = `https://waze.com/ul?q=${encodeURIComponent(address)}`;
-    window.open(wazeUrl, '_blank');
   };
 
   return (
@@ -58,14 +51,6 @@ export function LocationSection() {
                   className="flex-1"
                 >
                   🗺️ Abrir no Google Maps
-                </Button>
-                <Button
-                  variant="outline"
-                  size="md"
-                  onClick={openWaze}
-                  className="flex-1 bg-transparent border-white/30 text-white hover:bg-white/10"
-                >
-                  🚗 Abrir no Waze
                 </Button>
               </div>
             </div>
@@ -118,74 +103,16 @@ export function LocationSection() {
                   <div>
                     <h4 className="font-semibold mb-1">Chegada</h4>
                     <p className="text-climb-100">
-                      Estacionamento gratuito disponível na entrada do parque
+                      Estacionamento gratuito, proximo ao acesso ao setor de escalada
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* Transport Info */}
-            <div className="bg-orange-400/20 border border-orange-400/30 rounded-2xl p-6">
-              <div className="flex items-center space-x-3 mb-4">
-                <span className="text-2xl">🚌</span>
-                <h4 className="text-lg font-semibold">Transporte Público</h4>
-              </div>
-              <p className="text-climb-100 mb-4">
-                Para quem não tem carro, oferecemos transfer saindo de São Paulo 
-                nos finais de semana (consulte disponibilidade).
-              </p>
-              <Button variant="outline" size="sm" className="bg-transparent border-orange-400/50 text-orange-100 hover:bg-orange-400/10">
-                📞 Consultar Transfer
-              </Button>
-            </div>
           </div>
 
           {/* Sectors Map */}
           <div className="space-y-6">
-            <div>
-              <h3 className="text-2xl font-bold mb-4">Mapa dos Setores</h3>
-              <p className="text-climb-100 mb-6">
-                O Morro Araçoiaba possui diferentes setores de escalada, 
-                cada um com características únicas e níveis de dificuldade variados.
-              </p>
-            </div>
-
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-              <Image
-                src="/images/setor-map.jpg"
-                alt="Mapa dos setores de escalada do Morro Araçoiaba"
-                width={600}
-                height={400}
-                className="object-cover w-full h-[400px]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              
-              {/* Map Legend */}
-              <div className="absolute bottom-4 left-4 right-4">
-                <div className="bg-black/50 backdrop-blur-sm rounded-lg p-4">
-                  <h4 className="text-white font-semibold mb-3">Setores Principais</h4>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-                      <span className="text-white">Iniciante</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                      <span className="text-white">Intermediário</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                      <span className="text-white">Avançado</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
-                      <span className="text-white">Expert</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             {/* Important Notes */}
             <div className="space-y-4">
@@ -195,7 +122,7 @@ export function LocationSection() {
                   <div>
                     <h4 className="font-semibold text-yellow-100 mb-1">Importante</h4>
                     <p className="text-yellow-200 text-sm">
-                      Horário de funcionamento: 8h às 17h. Entrada permitida até 15h.
+                      Horário de funcionamento do parque: 8h às 17h.
                     </p>
                   </div>
                 </div>
@@ -205,7 +132,7 @@ export function LocationSection() {
                 <div className="flex items-start space-x-3">
                   <span className="text-green-400 text-xl">💡</span>
                   <div>
-                    <h4 className="font-semibold text-green-100 mb-1">Dica</h4>
+                    <h4 className="font-semibold text-green-100 mb-1">Cronograma</h4>
                     <p className="text-green-200 text-sm">
                       Chegue cedo para aproveitar melhor o dia e evitar multidões.
                     </p>

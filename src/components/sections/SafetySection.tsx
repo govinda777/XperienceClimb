@@ -28,7 +28,6 @@ const safetyItems: SafetyItem[] = [
     title: 'Instrutores Qualificados',
     description: 'Equipe com certificação nacional e internacional',
     details: [
-      'Certificação ABETA',
       'Curso de Primeiros Socorros',
       'Treinamento em Resgate',
       'Experiência comprovada',
@@ -42,21 +41,18 @@ const safetyItems: SafetyItem[] = [
     details: [
       'Check duplo de equipamentos',
       'Briefing obrigatório',
-      'Razão máxima 1:4 (instrutor:alunos)',
       'Avaliação das condições climáticas',
       'Plano de emergência ativo'
     ]
   },
   {
     icon: '🏥',
-    title: 'Suporte Médico',
-    description: 'Preparados para qualquer eventualidade',
+    title: 'Seguro Aventura',
+    description: 'Você, protegido em suas aventuras',
     details: [
-      'Kit de primeiros socorros completo',
-      'Comunicação com resgate',
-      'Instrutor com curso de socorrismo',
-      'Protocolo de evacuação',
-      'Seguro de acidentes pessoais'
+      'Cobertura em Caso de Acidentes',
+      'Válida em todo o território nacional.',
+      'Reembolso com despesas médico, hospitalares e odontológicas',
     ]
   }
 ];
@@ -70,8 +66,7 @@ const equipmentList = [
   { name: 'Sapatilha de escalada', required: true, provided: false },
   { name: 'Roupa confortável', required: true, provided: false },
   { name: 'Protetor solar', required: true, provided: false },
-  { name: 'Água (1,5L mínimo)', required: true, provided: false },
-  { name: 'Lanche energético', required: false, provided: false }
+  { name: 'Água (1,5L mínimo)', required: true, provided: false }
 ];
 
 export function SafetySection() {
@@ -168,25 +163,10 @@ export function SafetySection() {
                 </div>
               ))}
             </div>
-
-            <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
-              <div className="flex items-start space-x-3">
-                <span className="text-blue-500 text-xl">💡</span>
-                <div>
-                  <h4 className="font-semibold text-blue-800 mb-2">
-                    Dica Importante
-                  </h4>
-                  <p className="text-blue-700 text-sm">
-                    Todos os equipamentos de segurança são fornecidos por nós. 
-                    Você só precisa trazer roupas confortáveis, água e disposição para aventura!
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Safety Certifications */}
-          <div>
+          {/* <div>
             <h3 className="text-3xl font-bold text-climb-600 mb-8">
               Certificações e Seguros
             </h3>
@@ -246,30 +226,9 @@ export function SafetySection() {
                 📄 Ver Certificados Completos
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
 
-        {/* Emergency Contact */}
-        <div className="mt-20 bg-red-50 border border-red-200 rounded-2xl p-8 text-center">
-          <div className="max-w-2xl mx-auto">
-            <div className="text-4xl mb-4">🚨</div>
-            <h3 className="text-2xl font-bold text-red-800 mb-4">
-              Emergência 24h
-            </h3>
-            <p className="text-red-700 mb-6">
-              Em caso de emergência durante ou após a atividade, 
-              temos suporte 24 horas para assistência.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" className="border-red-500 text-red-600">
-                📞 (15) 99999-9999
-              </Button>
-              <Button variant="outline" className="border-red-500 text-red-600">
-                🚨 Emergência: 193
-              </Button>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

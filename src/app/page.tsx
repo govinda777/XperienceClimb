@@ -21,7 +21,7 @@ export default function Home() {
       <GallerySection />
       <SafetySection />
       <LocationSection />
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
       <Footer />
       
       {/* Floating Cart Button */}

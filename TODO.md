@@ -1,4 +1,31 @@
 
+- [] - No formulario do carrinho pedir para a pessoa informar o numero do tenis
+
+- [] - Em `Lista de Equipamentos` dividir em 2 colunas, 1 o fornecido pela empresa e o outro o fornecido pelo cliente
+
+- [] - Em `Lista de Equipamentos` as Sapatilha de escalada são fornecidas pela empresa
+
+- [] - Em `Lista de Equipamentos` Colocar o custo de entrada da flona (Cadastro na flona)
+
+---
+Criar Sessão Cronograma
+
+- 8h - Chegada no parque e Boas Vindas
+- 8h30 - Abertura da experiencia e treinamento tecnico
+- 9h - Inicio da escalada em rocha
+- 12h - Parada para o lanche
+- 13h - Continuação da aventura
+- 16h30 - Encerramento da experiencia
+- 17h - Saida do parque
+- 18h - Surpresa
+---
+Detalhes dos Participantes
+
+Adicionar : Whatsapp do escalador
+
+Remover : Contato de Emergência - Nome * - Telefone *
+---
+
 - [] - Na finalização do pedido encaminhar o usuário para o whatsapp para concluir o pagamento
 
 - [] - criar um subdominio (climb.xperiencehubs.com) para o site
