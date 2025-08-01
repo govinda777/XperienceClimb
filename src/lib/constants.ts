@@ -50,7 +50,7 @@ export const PACKAGES: Record<string, PackageType> = {
     name: 'Pacote CRUX',
     price: 29900,
     originalPrice: 37000,
-    description: 'Aproveite seu dia de escalada e um descanço merecido.',
+    description: 'Aproveite seu dia de escalada e um descanso merecido.',
     features: [
       '🧗 Escalada em rocha natural',
       '🛡️ Equipamentos de segurança',

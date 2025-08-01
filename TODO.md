@@ -23,12 +23,37 @@ Detalhes dos Participantes
 
 Adicionar : Whatsapp do escalador
 
+em `Nível de Experiência` * adicionar "Primeira vez"
+
 Remover : Contato de Emergência - Nome * - Telefone *
 ---
 
 - [] - Na finalização do pedido encaminhar o usuário para o whatsapp para concluir o pagamento
 
 - [] - criar um subdominio (climb.xperiencehubs.com) para o site
+
+---
+
+Galeria de Experiências
+
+Remover o filtro Equipamentos
+
+---
+
+No Footer remover o ICMBio Autorizado e colocar certificado Xperience
+
+---
+
+No menu remover Depoimentos
+
+---
+
+Adicionar uma seção de Parceiros 
+
+- Boulder
+- Republica dos macacos
+- Celso Kassa
+- Xperience Hubs
 
 ---
 
