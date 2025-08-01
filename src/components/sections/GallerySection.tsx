@@ -13,7 +13,7 @@ interface GalleryImage {
 
 const galleryImages: GalleryImage[] = [
   {
-    src: '/images/climb.png',
+    src: '/images/climb.jpg',
     alt: 'Escalador nas rochas do Morro Araçoiaba',
     title: 'Escalada Técnica',
     category: 'climb'
