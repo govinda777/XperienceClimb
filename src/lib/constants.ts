@@ -43,7 +43,7 @@ export const PACKAGES: Record<string, PackageType> = {
     maxParticipants: 8,
     requiresExperience: false,
     minAge: 12,
-    cancellationPolicy: 'Cancelamento gratuito até 24h antes da atividade'
+    cancellationPolicy: ''
   },
   intermediario: {
     id: 'intermediario',
@@ -69,7 +69,7 @@ export const PACKAGES: Record<string, PackageType> = {
     popular: true,
     requiresExperience: false,
     minAge: 14,
-    cancellationPolicy: 'Cancelamento gratuito até 48h antes da atividade'
+    cancellationPolicy: ''
   },
   avancado: {
     id: 'avancado',
@@ -95,7 +95,7 @@ export const PACKAGES: Record<string, PackageType> = {
     maxParticipants: 4,
     requiresExperience: true, // This package requires experience
     minAge: 16,
-    cancellationPolicy: 'Cancelamento com 50% de reembolso até 72h antes'
+    cancellationPolicy: ''
   },
 };
 

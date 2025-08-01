@@ -148,7 +148,7 @@ export class PackageRepository implements IPackageRepository {
         minAge: packageData.minAge || 12, // Use dynamic value or default
         maxParticipants: packageData.maxParticipants || 8,
         requiresExperience: packageData.requiresExperience || false, // Use dynamic value
-        cancellationPolicy: packageData.cancellationPolicy || 'Cancelamento gratuito até 24h antes da atividade'
+        cancellationPolicy: packageData.cancellationPolicy || ''
       }
     };
   }

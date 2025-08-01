@@ -276,9 +276,6 @@ export function Footer() {
               <a href="#" className="hover:text-white transition-colors">
                 Termos de Uso
               </a>
-              <a href="#" className="hover:text-white transition-colors">
-                Cancelamento
-              </a>
             </div>
           </div>
         </div>
