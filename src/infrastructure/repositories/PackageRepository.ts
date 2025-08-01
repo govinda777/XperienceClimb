@@ -91,6 +91,7 @@ export class PackageRepository implements IPackageRepository {
         price: pkg.price.amount / 100, // Convert back to reais for API consistency
         description: pkg.description,
         features: pkg.features,
+        bonus: [], // Default empty bonus for cached data
         shape: 'hexagon' as const, // Default shape for cached data
         color: 'climb-300',
         duration: '1 dia',

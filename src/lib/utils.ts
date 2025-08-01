@@ -63,4 +63,21 @@ export function formatPhone(phone: string): string {
     return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
   }
   return phone;
+}
+
+export function openWhatsApp(phone: string, message?: string): void {
+  // Remove all non-numeric characters from phone
+  const cleanPhone = phone.replace(/\D/g, '');
+  
+  // Add country code if not present (assuming Brazil +55)
+  const phoneWithCountryCode = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
+  
+  // Create WhatsApp URL
+  const baseUrl = `https://wa.me/${phoneWithCountryCode}`;
+  const url = message 
+    ? `${baseUrl}?text=${encodeURIComponent(message)}`
+    : baseUrl;
+  
+  // Open in new tab
+  window.open(url, '_blank');
 } 

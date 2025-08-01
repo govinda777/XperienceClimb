@@ -17,7 +17,7 @@ export function AboutSection() {
                 <span className="text-orange-400"> Mata Atlântica</span>
               </h2>
               <p className="text-xl text-neutral-700 leading-relaxed">
-                O Morro Araçoiaba, localizado na Floresta Nacional de Ipanema, 
+                O Morro Araçoiaba, localizado na Floresta Nacional de Ipanema (FLONA), 
                 oferece uma das experiências de escalada mais autênticas e seguras 
                 do interior de São Paulo.
               </p>
@@ -74,13 +74,11 @@ export function AboutSection() {
               <div className="flex items-center space-x-3 mb-3">
                 <span className="text-2xl">📋</span>
                 <h4 className="text-lg font-semibold text-climb-600">
-                  Certificação ICMBio
+                  Sobre a Floresta Nacional de Ipanema (Flona) 
                 </h4>
               </div>
               <p className="text-neutral-700">
-                Somos uma empresa autorizada pelo ICMBio para operação turística 
-                na Floresta Nacional de Ipanema, seguindo rigorosos protocolos 
-                de segurança e sustentabilidade.
+              A Floresta Nacional de Ipanema, antes conhecida como "Fazenda Ipanema" é uma unidade de Conservação da natureza, administrada pelo Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio), localizada a 120 km da cidade de São Paulo e abrangendo parte dos municípios de Iperó, Araçoiaba da Serra e Capela do Alto. A missão da Flona de Ipanema é proteger, conservar e restaurar os remanescentes de vegetação nativa do domínio de Mata Atlântica, especialmente o Morro Araçoiaba, e seus ambientes associados, seus atributos naturais, históricos e culturais, promover o manejo florestal, o uso público e ser referência em integração socioambiental, pesquisa e disseminação de conhecimentos.
               </p>
             </div>
           </div>

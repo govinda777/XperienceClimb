@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui';
-import { cn } from '@/lib/utils';
+import { cn, openWhatsApp } from '@/lib/utils';
 import { CONTACT_INFO } from '@/lib/constants';
 
 export function HeroSection() {
@@ -63,14 +63,26 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* CTA Button */}
-          <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          {/* CTA Buttons */}
+          <div className="animate-slide-up flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6" style={{ animationDelay: '0.4s' }}>
             <Button
               size="xl"
               className="bg-orange-400 hover:bg-orange-500 text-white font-bold px-8 py-4 text-xl shadow-2xl transform hover:scale-105 transition-all duration-300"
               onClick={handleScrollToPackages}
             >
               🧗‍♂️ Quero Escalar!
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-white/30 text-white hover:bg-white/10 font-semibold px-6 py-3 text-lg shadow-xl transform hover:scale-105 transition-all duration-300"
+              onClick={() => openWhatsApp(
+                CONTACT_INFO.phone,
+                'Olá! Gostaria de saber mais sobre a XperienceClimb e os pacotes de escalada 🏔️'
+              )}
+            >
+              💬 Falar no WhatsApp
             </Button>
           </div>
         </div>

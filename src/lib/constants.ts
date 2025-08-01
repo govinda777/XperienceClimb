@@ -24,15 +24,18 @@ export const NAVIGATION_ITEMS = [
 export const PACKAGES: Record<string, PackageType> = {
   basico: {
     id: 'basico',
-    name: 'Básico',
-    price: 30000, // in cents
-    originalPrice: 35000,
-    description: 'Experiência básica com escalada e equipamentos',
+    name: 'Pacote AGARRÃO',
+    price: 19900, // in cents
+    originalPrice: 25000,
+    description: 'Curta uma vivência de escalada na natureza.',
     features: [
       '🧗 Escalada em rocha natural',
       '🛡️ Equipamentos de segurança',
       '👨‍🏫 Instrutor experiente',
-      '📋 Certificado de participação',
+      '🍎 Lanche de trilha',
+    ],
+    bonus: [
+      '💡 Coach de vida',
     ],
     shape: 'hexagon',
     color: 'climb-300',
@@ -44,16 +47,20 @@ export const PACKAGES: Record<string, PackageType> = {
   },
   intermediario: {
     id: 'intermediario',
-    name: 'Intermediário',
-    price: 50000,
-    originalPrice: 60000,
-    description: 'Pacote intermediário com café da manhã e aula técnica',
+    name: 'Pacote CRUX',
+    price: 29900,
+    originalPrice: 37000,
+    description: 'Aproveite seu dia de escalada e um descanço merecido.',
     features: [
-      '✨ Tudo do pacote Básico',
-      '☕ Café da manhã incluso',
-      '🎓 Aula de técnicas avançadas',
-      '📈 Planejamento de treinos',
-      '🏆 Kit exclusivo',
+      '🧗 Escalada em rocha natural',
+      '🛡️ Equipamentos de segurança',
+      '👨‍🏫 Instrutor experiente',
+      '🍎 Lanche de trilha',
+      '🛏️ Hospedagem em AirBnB',
+      '☕ Café da manhã do escalador', // Nutricionista boulder
+    ],
+    bonus: [
+      '💡 Coach de vida',
     ],
     shape: 'triangle',
     color: 'orange-400',
@@ -66,17 +73,21 @@ export const PACKAGES: Record<string, PackageType> = {
   },
   avancado: {
     id: 'avancado',
-    name: 'Avançado',
-    price: 80000,
-    originalPrice: 95000,
-    description: 'Experiência completa com hospedagem e acompanhamento personalizado',
+    name: 'Pacote ALMA VERTICAL',
+    price: 43500,
+    originalPrice: 55000,
+    description: 'Seu fim de semana intenso de escalada e aventura.',
     features: [
-      '🌟 Tudo dos pacotes anteriores',
-      '🏨 Hospedagem inclusa',
-      '👨‍🏫 Instrutor pessoal',
-      '📸 Sessão de fotos profissional',
-      '🎁 Kit premium exclusivo',
-      '🚗 Transporte incluso',
+      '🧗 Escalada em rocha natural',
+      '🛡️ Equipamentos de segurança',
+      '👨‍🏫 Instrutor experiente',
+      '🍎 Lanche de trilha',
+      '🛏️ Hospedagem em AirBnB',
+      '☕ Café da manhã do escalador', // Nutricionista boulder
+      '🧗 Mais um super dia extra de escalada',
+    ],
+    bonus: [
+      '💡 Coach de vida',
     ],
     shape: 'circle',
     color: 'purple-500',

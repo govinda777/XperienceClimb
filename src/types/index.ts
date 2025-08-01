@@ -14,6 +14,7 @@ export interface PackageType {
   originalPrice?: number;
   description: string;
   features: string[];
+  bonus: string[];
   shape: 'hexagon' | 'triangle' | 'circle';
   color: string;
   popular?: boolean;

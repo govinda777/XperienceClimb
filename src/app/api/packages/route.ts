@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
       originalPrice: pkg.originalPrice ? pkg.originalPrice / 100 : undefined, // Convert from cents to reais
       description: pkg.description,
       features: pkg.features,
+      bonus: pkg.bonus || [], // Include bonus field
       shape: pkg.shape,
       color: pkg.color,
       duration: pkg.duration,

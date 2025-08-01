@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Button } from '@/components/ui';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, openWhatsApp } from '@/lib/utils';
 import { useCartStore } from '@/store/useCartStore';
+import { CONTACT_INFO } from '@/lib/constants';
 
 // Interface for API package data (includes styling information)
 interface ApiPackage {
@@ -13,6 +14,7 @@ interface ApiPackage {
   originalPrice?: number;
   description: string;
   features: string[];
+  bonus: string[];
   shape: 'hexagon' | 'triangle' | 'circle';
   color: string;
   duration: string;
@@ -169,7 +171,7 @@ export function PackagesSection() {
                       )}
                   </div>
                     <div className="text-sm text-neutral-600 mt-1">
-                      {pkg.duration} • {pkg.maxParticipants} pessoas máx.
+                    {pkg.duration}{/* • {pkg.maxParticipants} pessoas máx. */}
                     </div>
                 </div>
 
@@ -180,6 +182,18 @@ export function PackagesSection() {
                       <span className="text-neutral-700">{feature}</span>
                     </li>
                   ))}
+                  {pkg.bonus && pkg.bonus.length > 0 && (
+                    <>
+                      <li className="pt-2 border-t border-neutral-200">
+                        <span className="text-sm font-semibold text-orange-600">🎁 BÔNUS EXCLUSIVOS:</span>
+                      </li>
+                      {pkg.bonus.map((bonus, index) => (
+                        <li key={index} className="flex items-start space-x-2">
+                          <span className="text-neutral-700 font-medium">{bonus}</span>
+                        </li>
+                      ))}
+                    </>
+                  )}
                 </ul>
               </CardContent>
 
@@ -206,7 +220,15 @@ export function PackagesSection() {
           <p className="text-neutral-600 mb-4">
             Dúvidas sobre qual pacote escolher?
           </p>
-          <Button variant="ghost" size="lg">
+          <Button 
+            variant="ghost" 
+            size="lg"
+            onClick={() => openWhatsApp(
+              CONTACT_INFO.phone, 
+              'Olá! Gostaria de saber mais sobre os pacotes de escalada da XperienceClimb 🏔️'
+            )}
+            className="hover:bg-climb-50 hover:text-climb-600 transition-colors"
+          >
             📞 Fale Conosco
           </Button>
         </div>

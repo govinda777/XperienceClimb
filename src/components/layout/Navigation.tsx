@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
-import { NAVIGATION_ITEMS } from '@/lib/constants';
+import { cn, openWhatsApp } from '@/lib/utils';
+import { NAVIGATION_ITEMS, CONTACT_INFO } from '@/lib/constants';
 import { LoginButton } from '@/components/auth';
 
 export function Navigation() {
@@ -63,6 +63,20 @@ export function Navigation() {
               <span className="text-sm font-medium hidden sm:inline">{item.label}</span>
             </button>
           ))}
+          
+          {/* WhatsApp Button */}
+          <div className="border-l border-white/20 pl-2 ml-2">
+            <button
+              onClick={() => openWhatsApp(
+                CONTACT_INFO.phone,
+                'Olá! Gostaria de mais informações sobre a XperienceClimb 🏔️'
+              )}
+              className="flex items-center space-x-2 px-3 py-2 rounded-full transition-all duration-200 bg-green-500 hover:bg-green-600 text-white shadow-lg hover:scale-105 active:scale-95"
+            >
+              <span className="text-lg">💬</span>
+              <span className="text-sm font-medium hidden sm:inline">WhatsApp</span>
+            </button>
+          </div>
           
           {/* Login Button */}
           <div className="border-l border-white/20 pl-2 ml-2">
