@@ -216,6 +216,22 @@ const customJestConfig = {
 - **Code coverage**: Visibilidade de cobertura
 - **Team confidence**: Confiança nas mudanças
 
+## 📋 Padrões de Código e Formatação
+
+### Formatação Automática Implementada
+
+- **Prettier**: Formatação consistente aplicada a todos os arquivos de teste
+- **ESLint**: Regras de qualidade de código com correção automática
+- **Pontos e vírgulas**: Adicionados automaticamente para consistência
+- **Indentação**: Padronizada em 2 espaços
+- **Aspas**: Aspas simples por padrão com formatting automático
+
+### Sistema Pre-commit
+
+- **Lint-staged**: Formatação automática antes do commit
+- **Testes automáticos**: Execução de testes de unidade no pre-commit
+- **Qualidade garantida**: Código sempre formatado e verificado antes do commit
+
 ## 🔮 Próximos Passos
 
 1. **Extend coverage**: Outros componentes da aplicação
@@ -223,6 +239,7 @@ const customJestConfig = {
 3. **Performance tests**: Benchmarking de componentes
 4. **Visual regression**: Storybook + Chromatic
 5. **API tests**: Testes de integração com APIs externas
+6. **Melhorar mocks**: Resolver dependências de módulos pendentes
 
 ---
 
