@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Executar lint-staged (linting e formatação)
+npm run pre-commit
+
+# Executar testes de unidade
+node scripts/pre-commit-tests.js

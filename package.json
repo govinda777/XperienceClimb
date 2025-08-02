@@ -14,6 +14,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:unit": "jest --testPathPatterns=\"(store|components)\" --passWithNoTests",
+    "test:pre-commit": "jest --testPathPatterns=\"(store|components)\" --passWithNoTests --bail --silent --maxWorkers=50%",
+    "pre-commit": "lint-staged",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "analyze": "cross-env ANALYZE=true next build",
@@ -26,7 +29,6 @@
     "@next/bundle-analyzer": "^14.0.3",
     "@privy-io/react-auth": "^1.54.0",
     "@privy-io/wagmi": "^0.2.5",
-    "@tanstack/react-query": "^5.0.0",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-select": "^2.0.0",
@@ -34,6 +36,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
+    "@tanstack/react-query": "^5.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
@@ -50,6 +53,10 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -61,11 +68,23 @@
     "eslint-config-next": "14.0.3",
     "eslint-config-prettier": "^9.0.0",
     "husky": "^8.0.3",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
     "lint-staged": "^15.2.0",
     "postcss": "^8",
     "prettier": "^3.1.0",
     "prettier-plugin-tailwindcss": "^0.5.7",
     "rimraf": "^5.0.5",
+    "ts-jest": "^29.4.0",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   }
-} 
+}
