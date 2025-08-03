@@ -1,13 +1,22 @@
+---
+
+Formulário do Carrinho:
 
 - [] - No formulario do carrinho pedir para a pessoa informar o numero do tenis
+
+
+---
+
+Em `Lista de Equipamentos`
 
 - [] - Em `Lista de Equipamentos` dividir em 2 colunas, 1 o fornecido pela empresa e o outro o fornecido pelo cliente
 
 - [] - Em `Lista de Equipamentos` as Sapatilha de escalada são fornecidas pela empresa
 
-- [] - Em `Lista de Equipamentos` Colocar o custo de entrada da flona (Cadastro na flona)
+- [] - Em `Lista de Equipamentos` Colocar o custo de entrada da flona (Cadastro na flona) (R$ 30,00)
 
 ---
+
 Criar Sessão Cronograma
 
 - 8h - Chegada no parque e Boas Vindas
@@ -18,17 +27,18 @@ Criar Sessão Cronograma
 - 16h30 - Encerramento da experiencia
 - 17h - Saida do parque
 - 18h - Surpresa
+
 ---
+
 Detalhes dos Participantes
 
 Adicionar : Whatsapp do escalador
 
-em `Nível de Experiência` * adicionar "Primeira vez"
+em `Nível de Experiência` \* adicionar "Primeira vez"
 
-Remover : Contato de Emergência - Nome * - Telefone *
+Remover : Contato de Emergência - Nome _ - Telefone _
 
-Todos os dados do formulario devem ser obrigatórios
----
+## Todos os dados do formulario devem ser obrigatórios
 
 - [] - Na finalização do pedido encaminhar o usuário para o whatsapp para concluir o pagamento
 
@@ -50,7 +60,7 @@ No menu remover Depoimentos
 
 ---
 
-Adicionar uma seção de Parceiros 
+Adicionar uma seção de Parceiros
 
 - Boulder
 - Republica dos macacos
@@ -60,12 +70,12 @@ Adicionar uma seção de Parceiros
 ---
 
 - [] - Configurar gateway de pagamento Mercado pago
-    - [] - Salvar os dados do usuário na Ordem de compra enviado para o Mercado pago
+  - [] - Salvar os dados do usuário na Ordem de compra enviado para o Mercado pago
 
 - [] - Rever conteudo do site
 
 - [] - Validar problemas de segurança ()
-  - [] - 
+  - [] -
 
 - [] - Configurar Comunicação via whatsapp
 

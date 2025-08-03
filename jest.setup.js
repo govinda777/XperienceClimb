@@ -1,5 +1,19 @@
 import '@testing-library/jest-dom';
 
+// Polyfill fetch for Jest
+global.fetch = jest.fn();
+
+// Mock Privy authentication
+jest.mock('@privy-io/react-auth', () => ({
+  usePrivy: () => ({
+    ready: true,
+    authenticated: false,
+    user: null,
+    login: jest.fn(),
+    logout: jest.fn(),
+  }),
+}));
+
 // Mock Next.js router
 jest.mock('next/router', () => ({
   useRouter() {

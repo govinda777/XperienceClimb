@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui';
-import { ArrowLeft, Calendar, User, Phone, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Calendar, AlertTriangle } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { CreateOrder } from '@/core/use-cases/orders/CreateOrder';
@@ -31,28 +31,28 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
     climbingDetails: {
       selectedDate: new Date(AVAILABLE_DATES.singleDateISO + 'T12:00:00'),
       specialRequests: '',
-      dietaryRestrictions: []
-    }
+      dietaryRestrictions: [],
+    },
   });
 
-  const steps = [
-    'Detalhes dos Participantes',
-    'Data da Escalada',
-    'Confirmação'
-  ];
+  const steps = ['Detalhes dos Participantes', 'Data da Escalada', 'Confirmação'];
 
-  const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const handleParticipantDetailsChange = (itemId: string, field: keyof ParticipantDetails | string, value: any) => {
+  const handleParticipantDetailsChange = (
+    itemId: string,
+    field: keyof ParticipantDetails | string,
+    value: any
+  ) => {
     setFormData(prev => ({
       ...prev,
       participantDetails: {
         ...prev.participantDetails,
         [itemId]: {
           ...prev.participantDetails[itemId],
-          [field]: value
-        }
-      }
+          [field]: value,
+        },
+      },
     }));
   };
 
@@ -61,8 +61,8 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
       ...prev,
       climbingDetails: {
         ...prev.climbingDetails,
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
@@ -71,15 +71,20 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
       case 0: // Participant details
         return cartItems.every(item => {
           const details = formData.participantDetails[item.id];
-          return details && 
-                 details.name && 
-                 details.emergencyContact?.name && 
-                 details.emergencyContact?.phone &&
-                 details.healthDeclaration;
+          return (
+            details &&
+            details.name &&
+            details.emergencyContact?.name &&
+            details.emergencyContact?.phone &&
+            details.healthDeclaration
+          );
         });
       case 1: // Climbing details
-        return formData.climbingDetails.selectedDate &&
-               formData.climbingDetails.selectedDate.toISOString().split('T')[0] === AVAILABLE_DATES.singleDateISO;
+        return (
+          formData.climbingDetails.selectedDate &&
+          formData.climbingDetails.selectedDate.toISOString().split('T')[0] ===
+            AVAILABLE_DATES.singleDateISO
+        );
       case 2: // Confirmation
         return true;
       default:
@@ -104,23 +109,23 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
     }
 
     setIsSubmitting(true);
-    
+
     try {
       const orderRepository = new OrderRepository();
       const createOrderUseCase = new CreateOrder(orderRepository);
-      
+
       const result = await createOrderUseCase.execute({
         userId: user.id,
         cartItems,
         participantDetails: formData.participantDetails,
-        climbingDetails: formData.climbingDetails
+        climbingDetails: formData.climbingDetails,
       });
 
       if (result.success) {
         if (result.whatsappUrl) {
           // Close checkout modal first
           onSuccess();
-          
+
           // Create invisible link and auto-click to avoid popup blockers
           const link = document.createElement('a');
           link.href = result.whatsappUrl;
@@ -129,7 +134,6 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-          
         } else if (result.checkoutUrl) {
           // Fallback to Mercado Pago if WhatsApp fails
           window.location.href = result.checkoutUrl;
@@ -177,22 +181,30 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex h-full flex-col">
       {/* Progress Steps */}
-      <div className="px-4 py-3 border-b border-neutral-200">
+      <div className="border-b border-neutral-200 px-4 py-3">
         <div className="flex items-center justify-between text-sm">
           {steps.map((step, index) => (
             <div
               key={index}
               className={`flex items-center ${
-                index === currentStep ? 'text-climb-600 font-medium' : 
-                index < currentStep ? 'text-climb-500' : 'text-neutral-400'
+                index === currentStep
+                  ? 'font-medium text-climb-600'
+                  : index < currentStep
+                    ? 'text-climb-500'
+                    : 'text-neutral-400'
               }`}
             >
-              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs mr-2 ${
-                index === currentStep ? 'border-climb-600 bg-climb-50' :
-                index < currentStep ? 'border-climb-500 bg-climb-500 text-white' : 'border-neutral-300'
-              }`}>
+              <div
+                className={`mr-2 flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs ${
+                  index === currentStep
+                    ? 'border-climb-600 bg-climb-50'
+                    : index < currentStep
+                      ? 'border-climb-500 bg-climb-500 text-white'
+                      : 'border-neutral-300'
+                }`}
+              >
                 {index + 1}
               </div>
               <span className="hidden sm:inline">{step}</span>
@@ -202,12 +214,10 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
       </div>
 
       {/* Step Content */}
-      <div className="flex-1 overflow-y-auto p-4">
-        {renderStepContent()}
-      </div>
+      <div className="flex-1 overflow-y-auto p-4">{renderStepContent()}</div>
 
       {/* Navigation */}
-      <div className="border-t border-neutral-200 p-4 flex items-center justify-between">
+      <div className="flex items-center justify-between border-t border-neutral-200 p-4">
         <Button
           variant="ghost"
           onClick={currentStep === 0 ? onBack : handlePrevious}
@@ -217,10 +227,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
         </Button>
 
         {currentStep < steps.length - 1 ? (
-          <Button
-            onClick={handleNext}
-            disabled={!validateStep(currentStep)}
-          >
+          <Button onClick={handleNext} disabled={!validateStep(currentStep)}>
             Próximo
           </Button>
         ) : (
@@ -242,53 +249,65 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold mb-2">Detalhes dos Participantes</h3>
-        <p className="text-sm text-neutral-600 mb-4">
+        <h3 className="mb-2 text-lg font-semibold">Detalhes dos Participantes</h3>
+        <p className="mb-4 text-sm text-neutral-600">
           Preencha os dados de cada participante para garantir a segurança da atividade.
         </p>
       </div>
 
       {cartItems.map((item: CartItem) => (
-        <div key={item.id} className="border border-neutral-200 rounded-lg p-4">
-          <h4 className="font-medium mb-3">{item.packageName}</h4>
-          
+        <div key={item.id} className="rounded-lg border border-neutral-200 p-4">
+          <h4 className="mb-3 font-medium">{item.packageName}</h4>
+
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label
+                htmlFor={`name-${item.id}`}
+                className="mb-1 block text-sm font-medium text-neutral-700"
+              >
                 Nome Completo *
               </label>
               <input
+                id={`name-${item.id}`}
                 type="text"
-                className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-climb-500"
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
                 value={participantDetails[item.id]?.name || ''}
-                onChange={(e) => onChange(item.id, 'name', e.target.value)}
+                onChange={e => onChange(item.id, 'name', e.target.value)}
                 placeholder="Digite o nome completo"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label
+                htmlFor={`age-${item.id}`}
+                className="mb-1 block text-sm font-medium text-neutral-700"
+              >
                 Idade *
               </label>
               <input
+                id={`age-${item.id}`}
                 type="number"
                 min="12"
                 max="99"
-                className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-climb-500"
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
                 value={participantDetails[item.id]?.age || ''}
-                onChange={(e) => onChange(item.id, 'age', parseInt(e.target.value))}
+                onChange={e => onChange(item.id, 'age', parseInt(e.target.value))}
                 placeholder="Idade"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label
+                htmlFor={`experience-${item.id}`}
+                className="mb-1 block text-sm font-medium text-neutral-700"
+              >
                 Nível de Experiência *
               </label>
               <select
-                className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-climb-500"
+                id={`experience-${item.id}`}
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
                 value={participantDetails[item.id]?.experienceLevel || ''}
-                onChange={(e) => onChange(item.id, 'experienceLevel', e.target.value)}
+                onChange={e => onChange(item.id, 'experienceLevel', e.target.value)}
               >
                 <option value="">Selecione</option>
                 <option value="beginner">Iniciante</option>
@@ -298,33 +317,45 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label
+                htmlFor={`emergency-name-${item.id}`}
+                className="mb-1 block text-sm font-medium text-neutral-700"
+              >
                 Contato de Emergência - Nome *
               </label>
               <input
+                id={`emergency-name-${item.id}`}
                 type="text"
-                className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-climb-500"
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
                 value={participantDetails[item.id]?.emergencyContact?.name || ''}
-                onChange={(e) => onChange(item.id, 'emergencyContact', { 
-                  ...participantDetails[item.id]?.emergencyContact, 
-                  name: e.target.value 
-                })}
+                onChange={e =>
+                  onChange(item.id, 'emergencyContact', {
+                    ...participantDetails[item.id]?.emergencyContact,
+                    name: e.target.value,
+                  })
+                }
                 placeholder="Nome do contato de emergência"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">
+              <label
+                htmlFor={`emergency-phone-${item.id}`}
+                className="mb-1 block text-sm font-medium text-neutral-700"
+              >
                 Contato de Emergência - Telefone *
               </label>
               <input
+                id={`emergency-phone-${item.id}`}
                 type="tel"
-                className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-climb-500"
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
                 value={participantDetails[item.id]?.emergencyContact?.phone || ''}
-                onChange={(e) => onChange(item.id, 'emergencyContact', { 
-                  ...participantDetails[item.id]?.emergencyContact, 
-                  phone: e.target.value 
-                })}
+                onChange={e =>
+                  onChange(item.id, 'emergencyContact', {
+                    ...participantDetails[item.id]?.emergencyContact,
+                    phone: e.target.value,
+                  })
+                }
                 placeholder="(11) 99999-9999"
               />
             </div>
@@ -335,10 +366,11 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
                 id={`health-${item.id}`}
                 className="mt-1"
                 checked={participantDetails[item.id]?.healthDeclaration || false}
-                onChange={(e) => onChange(item.id, 'healthDeclaration', e.target.checked)}
+                onChange={e => onChange(item.id, 'healthDeclaration', e.target.checked)}
               />
               <label htmlFor={`health-${item.id}`} className="text-sm text-neutral-700">
-                Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva. *
+                Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva.
+                *
               </label>
             </div>
           </div>
@@ -352,55 +384,55 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold mb-2">Data da Escalada</h3>
-        <p className="text-sm text-neutral-600 mb-4">
+        <h3 className="mb-2 text-lg font-semibold">Data da Escalada</h3>
+        <p className="mb-4 text-sm text-neutral-600">
           Data única disponível para sua experiência de escalada.
         </p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-neutral-700 mb-2">
-          <Calendar className="inline h-4 w-4 mr-1" />
+        <label className="mb-2 block text-sm font-medium text-neutral-700">
+          <Calendar className="mr-1 inline h-4 w-4" />
           Data da Escalada *
         </label>
         <div className="relative">
           <input
             type="text"
-            className="w-full px-3 py-2 border border-neutral-300 rounded-md bg-neutral-50 text-neutral-700 cursor-not-allowed"
+            className="w-full cursor-not-allowed rounded-md border border-neutral-300 bg-neutral-50 px-3 py-2 text-neutral-700"
             value={AVAILABLE_DATES.singleDateDisplay}
             disabled
             readOnly
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-            <div className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+            <div className="inline-flex items-center rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
               Disponível
             </div>
           </div>
         </div>
-        <p className="text-xs text-neutral-500 mt-1">
+        <p className="mt-1 text-xs text-neutral-500">
           Data única disponível: {AVAILABLE_DATES.singleDateDisplay}
         </p>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-neutral-700 mb-2">
+        <label className="mb-2 block text-sm font-medium text-neutral-700">
           Solicitações Especiais (Opcional)
         </label>
         <textarea
           rows={3}
-          className="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-climb-500"
+          className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
           value={climbingDetails.specialRequests || ''}
-          onChange={(e) => onChange('specialRequests', e.target.value)}
+          onChange={e => onChange('specialRequests', e.target.value)}
           placeholder="Alguma solicitação especial ou informação importante?"
         />
       </div>
 
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
         <div className="flex items-start space-x-2">
-          <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5" />
+          <AlertTriangle className="mt-0.5 h-5 w-5 text-amber-600" />
           <div className="text-sm">
-            <p className="font-medium text-amber-800 mb-1">Informações Importantes:</p>
-            <ul className="text-amber-700 space-y-1">
+            <p className="mb-1 font-medium text-amber-800">Informações Importantes:</p>
+            <ul className="space-y-1 text-amber-700">
               <li>• Atividade sujeita às condições climáticas</li>
               <li>• Equipamentos de segurança inclusos</li>
               <li>• Idade mínima: 12 anos</li>
@@ -416,41 +448,42 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold mb-2">Confirmação do Pedido</h3>
-        <p className="text-sm text-neutral-600 mb-4">
+        <h3 className="mb-2 text-lg font-semibold">Confirmação do Pedido</h3>
+        <p className="mb-4 text-sm text-neutral-600">
           Revise todos os detalhes antes de finalizar sua compra.
         </p>
       </div>
 
       {/* Order Summary */}
-      <div className="border border-neutral-200 rounded-lg p-4">
-        <h4 className="font-medium mb-3">Resumo do Pedido</h4>
+      <div className="rounded-lg border border-neutral-200 p-4">
+        <h4 className="mb-3 font-medium">Resumo do Pedido</h4>
         {cartItems.map((item: CartItem) => (
-          <div key={item.id} className="flex justify-between items-center py-2 border-b last:border-b-0">
+          <div
+            key={item.id}
+            className="flex items-center justify-between border-b py-2 last:border-b-0"
+          >
             <div>
               <p className="font-medium">{item.packageName}</p>
-              <p className="text-sm text-neutral-600">
-                {participantDetails[item.id]?.name}
-              </p>
+              <p className="text-sm text-neutral-600">{participantDetails[item.id]?.name}</p>
             </div>
             <p className="font-semibold text-climb-600">{formatPrice(item.price)}</p>
           </div>
         ))}
-        <div className="flex justify-between items-center pt-3 font-semibold text-lg">
+        <div className="flex items-center justify-between pt-3 text-lg font-semibold">
           <span>Total:</span>
           <span className="text-climb-600">{formatPrice(totalPrice)}</span>
         </div>
       </div>
 
       {/* Climbing Date */}
-      <div className="border border-neutral-200 rounded-lg p-4">
-        <h4 className="font-medium mb-2">Data da Escalada</h4>
+      <div className="rounded-lg border border-neutral-200 p-4">
+        <h4 className="mb-2 font-medium">Data da Escalada</h4>
         <p className="text-neutral-700">
           {climbingDetails.selectedDate?.toLocaleDateString('pt-BR', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
-            day: 'numeric'
+            day: 'numeric',
           })}
         </p>
         {climbingDetails.specialRequests && (
@@ -462,4 +495,4 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
       </div>
     </div>
   );
-} 
+}

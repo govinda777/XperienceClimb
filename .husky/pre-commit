@@ -4,5 +4,5 @@
 # Executar lint-staged (linting e formatação)
 npm run pre-commit
 
-# Executar testes de unidade
-node scripts/pre-commit-tests.js
+# Executar todos os testes - falha o commit se os testes falharem
+yarn test:pre-commit

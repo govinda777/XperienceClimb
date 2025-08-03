@@ -15,7 +15,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:unit": "jest --testPathPatterns=\"(store|components)\" --passWithNoTests",
-    "test:pre-commit": "jest --testPathPatterns=\"(store|components)\" --passWithNoTests --bail --silent --maxWorkers=50%",
+    "test:pre-commit": "jest --bail --silent --maxWorkers=50%",
     "pre-commit": "lint-staged",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
