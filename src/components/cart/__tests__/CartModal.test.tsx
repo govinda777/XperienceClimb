@@ -64,10 +64,19 @@ describe('CartModal', () => {
 
     // Default auth mock
     mockUseAuth.mockReturnValue({
+      ready: true,
+      authenticated: false,
       user: null,
       isLoggedIn: false,
       login: mockLogin,
       logout: jest.fn(),
+      updateUserPreferences: jest.fn(),
+      isLoading: false,
+      isGuest: true,
+      userEmail: undefined,
+      userName: undefined,
+      userAvatar: undefined,
+      userPreferences: undefined,
     });
 
     // Default cart store mock
@@ -331,10 +340,33 @@ describe('CartModal', () => {
       });
 
       mockUseAuth.mockReturnValue({
-        user: { id: 'user-1', email: 'test@example.com', createdAt: new Date() },
+        ready: true,
+        authenticated: true,
+        user: {
+          id: 'user-1',
+          email: 'test@example.com',
+          name: 'Test User',
+          createdAt: new Date(),
+          preferences: {
+            experienceLevel: 'beginner' as const,
+            notifications: true,
+            language: 'pt' as const,
+          },
+        },
         isLoggedIn: true,
         login: mockLogin,
         logout: jest.fn(),
+        updateUserPreferences: jest.fn(),
+        isLoading: false,
+        isGuest: false,
+        userEmail: 'test@example.com',
+        userName: 'Test User',
+        userAvatar: undefined,
+        userPreferences: {
+          experienceLevel: 'beginner' as const,
+          notifications: true,
+          language: 'pt' as const,
+        },
       });
     });
 
