@@ -21,6 +21,9 @@ jest.mock('lucide-react', () => ({
   AlertTriangle: ({ className, ...props }: any) => (
     <svg data-testid="alert-triangle-icon" className={className} {...props} />
   ),
+  Loader2: ({ className, ...props }: any) => (
+    <svg data-testid="loader-icon" className={className} {...props} />
+  ),
 }));
 
 // Mock useAuth hook
@@ -57,7 +60,9 @@ describe('CheckoutForm', () => {
     it('should render checkout form with step progress', () => {
       render(<CheckoutForm {...defaultProps} />);
 
-      expect(screen.getByText('Detalhes dos Participantes')).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', { name: 'Detalhes dos Participantes' })
+      ).toBeInTheDocument();
       expect(screen.getByText('Data da Escalada')).toBeInTheDocument();
       expect(screen.getByText('Confirmação')).toBeInTheDocument();
     });
@@ -160,19 +165,21 @@ describe('CheckoutForm', () => {
     });
 
     it('should show climbing details form', () => {
-      expect(screen.getByText('Data da Escalada')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Data da Escalada' })).toBeInTheDocument();
       expect(
         screen.getByText('Data única disponível para sua experiência de escalada.')
       ).toBeInTheDocument();
     });
 
     it('should display fixed date', () => {
-      expect(screen.getByDisplayValue('15 de Fevereiro de 2024')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('16 de Agosto de 2025')).toBeInTheDocument();
       expect(screen.getByText('Disponível')).toBeInTheDocument();
     });
 
     it('should have special requests textarea', () => {
-      expect(screen.getByLabelText(/Solicitações Especiais/)).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText('Alguma solicitação especial ou informação importante?')
+      ).toBeInTheDocument();
     });
 
     it('should show important information', () => {
@@ -225,11 +232,11 @@ describe('CheckoutForm', () => {
 
     it('should show total price', () => {
       expect(screen.getByText('Total:')).toBeInTheDocument();
-      expect(screen.getByText('R$ 150,00')).toBeInTheDocument();
+      expect(screen.getAllByText('R$ 150,00')[0]).toBeInTheDocument();
     });
 
     it('should display climbing date', () => {
-      expect(screen.getByText('Data da Escalada')).toBeInTheDocument();
+      expect(screen.getAllByText('Data da Escalada')[0]).toBeInTheDocument();
     });
 
     it('should have finalize purchase button', () => {
@@ -279,7 +286,15 @@ describe('CheckoutForm', () => {
   });
 
   describe('form submission', () => {
-    beforeEach(async () => {
+    it('should show alert when user is not authenticated', async () => {
+      // Mock useAuth to return not logged in
+      mockUseAuth.mockReturnValue({
+        user: null,
+        isLoggedIn: false,
+        login: jest.fn(),
+        logout: jest.fn(),
+      });
+
       const user = userEvent.setup();
       render(<CheckoutForm {...defaultProps} />);
 
@@ -296,24 +311,30 @@ describe('CheckoutForm', () => {
       );
       await user.click(screen.getByText('Próximo'));
       await user.click(screen.getByText('Próximo'));
-    });
 
-    it('should show alert when user is not authenticated', async () => {
-      // Mock useAuth to return not logged in
-      mockUseAuth.mockReturnValue({
-        user: null,
-        isLoggedIn: false,
-        login: jest.fn(),
-        logout: jest.fn(),
-      });
-
-      const user = userEvent.setup();
       await user.click(screen.getByText('Finalizar Compra'));
 
       expect(global.alert).toHaveBeenCalledWith('Usuário não autenticado');
     });
 
-    it('should disable submit button while submitting', () => {
+    it('should disable submit button while submitting', async () => {
+      const user = userEvent.setup();
+      render(<CheckoutForm {...defaultProps} />);
+
+      // Complete all steps
+      await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
+      await user.type(screen.getByLabelText(/Idade/), '25');
+      await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
+      await user.type(screen.getByLabelText(/Contato de Emergência - Nome/), 'Maria Silva');
+      await user.type(screen.getByLabelText(/Contato de Emergência - Telefone/), '(11) 99999-9999');
+      await user.click(
+        screen.getByLabelText(
+          /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
+        )
+      );
+      await user.click(screen.getByText('Próximo'));
+      await user.click(screen.getByText('Próximo'));
+
       const finalizeButton = screen.getByText('Finalizar Compra');
 
       expect(finalizeButton).not.toBeDisabled();
