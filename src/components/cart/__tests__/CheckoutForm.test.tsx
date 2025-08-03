@@ -61,20 +61,16 @@ describe('CheckoutForm', () => {
       render(<CheckoutForm {...defaultProps} />);
 
       expect(
-        screen.getByRole('heading', { name: 'Detalhes dos Participantes' })
+        screen.getByRole('heading', { name: '📋 Dados dos Participantes' })
       ).toBeInTheDocument();
-      expect(screen.getByText('Data da Escalada')).toBeInTheDocument();
-      expect(screen.getByText('Confirmação')).toBeInTheDocument();
+      expect(screen.getByText('Confirmação de Data')).toBeInTheDocument();
+      expect(screen.getByText('Revisão e Envio ao WhatsApp')).toBeInTheDocument();
     });
 
     it('should start at step 1 (participant details)', () => {
       render(<CheckoutForm {...defaultProps} />);
 
-      expect(
-        screen.getByText(
-          'Preencha os dados de cada participante para garantir a segurança da atividade.'
-        )
-      ).toBeInTheDocument();
+      expect(screen.getByText('Por que coletamos esses dados?')).toBeInTheDocument();
     });
 
     it('should show back to cart button', () => {
@@ -120,7 +116,7 @@ describe('CheckoutForm', () => {
     it('should disable next button when form is incomplete', () => {
       render(<CheckoutForm {...defaultProps} />);
 
-      const nextButton = screen.getByText('Próximo');
+      const nextButton = screen.getByText('Confirmar Dados e Continuar');
       expect(nextButton).toBeDisabled();
     });
 
@@ -140,7 +136,7 @@ describe('CheckoutForm', () => {
         )
       );
 
-      const nextButton = screen.getByText('Próximo');
+      const nextButton = screen.getByText('Confirmar Dados e Continuar');
       expect(nextButton).not.toBeDisabled();
     });
   });
@@ -161,14 +157,14 @@ describe('CheckoutForm', () => {
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
         )
       );
-      await user.click(screen.getByText('Próximo'));
+      await user.click(screen.getByText('Confirmar Dados e Continuar'));
     });
 
     it('should show climbing details form', () => {
-      expect(screen.getByRole('heading', { name: 'Data da Escalada' })).toBeInTheDocument();
       expect(
-        screen.getByText('Data única disponível para sua experiência de escalada.')
+        screen.getByRole('heading', { name: '📅 Confirmação de Data e Detalhes' })
       ).toBeInTheDocument();
+      expect(screen.getByText('O que acontece nesta etapa?')).toBeInTheDocument();
     });
 
     it('should display fixed date', () => {
@@ -178,7 +174,9 @@ describe('CheckoutForm', () => {
 
     it('should have special requests textarea', () => {
       expect(
-        screen.getByPlaceholderText('Alguma solicitação especial ou informação importante?')
+        screen.getByPlaceholderText(
+          'Descreva qualquer solicitação especial, restrição alimentar, preferência de horário, ou informação importante que nossa equipe deve saber...'
+        )
       ).toBeInTheDocument();
     });
 
@@ -191,7 +189,7 @@ describe('CheckoutForm', () => {
 
     it('should have back and next buttons', () => {
       expect(screen.getByText('Anterior')).toBeInTheDocument();
-      expect(screen.getByText('Próximo')).toBeInTheDocument();
+      expect(screen.getByText('Prosseguir para Revisão')).toBeInTheDocument();
     });
   });
 
@@ -211,17 +209,15 @@ describe('CheckoutForm', () => {
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
         )
       );
-      await user.click(screen.getByText('Próximo'));
+      await user.click(screen.getByText('Confirmar Dados e Continuar'));
 
       // Complete second step
-      await user.click(screen.getByText('Próximo'));
+      await user.click(screen.getByText('Prosseguir para Revisão'));
     });
 
     it('should show confirmation details', () => {
-      expect(screen.getByText('Confirmação do Pedido')).toBeInTheDocument();
-      expect(
-        screen.getByText('Revise todos os detalhes antes de finalizar sua compra.')
-      ).toBeInTheDocument();
+      expect(screen.getByText('📱 Revisão e Envio ao WhatsApp')).toBeInTheDocument();
+      expect(screen.getByText('O que acontece quando finalizar?')).toBeInTheDocument();
     });
 
     it('should display order summary', () => {
@@ -240,7 +236,7 @@ describe('CheckoutForm', () => {
     });
 
     it('should have finalize purchase button', () => {
-      expect(screen.getByText('Finalizar Compra')).toBeInTheDocument();
+      expect(screen.getByText('📱 Enviar para WhatsApp e Finalizar')).toBeInTheDocument();
     });
   });
 
@@ -270,18 +266,12 @@ describe('CheckoutForm', () => {
       );
 
       // Go to step 2
-      await user.click(screen.getByText('Próximo'));
-      expect(
-        screen.getByText('Data única disponível para sua experiência de escalada.')
-      ).toBeInTheDocument();
+      await user.click(screen.getByText('Confirmar Dados e Continuar'));
+      expect(screen.getByText('O que acontece nesta etapa?')).toBeInTheDocument();
 
       // Go back to step 1
       await user.click(screen.getByText('Anterior'));
-      expect(
-        screen.getByText(
-          'Preencha os dados de cada participante para garantir a segurança da atividade.'
-        )
-      ).toBeInTheDocument();
+      expect(screen.getByText('Por que coletamos esses dados?')).toBeInTheDocument();
     });
   });
 
@@ -309,10 +299,10 @@ describe('CheckoutForm', () => {
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
         )
       );
-      await user.click(screen.getByText('Próximo'));
-      await user.click(screen.getByText('Próximo'));
+      await user.click(screen.getByText('Confirmar Dados e Continuar'));
+      await user.click(screen.getByText('Prosseguir para Revisão'));
 
-      await user.click(screen.getByText('Finalizar Compra'));
+      await user.click(screen.getByText('📱 Enviar para WhatsApp e Finalizar'));
 
       expect(global.alert).toHaveBeenCalledWith('Usuário não autenticado');
     });
@@ -332,10 +322,10 @@ describe('CheckoutForm', () => {
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
         )
       );
-      await user.click(screen.getByText('Próximo'));
-      await user.click(screen.getByText('Próximo'));
+      await user.click(screen.getByText('Confirmar Dados e Continuar'));
+      await user.click(screen.getByText('Prosseguir para Revisão'));
 
-      const finalizeButton = screen.getByText('Finalizar Compra');
+      const finalizeButton = screen.getByText('📱 Enviar para WhatsApp e Finalizar');
 
       expect(finalizeButton).not.toBeDisabled();
 
@@ -353,14 +343,14 @@ describe('CheckoutForm', () => {
       render(<CheckoutForm {...defaultProps} />);
 
       // Initially next should be disabled
-      expect(screen.getByText('Próximo')).toBeDisabled();
+      expect(screen.getByText('Confirmar Dados e Continuar')).toBeDisabled();
 
       // Fill partial form
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
 
       // Still disabled
-      expect(screen.getByText('Próximo')).toBeDisabled();
+      expect(screen.getByText('Confirmar Dados e Continuar')).toBeDisabled();
 
       // Complete required fields
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
@@ -373,7 +363,7 @@ describe('CheckoutForm', () => {
       );
 
       // Now enabled
-      expect(screen.getByText('Próximo')).not.toBeDisabled();
+      expect(screen.getByText('Confirmar Dados e Continuar')).not.toBeDisabled();
     });
   });
 });

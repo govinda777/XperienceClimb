@@ -35,7 +35,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
     },
   });
 
-  const steps = ['Detalhes dos Participantes', 'Data da Escalada', 'Confirmação'];
+  const steps = ['Dados dos Participantes', 'Confirmação de Data', 'Revisão e Envio ao WhatsApp'];
 
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -183,8 +183,8 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
   return (
     <div className="flex h-full flex-col">
       {/* Progress Steps */}
-      <div className="border-b border-neutral-200 px-4 py-3">
-        <div className="flex items-center justify-between text-sm">
+      <div className="border-b border-neutral-200 px-4 py-4">
+        <div className="mb-3 flex items-center justify-between text-sm">
           {steps.map((step, index) => (
             <div
               key={index}
@@ -205,11 +205,30 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
                       : 'border-neutral-300'
                 }`}
               >
-                {index + 1}
+                {index < currentStep ? '✓' : index + 1}
               </div>
               <span className="hidden sm:inline">{step}</span>
             </div>
           ))}
+        </div>
+
+        {/* Step Progress Description */}
+        <div className="text-xs text-neutral-600">
+          {currentStep === 0 && (
+            <p>📝 Coletando informações de segurança e contato dos participantes</p>
+          )}
+          {currentStep === 1 && <p>📅 Confirmando detalhes da escalada e solicitações especiais</p>}
+          {currentStep === 2 && (
+            <p>📱 Revisando dados que serão enviados ao WhatsApp para finalizar reserva</p>
+          )}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="mt-2 h-2 w-full rounded-full bg-neutral-200">
+          <div
+            className="h-2 rounded-full bg-climb-500 transition-all duration-300"
+            style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+          />
         </div>
       </div>
 
@@ -228,15 +247,16 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
 
         {currentStep < steps.length - 1 ? (
           <Button onClick={handleNext} disabled={!validateStep(currentStep)}>
-            Próximo
+            {currentStep === 0 ? 'Confirmar Dados e Continuar' : 'Prosseguir para Revisão'}
           </Button>
         ) : (
           <Button
             onClick={handleSubmit}
             loading={isSubmitting}
             disabled={!validateStep(currentStep)}
+            className="bg-green-600 hover:bg-green-700"
           >
-            Finalizar Compra
+            {isSubmitting ? 'Enviando para WhatsApp...' : '📱 Enviar para WhatsApp e Finalizar'}
           </Button>
         )}
       </div>
@@ -249,9 +269,25 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="mb-2 text-lg font-semibold">Detalhes dos Participantes</h3>
+        <h3 className="mb-2 text-lg font-semibold">📋 Dados dos Participantes</h3>
+        <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <p className="mb-2 text-sm font-medium text-blue-800">Por que coletamos esses dados?</p>
+          <ul className="space-y-1 text-sm text-blue-700">
+            <li>
+              • <strong>Segurança:</strong> Contato de emergência e condições de saúde
+            </li>
+            <li>
+              • <strong>Planejamento:</strong> Nível de experiência para adequar a atividade
+            </li>
+            <li>
+              • <strong>Comunicação:</strong> Dados serão enviados ao nosso WhatsApp para
+              coordenação
+            </li>
+          </ul>
+        </div>
         <p className="mb-4 text-sm text-neutral-600">
-          Preencha os dados de cada participante para garantir a segurança da atividade.
+          ⚠️ Todos esses dados serão incluídos na mensagem enviada ao nosso WhatsApp para finalizar
+          sua reserva.
         </p>
       </div>
 
@@ -384,10 +420,15 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="mb-2 text-lg font-semibold">Data da Escalada</h3>
-        <p className="mb-4 text-sm text-neutral-600">
-          Data única disponível para sua experiência de escalada.
-        </p>
+        <h3 className="mb-2 text-lg font-semibold">📅 Confirmação de Data e Detalhes</h3>
+        <div className="mb-4 rounded-lg border border-green-200 bg-green-50 p-4">
+          <p className="mb-2 text-sm font-medium text-green-800">O que acontece nesta etapa?</p>
+          <ul className="space-y-1 text-sm text-green-700">
+            <li>• Confirmação da data única disponível</li>
+            <li>• Solicitações especiais (dietas, limitações, etc.)</li>
+            <li>• Essas informações serão enviadas ao WhatsApp junto com seus dados</li>
+          </ul>
+        </div>
       </div>
 
       <div>
@@ -418,13 +459,26 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
         <label className="mb-2 block text-sm font-medium text-neutral-700">
           Solicitações Especiais (Opcional)
         </label>
+        <div className="mb-2 text-xs text-neutral-600">
+          <p className="mb-1">💡 Exemplos do que você pode incluir:</p>
+          <ul className="ml-4 list-disc space-y-0.5">
+            <li>Restrições alimentares ou alergias</li>
+            <li>Limitações físicas temporárias</li>
+            <li>Preferências sobre nivel de dificuldade</li>
+            <li>Horário preferido para iniciar a atividade</li>
+            <li>Outras informações importantes</li>
+          </ul>
+        </div>
         <textarea
-          rows={3}
+          rows={4}
           className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
           value={climbingDetails.specialRequests || ''}
           onChange={e => onChange('specialRequests', e.target.value)}
-          placeholder="Alguma solicitação especial ou informação importante?"
+          placeholder="Descreva qualquer solicitação especial, restrição alimentar, preferência de horário, ou informação importante que nossa equipe deve saber..."
         />
+        <p className="mt-1 text-xs text-neutral-500">
+          ℹ️ Essas informações serão incluídas na mensagem enviada ao WhatsApp
+        </p>
       </div>
 
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
@@ -445,13 +499,57 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
 }
 
 function ConfirmationStep({ cartItems, participantDetails, climbingDetails, totalPrice }: any) {
+  // Simula a mensagem que será enviada ao WhatsApp
+  const generateWhatsAppPreview = () => {
+    let preview = `🧗‍♂️ NOVA RESERVA CONFIRMADA 🧗‍♂️\n\n`;
+    preview += `📋 Dados do Pedido:\n`;
+    preview += `• Total: ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalPrice)}\n`;
+    preview += `• Status: Aguardando Pagamento\n\n`;
+
+    preview += `📅 Detalhes da Escalada:\n`;
+    preview += `• Data: ${climbingDetails.selectedDate?.toLocaleDateString('pt-BR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })}\n`;
+    if (climbingDetails.specialRequests) {
+      preview += `• Solicitações especiais: ${climbingDetails.specialRequests}\n`;
+    }
+    preview += '\n';
+
+    preview += `👥 Participantes (${cartItems.length}):\n`;
+    cartItems.forEach((item: any, index: number) => {
+      const participant = participantDetails[item.id];
+      if (participant) {
+        preview += `\n${index + 1}. ${participant.name}\n`;
+        preview += `   • Pacote: ${item.packageName}\n`;
+        preview += `   • Idade: ${participant.age || 'Não informado'} anos\n`;
+        preview += `   • Nível: ${participant.experienceLevel || 'Não informado'}\n`;
+        preview += `   • Contato emergência: ${participant.emergencyContact?.name || 'Não informado'}\n`;
+        preview += `   • Telefone: ${participant.emergencyContact?.phone || 'Não informado'}\n`;
+        preview += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
+      }
+    });
+
+    return preview;
+  };
+
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="mb-2 text-lg font-semibold">Confirmação do Pedido</h3>
-        <p className="mb-4 text-sm text-neutral-600">
-          Revise todos os detalhes antes de finalizar sua compra.
-        </p>
+        <h3 className="mb-2 text-lg font-semibold">📱 Revisão e Envio ao WhatsApp</h3>
+        <div className="mb-4 rounded-lg border border-purple-200 bg-purple-50 p-4">
+          <p className="mb-2 text-sm font-medium text-purple-800">
+            O que acontece quando finalizar?
+          </p>
+          <ul className="space-y-1 text-sm text-purple-700">
+            <li>• Seus dados serão organizados e enviados ao nosso WhatsApp automaticamente</li>
+            <li>• Nossa equipe receberá todas as informações para confirmar sua reserva</li>
+            <li>• Você será redirecionado para o WhatsApp para finalizar o pagamento</li>
+            <li>• Poderemos esclarecer dúvidas e fazer ajustes se necessário</li>
+          </ul>
+        </div>
       </div>
 
       {/* Order Summary */}
@@ -492,6 +590,20 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
             <p className="text-sm text-neutral-600">{climbingDetails.specialRequests}</p>
           </div>
         )}
+      </div>
+
+      {/* WhatsApp Message Preview */}
+      <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+        <h4 className="mb-3 font-medium text-green-800">
+          📱 Preview da Mensagem que será enviada ao WhatsApp:
+        </h4>
+        <div className="max-h-64 overflow-y-auto whitespace-pre-line rounded-md border bg-white p-3 font-mono text-xs">
+          {generateWhatsAppPreview()}
+        </div>
+        <p className="mt-2 text-xs text-green-700">
+          ✅ Esta mensagem será enviada automaticamente para nossa equipe quando você finalizar a
+          compra.
+        </p>
       </div>
     </div>
   );
