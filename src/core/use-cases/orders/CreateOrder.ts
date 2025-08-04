@@ -43,10 +43,10 @@ export class CreateOrder {
           packageName: cartItem.packageName,
           price: {
             amount: cartItem.price * 100, // Convert to cents
-            currency: 'BRL'
+            currency: 'BRL',
           },
           quantity: cartItem.quantity,
-          participantDetails: participantDetail
+          participantDetails: participantDetail,
         };
       });
 
@@ -58,15 +58,15 @@ export class CreateOrder {
         status: 'pending_payment',
         payment: {
           method: 'whatsapp' as any, // Changed from mercadopago to whatsapp
-          status: 'pending'
+          status: 'pending',
         },
         climbingDetails: request.climbingDetails,
         total: {
           amount: total,
-          currency: 'BRL'
+          currency: 'BRL',
         },
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Use WhatsApp flow instead of Mercado Pago
@@ -80,14 +80,13 @@ export class CreateOrder {
         success: true,
         orderId: order.id,
         preferenceId: orderId,
-        whatsappUrl: `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodeURIComponent(whatsappMessage)}`
+        whatsappUrl: `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodeURIComponent(whatsappMessage)}`,
       };
-
     } catch (error) {
       console.error('Error creating order:', error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to create order'
+        error: error instanceof Error ? error.message : 'Failed to create order',
       };
     }
   }
@@ -117,7 +116,7 @@ export class CreateOrder {
         throw new Error(`Participant details missing for ${cartItem.packageName}`);
       }
 
-      if (!participantDetail.name || !participantDetail.emergencyContact.name || !participantDetail.emergencyContact.phone) {
+      if (!participantDetail.name || !participantDetail.age || !participantDetail.experienceLevel) {
         throw new Error(`Complete participant details required for ${cartItem.packageName}`);
       }
 
@@ -129,19 +128,19 @@ export class CreateOrder {
 
   private calculateTotal(cartItems: CartItem[]): number {
     return cartItems.reduce((total, item) => {
-      return total + (item.price * item.quantity * 100); // Convert to cents
+      return total + item.price * item.quantity * 100; // Convert to cents
     }, 0);
   }
 
   private formatPhoneForWhatsApp(phone: string): string {
     // Convert "(11) 99999-9999" to "5511999999999"
     const cleanPhone = phone.replace(/\D/g, ''); // Remove all non-digits
-    
+
     // If it's a Brazilian number without country code, add 55
     if (cleanPhone.length === 11 && cleanPhone.startsWith('11')) {
       return '55' + cleanPhone;
     }
-    
+
     // If it's already complete or different format, return as is
     return cleanPhone;
   }
@@ -149,13 +148,13 @@ export class CreateOrder {
   private formatCurrency(amountInCents: number): string {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL',
     }).format(amountInCents / 100);
   }
 
   private formatCompleteOrderMessage(order: Order, orderId: string): string {
     let message = `🧗‍♂️ *NOVA RESERVA* 🧗‍♂️\n\n`;
-    
+
     // Order info
     message += `📋 *Dados do Pedido:*\n`;
     message += `• ID: #${orderId}\n`;
@@ -166,9 +165,9 @@ export class CreateOrder {
     message += `📅 *Detalhes da Escalada:*\n`;
     message += `• Data: ${order.climbingDetails.selectedDate.toLocaleDateString('pt-BR', {
       weekday: 'long',
-      year: 'numeric', 
+      year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     })}\n`;
 
     if (order.climbingDetails.specialRequests) {
@@ -184,8 +183,7 @@ export class CreateOrder {
       message += `   • Pacote: ${item.packageName}\n`;
       message += `   • Idade: ${participant.age} anos\n`;
       message += `   • Nível: ${this.translateExperience(participant.experienceLevel)}\n`;
-      message += `   • Contato emergência: ${participant.emergencyContact.name}\n`;
-      message += `   • Telefone: ${participant.emergencyContact.phone}\n`;
+      message += `   • Número do tênis: ${participant.tenis || 'Não informado'}\n`;
       message += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
     });
 
@@ -197,10 +195,10 @@ export class CreateOrder {
 
   private translateExperience(level: string): string {
     const levelMap: Record<string, string> = {
-      'beginner': 'Iniciante',
-      'intermediate': 'Intermediário', 
-      'advanced': 'Avançado'
+      beginner: 'Iniciante',
+      intermediate: 'Intermediário',
+      advanced: 'Avançado',
     };
     return levelMap[level] || level;
   }
-} 
+}

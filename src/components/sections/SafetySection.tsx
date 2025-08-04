@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui';
+// import { Button } from '@/components/ui';
 
 interface SafetyItem {
   icon: string;
@@ -20,8 +20,8 @@ const safetyItems: SafetyItem[] = [
       'Capacetes homologados',
       'Cadeirinhas certificadas',
       'Mosquetões de segurança',
-      'Freios automáticos'
-    ]
+      'Freios automáticos',
+    ],
   },
   {
     icon: '👨‍🏫',
@@ -31,8 +31,8 @@ const safetyItems: SafetyItem[] = [
       'Curso de Primeiros Socorros',
       'Treinamento em Resgate',
       'Experiência comprovada',
-      'Atualização constante'
-    ]
+      'Atualização constante',
+    ],
   },
   {
     icon: '📋',
@@ -42,8 +42,8 @@ const safetyItems: SafetyItem[] = [
       'Check duplo de equipamentos',
       'Briefing obrigatório',
       'Avaliação das condições climáticas',
-      'Plano de emergência ativo'
-    ]
+      'Plano de emergência ativo',
+    ],
   },
   {
     icon: '🏥',
@@ -53,8 +53,8 @@ const safetyItems: SafetyItem[] = [
       'Cobertura em Caso de Acidentes',
       'Válida em todo o território nacional.',
       'Reembolso com despesas médico, hospitalares e odontológicas',
-    ]
-  }
+    ],
+  },
 ];
 
 const equipmentList = [
@@ -66,44 +66,40 @@ const equipmentList = [
   { name: 'Sapatilha de escalada', required: true, provided: false },
   { name: 'Roupa confortável', required: true, provided: false },
   { name: 'Protetor solar', required: true, provided: false },
-  { name: 'Água (1,5L mínimo)', required: true, provided: false }
+  { name: 'Água (1,5L mínimo)', required: true, provided: false },
 ];
 
 export function SafetySection() {
   return (
-    <section id="seguranca" className="py-20 bg-white">
+    <section id="seguranca" className="bg-white py-20">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-climb-600 mb-6">
+        <div className="mb-16 text-center">
+          <h2 className="mb-6 text-4xl font-bold text-climb-600 md:text-5xl">
             Segurança em Primeiro Lugar
           </h2>
-          <p className="text-xl text-neutral-700 max-w-3xl mx-auto">
-            Nossa prioridade máxima é garantir que você tenha uma experiência 
-            segura e inesquecível. Conheça nossos protocolos e equipamentos.
+          <p className="mx-auto max-w-3xl text-xl text-neutral-700">
+            Nossa prioridade máxima é garantir que você tenha uma experiência segura e inesquecível.
+            Conheça nossos protocolos e equipamentos.
           </p>
         </div>
 
         {/* Safety Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+        <div className="mb-20 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {safetyItems.map((item, index) => (
             <div
               key={index}
-              className="group bg-neutral-50 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 hover:bg-climb-50"
+              className="group rounded-2xl bg-neutral-50 p-6 transition-all duration-300 hover:bg-climb-50 hover:shadow-lg"
             >
-              <div className="text-center mb-4">
-                <div className="text-4xl mb-3">{item.icon}</div>
-                <h3 className="text-xl font-bold text-climb-600 mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-neutral-700 text-sm">
-                  {item.description}
-                </p>
+              <div className="mb-4 text-center">
+                <div className="mb-3 text-4xl">{item.icon}</div>
+                <h3 className="mb-2 text-xl font-bold text-climb-600">{item.title}</h3>
+                <p className="text-sm text-neutral-700">{item.description}</p>
               </div>
 
               <ul className="space-y-2">
                 {item.details.map((detail, detailIndex) => (
                   <li key={detailIndex} className="flex items-start space-x-2 text-sm">
-                    <span className="text-green-500 mt-1">✓</span>
+                    <span className="mt-1 text-green-500">✓</span>
                     <span className="text-neutral-600">{detail}</span>
                   </li>
                 ))}
@@ -113,49 +109,50 @@ export function SafetySection() {
         </div>
 
         {/* Equipment Checklist */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
           <div>
-            <h3 className="text-3xl font-bold text-climb-600 mb-8">
-              Lista de Equipamentos
-            </h3>
-            
+            <h3 className="mb-8 text-3xl font-bold text-climb-600">Lista de Equipamentos</h3>
+
             <div className="space-y-4">
               {equipmentList.map((item, index) => (
                 <div
                   key={index}
-                  className={`flex items-center justify-between p-4 rounded-lg border-2 ${
-                    item.provided 
-                      ? 'border-green-200 bg-green-50' 
-                      : item.required 
+                  className={`flex items-center justify-between rounded-lg border-2 p-4 ${
+                    item.provided
+                      ? 'border-green-200 bg-green-50'
+                      : item.required
                         ? 'border-orange-200 bg-orange-50'
                         : 'border-neutral-200 bg-neutral-50'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
-                    <span className={`text-lg ${
-                      item.provided ? 'text-green-500' : 
-                      item.required ? 'text-orange-500' : 'text-neutral-500'
-                    }`}>
+                    <span
+                      className={`text-lg ${
+                        item.provided
+                          ? 'text-green-500'
+                          : item.required
+                            ? 'text-orange-500'
+                            : 'text-neutral-500'
+                      }`}
+                    >
                       {item.provided ? '✅' : item.required ? '📋' : '💡'}
                     </span>
-                    <span className="font-medium text-neutral-800">
-                      {item.name}
-                    </span>
+                    <span className="font-medium text-neutral-800">{item.name}</span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
                     {item.provided && (
-                      <span className="text-xs bg-green-500 text-white px-2 py-1 rounded-full">
+                      <span className="rounded-full bg-green-500 px-2 py-1 text-xs text-white">
                         Fornecido
                       </span>
                     )}
                     {item.required && !item.provided && (
-                      <span className="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">
+                      <span className="rounded-full bg-orange-500 px-2 py-1 text-xs text-white">
                         Obrigatório
                       </span>
                     )}
                     {!item.required && (
-                      <span className="text-xs bg-neutral-400 text-white px-2 py-1 rounded-full">
+                      <span className="rounded-full bg-neutral-400 px-2 py-1 text-xs text-white">
                         Opcional
                       </span>
                     )}
@@ -228,7 +225,6 @@ export function SafetySection() {
             </div>
           </div> */}
         </div>
-
       </div>
     </section>
   );

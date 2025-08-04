@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { Button } from '@/components/ui';
 import { CONTACT_INFO } from '@/lib/constants';
 
@@ -12,30 +12,28 @@ export function LocationSection() {
   };
 
   return (
-    <section id="localizacao" className="py-20 bg-climb-600 text-white">
+    <section id="localizacao" className="bg-climb-600 py-20 text-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Como Chegar
-          </h2>
-          <p className="text-xl text-climb-100 max-w-3xl mx-auto">
-            O Morro Araçoiaba está localizado na Floresta Nacional de Ipanema, 
-            a apenas 120km de São Paulo.
+        <div className="mb-16 text-center">
+          <h2 className="mb-6 text-4xl font-bold md:text-5xl">Como Chegar</h2>
+          <p className="mx-auto max-w-3xl text-xl text-climb-100">
+            O Morro Araçoiaba está localizado na Floresta Nacional de Ipanema, a apenas 120km de São
+            Paulo.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
           {/* Map and Directions */}
           <div className="space-y-8">
             {/* Address Card */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-              <div className="flex items-start space-x-4 mb-6">
-                <div className="w-12 h-12 bg-orange-400 rounded-full flex items-center justify-center text-2xl">
+            <div className="rounded-2xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm">
+              <div className="mb-6 flex items-start space-x-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-2xl">
                   📍
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-2">Endereço</h3>
-                  <p className="text-climb-100 text-lg leading-relaxed">
+                  <h3 className="mb-2 text-2xl font-bold">Endereço</h3>
+                  <p className="text-lg leading-relaxed text-climb-100">
                     {CONTACT_INFO.address}
                     <br />
                     Iperó, São Paulo
@@ -43,13 +41,8 @@ export function LocationSection() {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="secondary"
-                  size="md"
-                  onClick={openMaps}
-                  className="flex-1"
-                >
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button variant="secondary" size="md" onClick={openMaps} className="flex-1">
                   🗺️ Abrir no Google Maps
                 </Button>
               </div>
@@ -58,14 +51,14 @@ export function LocationSection() {
             {/* Directions */}
             <div className="space-y-6">
               <h3 className="text-2xl font-bold">Como Chegar de Carro</h3>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-400 text-sm font-bold text-white">
                     1
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1">Saída de São Paulo</h4>
+                    <h4 className="mb-1 font-semibold">Saída de São Paulo</h4>
                     <p className="text-climb-100">
                       Siga pela Rodovia Raposo Tavares (SP-270) sentido interior
                     </p>
@@ -73,11 +66,11 @@ export function LocationSection() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-400 text-sm font-bold text-white">
                     2
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1">Saída Iperó</h4>
+                    <h4 className="mb-1 font-semibold">Saída Iperó</h4>
                     <p className="text-climb-100">
                       Pegue a saída 109 - Iperó/Boituva (aproximadamente 90km)
                     </p>
@@ -85,11 +78,11 @@ export function LocationSection() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-400 text-sm font-bold text-white">
                     3
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1">Entrada da Floresta</h4>
+                    <h4 className="mb-1 font-semibold">Entrada da Floresta</h4>
                     <p className="text-climb-100">
                       Siga as placas para "Floresta Nacional de Ipanema" (8km)
                     </p>
@@ -97,11 +90,11 @@ export function LocationSection() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-sm font-bold text-white">
                     ✓
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-1">Chegada</h4>
+                    <h4 className="mb-1 font-semibold">Chegada</h4>
                     <p className="text-climb-100">
                       Estacionamento gratuito, proximo ao acesso ao setor de escalada
                     </p>
@@ -113,27 +106,26 @@ export function LocationSection() {
 
           {/* Sectors Map */}
           <div className="space-y-6">
-
             {/* Important Notes */}
             <div className="space-y-4">
-              <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+              <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-4">
                 <div className="flex items-start space-x-3">
-                  <span className="text-yellow-400 text-xl">⚠️</span>
+                  <span className="text-xl text-yellow-400">⚠️</span>
                   <div>
-                    <h4 className="font-semibold text-yellow-100 mb-1">Importante</h4>
-                    <p className="text-yellow-200 text-sm">
+                    <h4 className="mb-1 font-semibold text-yellow-100">Importante</h4>
+                    <p className="text-sm text-yellow-200">
                       Horário de funcionamento do parque: 8h às 17h.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4">
+              <div className="rounded-lg border border-green-500/30 bg-green-500/20 p-4">
                 <div className="flex items-start space-x-3">
-                  <span className="text-green-400 text-xl">💡</span>
+                  <span className="text-xl text-green-400">💡</span>
                   <div>
-                    <h4 className="font-semibold text-green-100 mb-1">Cronograma</h4>
-                    <p className="text-green-200 text-sm">
+                    <h4 className="mb-1 font-semibold text-green-100">Cronograma</h4>
+                    <p className="text-sm text-green-200">
                       Chegue cedo para aproveitar melhor o dia e evitar multidões.
                     </p>
                   </div>

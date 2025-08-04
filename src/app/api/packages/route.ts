@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PACKAGES } from '@/lib/constants';
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Convert packages object to array format for easier consumption
     const packagesArray = Object.values(PACKAGES).map(pkg => ({
@@ -16,30 +16,27 @@ export async function GET(request: NextRequest) {
       color: pkg.color,
       duration: pkg.duration,
       maxParticipants: pkg.maxParticipants,
-      popular: pkg.popular || false
+      popular: pkg.popular || false,
     }));
 
     return NextResponse.json({
       success: true,
       data: packagesArray,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
     console.error('Error fetching packages:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Failed to fetch packages' 
+      {
+        success: false,
+        error: 'Failed to fetch packages',
       },
       { status: 500 }
     );
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // For future use - e.g., checking availability
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
-  );
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }

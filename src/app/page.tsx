@@ -1,13 +1,12 @@
 import { Navigation } from '@/components/layout';
-import { 
-  HeroSection, 
+import {
+  HeroSection,
   AboutSection,
-  PackagesSection, 
+  PackagesSection,
   GallerySection,
   SafetySection,
   LocationSection,
-  TestimonialsSection,
-  Footer 
+  Footer,
 } from '@/components/sections';
 import { CartButton, CartModal } from '@/components/cart';
 
@@ -23,13 +22,12 @@ export default function Home() {
       <LocationSection />
       {/* <TestimonialsSection /> */}
       <Footer />
-      
+
       {/* Floating Cart Button */}
       <CartButton />
 
       {/* Cart Modal */}
       <CartModal />
-
     </main>
-  )
-} 
+  );
+}

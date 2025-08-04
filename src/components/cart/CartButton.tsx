@@ -6,9 +6,9 @@ import { useCartStore } from '@/store/useCartStore';
 import { ShoppingCart } from 'lucide-react';
 
 export function CartButton() {
-  const { items, getTotalItems, toggleCart } = useCartStore();
+  const { getTotalItems, toggleCart } = useCartStore();
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -26,11 +26,11 @@ export function CartButton() {
       <Button
         onClick={toggleCart}
         size="lg"
-        className="relative bg-orange-400 hover:bg-orange-500 text-white shadow-2xl rounded-full w-16 h-16 p-0"
+        className="relative h-16 w-16 rounded-full bg-orange-400 p-0 text-white shadow-2xl hover:bg-orange-500"
       >
-        <ShoppingCart className="w-6 h-6" />
+        <ShoppingCart className="h-6 w-6" />
         {totalItems > 0 && (
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+          <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
             {totalItems}
           </span>
         )}
