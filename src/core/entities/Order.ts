@@ -24,14 +24,8 @@ export interface ParticipantDetails {
   name: string;
   age: number;
   experienceLevel: 'beginner' | 'intermediate' | 'advanced';
-  emergencyContact: EmergencyContact;
   healthDeclaration: boolean;
-}
-
-export interface EmergencyContact {
-  name: string;
-  phone: string;
-  relationship: string;
+  tenis?: string; // Número do tênis (opcional)
 }
 
 export interface ClimbingDetails {
@@ -48,6 +42,9 @@ export interface PaymentInfo {
   processedAt?: Date;
 }
 
-export type OrderStatus = 'pending_payment' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled';
-
- 
+export type OrderStatus =
+  | 'pending_payment'
+  | 'confirmed'
+  | 'in_progress'
+  | 'completed'
+  | 'cancelled';

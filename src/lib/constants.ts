@@ -5,8 +5,8 @@ export const CONTACT_INFO = {
   address: 'Floresta Nacional de Ipanema',
   distance: '120km de São Paulo',
   phone: '(11) 99541-3539',
-  email: 'contato@xperienceclimb.com',
-  instagram: '@xperienceclimb'
+  email: 'marcosishino@gmail.com',
+  instagram: '@xperiencehubs',
 };
 
 // Navigation items for the site menu
@@ -34,16 +34,14 @@ export const PACKAGES: Record<string, PackageType> = {
       '👨‍🏫 Instrutor experiente',
       '🍎 Lanche de trilha',
     ],
-    bonus: [
-      '💡 Coach de vida',
-    ],
+    bonus: ['💡 Coach de vida'],
     shape: 'hexagon',
     color: 'climb-300',
     duration: '1 dia',
     maxParticipants: 8,
     requiresExperience: false,
     minAge: 12,
-    cancellationPolicy: ''
+    cancellationPolicy: '',
   },
   intermediario: {
     id: 'intermediario',
@@ -59,9 +57,7 @@ export const PACKAGES: Record<string, PackageType> = {
       '🛏️ Hospedagem em AirBnB',
       '☕ Café da manhã do escalador', // Nutricionista boulder
     ],
-    bonus: [
-      '💡 Coach de vida',
-    ],
+    bonus: ['💡 Coach de vida'],
     shape: 'triangle',
     color: 'orange-400',
     duration: '1 dia',
@@ -69,7 +65,7 @@ export const PACKAGES: Record<string, PackageType> = {
     popular: true,
     requiresExperience: false,
     minAge: 14,
-    cancellationPolicy: ''
+    cancellationPolicy: '',
   },
   avancado: {
     id: 'avancado',
@@ -86,16 +82,14 @@ export const PACKAGES: Record<string, PackageType> = {
       '☕ Café da manhã do escalador', // Nutricionista boulder
       '🧗 Mais um super dia extra de escalada',
     ],
-    bonus: [
-      '💡 Coach de vida',
-    ],
+    bonus: ['💡 Coach de vida'],
     shape: 'circle',
     color: 'purple-500',
     duration: '2 dias',
     maxParticipants: 4,
     requiresExperience: true, // This package requires experience
     minAge: 16,
-    cancellationPolicy: ''
+    cancellationPolicy: '',
   },
 };
 

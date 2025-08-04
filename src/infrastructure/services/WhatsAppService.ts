@@ -7,7 +7,7 @@ export interface WhatsAppMessage {
 
 export class WhatsAppService {
   private phoneNumber: string;
-  
+
   constructor() {
     // Use contact info from constants, converting to WhatsApp format
     const defaultPhone = this.formatPhoneForWhatsApp(CONTACT_INFO.phone);
@@ -17,12 +17,12 @@ export class WhatsAppService {
   private formatPhoneForWhatsApp(phone: string): string {
     // Convert "(11) 99999-9999" to "5511999999999"
     const cleanPhone = phone.replace(/\D/g, ''); // Remove all non-digits
-    
+
     // If it's a Brazilian number without country code, add 55
     if (cleanPhone.length === 11 && cleanPhone.startsWith('11')) {
       return '55' + cleanPhone;
     }
-    
+
     // If it's already complete or different format, return as is
     return cleanPhone;
   }
@@ -32,7 +32,7 @@ export class WhatsAppService {
       const message = this.formatOrderMessage(orderData);
       await this.sendMessage({
         to: this.phoneNumber,
-        message
+        message,
       });
     } catch (error) {
       console.error('Error sending WhatsApp message:', error);
@@ -41,13 +41,10 @@ export class WhatsAppService {
   }
 
   private formatOrderMessage(orderData: any): string {
-    const {
-      order,
-      paymentData
-    } = orderData;
+    const { order, paymentData } = orderData;
 
     let message = `🧗‍♂️ *NOVA RESERVA CONFIRMADA* 🧗‍♂️\n\n`;
-    
+
     // Order info
     message += `📋 *Dados do Pedido:*\n`;
     message += `• ID: ${order.id}\n`;
@@ -69,9 +66,9 @@ export class WhatsAppService {
     message += `📅 *Detalhes da Escalada:*\n`;
     message += `• Data: ${new Date(order.climbingDetails.selectedDate).toLocaleDateString('pt-BR', {
       weekday: 'long',
-      year: 'numeric', 
+      year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     })}\n`;
 
     if (order.climbingDetails.specialRequests) {
@@ -87,12 +84,23 @@ export class WhatsAppService {
       message += `   • Pacote: ${item.packageName}\n`;
       message += `   • Idade: ${participant.age} anos\n`;
       message += `   • Nível: ${this.translateExperience(participant.experienceLevel)}\n`;
-      message += `   • Contato emergência: ${participant.emergencyContact.name}\n`;
-      message += `   • Telefone: ${participant.emergencyContact.phone}\n`;
       message += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
     });
 
-    message += `\n🔔 *Ação necessária:* Confirmar presença e preparar equipamentos`;
+    message += `\n🚨 *INFORMAÇÕES NECESSÁRIAS PARA COMPLETAR A RESERVA:*\n`;
+    message += `Por favor, responda com as seguintes informações para cada participante:\n\n`;
+
+    order.items.forEach((item: any, index: number) => {
+      const participant = item.participantDetails;
+      message += `*${index + 1}. ${participant.name}:*\n`;
+      message += `• Número do tênis: ${participant.tenis || 'Não informado'}\n`;
+      message += `• Nome do contato de emergência:\n`;
+      message += `• Telefone do contato de emergência:\n`;
+      message += `• Relacionamento (pai/mãe/cônjuge/etc):\n\n`;
+    });
+
+    message += `📱 *Responda este WhatsApp com essas informações para confirmarmos sua reserva!*\n\n`;
+    message += `🔔 *Próximos passos:* Após recebermos os dados, confirmaremos presença e enviaremos detalhes sobre equipamentos.`;
 
     return message;
   }
@@ -100,10 +108,10 @@ export class WhatsAppService {
   private async sendMessage(data: WhatsAppMessage): Promise<void> {
     // Using WhatsApp Business API
     const url = `https://api.whatsapp.com/send?phone=${data.to}&text=${encodeURIComponent(data.message)}`;
-    
+
     console.log('WhatsApp message formatted:', data.message);
     console.log('WhatsApp URL:', url);
-    
+
     // In production, you might want to use a proper WhatsApp Business API
     // For now, we'll just log the message and create a link
     // You could integrate with services like Twilio WhatsApp API, ChatAPI, etc.
@@ -111,33 +119,33 @@ export class WhatsAppService {
 
   private translateStatus(status: string): string {
     const statusMap: Record<string, string> = {
-      'pending_payment': 'Aguardando Pagamento',
-      'confirmed': 'Confirmado',
-      'in_progress': 'Em Andamento', 
-      'completed': 'Concluído',
-      'cancelled': 'Cancelado'
+      pending_payment: 'Aguardando Pagamento',
+      confirmed: 'Confirmado',
+      in_progress: 'Em Andamento',
+      completed: 'Concluído',
+      cancelled: 'Cancelado',
     };
     return statusMap[status] || status;
   }
 
   private translatePaymentStatus(status: string): string {
     const statusMap: Record<string, string> = {
-      'approved': 'Aprovado',
-      'pending': 'Pendente',
-      'pending_whatsapp': 'Aguardando via WhatsApp',
-      'in_process': 'Processando',
-      'rejected': 'Rejeitado',
-      'cancelled': 'Cancelado',
-      'refunded': 'Estornado'
+      approved: 'Aprovado',
+      pending: 'Pendente',
+      pending_whatsapp: 'Aguardando via WhatsApp',
+      in_process: 'Processando',
+      rejected: 'Rejeitado',
+      cancelled: 'Cancelado',
+      refunded: 'Estornado',
     };
     return statusMap[status] || status;
   }
 
   private translateExperience(level: string): string {
     const levelMap: Record<string, string> = {
-      'beginner': 'Iniciante',
-      'intermediate': 'Intermediário', 
-      'advanced': 'Avançado'
+      beginner: 'Iniciante',
+      intermediate: 'Intermediário',
+      advanced: 'Avançado',
     };
     return levelMap[level] || level;
   }
@@ -145,7 +153,7 @@ export class WhatsAppService {
   private formatCurrency(amountInCents: number): string {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
-      currency: 'BRL'
+      currency: 'BRL',
     }).format(amountInCents / 100);
   }
 }

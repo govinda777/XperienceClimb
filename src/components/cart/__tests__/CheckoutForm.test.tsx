@@ -99,8 +99,6 @@ describe('CheckoutForm', () => {
       expect(screen.getByLabelText(/Nome Completo \*/)).toBeInTheDocument();
       expect(screen.getByLabelText(/Idade \*/)).toBeInTheDocument();
       expect(screen.getByLabelText(/Nível de Experiência \*/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Contato de Emergência - Nome \*/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Contato de Emergência - Telefone \*/)).toBeInTheDocument();
     });
 
     it('should have health declaration checkbox', () => {
@@ -128,8 +126,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Nome/), 'Maria Silva');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Telefone/), '(11) 99999-9999');
+
       await user.click(
         screen.getByLabelText(
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
@@ -150,8 +147,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Nome/), 'Maria Silva');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Telefone/), '(11) 99999-9999');
+
       await user.click(
         screen.getByLabelText(
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
@@ -202,8 +198,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Nome/), 'Maria Silva');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Telefone/), '(11) 99999-9999');
+
       await user.click(
         screen.getByLabelText(
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
@@ -257,8 +252,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Nome/), 'Maria Silva');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Telefone/), '(11) 99999-9999');
+
       await user.click(
         screen.getByLabelText(
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
@@ -292,8 +286,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Nome/), 'Maria Silva');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Telefone/), '(11) 99999-9999');
+
       await user.click(
         screen.getByLabelText(
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
@@ -315,8 +308,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Nome/), 'Maria Silva');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Telefone/), '(11) 99999-9999');
+
       await user.click(
         screen.getByLabelText(
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/
@@ -354,8 +346,7 @@ describe('CheckoutForm', () => {
 
       // Complete required fields
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Nome/), 'Maria Silva');
-      await user.type(screen.getByLabelText(/Contato de Emergência - Telefone/), '(11) 99999-9999');
+
       await user.click(
         screen.getByLabelText(
           /Declaro estar em boas condições físicas e de saúde para praticar escalada esportiva/

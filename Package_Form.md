@@ -53,7 +53,7 @@ O sistema cria um formulário separado para cada item no carrinho, mesmo que sej
 4. **Nível de Experiência** \*
    - Tipo: Select
    - Opções:
-     - Nunca escalei
+     - Minha primeira vez
      - Iniciante
      - Intermediário
      - Avançado

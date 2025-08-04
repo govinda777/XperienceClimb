@@ -74,8 +74,8 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
           return (
             details &&
             details.name &&
-            details.emergencyContact?.name &&
-            details.emergencyContact?.phone &&
+            details.age &&
+            details.experienceLevel &&
             details.healthDeclaration
           );
         });
@@ -349,52 +349,25 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
                 <option value="beginner">Iniciante</option>
                 <option value="intermediate">Intermediário</option>
                 <option value="advanced">Avançado</option>
+                <option value="minha_primeira_vez">Minha primeira vez</option>
               </select>
             </div>
 
-            <div>
-              <label
-                htmlFor={`emergency-name-${item.id}`}
-                className="mb-1 block text-sm font-medium text-neutral-700"
-              >
-                Contato de Emergência - Nome *
-              </label>
-              <input
-                id={`emergency-name-${item.id}`}
-                type="text"
-                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
-                value={participantDetails[item.id]?.emergencyContact?.name || ''}
-                onChange={e =>
-                  onChange(item.id, 'emergencyContact', {
-                    ...participantDetails[item.id]?.emergencyContact,
-                    name: e.target.value,
-                  })
-                }
-                placeholder="Nome do contato de emergência"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor={`emergency-phone-${item.id}`}
-                className="mb-1 block text-sm font-medium text-neutral-700"
-              >
-                Contato de Emergência - Telefone *
-              </label>
-              <input
-                id={`emergency-phone-${item.id}`}
-                type="tel"
-                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
-                value={participantDetails[item.id]?.emergencyContact?.phone || ''}
-                onChange={e =>
-                  onChange(item.id, 'emergencyContact', {
-                    ...participantDetails[item.id]?.emergencyContact,
-                    phone: e.target.value,
-                  })
-                }
-                placeholder="(11) 99999-9999"
-              />
-            </div>
+            {/* WhatsApp */}
+            <label
+              htmlFor={`whatsapp-${item.id}`}
+              className="mb-1 block text-sm font-medium text-neutral-700"
+            >
+              WhatsApp
+            </label>
+            <input
+              id={`whatsapp-${item.id}`}
+              type="text"
+              className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
+              value={participantDetails[item.id]?.whatsapp || ''}
+              onChange={e => onChange(item.id, 'whatsapp', e.target.value)}
+              placeholder="(11) 99999-9999"
+            />
 
             <div className="flex items-start space-x-2">
               <input
@@ -456,19 +429,6 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-medium text-neutral-700">
-          Solicitações Especiais (Opcional)
-        </label>
-        <div className="mb-2 text-xs text-neutral-600">
-          <p className="mb-1">💡 Exemplos do que você pode incluir:</p>
-          <ul className="ml-4 list-disc space-y-0.5">
-            <li>Restrições alimentares ou alergias</li>
-            <li>Limitações físicas temporárias</li>
-            <li>Preferências sobre nivel de dificuldade</li>
-            <li>Horário preferido para iniciar a atividade</li>
-            <li>Outras informações importantes</li>
-          </ul>
-        </div>
         <textarea
           rows={4}
           className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
@@ -476,9 +436,19 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
           onChange={e => onChange('specialRequests', e.target.value)}
           placeholder="Descreva qualquer solicitação especial, restrição alimentar, preferência de horário, ou informação importante que nossa equipe deve saber..."
         />
-        <p className="mt-1 text-xs text-neutral-500">
-          ℹ️ Essas informações serão incluídas na mensagem enviada ao WhatsApp
-        </p>
+
+        <label className="mb-2 block text-sm font-medium text-neutral-700">
+          Solicitações Especiais (Opcional)
+        </label>
+        <div className="mb-2 mt-2 text-xs text-neutral-600">
+          <p className="mb-1">💡 Exemplos do que você pode incluir:</p>
+          <ul className="ml-4 list-disc space-y-0.5">
+            <li>Restrições alimentares ou alergias</li>
+            <li>Limitações físicas temporárias</li>
+            <li>Preferências sobre nivel de dificuldade</li>
+            <li>Outras informações importantes</li>
+          </ul>
+        </div>
       </div>
 
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
@@ -526,11 +496,25 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
         preview += `   • Pacote: ${item.packageName}\n`;
         preview += `   • Idade: ${participant.age || 'Não informado'} anos\n`;
         preview += `   • Nível: ${participant.experienceLevel || 'Não informado'}\n`;
-        preview += `   • Contato emergência: ${participant.emergencyContact?.name || 'Não informado'}\n`;
-        preview += `   • Telefone: ${participant.emergencyContact?.phone || 'Não informado'}\n`;
         preview += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
       }
     });
+
+    preview += `\n🚨 INFORMAÇÕES NECESSÁRIAS PARA COMPLETAR A RESERVA:\n`;
+    preview += `Por favor, responda com as seguintes informações para cada participante:\n\n`;
+
+    cartItems.forEach((item: any, index: number) => {
+      const participant = participantDetails[item.id];
+      if (participant) {
+        preview += `${index + 1}. ${participant.name}:\n`;
+        preview += `• Nome do contato de emergência:\n`;
+        preview += `• Telefone do contato de emergência:\n`;
+        preview += `• Relacionamento (pai/mãe/cônjuge/etc):\n\n`;
+      }
+    });
+
+    preview += `📱 Responda este WhatsApp com essas informações para confirmarmos sua reserva!\n\n`;
+    preview += `🔔 Próximos passos: Após recebermos os dados, confirmaremos presença e enviaremos detalhes sobre equipamentos.`;
 
     return preview;
   };
@@ -544,10 +528,13 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
             O que acontece quando finalizar?
           </p>
           <ul className="space-y-1 text-sm text-purple-700">
-            <li>• Seus dados serão organizados e enviados ao nosso WhatsApp automaticamente</li>
-            <li>• Nossa equipe receberá todas as informações para confirmar sua reserva</li>
-            <li>• Você será redirecionado para o WhatsApp para finalizar o pagamento</li>
-            <li>• Poderemos esclarecer dúvidas e fazer ajustes se necessário</li>
+            <li>•⁠ ⁠Seu pedido será direcionado ao nosso WhatsApp automaticamente.</li>
+            <li>•⁠ ⁠Nossa equipe receberá todas as informações de sua reserva.</li>
+            <li>
+              •⁠ ⁠Confirmaremos contigo os detalhes de sua reserva. Nesse momento você poderá
+              esclarecer dúvidas e poderemos nos conhecer melhor!
+            </li>
+            <li>•⁠ ⁠Assim que tudo estiver ok, enviaremos um link de pagamento.</li>
           </ul>
         </div>
       </div>
