@@ -500,22 +500,6 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
       }
     });
 
-    preview += `\n🚨 INFORMAÇÕES NECESSÁRIAS PARA COMPLETAR A RESERVA:\n`;
-    preview += `Por favor, responda com as seguintes informações para cada participante:\n\n`;
-
-    cartItems.forEach((item: any, index: number) => {
-      const participant = participantDetails[item.id];
-      if (participant) {
-        preview += `${index + 1}. ${participant.name}:\n`;
-        preview += `• Nome do contato de emergência:\n`;
-        preview += `• Telefone do contato de emergência:\n`;
-        preview += `• Relacionamento (pai/mãe/cônjuge/etc):\n\n`;
-      }
-    });
-
-    preview += `📱 Responda este WhatsApp com essas informações para confirmarmos sua reserva!\n\n`;
-    preview += `🔔 Próximos passos: Após recebermos os dados, confirmaremos presença e enviaremos detalhes sobre equipamentos.`;
-
     return preview;
   };
 
