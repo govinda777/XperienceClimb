@@ -63,7 +63,7 @@ const equipmentList = [
   { name: 'Corda dinâmica', required: true, provided: true },
   { name: 'Mosquetões', required: true, provided: true },
   { name: 'Freio', required: true, provided: true },
-  { name: 'Sapatilha de escalada', required: true, provided: false },
+  { name: 'Sapatilha de escalada', required: false, provided: false },
   { name: 'Roupa confortável', required: true, provided: false },
   { name: 'Protetor solar', required: true, provided: false },
   { name: 'Água (1,5L mínimo)', required: true, provided: false },
@@ -110,55 +110,99 @@ export function SafetySection() {
 
         {/* Equipment Checklist */}
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
+          {/* Equipamentos Obrigatórios */}
           <div>
-            <h3 className="mb-8 text-3xl font-bold text-climb-600">Lista de Equipamentos</h3>
+            <h3 className="mb-8 text-3xl font-bold text-climb-600">Equipamentos Obrigatórios</h3>
+            <p className="mb-6 text-neutral-600">
+              Itens que você deve trazer para participar da atividade
+            </p>
 
             <div className="space-y-4">
-              {equipmentList.map((item, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center justify-between rounded-lg border-2 p-4 ${
-                    item.provided
-                      ? 'border-green-200 bg-green-50'
-                      : item.required
-                        ? 'border-orange-200 bg-orange-50'
-                        : 'border-neutral-200 bg-neutral-50'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <span
-                      className={`text-lg ${
-                        item.provided
-                          ? 'text-green-500'
-                          : item.required
-                            ? 'text-orange-500'
-                            : 'text-neutral-500'
-                      }`}
-                    >
-                      {item.provided ? '✅' : item.required ? '📋' : '💡'}
-                    </span>
-                    <span className="font-medium text-neutral-800">{item.name}</span>
-                  </div>
+              {equipmentList
+                .filter(item => item.required)
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-center justify-between rounded-lg border-2 p-4 ${
+                      item.provided
+                        ? 'border-green-200 bg-green-50'
+                        : 'border-orange-200 bg-orange-50'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span
+                        className={`text-lg ${
+                          item.provided ? 'text-green-500' : 'text-orange-500'
+                        }`}
+                      >
+                        {item.provided ? '✅' : '📋'}
+                      </span>
+                      <span className="font-medium text-neutral-800">{item.name}</span>
+                    </div>
 
-                  <div className="flex items-center space-x-2">
-                    {item.provided && (
-                      <span className="rounded-full bg-green-500 px-2 py-1 text-xs text-white">
-                        Fornecido
-                      </span>
-                    )}
-                    {item.required && !item.provided && (
-                      <span className="rounded-full bg-orange-500 px-2 py-1 text-xs text-white">
-                        Obrigatório
-                      </span>
-                    )}
-                    {!item.required && (
+                    <div className="flex items-center space-x-2">
+                      {item.provided && (
+                        <span className="rounded-full bg-green-500 px-2 py-1 text-xs text-white">
+                          Fornecido
+                        </span>
+                      )}
+                      {!item.provided && (
+                        <span className="rounded-full bg-orange-500 px-2 py-1 text-xs text-white">
+                          Você traz
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          {/* Equipamentos Opcionais */}
+          <div>
+            <h3 className="mb-8 text-3xl font-bold text-climb-600">Equipamentos Opcionais</h3>
+            <p className="mb-6 text-neutral-600">Itens recomendados para maior conforto</p>
+
+            <div className="space-y-4">
+              {equipmentList
+                .filter(item => !item.required)
+                .map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between rounded-lg border-2 border-neutral-200 bg-neutral-50 p-4"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-lg text-neutral-500">💡</span>
+                      <span className="font-medium text-neutral-800">{item.name}</span>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
                       <span className="rounded-full bg-neutral-400 px-2 py-1 text-xs text-white">
                         Opcional
                       </span>
-                    )}
+                    </div>
+                  </div>
+                ))}
+
+              {/* Custo FLONA */}
+              <div className="mt-8 rounded-lg border-2 border-blue-200 bg-blue-50 p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-lg text-blue-500">🏞️</span>
+                    <div>
+                      <span className="font-medium text-neutral-800">Cadastro na FLONA</span>
+                      <p className="text-sm text-neutral-600">
+                        Taxa de entrada na Floresta Nacional de Ipanema
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <span className="rounded-full bg-blue-500 px-2 py-1 text-xs text-white">
+                      R$ 30,00
+                    </span>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
 

@@ -33,9 +33,9 @@ Pois cada um é pessoal.
 
 ### Lista de Equipamentos
 
-- [ ] ❌ Dividir em 2 colunas: fornecido pela empresa vs fornecido pelo cliente
-- [ ] ❌ Marcar que sapatilhas de escalada são fornecidas pela empresa
-- [ ] ❌ Adicionar custo de entrada da FLONA (Cadastro na FLONA) - R$ 30,00
+- [x] ✅ Dividir em 2 colunas: fornecido pela empresa vs fornecido pelo cliente
+- [x] ✅ Marcar que sapatilhas de escalada são fornecidas pela empresa
+- [x] ✅ Adicionar custo de entrada da FLONA (Cadastro na FLONA) - R$ 30,00
 
 ### Navegação & Layout
 
@@ -107,9 +107,8 @@ Pois cada um é pessoal.
 ### 🔧 PRÓXIMAS PRIORIDADES:
 
 1. **Campo no formulário**: WhatsApp do escalador
-2. **Lista de equipamentos**: Divisão empresa vs cliente + custo FLONA
-3. **Interface**: Mudanças no menu, footer e galeria
-4. **Conteúdo**: Cronograma e seção de parceiros
+2. **Interface**: Mudanças no menu, footer e galeria
+3. **Conteúdo**: Cronograma e seção de parceiros
 
 ### ⏸️ PODE AGUARDAR:
 
