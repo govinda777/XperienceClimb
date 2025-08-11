@@ -39,6 +39,7 @@ export const PACKAGES: Record<string, PackageType> = {
     color: 'climb-300',
     duration: '1 dia',
     maxParticipants: 8,
+    popular: true, // Now the only available package, should be popular
     requiresExperience: false,
     minAge: 12,
     cancellationPolicy: '',
@@ -62,10 +63,11 @@ export const PACKAGES: Record<string, PackageType> = {
     color: 'orange-400',
     duration: '1 dia',
     maxParticipants: 6,
-    popular: true,
+    popular: false, // Disabled packages shouldn't be popular
     requiresExperience: false,
     minAge: 14,
     cancellationPolicy: '',
+    disabled: true,
   },
   avancado: {
     id: 'avancado',
@@ -90,6 +92,7 @@ export const PACKAGES: Record<string, PackageType> = {
     requiresExperience: true, // This package requires experience
     minAge: 16,
     cancellationPolicy: '',
+    disabled: true,
   },
 };
 

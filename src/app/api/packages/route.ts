@@ -17,6 +17,7 @@ export async function GET(_request: NextRequest) {
       duration: pkg.duration,
       maxParticipants: pkg.maxParticipants,
       popular: pkg.popular || false,
+      disabled: pkg.disabled || false,
     }));
 
     return NextResponse.json({
