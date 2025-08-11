@@ -84,7 +84,7 @@ export function LocationSection() {
                   <div>
                     <h4 className="mb-1 font-semibold">Entrada da Floresta</h4>
                     <p className="text-climb-100">
-                      Siga as placas para "Floresta Nacional de Ipanema" (8km)
+                      Siga as placas para &quot;Floresta Nacional de Ipanema&quot; (8km)
                     </p>
                   </div>
                 </div>
@@ -126,7 +126,7 @@ export function LocationSection() {
                   <div>
                     <h4 className="mb-1 font-semibold text-green-100">Cronograma</h4>
                     <p className="text-sm text-green-200">
-                      Chegue cedo para aproveitar melhor o dia e evitar multidões.
+                      Enviaremos o cronograma detalhado, no final da compra, para você conferir.
                     </p>
                   </div>
                 </div>
