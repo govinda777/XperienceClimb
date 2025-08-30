@@ -13,6 +13,9 @@ export function formatPrice(price: number): string {
 }
 
 export function formatDate(date: Date): string {
+  if (!date || isNaN(date.getTime())) {
+    return 'Data inválida';
+  }
   return new Intl.DateTimeFormat('pt-BR').format(date);
 }
 
@@ -57,11 +60,23 @@ export function isValidPhone(phone: string): boolean {
 
 export function formatPhone(phone: string): string {
   const numbers = phone.replace(/\D/g, '');
+  
+  // Handle numbers with country code (+55)
+  if (numbers.length === 13 && numbers.startsWith('55')) {
+    const localNumber = numbers.slice(2); // Remove country code
+    return `(${localNumber.slice(0, 2)}) ${localNumber.slice(2, 7)}-${localNumber.slice(7)}`;
+  }
+  
+  // Handle 11-digit numbers (with 9)
   if (numbers.length === 11) {
     return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
-  } else if (numbers.length === 10) {
+  } 
+  
+  // Handle 10-digit numbers (without 9)
+  if (numbers.length === 10) {
     return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
   }
+  
   return phone;
 }
 

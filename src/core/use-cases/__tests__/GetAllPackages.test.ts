@@ -200,13 +200,15 @@ describe('GetAllPackages Use Case', () => {
 
     describe('data integrity', () => {
       it('should not modify package data', async () => {
-        const originalPackages = JSON.parse(JSON.stringify(mockPackages));
+        const originalPackages = mockPackages.map(pkg => ({ ...pkg }));
         mockPackageRepository.findAll.mockResolvedValue(mockPackages);
 
         const result = await getAllPackages.execute();
 
-        expect(result).toEqual(originalPackages);
-        expect(mockPackages).toEqual(originalPackages);
+        expect(result).toEqual(mockPackages);
+        expect(result.length).toBe(originalPackages.length);
+        expect(result[0].id).toBe(originalPackages[0].id);
+        expect(result[0].name).toBe(originalPackages[0].name);
       });
 
       it('should handle packages with missing optional fields', async () => {

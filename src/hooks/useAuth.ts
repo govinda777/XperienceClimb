@@ -12,9 +12,14 @@ export function useAuth() {
     if (!authenticated || !user) return null;
 
     // Get user preferences from localStorage or use defaults
-    const savedPrefs = typeof window !== 'undefined' 
-      ? localStorage.getItem(`userPrefs_${user.id}`)
-      : null;
+    let savedPrefs = null;
+    try {
+      savedPrefs = typeof window !== 'undefined' 
+        ? localStorage.getItem(`userPrefs_${user.id}`)
+        : null;
+    } catch (error) {
+      console.warn('Failed to read user preferences from localStorage:', error);
+    }
     
     const preferences = savedPrefs ? JSON.parse(savedPrefs) : {
       experienceLevel: 'beginner' as const,

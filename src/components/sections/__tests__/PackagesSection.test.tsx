@@ -331,12 +331,21 @@ describe('PackagesSection Component', () => {
     });
 
     it('should provide retry functionality', async () => {
-      (global.fetch as jest.Mock).mockRejectedValue(new Error('API Error'));
+      (global.fetch as jest.Mock).mockResolvedValue({
+        json: () => Promise.resolve({
+          success: false,
+          data: [],
+        }),
+      });
 
       // Mock window.location.reload
       const mockReload = jest.fn();
-      delete (window as any).location;
-      (window as any).location = { reload: mockReload };
+      const originalLocation = window.location;
+      
+      // @ts-ignore
+      delete window.location;
+      // @ts-ignore
+      window.location = { ...originalLocation, reload: mockReload };
 
       render(<PackagesSection />);
 

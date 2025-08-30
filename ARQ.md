@@ -10,11 +10,12 @@ O **XperienceClimb** é uma aplicação web full-stack desenvolvida em **Next.js
 - **Linguagem**: TypeScript
 - **Estilização**: Tailwind CSS
 - **Estado**: Zustand
-- **Autenticação**: Privy
-- **Pagamentos**: Mercado Pago
+- **Autenticação**: Privy (Web3 + Social)
+- **Pagamentos**: Múltiplos (Mercado Pago, PIX, Bitcoin, USDT, GitHub Sponsors)
 - **Comunicação**: WhatsApp API
-- **Testes**: Jest + React Testing Library
+- **Testes**: Jest + React Testing Library + Cucumber (BDD)
 - **Deployment**: Vercel
+- **Arquitetura**: Clean Architecture + DDD
 
 ---
 
@@ -29,11 +30,13 @@ XperienceClimb/
 │   │   ├── layout.tsx         # Layout raiz
 │   │   └── page.tsx           # Página inicial
 │   ├── components/            # Componentes React
-│   │   ├── auth/              # Autenticação
+│   │   ├── auth/              # Autenticação (Privy)
 │   │   ├── cart/              # Carrinho de compras
+│   │   ├── checkout/          # Sistema de checkout multi-step
 │   │   ├── layout/            # Layout components
 │   │   ├── providers/         # Context providers
 │   │   ├── sections/          # Seções da página
+│   │   ├── theme/             # Sistema de temas
 │   │   └── ui/                # Componentes de UI
 │   ├── core/                  # Domain Layer (Clean Architecture)
 │   │   ├── entities/          # Entidades de domínio
@@ -47,10 +50,14 @@ XperienceClimb/
 │   ├── lib/                   # Utilities e configurações
 │   ├── store/                 # Estado global (Zustand)
 │   ├── styles/                # Estilos globais
+│   ├── tests/                 # Testes BDD (Cucumber)
+│   ├── themes/                # Sistema de temas
 │   └── types/                 # Definições de tipos
 ├── public/                    # Assets estáticos
+├── scripts/                   # Scripts utilitários
 ├── __tests__/                 # Testes de unidade e integração
-└── jest.config.js             # Configuração Jest
+├── jest.config.js             # Configuração Jest
+└── cucumber.config.js         # Configuração Cucumber (BDD)
 ```
 
 ---
@@ -77,7 +84,14 @@ XperienceClimb/
 
 - `CartButton`: Botão flutuante do carrinho
 - `CartModal`: Modal com itens do carrinho
-- `CheckoutForm`: Formulário de finalização (multi-step)
+- `CheckoutForm`: Formulário de finalização (legacy)
+
+##### **Checkout Components**
+
+- `CheckoutFormNew`: Sistema de checkout em 5 etapas
+- `PaymentMethodSelector`: Seleção de método de pagamento
+- `CouponInput`: Sistema de cupons de desconto
+- `GitHubPaymentModal`: Modal para pagamento via GitHub Sponsors
 
 ##### **Layout Components**
 
@@ -86,12 +100,19 @@ XperienceClimb/
 ##### **Section Components**
 
 - `HeroSection`: Seção principal com CTA
+- `AboutSection`: Sobre a experiência de escalada
 - `PackagesSection`: Pacotes disponíveis (dados da API)
-- `GallerySection`: Galeria de imagens
+- `GallerySection`: Galeria de imagens com filtros
 - `SafetySection`: Informações de segurança
 - `LocationSection`: Localização e mapa
-- `TestimonialsSection`: Depoimentos
-- `Footer`: Rodapé
+- `TestimonialsSection`: Depoimentos dos clientes
+- `CommunitySection`: Comunidade e engajamento
+- `Footer`: Rodapé com informações de contato
+
+##### **Theme Components**
+
+- `ThemeSelector`: Seletor de temas/destinos
+- `ThemeProvider`: Provider do sistema de temas
 
 ##### **UI Components**
 
@@ -118,7 +139,24 @@ XperienceClimb/
 
 ##### **Orders**
 
-- `CreateOrder`: Criar pedido com integração WhatsApp/Mercado Pago
+- `CreateOrder`: Criar pedido com múltiplos métodos de pagamento
+
+##### **Payments**
+
+- `ProcessPixPayment`: Processar pagamentos PIX
+- `ProcessCryptoPayment`: Processar pagamentos em criptomoeda
+- `ProcessGitHubPayment`: Processar pagamentos via GitHub Sponsors
+
+##### **Coupons**
+
+- `ValidateCoupon`: Validar cupons de desconto
+- `ApplyDiscount`: Aplicar descontos com regras de negócio
+
+##### **Tours**
+
+- `CreateTour`: Criar novos tours
+- `GetToursByTheme`: Buscar tours por tema
+- `ValidateTourData`: Validar dados de tour
 
 ##### **Cart**
 
@@ -163,11 +201,82 @@ interface Order {
   userId: string;
   items: CartItem[];
   total: number;
+  discount?: DiscountInfo;
   status: 'pending' | 'paid' | 'cancelled' | 'refunded';
+  paymentMethod: 'card' | 'pix' | 'bitcoin' | 'usdt' | 'github' | 'whatsapp';
   paymentId?: string;
   mercadoPagoId?: string;
   createdAt: Date;
   updatedAt: Date;
+}
+```
+
+##### **Coupon**
+
+```typescript
+interface Coupon {
+  id: string;
+  code: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  minOrderValue?: number;
+  maxDiscount?: number;
+  validFrom: Date;
+  validUntil: Date;
+  usageLimit?: number;
+  usedCount: number;
+  allowedPaymentMethods?: PaymentMethod[];
+  isActive: boolean;
+}
+```
+
+##### **CryptoPayment**
+
+```typescript
+interface CryptoPayment {
+  id: string;
+  orderId: string;
+  currency: 'bitcoin' | 'usdt';
+  amount: number;
+  exchangeRate: number;
+  walletAddress: string;
+  transactionHash?: string;
+  status: 'pending' | 'confirmed' | 'failed';
+  createdAt: Date;
+}
+```
+
+##### **GitHubPayment**
+
+```typescript
+interface GitHubPayment {
+  id: string;
+  orderId: string;
+  amount: number;
+  currency: 'BRL';
+  convertedAmount: number;
+  convertedCurrency: 'USD';
+  sponsorshipUrl: string;
+  status: 'pending' | 'completed' | 'failed';
+  createdAt: Date;
+}
+```
+
+##### **Tour**
+
+```typescript
+interface Tour {
+  id: string;
+  name: string;
+  description: string;
+  theme: string;
+  location: string;
+  duration: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  maxParticipants: number;
+  price: number;
+  images: string[];
+  isActive: boolean;
 }
 ```
 
@@ -176,11 +285,16 @@ interface Order {
 - `IUserRepository`: Interface para operações de usuário
 - `IPackageRepository`: Interface para operações de pacotes
 - `IOrderRepository`: Interface para operações de pedidos
+- `ITourRepository`: Interface para operações de tours
 
 #### **Service Interfaces (src/core/services/)**
 
 - `IAuthService`: Interface para autenticação
-- `IPaymentService`: Interface para pagamentos
+- `IPaymentService`: Interface para pagamentos (Mercado Pago)
+- `ICouponService`: Interface para sistema de cupons
+- `ICryptoPaymentService`: Interface para pagamentos crypto
+- `IGitHubPaymentService`: Interface para GitHub Sponsors
+- `ITourService`: Interface para gerenciamento de tours
 
 ### 4. **Infrastructure Layer** (Implementações)
 
@@ -189,11 +303,16 @@ interface Order {
 - `UserRepository`: Implementação com Privy
 - `PackageRepository`: Implementação com dados estáticos
 - `OrderRepository`: Implementação com webhook/API
+- `TourRepository`: Implementação para gerenciamento de tours
 
 #### **Services (src/infrastructure/services/)**
 
-- `AuthService`: Implementação com Privy
-- `PaymentService`: Implementação com Mercado Pago
+- `AuthService`: Implementação com Privy (Web3 + Social)
+- `PaymentService`: Implementação com Mercado Pago (Cartão + PIX)
+- `CouponService`: Sistema de cupons com validação
+- `CryptoPaymentService`: Pagamentos Bitcoin e USDT
+- `GitHubPaymentService`: Integração GitHub Sponsors
+- `TourService`: Gerenciamento de tours e temas
 - `WhatsAppService`: Integração WhatsApp para finalização
 
 ---
@@ -365,22 +484,70 @@ Mercado Pago Webhook
 
 ---
 
-## Testes
+## Arquitetura de Testes
 
-### **Estrutura de Testes**
+### **Estrutura Completa de Testes**
 
 ```
 src/
 ├── __tests__/
+│   ├── integration/           # Testes de integração
+│   │   ├── api-packages.test.ts
+│   │   └── payment-flow.test.ts
+│   ├── test-factories.ts      # Factories para dados de teste
 │   └── test-utils.tsx         # Utilities de teste
-├── store/__tests__/
-│   └── useCartStore.test.ts   # Testes do store
-└── components/cart/__tests__/
-    ├── CartButton.test.tsx    # Testes do botão
-    ├── CartModal.test.tsx     # Testes do modal
-    ├── CheckoutForm.test.tsx  # Testes do checkout
-    └── index.test.ts          # Testes de integração
+├── components/
+│   ├── auth/__tests__/        # Testes de autenticação
+│   ├── cart/__tests__/        # Testes do carrinho
+│   └── sections/__tests__/    # Testes das seções
+├── core/use-cases/__tests__/  # Testes dos casos de uso
+├── hooks/__tests__/           # Testes dos hooks customizados
+├── lib/__tests__/             # Testes das utilities
+├── store/__tests__/           # Testes do estado global
+└── tests/bdd/                 # Testes BDD (Cucumber)
+    ├── features/              # Arquivos .feature
+    └── step-definitions/      # Implementações dos steps
 ```
+
+### **Tipos de Teste Implementados**
+
+#### **1. Unit Tests (Jest + React Testing Library)**
+- **Componentes**: Renderização, interações, props
+- **Hooks**: Lógica de estado e efeitos
+- **Services**: Lógica de negócio isolada
+- **Use Cases**: Casos de uso do domínio
+- **Utilities**: Funções auxiliares
+
+#### **2. Integration Tests**
+- **API Routes**: Endpoints completos
+- **Payment Flow**: Fluxo completo de pagamento
+- **Authentication**: Integração com Privy
+- **Database**: Operações de persistência
+
+#### **3. BDD Tests (Cucumber)**
+- **User Journeys**: Jornadas completas do usuário
+- **Business Scenarios**: Cenários de negócio
+- **Cross-browser**: Compatibilidade entre navegadores
+- **E2E Workflows**: Fluxos ponta a ponta
+
+### **Cobertura de Testes**
+
+#### **Funcionalidades Testadas**
+- ✅ **Autenticação**: Login, logout, proteção de rotas
+- ✅ **Carrinho**: Adicionar, remover, calcular totais
+- ✅ **Checkout**: Processo multi-step completo
+- ✅ **Pagamentos**: Todos os 5 métodos implementados
+- ✅ **Cupons**: Validação e aplicação de descontos
+- ✅ **API**: Endpoints e webhooks
+- ✅ **Estado**: Gerenciamento com Zustand
+- ✅ **UI**: Componentes e interações
+
+#### **Métricas Atuais**
+- **Total de Testes**: 80+ testes
+- **Suites**: 5 suites principais
+- **Cobertura**: >90% nas funcionalidades críticas
+- **Tempo de Execução**: <30 segundos
+- **CI/CD**: Integração com pre-commit hooks
 
 ### **Estratégias de Teste**
 

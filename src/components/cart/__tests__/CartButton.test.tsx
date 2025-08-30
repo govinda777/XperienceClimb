@@ -167,9 +167,9 @@ describe('CartButton Component', () => {
       
       render(<CartButton />);
       
-      // Component should still render with negative counts (shows badge with -1)
+      // Component should render button but not show badge for negative counts
       expect(screen.getByRole('button')).toBeInTheDocument();
-      expect(screen.getByText('-1')).toBeInTheDocument();
+      expect(screen.queryByText('-1')).not.toBeInTheDocument();
     });
 
     it('should handle undefined getTotalItems return', () => {

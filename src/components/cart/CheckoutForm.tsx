@@ -181,7 +181,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div data-testid="checkout-form" className="flex h-full flex-col">
       {/* Progress Steps */}
       <div className="border-b border-neutral-200 px-4 py-4">
         <div className="mb-3 flex items-center justify-between text-sm">

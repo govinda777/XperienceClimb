@@ -778,6 +778,7 @@ describe('TourService', () => {
 
       const isUnique = await tourService.isTourNameUnique('Existing Tour');
 
+      expect(mockTourRepository.findByName).toHaveBeenCalledWith('Existing Tour');
       expect(isUnique).toBe(false);
     });
 

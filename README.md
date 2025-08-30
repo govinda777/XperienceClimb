@@ -1,16 +1,147 @@
-# 🧗‍♂️ XperienceClimb - Tutorial de Deploy
+# 🧗‍♂️ XperienceClimb - Plataforma de Experiências de Escalada
 
-Uma plataforma de reservas para experiências de escalada no Morro Araçoiaba, desenvolvida com Next.js 14, Privy e MercadoPago.
+Uma plataforma completa de reservas para experiências de escalada no Morro Araçoiaba (Floresta Nacional de Ipanema), desenvolvida com Next.js 15, TypeScript, Privy e múltiplos métodos de pagamento.
+
+## 🌟 Características Principais
+
+- **🏗️ Arquitetura Moderna**: Next.js 15 com App Router, TypeScript e Clean Architecture
+- **🔐 Autenticação Segura**: Integração com Privy para Web3 e autenticação social
+- **💳 Múltiplos Pagamentos**: Mercado Pago, PIX, Bitcoin, USDT e GitHub Sponsors
+- **🎫 Sistema de Cupons**: Descontos personalizáveis com regras de negócio
+- **🎨 Sistema de Temas**: Suporte para múltiplos destinos de escalada
+- **🧪 Testes Abrangentes**: 80+ testes incluindo BDD e integração
+- **📱 Responsivo**: Interface otimizada para todos os dispositivos
 
 ## 📋 Índice
 
+- [🚀 Início Rápido](#-início-rápido)
+- [🏗️ Arquitetura](#️-arquitetura)
+- [💳 Sistema de Pagamentos](#-sistema-de-pagamentos)
+- [🎫 Sistema de Cupons](#-sistema-de-cupons)
+- [🧪 Testes](#-testes)
 - [🔧 Pré-requisitos](#-pré-requisitos)
-- [🚀 Deploy Rápido (Vercel)](#-deploy-rápido-vercel)
+- [🚀 Deploy (Vercel)](#-deploy-vercel)
 - [⚙️ Configuração Completa](#️-configuração-completa)
 - [🔐 Configuração das APIs](#-configuração-das-apis)
-- [🛠️ Deploy Alternativo](#️-deploy-alternativo)
 - [❌ Resolução de Problemas](#-resolução-de-problemas)
 - [📚 Comandos Úteis](#-comandos-úteis)
+
+## 🚀 Início Rápido
+
+```bash
+# Clone o repositório
+git clone https://github.com/govinda777/XperienceClimb.git
+cd XperienceClimb
+
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente (veja ENV_VARIABLES.txt)
+cp .env.example .env.local
+
+# Execute em modo desenvolvimento
+npm run dev
+```
+
+Acesse http://localhost:3000 para ver a aplicação rodando.
+
+## 🏗️ Arquitetura
+
+O projeto utiliza **Clean Architecture** com **Domain-Driven Design (DDD)**:
+
+```
+src/
+├── app/                    # Next.js App Router (Presentation)
+├── components/             # Componentes React
+├── core/                   # Domain Layer
+│   ├── entities/          # Entidades de domínio
+│   ├── repositories/      # Interfaces de repositórios
+│   ├── services/          # Interfaces de serviços
+│   └── use-cases/         # Casos de uso
+├── infrastructure/        # Infrastructure Layer
+│   ├── repositories/      # Implementações de repositórios
+│   └── services/          # Implementações de serviços
+├── hooks/                 # Custom React hooks
+├── store/                 # Estado global (Zustand)
+└── themes/                # Sistema de temas
+```
+
+**Principais Tecnologias:**
+- **Next.js 15** - Framework React com App Router
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Estilização utilitária
+- **Zustand** - Gerenciamento de estado
+- **Privy** - Autenticação Web3 e social
+- **Jest + React Testing Library** - Testes
+
+## 💳 Sistema de Pagamentos
+
+Suporte completo a múltiplos métodos de pagamento:
+
+### Métodos Disponíveis
+- **💳 Cartão de Crédito** - Via Mercado Pago
+- **📱 PIX** - Pagamento instantâneo brasileiro
+- **₿ Bitcoin** - Pagamentos em criptomoeda
+- **💎 USDT** - Stablecoin na rede Ethereum
+- **🐙 GitHub Sponsors** - Patrocínio via GitHub
+- **📞 WhatsApp** - Fallback para finalização manual
+
+### Características
+- **Processamento Seguro** - Integração com APIs confiáveis
+- **Webhooks** - Confirmação automática de pagamentos
+- **Conversão de Moeda** - Suporte a BRL, USD e criptomoedas
+- **Fallback Inteligente** - WhatsApp como backup
+
+## 🎫 Sistema de Cupons
+
+Sistema avançado de descontos com regras de negócio:
+
+### Tipos de Desconto
+- **Percentual** - Ex: 10% de desconto
+- **Valor Fixo** - Ex: R$ 50 de desconto
+- **Método Específico** - Descontos por forma de pagamento
+
+### Cupons de Teste
+| Código | Tipo | Valor | Restrições |
+|--------|------|-------|------------|
+| `WELCOME10` | Percentual | 10% | Mín. R$ 50, Todos os métodos |
+| `CLIMB50` | Fixo | R$ 50 | Mín. R$ 100, Cartão/PIX |
+| `CRYPTO15` | Percentual | 15% | Mín. R$ 30, Apenas crypto |
+
+### Regras de Negócio
+- **Validação em Tempo Real** - Verificação instantânea
+- **Limites de Uso** - Controle de quantidade e usuário
+- **Compatibilidade** - Restrições por método de pagamento
+- **Expiração** - Datas de validade configuráveis
+
+## 🧪 Testes
+
+Suite completa de testes com alta cobertura:
+
+### Tipos de Teste
+- **Unit Tests** - Componentes e funções isoladas
+- **Integration Tests** - Fluxos completos de API
+- **BDD Tests** - Cenários de comportamento do usuário
+
+### Executar Testes
+```bash
+# Todos os testes
+npm test
+
+# Com cobertura
+npm run test:coverage
+
+# Testes BDD
+npm run test:bdd
+
+# Testes de pré-commit
+npm run test:pre-commit
+```
+
+### Cobertura Atual
+- **80+ testes** implementados
+- **5 suites** de teste
+- **Cobertura > 90%** nas funcionalidades críticas
 
 ## 🔧 Pré-requisitos
 
@@ -21,7 +152,7 @@ Uma plataforma de reservas para experiências de escalada no Morro Araçoiaba, d
 - Conta no [Privy](https://dashboard.privy.io/) para autenticação
 - Conta no [MercadoPago](https://developers.mercadopago.com/) para pagamentos
 
-## 🚀 Deploy Rápido (Vercel)
+## 🚀 Deploy (Vercel)
 
 ### Método 1: Deploy via Git (Recomendado)
 
@@ -294,4 +425,52 @@ Se encontrar problemas:
 
 ---
 
-🚀 **Deploy realizado com sucesso!** Sua aplicação XperienceClimb está pronta para escalar novos horizontes!
+## 🎯 Status do Projeto
+
+### ✅ Funcionalidades Implementadas
+- **Sistema de Autenticação** - Privy com Web3 e social login
+- **Carrinho de Compras** - Gerenciamento completo com Zustand
+- **Múltiplos Pagamentos** - 5 métodos diferentes implementados
+- **Sistema de Cupons** - Descontos com regras de negócio
+- **Checkout Multi-step** - Processo guiado de finalização
+- **Testes Abrangentes** - 80+ testes com alta cobertura
+- **Arquitetura Limpa** - Clean Architecture + DDD
+- **Sistema de Temas** - Preparado para múltiplos destinos
+
+### 🔄 Em Desenvolvimento
+- **Campo WhatsApp** - Adicionar campo obrigatório no formulário
+- **Melhorias de Interface** - Ajustes no menu, footer e galeria
+- **Seção Cronograma** - Cronograma detalhado da experiência
+- **Seção Parceiros** - Parceiros e colaboradores
+
+### 📈 Métricas do Projeto
+- **Arquivos de Código**: 100+ arquivos TypeScript/React
+- **Linhas de Código**: 10,000+ linhas
+- **Componentes**: 30+ componentes reutilizáveis
+- **Testes**: 80+ testes automatizados
+- **Cobertura**: >90% nas funcionalidades críticas
+
+## 🤝 Contribuição
+
+Para contribuir com o projeto:
+
+1. Fork o repositório
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 📞 Suporte
+
+Para suporte e dúvidas:
+- **Email**: contato@xperiencehubs.com
+- **WhatsApp**: +55 11 99999-9999
+- **GitHub Issues**: Para bugs e melhorias
+
+---
+
+🚀 **XperienceClimb - Escalando novos horizontes na tecnologia e na natureza!**

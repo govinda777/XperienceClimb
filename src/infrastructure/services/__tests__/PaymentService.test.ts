@@ -44,12 +44,23 @@ describe('PaymentService', () => {
     });
 
     it('should warn when access token is missing', () => {
+      // Store original env
+      const originalToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
+      
       // Delete the environment variable to simulate missing token
       delete process.env.MERCADOPAGO_ACCESS_TOKEN;
       
+      // Clear mocks and create new instance
+      jest.clearAllMocks();
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      
       new PaymentService();
       
-      expect(console.warn).toHaveBeenCalledWith('MERCADOPAGO_ACCESS_TOKEN not configured');
+      expect(warnSpy).toHaveBeenCalledWith('MERCADOPAGO_ACCESS_TOKEN not configured');
+      
+      // Restore
+      warnSpy.mockRestore();
+      if (originalToken) process.env.MERCADOPAGO_ACCESS_TOKEN = originalToken;
     });
 
     it('should warn when public key is missing', () => {

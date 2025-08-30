@@ -330,7 +330,9 @@ export class TourService implements ITourService {
 
   async isTourNameUnique(name: string, excludeId?: string): Promise<boolean> {
     const tours = await this.tourRepository.findByName(name);
-    return tours.length === 0 || (excludeId && tours.every(tour => tour.id === excludeId));
+    if (tours.length === 0) return true;
+    if (excludeId) return tours.every(tour => tour.id === excludeId);
+    return false;
   }
 
   async isThemeIdUnique(themeId: string, excludeId?: string): Promise<boolean> {

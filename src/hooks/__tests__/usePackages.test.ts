@@ -36,21 +36,17 @@ const mockPackages: Package[] = [
   },
 ];
 
-const mockGetAllPackages = {
-  execute: jest.fn(),
-};
-
-const mockGetPackageAvailability = {
-  execute: jest.fn(),
-};
-
-// Mock the use cases
+// Mock the use cases first
 jest.mock('@/core/use-cases/packages/GetAllPackages', () => ({
-  GetAllPackages: jest.fn().mockImplementation(() => mockGetAllPackages),
+  GetAllPackages: jest.fn().mockImplementation(() => ({
+    execute: jest.fn(),
+  })),
 }));
 
 jest.mock('@/core/use-cases/packages/GetPackageAvailability', () => ({
-  GetPackageAvailability: jest.fn().mockImplementation(() => mockGetPackageAvailability),
+  GetPackageAvailability: jest.fn().mockImplementation(() => ({
+    execute: jest.fn(),
+  })),
 }));
 
 // Mock the repository
@@ -58,9 +54,21 @@ jest.mock('@/infrastructure/repositories/PackageRepository', () => ({
   PackageRepository: jest.fn().mockImplementation(() => ({})),
 }));
 
+// Get the mocked classes
+const { GetAllPackages } = require('@/core/use-cases/packages/GetAllPackages');
+const { GetPackageAvailability } = require('@/core/use-cases/packages/GetPackageAvailability');
+
 describe('usePackages Hook', () => {
+  let mockGetAllPackages: any;
+  let mockGetPackageAvailability: any;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    
+    // Create new instances and get their mocks
+    mockGetAllPackages = new GetAllPackages();
+    mockGetPackageAvailability = new GetPackageAvailability();
+    
     mockGetAllPackages.execute.mockResolvedValue(mockPackages);
     mockGetPackageAvailability.execute.mockResolvedValue({
       available: true,
