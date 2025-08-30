@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { cn, openWhatsApp } from '@/lib/utils';
 import { NAVIGATION_ITEMS, CONTACT_INFO } from '@/lib/constants';
 import { LoginButton } from '@/components/auth';
+import { ThemeSelector } from '@/components/theme';
 
 export function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
@@ -76,6 +77,11 @@ export function Navigation() {
               <span className="text-lg">💬</span>
               <span className="text-sm font-medium hidden sm:inline">WhatsApp</span>
             </button>
+          </div>
+          
+          {/* Theme Selector */}
+          <div className="border-l border-white/20 pl-2 ml-2">
+            <ThemeSelector />
           </div>
           
           {/* Login Button */}

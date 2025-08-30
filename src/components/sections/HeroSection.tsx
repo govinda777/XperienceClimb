@@ -4,8 +4,11 @@ import React from 'react';
 import { Button } from '@/components/ui';
 import { openWhatsApp } from '@/lib/utils';
 import { CONTACT_INFO } from '@/lib/constants';
+import { useTheme } from '@/themes/ThemeProvider';
 
 export function HeroSection() {
+  const { currentTheme } = useTheme();
+  
   const handleScrollToPackages = () => {
     const element = document.getElementById('pacotes');
     if (element) {
@@ -38,26 +41,28 @@ export function HeroSection() {
           {/* Logo */}
           <div className="mb-8 animate-slide-up">
             <h1 className="text-6xl font-bold leading-none md:text-8xl">
-              XPERIENCE
+              {currentTheme.content.hero.title.split(' ')[0]}
               <br />
-              <span className="text-5xl text-orange-400 md:text-7xl">CLIMB</span>
+              <span className="text-5xl text-orange-400 md:text-7xl">
+                {currentTheme.content.hero.title.split(' ')[1]}
+              </span>
             </h1>
           </div>
 
           {/* Hero Text */}
           <div className="mb-12 animate-slide-up" style={{ animationDelay: '0.2s' }}>
             <h2 className="mb-8 text-2xl font-semibold text-climb-100 md:text-3xl">
-              Viva a Experiência Definitiva de Escalada
+              {currentTheme.content.hero.subtitle}
             </h2>
 
             <div className="flex flex-col items-center justify-center space-y-4 text-lg md:flex-row md:space-x-8 md:space-y-0">
               <div className="flex items-center space-x-2">
                 <span className="text-2xl">📍</span>
-                <span>{CONTACT_INFO.address}</span>
+                <span>{currentTheme.location.address}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-2xl">🚗</span>
-                <span>{CONTACT_INFO.distance}</span>
+                <span>{currentTheme.location.distance}</span>
               </div>
               <div className="flex items-center space-x-2 rounded-full border border-orange-400/30 bg-orange-400/20 px-4 py-2">
                 <span className="text-2xl">⚠️</span>

@@ -4,5 +4,6 @@ export * from './PackagesSection';
 export * from './GallerySection';
 export * from './LocationSection';
 export * from './SafetySection';
+export * from './CommunitySection';
 export * from './TestimonialsSection';
 export * from './Footer';

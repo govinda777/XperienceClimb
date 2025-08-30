@@ -5,6 +5,7 @@ import {
   PackagesSection,
   GallerySection,
   SafetySection,
+  CommunitySection,
   LocationSection,
   Footer,
 } from '@/components/sections';
@@ -19,6 +20,7 @@ export default function Home() {
       <PackagesSection />
       <GallerySection />
       <SafetySection />
+      <CommunitySection />
       <LocationSection />
       {/* <TestimonialsSection /> */}
       <Footer />

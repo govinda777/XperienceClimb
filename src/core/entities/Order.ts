@@ -1,4 +1,5 @@
 import { Money } from './Package';
+import { PaymentMethod } from './Coupon';
 
 export interface Order {
   id: string;
@@ -7,9 +8,19 @@ export interface Order {
   status: OrderStatus;
   payment: PaymentInfo;
   climbingDetails: ClimbingDetails;
+  subtotal: Money;
+  discount?: DiscountInfo;
   total: Money;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface DiscountInfo {
+  couponCode: string;
+  couponId: string;
+  discountType: 'percentage' | 'fixed_amount';
+  discountValue: number;
+  discountAmount: Money;
 }
 
 export interface OrderItem {
@@ -35,10 +46,11 @@ export interface ClimbingDetails {
 }
 
 export interface PaymentInfo {
-  method: 'mercadopago' | 'whatsapp';
+  method: PaymentMethod;
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
   transactionId?: string;
   mercadoPagoPreferenceId?: string;
+  cryptoPaymentId?: string;
   processedAt?: Date;
 }
 

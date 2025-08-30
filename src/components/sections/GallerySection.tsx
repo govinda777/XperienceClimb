@@ -3,61 +3,23 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui';
+import { useTheme } from '@/themes/ThemeProvider';
 
 interface GalleryImage {
   src: string;
   alt: string;
   title: string;
-  category: 'climb' | 'nature' | 'equipment';
+  category: string;
 }
 
-const galleryImages: GalleryImage[] = [
-  {
-    src: '/images/climb.jpg',
-    alt: 'Escalador nas rochas do Morro Araçoiaba',
-    title: 'Escalada Técnica',
-    category: 'climb'
-  },
-  {
-    src: '/images/climb-2.jpg',
-    alt: 'Vista panorâmica durante a escalada',
-    title: 'Vista Panorâmica',
-    category: 'climb'
-  },
-  {
-    src: '/images/flona.jpg',
-    alt: 'Floresta Nacional de Ipanema',
-    title: 'Mata Atlântica Preservada',
-    category: 'nature'
-  },
-  {
-    src: '/images/flona-2.jpg',
-    alt: 'Trilhas da Floresta Nacional',
-    title: 'Trilhas Ecológicas',
-    category: 'nature'
-  },
-  {
-    src: '/images/setor-map.jpg',
-    alt: 'Mapa dos setores de escalada',
-    title: 'Setores de Escalada',
-    category: 'equipment'
-  }
-];
-
-const categories = {
-  all: 'Todas',
-  climb: 'Escalada',
-  nature: 'Natureza',
-  equipment: 'Equipamentos'
-};
-
 export function GallerySection() {
-  const [selectedCategory, setSelectedCategory] = useState<keyof typeof categories>('all');
+  const { currentTheme } = useTheme();
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   const filteredImages = selectedCategory === 'all' 
-    ? galleryImages 
-    : galleryImages.filter(img => img.category === selectedCategory);
+    ? currentTheme.gallery.images 
+    : currentTheme.gallery.images.filter(img => img.category === selectedCategory);
 
   return (
     <>
@@ -68,18 +30,18 @@ export function GallerySection() {
               Galeria de Experiências
             </h2>
             <p className="text-xl text-neutral-700 max-w-3xl mx-auto mb-8">
-              Conheça a beleza única do Morro Araçoiaba e veja o que te espera 
-              nesta experiência inesquecível de escalada.
+              Conheça a beleza única de {currentTheme.location.name} e veja o que te espera 
+              nesta experiência inesquecível.
             </p>
 
             {/* Category Filter */}
             <div className="flex flex-wrap justify-center gap-3">
-              {Object.entries(categories).map(([key, label]) => (
+              {Object.entries(currentTheme.gallery.categories).map(([key, label]) => (
                 <Button
                   key={key}
                   variant={selectedCategory === key ? 'primary' : 'outline'}
                   size="md"
-                  onClick={() => setSelectedCategory(key as keyof typeof categories)}
+                  onClick={() => setSelectedCategory(key)}
                   className="px-6 py-2"
                 >
                   {label}
@@ -116,9 +78,11 @@ export function GallerySection() {
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       image.category === 'climb' ? 'bg-climb-500 text-white' :
                       image.category === 'nature' ? 'bg-green-500 text-white' :
+                      image.category === 'adventure' ? 'bg-purple-500 text-white' :
+                      image.category === 'waterfalls' ? 'bg-blue-500 text-white' :
                       'bg-orange-400 text-white'
                     }`}>
-                      {categories[image.category]}
+                      {currentTheme.gallery.categories[image.category]}
                     </span>
                   </div>
 
@@ -141,7 +105,7 @@ export function GallerySection() {
               </h3>
               <p className="mb-6 opacity-90">
                 Junte-se a centenas de aventureiros que já descobriram 
-                a magia da escalada no Morro Araçoiaba.
+                a magia de {currentTheme.location.name}.
               </p>
               <Button 
                 variant="secondary" 

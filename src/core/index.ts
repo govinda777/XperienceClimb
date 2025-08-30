@@ -1,6 +1,7 @@
 // Entities
 export * from './entities/User';
 export * from './entities/Package';
+export * from './entities/Community';
 export * from './entities/Order';
 
 // Repositories

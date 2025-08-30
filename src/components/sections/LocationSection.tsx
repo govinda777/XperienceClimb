@@ -3,12 +3,13 @@
 import React from 'react';
 // import Image from 'next/image';
 import { Button } from '@/components/ui';
-import { CONTACT_INFO } from '@/lib/constants';
+import { useTheme } from '@/themes/ThemeProvider';
 
 export function LocationSection() {
+  const { currentTheme } = useTheme();
+  
   const openMaps = () => {
-    const mapsUrl = `https://www.google.com/maps/place/Centro+de+Visitantes/@-23.4255562,-47.5980568,775m/data=!3m1!1e3!4m9!1m2!2m1!1sFloresta+Nacional+de+Ipanema,+Iper%C3%B3,+SP!3m5!1s0x94c5f172812051e1:0xc9ab288d76797fad!8m2!3d-23.4254791!4d-47.5979779!16s%2Fg%2F11gj_vn973!5m1!1e1?entry=ttu&g_ep=EgoyMDI1MDcyOS4wIKXMDSoASAFQAw%3D%3D`;
-    window.open(mapsUrl, '_blank');
+    window.open(currentTheme.location.mapsUrl, '_blank');
   };
 
   return (
@@ -17,8 +18,7 @@ export function LocationSection() {
         <div className="mb-16 text-center">
           <h2 className="mb-6 text-4xl font-bold md:text-5xl">Como Chegar</h2>
           <p className="mx-auto max-w-3xl text-xl text-climb-100">
-            O Morro Araçoiaba está localizado na Floresta Nacional de Ipanema, a apenas 120km de São
-            Paulo.
+            {currentTheme.location.name} está localizado em {currentTheme.location.address}, a apenas {currentTheme.location.distance}.
           </p>
         </div>
 
@@ -34,9 +34,9 @@ export function LocationSection() {
                 <div>
                   <h3 className="mb-2 text-2xl font-bold">Endereço</h3>
                   <p className="text-lg leading-relaxed text-climb-100">
-                    {CONTACT_INFO.address}
+                    {currentTheme.location.address}
                     <br />
-                    Iperó, São Paulo
+                    {currentTheme.location.city}, {currentTheme.location.state}
                   </p>
                 </div>
               </div>
@@ -53,53 +53,21 @@ export function LocationSection() {
               <h3 className="text-2xl font-bold">Como Chegar de Carro</h3>
 
               <div className="space-y-4">
-                <div className="flex items-start space-x-4">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-400 text-sm font-bold text-white">
-                    1
+                {currentTheme.location.directions.map((direction, index) => (
+                  <div key={index} className="flex items-start space-x-4">
+                    <div className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white ${
+                      index === currentTheme.location.directions.length - 1 ? 'bg-green-500' : 'bg-orange-400'
+                    }`}>
+                      {index === currentTheme.location.directions.length - 1 ? '✓' : direction.step}
+                    </div>
+                    <div>
+                      <h4 className="mb-1 font-semibold">{direction.title}</h4>
+                      <p className="text-climb-100">
+                        {direction.description}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="mb-1 font-semibold">Saída de São Paulo</h4>
-                    <p className="text-climb-100">
-                      Siga pela Rodovia Raposo Tavares (SP-270) sentido interior
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-400 text-sm font-bold text-white">
-                    2
-                  </div>
-                  <div>
-                    <h4 className="mb-1 font-semibold">Saída Iperó</h4>
-                    <p className="text-climb-100">
-                      Pegue a saída 109 - Iperó/Boituva (aproximadamente 90km)
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-400 text-sm font-bold text-white">
-                    3
-                  </div>
-                  <div>
-                    <h4 className="mb-1 font-semibold">Entrada da Floresta</h4>
-                    <p className="text-climb-100">
-                      Siga as placas para &quot;Floresta Nacional de Ipanema&quot; (8km)
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-sm font-bold text-white">
-                    ✓
-                  </div>
-                  <div>
-                    <h4 className="mb-1 font-semibold">Chegada</h4>
-                    <p className="text-climb-100">
-                      Estacionamento gratuito, proximo ao acesso ao setor de escalada
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -113,9 +81,11 @@ export function LocationSection() {
                   <span className="text-xl text-yellow-400">⚠️</span>
                   <div>
                     <h4 className="mb-1 font-semibold text-yellow-100">Importante</h4>
-                    <p className="text-sm text-yellow-200">
-                      Horário de funcionamento do parque: 8h às 17h.
-                    </p>
+                    <div className="text-sm text-yellow-200 space-y-1">
+                      {currentTheme.logistics.importantNotes.map((note, index) => (
+                        <p key={index}>{note}</p>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -124,10 +94,12 @@ export function LocationSection() {
                 <div className="flex items-start space-x-3">
                   <span className="text-xl text-green-400">💡</span>
                   <div>
-                    <h4 className="mb-1 font-semibold text-green-100">Cronograma</h4>
-                    <p className="text-sm text-green-200">
-                      Enviaremos o cronograma detalhado, no final da compra, para você conferir.
-                    </p>
+                    <h4 className="mb-1 font-semibold text-green-100">Dicas</h4>
+                    <div className="text-sm text-green-200 space-y-1">
+                      {currentTheme.logistics.tips.map((tip, index) => (
+                        <p key={index}>{tip}</p>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

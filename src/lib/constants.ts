@@ -16,6 +16,7 @@ export const NAVIGATION_ITEMS = [
   { id: 'pacotes', label: 'Pacotes', icon: '💎' },
   { id: 'galeria', label: 'Galeria', icon: '📸' },
   { id: 'seguranca', label: 'Segurança', icon: '🛡️' },
+  { id: 'comunidade', label: 'Comunidade', icon: '🤝' },
   { id: 'localizacao', label: 'Local', icon: '📍' },
   { id: 'depoimentos', label: 'Depoimentos', icon: '⭐' },
 ];

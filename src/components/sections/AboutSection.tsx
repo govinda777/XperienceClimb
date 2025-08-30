@@ -2,9 +2,12 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { useTheme } from '@/themes/ThemeProvider';
 // import { Button } from '@/components/ui';
 
 export function AboutSection() {
+  const { currentTheme } = useTheme();
+  
   return (
     <section id="sobre" className="bg-white py-20">
       <div className="container mx-auto px-4">
@@ -13,79 +16,45 @@ export function AboutSection() {
           <div className="space-y-6">
             <div>
               <h2 className="mb-6 text-4xl font-bold text-climb-600 md:text-5xl">
-                Escalada no Coração da
-                <span className="text-orange-400"> Mata Atlântica</span>
+                {currentTheme.content.about.title.split(' ').slice(0, -2).join(' ')}
+                <span className="text-orange-400"> {currentTheme.content.about.title.split(' ').slice(-2).join(' ')}</span>
               </h2>
               <p className="text-xl leading-relaxed text-neutral-700">
-                O Morro Araçoiaba, localizado na Floresta Nacional de Ipanema (FLONA), oferece uma
-                das experiências de escalada mais autênticas e seguras do interior de São Paulo.
+                {currentTheme.content.about.description}
               </p>
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-start space-x-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-climb-500 text-xl text-white">
-                  🏔️
+              {currentTheme.content.about.highlights.map((highlight, index) => (
+                <div key={index} className="flex items-start space-x-4">
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-full text-xl text-white ${
+                    index === 0 ? 'bg-climb-500' : 
+                    index === 1 ? 'bg-orange-400' : 
+                    'bg-purple-500'
+                  }`}>
+                    {highlight.icon}
+                  </div>
+                  <div>
+                    <h3 className="mb-2 text-lg font-semibold text-climb-600">
+                      {highlight.title}
+                    </h3>
+                    <p className="text-neutral-700">
+                      {highlight.description}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="mb-2 text-lg font-semibold text-climb-600">
-                    Rochas Naturais Únicas
-                  </h3>
-                  <p className="text-neutral-700">
-                    Formações rochosas de quartzito com mais de 600 milhões de anos, oferecendo vias
-                    para todos os níveis de experiência.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white">
-                  🌿
-                </div>
-                <div>
-                  <h3 className="mb-2 text-lg font-semibold text-climb-600">
-                    Conservação e Natureza
-                  </h3>
-                  <p className="text-neutral-700">
-                    Localizado em uma unidade de conservação federal, garantindo a preservação do
-                    ambiente e biodiversidade local.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-500 text-xl text-white">
-                  👨‍🏫
-                </div>
-                <div>
-                  <h3 className="mb-2 text-lg font-semibold text-climb-600">
-                    Instrutores Certificados
-                  </h3>
-                  <p className="text-neutral-700">
-                    Equipe de profissionais com certificação nacional e internacional, garantindo
-                    segurança e aprendizado de qualidade.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
 
             <div className="rounded-lg border border-orange-200 bg-orange-50 p-6">
               <div className="mb-3 flex items-center space-x-3">
                 <span className="text-2xl">📋</span>
                 <h4 className="text-lg font-semibold text-climb-600">
-                  Sobre a Floresta Nacional de Ipanema (Flona)
+                  {currentTheme.content.about.infoBox.title}
                 </h4>
               </div>
               <p className="text-neutral-700">
-                A Floresta Nacional de Ipanema, antes conhecida como "Fazenda Ipanema" é uma unidade
-                de Conservação da natureza, administrada pelo Instituto Chico Mendes de Conservação
-                da Biodiversidade (ICMBio), localizada a 120 km da cidade de São Paulo e abrangendo
-                parte dos municípios de Iperó, Araçoiaba da Serra e Capela do Alto. A missão da
-                Flona de Ipanema é proteger, conservar e restaurar os remanescentes de vegetação
-                nativa do domínio de Mata Atlântica, especialmente o Morro Araçoiaba, e seus
-                ambientes associados, seus atributos naturais, históricos e culturais, promover o
-                manejo florestal, o uso público e ser referência em integração socioambiental,
-                pesquisa e disseminação de conhecimentos.
+                {currentTheme.content.about.infoBox.content}
               </p>
             </div>
           </div>
@@ -94,16 +63,16 @@ export function AboutSection() {
           <div className="relative">
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
               <Image
-                src="/images/flona.jpg"
-                alt="Vista da Floresta Nacional de Ipanema"
+                src={currentTheme.gallery.images.find(img => img.category === 'nature')?.src || currentTheme.gallery.images[0].src}
+                alt={currentTheme.gallery.images.find(img => img.category === 'nature')?.alt || currentTheme.gallery.images[0].alt}
                 width={600}
                 height={400}
                 className="h-[400px] w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               <div className="absolute bottom-6 left-6 text-white">
-                <p className="text-sm font-medium">📍 Floresta Nacional de Ipanema</p>
-                <p className="text-xs opacity-90">Iperó, São Paulo</p>
+                <p className="text-sm font-medium">📍 {currentTheme.location.address}</p>
+                <p className="text-xs opacity-90">{currentTheme.location.city}, {currentTheme.location.state}</p>
               </div>
             </div>
 
@@ -122,7 +91,7 @@ export function AboutSection() {
             </div>
 
             <div className="absolute -right-6 -top-6 rounded-2xl bg-orange-400 p-4 text-center text-white shadow-lg">
-              <div className="text-xl font-bold">120km</div>
+              <div className="text-xl font-bold">{currentTheme.location.distance.split(' ')[0]}</div>
               <div className="text-xs">de São Paulo</div>
             </div>
           </div>

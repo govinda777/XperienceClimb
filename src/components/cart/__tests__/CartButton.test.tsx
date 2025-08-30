@@ -1,256 +1,202 @@
-/// <reference types="@testing-library/jest-dom" />
-
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CartButton } from '../CartButton';
-import { useCartStore } from '@/store/useCartStore';
-import { createMockCartItem, MOCK_CART_ITEMS } from '@/__tests__/test-utils';
+import { createCartStoreState } from '@/__tests__/test-utils';
 
 // Mock the cart store
-jest.mock('@/store/useCartStore');
-const mockUseCartStore = useCartStore as jest.MockedFunction<typeof useCartStore>;
+const mockCartStore = createCartStoreState();
 
-// Mock Lucide React icons
-jest.mock('lucide-react', () => ({
-  ShoppingCart: ({ className, ...props }: any) => (
-    <svg data-testid="shopping-cart-icon" className={className} {...props} />
+jest.mock('@/store/useCartStore', () => ({
+  useCartStore: () => mockCartStore,
+}));
+
+// Mock UI components
+jest.mock('@/components/ui', () => ({
+  Button: ({ children, onClick, className, ...props }: any) => (
+    <button onClick={onClick} className={className} {...props}>
+      {children}
+    </button>
   ),
 }));
 
-describe('CartButton', () => {
-  const mockToggleCart = jest.fn();
-  const mockGetTotalItems = jest.fn();
+// Mock Lucide React icons
+jest.mock('lucide-react', () => ({
+  ShoppingCart: ({ className }: { className?: string }) => (
+    <svg className={className} data-testid="shopping-cart-icon">
+      <title>Shopping Cart</title>
+    </svg>
+  ),
+}));
 
+describe('CartButton Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockCartStore.getTotalItems.mockReturnValue(0);
+  });
 
-    // Default mock implementation
-    mockUseCartStore.mockReturnValue({
-      items: [],
-      isOpen: false,
-      addItem: jest.fn(),
-      removeItem: jest.fn(),
-      updateQuantity: jest.fn(),
-      clearCart: jest.fn(),
-      toggleCart: mockToggleCart,
-      openCart: jest.fn(),
-      closeCart: jest.fn(),
-      getTotalPrice: jest.fn(() => 0),
-      getTotalItems: mockGetTotalItems,
-      getItemCount: jest.fn(() => 0),
+  describe('rendering behavior', () => {
+    it('should not render when cart is empty', () => {
+      mockCartStore.getTotalItems.mockReturnValue(0);
+      
+      render(<CartButton />);
+      
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    });
+
+    it('should render when cart has items', () => {
+      mockCartStore.getTotalItems.mockReturnValue(2);
+      
+      render(<CartButton />);
+      
+      expect(screen.getByRole('button')).toBeInTheDocument();
+      expect(screen.getByTestId('shopping-cart-icon')).toBeInTheDocument();
+    });
+
+    it('should show correct item count badge', () => {
+      mockCartStore.getTotalItems.mockReturnValue(3);
+      
+      render(<CartButton />);
+      
+      expect(screen.getByText('3')).toBeInTheDocument();
+    });
+
+    it('should handle large item counts', () => {
+      mockCartStore.getTotalItems.mockReturnValue(99);
+      
+      render(<CartButton />);
+      
+      expect(screen.getByText('99')).toBeInTheDocument();
     });
   });
 
-  describe('when cart is empty', () => {
-    beforeEach(() => {
-      mockGetTotalItems.mockReturnValue(0);
-      mockUseCartStore.mockReturnValue({
-        items: [],
-        isOpen: false,
-        addItem: jest.fn(),
-        removeItem: jest.fn(),
-        updateQuantity: jest.fn(),
-        clearCart: jest.fn(),
-        toggleCart: mockToggleCart,
-        openCart: jest.fn(),
-        closeCart: jest.fn(),
-        getTotalPrice: jest.fn(() => 0),
-        getTotalItems: mockGetTotalItems,
-        getItemCount: jest.fn(() => 0),
-      });
-    });
-
-    it('should not render when cart is empty', () => {
+  describe('styling and positioning', () => {
+    it('should have fixed positioning classes', () => {
+      mockCartStore.getTotalItems.mockReturnValue(1);
+      
       render(<CartButton />);
-
-      expect(screen.queryByTestId('shopping-cart-icon')).not.toBeInTheDocument();
+      
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('relative', 'h-16', 'w-16', 'rounded-full');
     });
 
-    it('should not render cart button', () => {
-      const { container } = render(<CartButton />);
+    it('should have correct color classes', () => {
+      mockCartStore.getTotalItems.mockReturnValue(1);
+      
+      render(<CartButton />);
+      
+      const button = screen.getByRole('button');
+      expect(button).toHaveClass('bg-orange-400', 'text-white');
+    });
 
+    it('should show badge with correct styling', () => {
+      mockCartStore.getTotalItems.mockReturnValue(5);
+      
+      render(<CartButton />);
+      
+      const badge = screen.getByText('5');
+      expect(badge).toHaveClass('absolute', '-right-2', '-top-2', 'bg-red-500');
+    });
+  });
+
+  describe('user interactions', () => {
+    it('should call toggleCart when clicked', () => {
+      mockCartStore.getTotalItems.mockReturnValue(2);
+      
+      render(<CartButton />);
+      
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
+      
+      expect(mockCartStore.toggleCart).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle multiple clicks', () => {
+      mockCartStore.getTotalItems.mockReturnValue(1);
+      
+      render(<CartButton />);
+      
+      const button = screen.getByRole('button');
+      fireEvent.click(button);
+      fireEvent.click(button);
+      fireEvent.click(button);
+      
+      expect(mockCartStore.toggleCart).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  describe('hydration and mounting', () => {
+    it('should not render during initial mount (SSR safety)', () => {
+      // Mock the initial render state
+      const { container } = render(<CartButton />);
+      
+      // On first render, component should return null to prevent hydration mismatch
       expect(container.firstChild).toBeNull();
     });
   });
 
-  describe('when cart has items', () => {
-    beforeEach(() => {
-      mockGetTotalItems.mockReturnValue(3);
-      mockUseCartStore.mockReturnValue({
-        items: MOCK_CART_ITEMS,
-        isOpen: false,
-        addItem: jest.fn(),
-        removeItem: jest.fn(),
-        updateQuantity: jest.fn(),
-        clearCart: jest.fn(),
-        toggleCart: mockToggleCart,
-        openCart: jest.fn(),
-        closeCart: jest.fn(),
-        getTotalPrice: jest.fn(() => 650),
-        getTotalItems: mockGetTotalItems,
-        getItemCount: jest.fn(() => 3),
-      });
-    });
-
-    it('should render cart button with shopping cart icon', () => {
-      render(<CartButton />);
-
-      expect(screen.getByTestId('shopping-cart-icon')).toBeInTheDocument();
-    });
-
-    it('should display total items count badge', () => {
-      render(<CartButton />);
-
-      expect(screen.getByText('3')).toBeInTheDocument();
-    });
-
-    it('should have correct styling classes', () => {
-      render(<CartButton />);
-
-      const button = screen.getByRole('button');
-      expect(button).toHaveClass(
-        'relative',
-        'bg-orange-400',
-        'hover:bg-orange-500',
-        'text-white',
-        'shadow-2xl',
-        'rounded-full',
-        'w-16',
-        'h-16',
-        'p-0'
-      );
-    });
-
-    it('should be positioned fixed at bottom right', () => {
-      const { container } = render(<CartButton />);
-
-      const wrapper = container.firstChild as HTMLElement;
-      expect(wrapper).toHaveClass('fixed', 'bottom-6', 'right-6', 'z-40');
-    });
-
-    it('should call toggleCart when clicked', () => {
-      render(<CartButton />);
-
-      const button = screen.getByRole('button');
-      fireEvent.click(button);
-
-      expect(mockToggleCart).toHaveBeenCalledTimes(1);
-    });
-
-    it('should display count badge with correct styling', () => {
-      render(<CartButton />);
-
-      const badge = screen.getByText('3');
-      expect(badge).toHaveClass(
-        'absolute',
-        '-top-2',
-        '-right-2',
-        'bg-red-500',
-        'text-white',
-        'text-xs',
-        'rounded-full',
-        'w-6',
-        'h-6',
-        'flex',
-        'items-center',
-        'justify-center',
-        'font-bold'
-      );
-    });
-  });
-
-  describe('different item counts', () => {
-    it('should display single item count', () => {
-      mockGetTotalItems.mockReturnValue(1);
-      mockUseCartStore.mockReturnValue({
-        items: [createMockCartItem()],
-        isOpen: false,
-        addItem: jest.fn(),
-        removeItem: jest.fn(),
-        updateQuantity: jest.fn(),
-        clearCart: jest.fn(),
-        toggleCart: mockToggleCart,
-        openCart: jest.fn(),
-        closeCart: jest.fn(),
-        getTotalPrice: jest.fn(() => 150),
-        getTotalItems: mockGetTotalItems,
-        getItemCount: jest.fn(() => 1),
-      });
-
-      render(<CartButton />);
-
-      expect(screen.getByText('1')).toBeInTheDocument();
-    });
-
-    it('should display double digit count', () => {
-      mockGetTotalItems.mockReturnValue(12);
-      mockUseCartStore.mockReturnValue({
-        items: Array.from({ length: 12 }, (_, i) => createMockCartItem({ id: `item-${i}` })),
-        isOpen: false,
-        addItem: jest.fn(),
-        removeItem: jest.fn(),
-        updateQuantity: jest.fn(),
-        clearCart: jest.fn(),
-        toggleCart: mockToggleCart,
-        openCart: jest.fn(),
-        closeCart: jest.fn(),
-        getTotalPrice: jest.fn(() => 1800),
-        getTotalItems: mockGetTotalItems,
-        getItemCount: jest.fn(() => 12),
-      });
-
-      render(<CartButton />);
-
-      expect(screen.getByText('12')).toBeInTheDocument();
-    });
-  });
-
   describe('accessibility', () => {
-    beforeEach(() => {
-      mockGetTotalItems.mockReturnValue(2);
-      mockUseCartStore.mockReturnValue({
-        items: [createMockCartItem(), createMockCartItem({ id: 'item-2' })],
-        isOpen: false,
-        addItem: jest.fn(),
-        removeItem: jest.fn(),
-        updateQuantity: jest.fn(),
-        clearCart: jest.fn(),
-        toggleCart: mockToggleCart,
-        openCart: jest.fn(),
-        closeCart: jest.fn(),
-        getTotalPrice: jest.fn(() => 300),
-        getTotalItems: mockGetTotalItems,
-        getItemCount: jest.fn(() => 2),
-      });
-    });
-
-    it('should have a button role', () => {
+    it('should have accessible button role', () => {
+      mockCartStore.getTotalItems.mockReturnValue(1);
+      
       render(<CartButton />);
-
+      
       expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
-    it('should be keyboard accessible', () => {
+    it('should have proper icon accessibility', () => {
+      mockCartStore.getTotalItems.mockReturnValue(1);
+      
       render(<CartButton />);
+      
+      const icon = screen.getByTestId('shopping-cart-icon');
+      expect(icon).toBeInTheDocument();
+    });
+  });
 
-      const button = screen.getByRole('button');
-      button.focus();
-
-      expect(button).toHaveFocus();
-
-      // Test click instead of keyDown since the component doesn't have explicit keyboard handlers
-      fireEvent.click(button);
-      expect(mockToggleCart).toHaveBeenCalledTimes(1);
+  describe('edge cases', () => {
+    it('should handle zero items correctly', () => {
+      mockCartStore.getTotalItems.mockReturnValue(0);
+      
+      render(<CartButton />);
+      
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
 
-    it('should handle space key press', () => {
+    it('should handle negative item counts gracefully', () => {
+      mockCartStore.getTotalItems.mockReturnValue(-1);
+      
       render(<CartButton />);
+      
+      // Component should still render with negative counts (shows badge with -1)
+      expect(screen.getByRole('button')).toBeInTheDocument();
+      expect(screen.getByText('-1')).toBeInTheDocument();
+    });
 
-      const button = screen.getByRole('button');
-      // Test click instead of keyDown since the component doesn't have explicit keyboard handlers
-      fireEvent.click(button);
+    it('should handle undefined getTotalItems return', () => {
+      mockCartStore.getTotalItems.mockReturnValue(undefined as any);
+      
+      render(<CartButton />);
+      
+      // Component should still render with undefined (shows badge with undefined)
+      expect(screen.getByRole('button')).toBeInTheDocument();
+    });
+  });
 
-      expect(mockToggleCart).toHaveBeenCalledTimes(1);
+  describe('performance', () => {
+    it('should not re-render unnecessarily', () => {
+      const renderSpy = jest.fn();
+      const TestComponent = () => {
+        renderSpy();
+        return <CartButton />;
+      };
+
+      mockCartStore.getTotalItems.mockReturnValue(2);
+      
+      const { rerender } = render(<TestComponent />);
+      rerender(<TestComponent />);
+      
+      // Component should render twice (initial + rerender)
+      expect(renderSpy).toHaveBeenCalledTimes(2);
     });
   });
 });

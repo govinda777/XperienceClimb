@@ -1,4 +1,4 @@
-import { IPaymentService, CreatePreferenceRequest, PaymentPreference } from '@/core/services/IPaymentService';
+import { IPaymentService, CreatePreferenceRequest, PaymentPreference, CreatePixPaymentRequest, PixPaymentResponse } from '@/core/services/IPaymentService';
 
 export class PaymentService implements IPaymentService {
   private accessToken: string;
@@ -38,6 +38,12 @@ export class PaymentService implements IPaymentService {
         },
         statement_descriptor: 'XPERIENCE CLIMB',
         external_reference: request.orderId,
+        // Configure payment methods if specified
+        payment_methods: request.paymentMethods ? {
+          excluded_payment_methods: [],
+          excluded_payment_types: [],
+          installments: 1
+        } : undefined,
       };
 
       const response = await this.callMercadoPagoAPI('/checkout/preferences', preference);
@@ -53,11 +59,55 @@ export class PaymentService implements IPaymentService {
     }
   }
 
+  async createPixPayment(request: CreatePixPaymentRequest): Promise<PixPaymentResponse> {
+    try {
+      const pixPayment = {
+        transaction_amount: request.amount / 100, // Convert cents to reais
+        description: request.description,
+        payment_method_id: 'pix',
+        payer: {
+          email: request.payer.email,
+          first_name: request.payer.name.split(' ')[0],
+          last_name: request.payer.name.split(' ').slice(1).join(' ') || '',
+        },
+        external_reference: request.orderId,
+        notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/payments/pix/webhook`,
+        metadata: {
+          order_id: request.orderId,
+          created_at: new Date().toISOString(),
+        },
+      };
+
+      const response = await this.callMercadoPagoAPI('/v1/payments', pixPayment);
+      
+      // PIX payments return QR code information
+      return {
+        id: response.id,
+        qr_code: response.point_of_interaction?.transaction_data?.qr_code || '',
+        qr_code_base64: response.point_of_interaction?.transaction_data?.qr_code_base64 || '',
+        ticket_url: response.point_of_interaction?.transaction_data?.ticket_url || '',
+        expires_at: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes from now
+      };
+    } catch (error) {
+      console.error('Error creating PIX payment:', error);
+      throw new Error('Failed to create PIX payment');
+    }
+  }
+
   async getPreference(preferenceId: string): Promise<any> {
     try {
       return await this.callMercadoPagoAPI(`/checkout/preferences/${preferenceId}`, null, 'GET');
     } catch (error) {
       console.error('Error getting Mercado Pago preference:', error);
+      throw error;
+    }
+  }
+
+  async getPayment(paymentId: string): Promise<any> {
+    try {
+      return await this.callMercadoPagoAPI(`/v1/payments/${paymentId}`, null, 'GET');
+    } catch (error) {
+      console.error('Error getting Mercado Pago payment:', error);
       throw error;
     }
   }
