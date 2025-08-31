@@ -10,9 +10,10 @@ const generateThemeUseCase = new GenerateThemeFromTour(tourService);
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     const result = await generateThemeUseCase.execute(params.id);
 
     if (!result.success) {

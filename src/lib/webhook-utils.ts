@@ -1,10 +1,12 @@
 import crypto from 'crypto';
 
+type BinaryToTextEncoding = 'base64' | 'base64url' | 'hex' | 'binary';
+
 interface WebhookValidationConfig {
   secret: string;
   algorithm?: string;
   headerName?: string;
-  encoding?: BufferEncoding;
+  encoding?: BinaryToTextEncoding;
 }
 
 export function validateWebhookSignature(

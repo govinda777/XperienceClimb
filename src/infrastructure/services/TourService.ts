@@ -127,13 +127,13 @@ export class TourService implements ITourService {
             id: (activity as any).id || this.generateActivityId(activity.name, index)
           }))
         : existingTour.activities,
-      gallery: {
+            gallery: {
         ...existingTour.gallery,
         ...request.gallery,
-        images: request.gallery?.images 
+        images: request.gallery?.images
           ? request.gallery.images.map((image, index) => ({
               ...image,
-              id: image.id || this.generateImageId(image.title || image.alt, index),
+              id: this.generateImageId(image.title || image.alt, index),
               order: index + 1
             }))
           : existingTour.gallery.images
@@ -230,7 +230,28 @@ export class TourService implements ITourService {
         importantNotes: tour.logistics.importantNotes,
         tips: tour.logistics.tips
       },
-      seo: tour.seo
+      community: {
+        localPartners: [],
+        localInstructors: [],
+        specificSafetyProcedures: [],
+        visitedLocationId: tour.themeId
+      },
+      seo: tour.seo,
+      visual: {
+        primaryColor: '#3b82f6',
+        primaryColorHover: '#2563eb',
+        primaryColorActive: '#1d4ed8',
+        accentColor: '#60a5fa',
+        backgroundColor: '#f8fafc',
+        surfaceColor: '#ffffff',
+        textColor: '#1e293b',
+        textSecondaryColor: '#64748b',
+        borderColor: '#e2e8f0',
+        gradientFrom: '#3b82f6',
+        gradientTo: '#1d4ed8',
+        heroOverlay: 'rgba(59, 130, 246, 0.7)',
+        cardBackground: '#ffffff'
+      }
     };
   }
 
@@ -343,7 +364,9 @@ export class TourService implements ITourService {
 
   async isThemeIdUnique(themeId: string, excludeId?: string): Promise<boolean> {
     const tours = await this.tourRepository.findByThemeId(themeId);
-    return tours.length === 0 || (excludeId && tours.every(tour => tour.id === excludeId));
+    if (tours.length === 0) return true;
+    if (!excludeId) return false;
+    return tours.every(tour => tour.id === excludeId);
   }
 
   private generateTourId(name: string): string {

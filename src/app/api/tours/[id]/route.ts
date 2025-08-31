@@ -10,9 +10,10 @@ const getTourByIdUseCase = new GetTourById(tourService);
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     const result = await getTourByIdUseCase.execute(params.id);
 
     if (!result.success) {

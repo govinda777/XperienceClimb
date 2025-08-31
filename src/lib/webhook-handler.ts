@@ -14,7 +14,7 @@ interface WebhookConfig {
   signatureConfig?: {
     algorithm?: string;
     headerName?: string;
-    encoding?: BufferEncoding;
+    encoding?: 'base64' | 'base64url' | 'hex' | 'binary';
   };
   requiredFields: string[];
   allowedFields: string[];

@@ -1,6 +1,7 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { expect } from '@jest/globals';
+import '@testing-library/jest-dom';
 import { CustomWorld } from '../support/world';
 import { LoginButton } from '@/components/auth/LoginButton';
 import { AuthGuard } from '@/components/auth/AuthGuard';
@@ -10,7 +11,7 @@ import React from 'react';
 const mockUseAuth = {
   ready: true,
   authenticated: false,
-  user: null,
+  user: null as any,
   login: jest.fn(),
   logout: jest.fn(),
   isLoading: false,
@@ -122,7 +123,7 @@ Then('I should see a login button', async function (this: CustomWorld) {
   
   await waitFor(() => {
     const loginButton = screen.getByRole('button', { name: /login|entrar/i });
-    expect(loginButton).toBeInTheDocument();
+    expect(loginButton).toBeTruthy();
   });
 });
 
@@ -146,7 +147,7 @@ Then('I should see the login button again', async function (this: CustomWorld) {
   
   await waitFor(() => {
     const loginButton = screen.getByRole('button', { name: /login|entrar/i });
-    expect(loginButton).toBeInTheDocument();
+    expect(loginButton).toBeTruthy();
   });
 });
 

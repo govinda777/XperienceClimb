@@ -175,7 +175,7 @@ export function configureImage(image: {
   externalDomain?: string;
 }): ImageUrlConfig {
   const isExternal = image.isExternal ?? isExternalUrl(image.src);
-  const externalDomain = image.externalDomain ?? extractDomain(image.src);
+  const externalDomain = image.externalDomain ?? extractDomain(image.src) ?? undefined;
   
   return {
     src: normalizeImageUrl(image.src),
@@ -203,7 +203,7 @@ export function configureGalleryImage(image: {
   externalDomain?: string;
 } {
   const isExternal = image.isExternal ?? isExternalUrl(image.src);
-  const externalDomain = isExternal ? (image.externalDomain ?? extractDomain(image.src)) : undefined;
+  const externalDomain = isExternal ? (image.externalDomain ?? extractDomain(image.src) ?? undefined) : undefined;
   
   return {
     src: normalizeImageUrl(image.src),

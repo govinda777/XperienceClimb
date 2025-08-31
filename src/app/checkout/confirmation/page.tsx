@@ -7,6 +7,7 @@ import { Button } from '@/components/ui';
 import { OrderRepository } from '@/infrastructure/repositories/OrderRepository';
 import { Order } from '@/core/entities/Order';
 import { formatPrice } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function PaymentConfirmationPage() {
   const searchParams = useSearchParams();
@@ -105,10 +106,10 @@ export default function PaymentConfirmationPage() {
         <XCircle className="h-16 w-16 text-red-600" />
         <h1 className="text-xl font-semibold text-red-600">Erro</h1>
         <p className="text-center text-neutral-600">{error}</p>
-        <a href="/" className="inline-flex items-center justify-center px-4 py-2 bg-climb-500 hover:bg-climb-600 text-white rounded-lg transition-colors">
+        <Link href="/" className="inline-flex items-center justify-center px-4 py-2 bg-climb-500 hover:bg-climb-600 text-white rounded-lg transition-colors">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Voltar para Home
-        </a>
+        </Link>
       </div>
     );
   }
@@ -203,21 +204,21 @@ export default function PaymentConfirmationPage() {
 
           {/* Actions */}
           <div className="flex justify-between pt-4">
-            <a
+            <Link
               href="/"
               className="inline-flex items-center justify-center px-4 py-2 border-2 border-climb-500 text-climb-500 hover:bg-climb-500 hover:text-white rounded-lg transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar para Home
-            </a>
+            </Link>
 
             {status === 'failed' && (
-              <a
+              <Link
                 href={`/checkout/retry?orderId=${orderId}`}
                 className="inline-flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
               >
                 Tentar Novamente
-              </a>
+              </Link>
             )}
           </div>
         </div>

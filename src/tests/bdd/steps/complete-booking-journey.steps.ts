@@ -14,7 +14,7 @@ const mockCartStore = {
 
 const mockAuthService = {
   authenticated: false,
-  user: null,
+  user: null as any,
   login: jest.fn(),
   logout: jest.fn(),
 };
@@ -39,6 +39,7 @@ Given('there are available climbing packages', async function (this: CustomWorld
       id: 'pkg-1',
       name: 'Escalada Iniciante',
       price: 150,
+      experienceLevel: 'beginner',
       description: 'Perfect for beginners',
       maxParticipants: 8,
       available: true,
@@ -47,6 +48,7 @@ Given('there are available climbing packages', async function (this: CustomWorld
       id: 'pkg-2',
       name: 'Escalada Avançada',
       price: 250,
+      experienceLevel: 'advanced',
       description: 'For experienced climbers',
       maxParticipants: 6,
       available: true,
@@ -55,6 +57,7 @@ Given('there are available climbing packages', async function (this: CustomWorld
       id: 'pkg-3',
       name: 'Escalada em Grupo',
       price: 120,
+      experienceLevel: 'beginner',
       description: 'Group climbing experience',
       maxParticipants: 12,
       available: true,
@@ -89,16 +92,6 @@ When('I add it to my cart', async function (this: CustomWorld) {
     price: this.selectedPackage.price,
     quantity: 1,
     participantName: 'Participant',
-  });
-  
-  mockCartStore.items.push({
-    id: `item-${Date.now()}`,
-    packageId: this.selectedPackage.id,
-    packageName: this.selectedPackage.name,
-    price: this.selectedPackage.price,
-    quantity: 1,
-    participantName: 'Participant',
-    addedAt: new Date(),
   });
   
   this.attach('Package added to cart');
@@ -151,7 +144,7 @@ When('I fill in participant details:', async function (this: CustomWorld, dataTa
   
   participants.forEach((participant: any, index: number) => {
     const itemId = `item-${index}`;
-    this.participantDetails[itemId] = {
+    this.participantDetails![itemId] = {
       name: participant.name,
       age: parseInt(participant.age),
       experienceLevel: participant.experience,
@@ -168,7 +161,7 @@ When('I fill in participant details for all members:', async function (this: Cus
   
   participants.forEach((participant: any, index: number) => {
     const itemId = `item-${index}`;
-    this.participantDetails[itemId] = {
+    this.participantDetails![itemId] = {
       name: participant.name,
       age: parseInt(participant.age),
       experienceLevel: participant.experience,
@@ -185,7 +178,7 @@ When('I fill in international participant details:', async function (this: Custo
   
   participants.forEach((participant: any, index: number) => {
     const itemId = `item-${index}`;
-    this.participantDetails[itemId] = {
+    this.participantDetails![itemId] = {
       name: participant.name,
       age: parseInt(participant.age),
       passportNumber: participant.passport_number,
@@ -348,6 +341,8 @@ Given('I have an existing booking {string}', async function (this: CustomWorld, 
     id: bookingId,
     status: 'confirmed',
     climbingDate: new Date('2024-12-25'),
+    participants: 2,
+    totalAmount: 300,
     paid: true,
   };
 });
@@ -417,6 +412,8 @@ Given('I have a confirmed booking for {string}', async function (this: CustomWor
     id: 'BOOK-WEATHER-123',
     climbingDate: new Date(date),
     status: 'confirmed',
+    participants: 2,
+    totalAmount: 300,
   };
 });
 
