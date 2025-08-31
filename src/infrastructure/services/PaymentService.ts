@@ -125,14 +125,7 @@ export class PaymentService implements IPaymentService {
     }
   }
 
-  async getPayment(paymentId: string): Promise<any> {
-    try {
-      return await this.callMercadoPagoAPI(`/v1/payments/${paymentId}`, null, 'GET');
-    } catch (error) {
-      console.error('Error getting Mercado Pago payment:', error);
-      throw error;
-    }
-  }
+
 
   async processWebhook(webhookData: any): Promise<void> {
     try {
@@ -193,7 +186,7 @@ export class PaymentService implements IPaymentService {
     }
   }
 
-  private async getPayment(paymentId: string): Promise<any> {
+  async getPayment(paymentId: string): Promise<any> {
     return await this.callMercadoPagoAPI(`/v1/payments/${paymentId}`, null, 'GET');
   }
 

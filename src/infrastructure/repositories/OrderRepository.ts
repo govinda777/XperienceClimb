@@ -290,7 +290,7 @@ export class OrderRepository implements IOrderRepository {
     try {
       const allOrders = this.getAllOrdersFromLocalStorage();
       const order = allOrders.find(o => o.id === orderId);
-      return order?.preferenceId || null;
+      return order ? (order as any).preferenceId : null;
     } catch (error) {
       console.error('Error finding preference ID by order ID:', error);
       return null;
@@ -311,6 +311,10 @@ export class OrderRepository implements IOrderRepository {
         selectedDate: new Date(metadata.climbing_date + (metadata.climbing_date.includes('T') ? '' : 'T12:00:00')),
         specialRequests: metadata.special_requests,
       },
+      subtotal: {
+        amount: metadata.total_amount,
+        currency: 'BRL',
+      },
       total: {
         amount: metadata.total_amount,
         currency: 'BRL',
@@ -320,16 +324,7 @@ export class OrderRepository implements IOrderRepository {
     };
   }
 
-  private findPreferenceIdByOrderId(orderId: string): string | null {
-    try {
-      const allOrders = this.getAllOrdersFromLocalStorage();
-      const order = allOrders.find(o => o.id === orderId);
-      return order ? (order as any).preferenceId : null;
-    } catch (error) {
-      console.error('Error finding preference ID by order ID:', error);
-      return null;
-    }
-  }
+
 
   private mapPaymentStatus(mpStatus: string): Order['payment']['status'] {
     const statusMap: Record<string, Order['payment']['status']> = {

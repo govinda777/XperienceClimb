@@ -110,22 +110,24 @@ export class TourService implements ITourService {
     const updatedTour: Tour = {
       ...existingTour,
       ...request,
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      location: {
+        ...existingTour.location,
+        ...request.location,
+        directions: request.location?.directions 
+          ? request.location.directions.map((direction, index) => ({
+              ...direction,
+              step: index + 1
+            }))
+          : existingTour.location.directions || []
+      }
     };
-
-    // Process directions if provided
-    if (request.location?.directions) {
-      updatedTour.location.directions = request.location.directions.map((direction, index) => ({
-        ...direction,
-        step: index + 1
-      }));
-    }
 
     // Process activities if provided
     if (request.activities) {
       updatedTour.activities = request.activities.map((activity, index) => ({
         ...activity,
-        id: this.generateActivityId(activity.name, index)
+        id: activity.id || this.generateActivityId(activity.name, index)
       }));
     }
 

@@ -105,9 +105,10 @@ export default function PaymentConfirmationPage() {
         <XCircle className="h-16 w-16 text-red-600" />
         <h1 className="text-xl font-semibold text-red-600">Erro</h1>
         <p className="text-center text-neutral-600">{error}</p>
-        <Button href="/" leftIcon={<ArrowLeft className="h-4 w-4" />}>
+        <a href="/" className="inline-flex items-center justify-center px-4 py-2 bg-climb-500 hover:bg-climb-600 text-white rounded-lg transition-colors">
+          <ArrowLeft className="h-4 w-4 mr-2" />
           Voltar para Home
-        </Button>
+        </a>
       </div>
     );
   }
@@ -202,21 +203,21 @@ export default function PaymentConfirmationPage() {
 
           {/* Actions */}
           <div className="flex justify-between pt-4">
-            <Button
+            <a
               href="/"
-              variant="outline"
-              leftIcon={<ArrowLeft className="h-4 w-4" />}
+              className="inline-flex items-center justify-center px-4 py-2 border-2 border-climb-500 text-climb-500 hover:bg-climb-500 hover:text-white rounded-lg transition-colors"
             >
+              <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar para Home
-            </Button>
+            </a>
 
             {status === 'failed' && (
-              <Button
+              <a
                 href={`/checkout/retry?orderId=${orderId}`}
-                className="bg-red-600 hover:bg-red-700"
+                className="inline-flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
               >
                 Tentar Novamente
-              </Button>
+              </a>
             )}
           </div>
         </div>

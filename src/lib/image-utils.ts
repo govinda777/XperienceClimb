@@ -183,3 +183,55 @@ export function configureImage(image: {
     externalDomain
   };
 }
+
+/**
+ * Configura uma imagem de galeria com domínio extraído automaticamente
+ */
+export function configureGalleryImage(image: {
+  src: string;
+  alt: string;
+  title: string;
+  category: string;
+  isExternal?: boolean;
+  externalDomain?: string;
+}): {
+  src: string;
+  alt: string;
+  title: string;
+  category: string;
+  isExternal: boolean;
+  externalDomain?: string;
+} {
+  const isExternal = image.isExternal ?? isExternalUrl(image.src);
+  const externalDomain = isExternal ? (image.externalDomain ?? extractDomain(image.src)) : undefined;
+  
+  return {
+    src: normalizeImageUrl(image.src),
+    alt: image.alt,
+    title: image.title,
+    category: image.category,
+    isExternal,
+    externalDomain
+  };
+}
+
+/**
+ * Processa todas as imagens de um tema, extraindo domínios automaticamente
+ */
+export function processThemeImages(images: Array<{
+  src: string;
+  alt: string;
+  title: string;
+  category: string;
+  isExternal?: boolean;
+  externalDomain?: string;
+}>): Array<{
+  src: string;
+  alt: string;
+  title: string;
+  category: string;
+  isExternal: boolean;
+  externalDomain?: string;
+}> {
+  return images.map(image => configureGalleryImage(image));
+}
