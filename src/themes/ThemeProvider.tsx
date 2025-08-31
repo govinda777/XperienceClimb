@@ -1,8 +1,10 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeConfig } from './types';
 import { fazendaIpanemaTheme, pedraBellaTheme } from './configs';
+import { THEME_IDS, getThemeFromUrl, isValidThemeId } from '@/lib/theme-utils';
 
 interface ThemeContextType {
   currentTheme: ThemeConfig;
@@ -14,40 +16,37 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const themes = {
-  'fazenda-ipanema': fazendaIpanemaTheme,
-  'pedra-bela': pedraBellaTheme,
+  [THEME_IDS.FAZENDA_IPANEMA]: fazendaIpanemaTheme,
+  [THEME_IDS.PEDRA_BELA]: pedraBellaTheme,
 };
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(fazendaIpanemaTheme);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const loadTheme = async () => {
       try {
         // Check for theme in URL query parameters first
-        const urlParams = new URLSearchParams(window.location.search);
-        const themeFromUrl = urlParams.get('theme');
+        const themeFromUrl = getThemeFromUrl(searchParams);
         
         let selectedTheme: ThemeConfig | null = null;
         
-
-        
         // Simple theme loading logic using only static themes for now
-        if (themeFromUrl && themes[themeFromUrl as keyof typeof themes]) {
-          selectedTheme = themes[themeFromUrl as keyof typeof themes];
+        if (themeFromUrl && themes[themeFromUrl]) {
+          selectedTheme = themes[themeFromUrl];
           localStorage.setItem('xperience-theme', themeFromUrl);
         } else {
           const savedTheme = localStorage.getItem('xperience-theme');
-          if (savedTheme && themes[savedTheme as keyof typeof themes]) {
-            selectedTheme = themes[savedTheme as keyof typeof themes];
+          if (savedTheme && isValidThemeId(savedTheme) && themes[savedTheme]) {
+            selectedTheme = themes[savedTheme];
           } else {
             selectedTheme = fazendaIpanemaTheme;
             localStorage.removeItem('xperience-theme');
           }
         }
-
-
         
         if (selectedTheme) {
           setCurrentTheme(selectedTheme);
@@ -62,40 +61,48 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     };
 
     loadTheme();
-  }, []);
+  }, [searchParams]);
 
   const setTheme = (themeId: string) => {
-    const theme = themes[themeId as keyof typeof themes];
-    if (theme) {
-      setCurrentTheme(theme);
-      localStorage.setItem('xperience-theme', themeId);
-      
-      // Update document title and meta tags
-      document.title = theme.seo.title;
-      
-      // Update meta description
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute('content', theme.seo.description);
-      }
-      
-      // Update og:title
-      const ogTitle = document.querySelector('meta[property="og:title"]');
-      if (ogTitle) {
-        ogTitle.setAttribute('content', theme.seo.title);
-      }
-      
-      // Update og:description
-      const ogDescription = document.querySelector('meta[property="og:description"]');
-      if (ogDescription) {
-        ogDescription.setAttribute('content', theme.seo.description);
-      }
-      
-      // Update og:image
-      const ogImage = document.querySelector('meta[property="og:image"]');
-      if (ogImage) {
-        ogImage.setAttribute('content', theme.seo.ogImage);
-      }
+    if (!isValidThemeId(themeId) || !themes[themeId]) {
+      console.error('Invalid theme ID:', themeId);
+      return;
+    }
+
+    const theme = themes[themeId];
+    setCurrentTheme(theme);
+    localStorage.setItem('xperience-theme', themeId);
+    
+    // Update URL with theme query parameter
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set('theme', themeId);
+    router.push(currentUrl.pathname + currentUrl.search, { scroll: false });
+    
+    // Update document title and meta tags
+    document.title = theme.seo.title;
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', theme.seo.description);
+    }
+    
+    // Update og:title
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', theme.seo.title);
+    }
+    
+    // Update og:description
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) {
+      ogDescription.setAttribute('content', theme.seo.description);
+    }
+    
+    // Update og:image
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) {
+      ogImage.setAttribute('content', theme.seo.ogImage);
     }
   };
 

@@ -120,25 +120,29 @@ export class TourService implements ITourService {
               step: index + 1
             }))
           : existingTour.location.directions || []
+      },
+      activities: request.activities 
+        ? request.activities.map((activity, index) => ({
+            ...activity,
+            id: (activity as any).id || this.generateActivityId(activity.name, index)
+          }))
+        : existingTour.activities,
+      gallery: {
+        ...existingTour.gallery,
+        ...request.gallery,
+        images: request.gallery?.images 
+          ? request.gallery.images.map((image, index) => ({
+              ...image,
+              id: image.id || this.generateImageId(image.title || image.alt, index),
+              order: index + 1
+            }))
+          : existingTour.gallery.images
       }
     };
 
-    // Process activities if provided
-    if (request.activities) {
-      updatedTour.activities = request.activities.map((activity, index) => ({
-        ...activity,
-        id: activity.id || this.generateActivityId(activity.name, index)
-      }));
-    }
+ 
 
-    // Process gallery images if provided
-    if (request.gallery?.images) {
-      updatedTour.gallery.images = request.gallery.images.map((image, index) => ({
-        ...image,
-        id: this.generateImageId(image.title || image.alt, index),
-        order: index + 1
-      }));
-    }
+
 
     return await this.tourRepository.update(updatedTour);
   }

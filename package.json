@@ -20,6 +20,7 @@
   "dependencies": {
     "@privy-io/react-auth": "^1.88.4",
     "@privy-io/wagmi": "^0.2.12",
+    "lucide-react": "^0.468.0",
     "mercadopago": "^2.0.15",
     "next": "15.0.3",
     "react": "^18",
@@ -36,6 +37,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "jest": "^29.7.0",

@@ -2,12 +2,16 @@
 
 import React, { useState } from 'react';
 import { useTheme } from '@/themes/ThemeProvider';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui';
 import { cn } from '@/lib/utils';
+import { getThemeFromUrl } from '@/lib/theme-utils';
 
 export function ThemeSelector() {
   const { currentTheme, availableThemes, setTheme, isLoading } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const themeFromUrl = getThemeFromUrl(searchParams);
 
   // Show loading state with fallback to prevent infinite loading
   if (isLoading) {
@@ -27,10 +31,16 @@ export function ThemeSelector() {
         variant="outline"
         size="sm"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 border-climb-400/30 text-climb-600 hover:bg-climb-50 font-medium"
+        className={cn(
+          "flex items-center space-x-2 border-climb-400/30 text-climb-600 hover:bg-climb-50 font-medium",
+          themeFromUrl && "border-orange-400 bg-orange-50"
+        )}
       >
         <span className="text-base">🏔️</span>
         <span className="text-sm">{currentTheme.name}</span>
+        {themeFromUrl && (
+          <span className="text-xs text-orange-600">●</span>
+        )}
         <span className={cn(
           "text-xs transition-transform duration-200",
           isOpen ? "rotate-180" : ""
@@ -76,11 +86,16 @@ export function ThemeSelector() {
                           {theme.location.distance}
                         </div>
                       </div>
-                      {currentTheme.id === theme.id && (
-                        <div className="text-orange-500">
-                          <span className="text-sm">✓</span>
-                        </div>
-                      )}
+                      <div className="flex items-center space-x-1">
+                        {currentTheme.id === theme.id && (
+                          <div className="text-orange-500">
+                            <span className="text-sm">✓</span>
+                          </div>
+                        )}
+                        {themeFromUrl === theme.id && (
+                          <div className="text-xs text-orange-600">●</div>
+                        )}
+                      </div>
                     </div>
                   </button>
                 ))}
@@ -89,6 +104,11 @@ export function ThemeSelector() {
               <div className="mt-3 border-t border-neutral-200 pt-3">
                 <p className="text-xs text-neutral-500">
                   A mudança de tema altera todo o conteúdo do site para o destino selecionado.
+                  {themeFromUrl && (
+                    <span className="block mt-1 text-orange-600">
+                      ● Tema selecionado via URL
+                    </span>
+                  )}
                 </p>
               </div>
             </div>
