@@ -131,6 +131,12 @@ export interface CustomWorld extends World {
     country: string;
   };
   
+  internationalRequirements?: string[];
+  
+  confirmationLanguage?: string;
+  
+  timezoneHandled?: boolean;
+  
   // Coupon details
   availableCoupon?: {
     code: string;
@@ -270,6 +276,12 @@ export class XperienceClimbWorld extends World implements CustomWorld {
     address: string;
     country: string;
   };
+  
+  internationalRequirements?: string[];
+  
+  confirmationLanguage?: string;
+  
+  timezoneHandled?: boolean;
   
   availableCoupon?: {
     code: string;

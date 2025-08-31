@@ -7,7 +7,7 @@ import React from 'react';
 
 // Mock the usePackages hook
 const mockUsePackages = {
-  packages: [],
+  packages: [] as any[],
   loading: false,
   error: null,
   checkAvailability: jest.fn(),

@@ -1,10 +1,28 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeConfig } from './types';
-import { fazendaIpanemaTheme, pedraBellaTheme } from './configs';
-import { THEME_IDS, getThemeFromUrl, isValidThemeId } from '@/lib/theme-utils';
+import { getThemeFromUrl } from '@/lib/theme-utils';
+import { fazendaIpanemaTheme } from './configs/fazenda-ipanema';
+import { pedraBellaTheme } from './configs/pedra-bela';
+
+const THEME_IDS = {
+  FAZENDA_IPANEMA: 'fazenda-ipanema',
+  PEDRA_BELA: 'pedra-bela',
+} as const;
+
+const themes = {
+  [THEME_IDS.FAZENDA_IPANEMA]: fazendaIpanemaTheme,
+  [THEME_IDS.PEDRA_BELA]: pedraBellaTheme,
+};
+
+const isValidThemeId = (themeId: string): themeId is keyof typeof themes => {
+  return themeId in themes;
+};
+
+console.log('ThemeProvider: Available themes:', Object.keys(themes));
+console.log('ThemeProvider: Theme objects:', themes);
 
 interface ThemeContextType {
   currentTheme: ThemeConfig;
@@ -14,11 +32,6 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-const themes = {
-  [THEME_IDS.FAZENDA_IPANEMA]: fazendaIpanemaTheme,
-  [THEME_IDS.PEDRA_BELA]: pedraBellaTheme,
-};
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(fazendaIpanemaTheme);

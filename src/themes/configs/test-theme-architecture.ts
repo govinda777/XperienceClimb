@@ -51,6 +51,3 @@ export function testThemeArchitecture() {
     pedraConfig
   };
 }
-
-// Export for use in other files
-export { testThemeArchitecture };

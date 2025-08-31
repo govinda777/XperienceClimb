@@ -8,7 +8,7 @@ import React from 'react';
 
 // Mock the cart store
 const mockCartStore = {
-  items: [],
+  items: [] as any[],
   isOpen: false,
   addItem: jest.fn(),
   removeItem: jest.fn(),
@@ -152,8 +152,9 @@ When('I increase the quantity to {int}', async function (this: CustomWorld, newQ
   // Update mock state
   if (this.cartItems && this.cartItems[0]) {
     this.cartItems[0].quantity = newQuantity;
+    const item = this.cartItems[0] as any;
     mockCartStore.getTotalItems = jest.fn(() => newQuantity);
-    mockCartStore.getTotalPrice = jest.fn(() => this.cartItems[0].price * newQuantity);
+    mockCartStore.getTotalPrice = jest.fn(() => item.price * newQuantity);
   }
 });
 
