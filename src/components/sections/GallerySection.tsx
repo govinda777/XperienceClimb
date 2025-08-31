@@ -4,12 +4,15 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui';
 import { useTheme } from '@/themes/ThemeProvider';
+import { normalizeImageUrl, isValidImageUrl } from '@/lib/image-utils';
 
 interface GalleryImage {
   src: string;
   alt: string;
   title: string;
   category: string;
+  isExternal?: boolean;
+  externalDomain?: string;
 }
 
 export function GallerySection() {
@@ -20,6 +23,11 @@ export function GallerySection() {
   const filteredImages = selectedCategory === 'all' 
     ? currentTheme.gallery.images 
     : currentTheme.gallery.images.filter(img => img.category === selectedCategory);
+
+  const handleImageError = (image: GalleryImage) => {
+    console.warn(`Failed to load image: ${image.src}`);
+    // Você pode implementar fallback aqui se necessário
+  };
 
   return (
     <>
@@ -51,19 +59,21 @@ export function GallerySection() {
           </div>
 
           {/* Gallery Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredImages.map((image, index) => (
               <div
-                key={image.src}
+                key={`${image.src}-${index}`}
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
                 onClick={() => setSelectedImage(image)}
               >
                 <div className="aspect-[4/3] relative">
                   <Image
-                    src={image.src}
+                    src={normalizeImageUrl(image.src)}
                     alt={image.alt}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={() => handleImageError(image)}
+                    unoptimized={image.isExternal} // Otimização desabilitada para imagens externas
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
@@ -75,78 +85,55 @@ export function GallerySection() {
 
                   {/* Category Badge */}
                   <div className="absolute top-3 right-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      image.category === 'climb' ? 'bg-climb-500 text-white' :
-                      image.category === 'nature' ? 'bg-green-500 text-white' :
-                      image.category === 'adventure' ? 'bg-purple-500 text-white' :
-                      image.category === 'waterfalls' ? 'bg-blue-500 text-white' :
-                      'bg-orange-400 text-white'
-                    }`}>
-                      {currentTheme.gallery.categories[image.category]}
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm text-white">
+                      {currentTheme.gallery.categories[image.category] || image.category}
                     </span>
                   </div>
 
-                  {/* Zoom Icon */}
-                  <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm">🔍</span>
+                  {/* External Image Indicator */}
+                  {image.isExternal && (
+                    <div className="absolute top-3 left-3">
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/80 backdrop-blur-sm text-white">
+                        🌐 Externa
+                      </span>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Call to Action */}
-          <div className="text-center mt-16">
-            <div className="bg-climb-500 text-white p-8 rounded-2xl shadow-xl max-w-2xl mx-auto">
-              <h3 className="text-2xl font-bold mb-4">
-                Pronto para Viver Essa Experiência?
-              </h3>
-              <p className="mb-6 opacity-90">
-                Junte-se a centenas de aventureiros que já descobriram 
-                a magia de {currentTheme.location.name}.
-              </p>
-              <Button 
-                variant="secondary" 
-                size="lg"
-                onClick={() => {
-                  const element = document.getElementById('pacotes');
-                  if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
-                Ver Pacotes Disponíveis
-              </Button>
-            </div>
           </div>
         </div>
       </section>
 
       {/* Image Modal */}
       {selectedImage && (
-        <div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-4xl max-h-full">
-            <Image
-              src={selectedImage.src}
-              alt={selectedImage.alt}
-              width={800}
-              height={600}
-              className="object-contain max-h-[80vh] rounded-lg"
-            />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+          <div className="relative max-w-4xl max-h-[90vh] mx-4">
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+              className="absolute top-4 right-4 z-10 p-2 bg-white/20 rounded-full text-white hover:bg-white/30 transition-colors"
             >
               ✕
             </button>
-            <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm rounded-lg p-4 text-white">
-              <h3 className="text-lg font-semibold">{selectedImage.title}</h3>
-              <p className="text-sm opacity-90">{selectedImage.alt}</p>
+            <div className="relative">
+              <Image
+                src={normalizeImageUrl(selectedImage.src)}
+                alt={selectedImage.alt}
+                width={800}
+                height={600}
+                className="rounded-lg object-contain max-h-[80vh]"
+                onError={() => handleImageError(selectedImage)}
+                unoptimized={selectedImage.isExternal}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white rounded-b-lg">
+                <h3 className="text-2xl font-bold mb-2">{selectedImage.title}</h3>
+                <p className="text-lg opacity-90">{selectedImage.alt}</p>
+                {selectedImage.isExternal && (
+                  <p className="text-sm opacity-75 mt-2">
+                    🌐 Imagem externa de {selectedImage.externalDomain || 'serviço externo'}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

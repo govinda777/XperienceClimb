@@ -1,0 +1,156 @@
+/* Theme-specific styles */
+
+/* Base theme variables that can be overridden */
+:root {
+  --theme-primary: #21808d;
+  --theme-primary-hover: #1d7480;
+  --theme-primary-active: #1a6873;
+  --theme-accent: #f4a261;
+  --theme-background: #fcfcf9;
+  --theme-surface: #ffffff;
+  --theme-text: #13343b;
+  --theme-text-secondary: #626c71;
+  --theme-border: #c8e6c9;
+  --theme-gradient-from: #21808d;
+  --theme-gradient-to: #4caf50;
+  --theme-hero-overlay: rgba(33, 128, 141, 0.7);
+  --theme-card-background: #ffffff;
+}
+
+/* Fazenda Ipanema Theme - Forest/Nature focused */
+.theme-fazenda-ipanema {
+  /* Primary buttons and interactive elements */
+}
+
+.theme-fazenda-ipanema .btn-primary,
+.theme-fazenda-ipanema .bg-climb-500 {
+  background-color: var(--theme-primary) !important;
+}
+
+.theme-fazenda-ipanema .btn-primary:hover,
+.theme-fazenda-ipanema .hover\:bg-climb-600:hover {
+  background-color: var(--theme-primary-hover) !important;
+}
+
+.theme-fazenda-ipanema .text-climb-600 {
+  color: var(--theme-primary) !important;
+}
+
+.theme-fazenda-ipanema .text-orange-400 {
+  color: var(--theme-accent) !important;
+}
+
+.theme-fazenda-ipanema .bg-orange-50 {
+  background-color: rgba(124, 179, 66, 0.1) !important;
+}
+
+.theme-fazenda-ipanema .border-orange-200 {
+  border-color: var(--theme-border) !important;
+}
+
+/* Hero section gradient overlay */
+.theme-fazenda-ipanema .hero-overlay {
+  background: linear-gradient(135deg, var(--theme-gradient-from), var(--theme-gradient-to));
+}
+
+/* Pedra Bela Theme - Adventure/Mountain focused */
+.theme-pedra-bela {
+  /* Primary buttons and interactive elements */
+}
+
+.theme-pedra-bela .btn-primary,
+.theme-pedra-bela .bg-climb-500 {
+  background-color: var(--theme-primary) !important;
+}
+
+.theme-pedra-bela .btn-primary:hover,
+.theme-pedra-bela .hover\:bg-climb-600:hover {
+  background-color: var(--theme-primary-hover) !important;
+}
+
+.theme-pedra-bela .text-climb-600 {
+  color: var(--theme-primary) !important;
+}
+
+.theme-pedra-bela .text-orange-400 {
+  color: var(--theme-accent) !important;
+}
+
+.theme-pedra-bela .bg-orange-50 {
+  background-color: rgba(255, 112, 67, 0.1) !important;
+}
+
+.theme-pedra-bela .border-orange-200 {
+  border-color: var(--theme-border) !important;
+}
+
+/* Hero section gradient overlay */
+.theme-pedra-bela .hero-overlay {
+  background: linear-gradient(135deg, var(--theme-gradient-from), var(--theme-gradient-to));
+}
+
+/* Navigation active states */
+.theme-fazenda-ipanema .bg-climb-500 {
+  background-color: var(--theme-primary) !important;
+}
+
+.theme-pedra-bela .bg-climb-500 {
+  background-color: var(--theme-primary) !important;
+}
+
+/* Highlight boxes with theme colors */
+.theme-fazenda-ipanema .highlight-box-0 {
+  background-color: var(--theme-primary) !important;
+}
+
+.theme-fazenda-ipanema .highlight-box-1 {
+  background-color: var(--theme-accent) !important;
+}
+
+.theme-fazenda-ipanema .highlight-box-2 {
+  background-color: #4caf50 !important;
+}
+
+.theme-pedra-bela .highlight-box-0 {
+  background-color: var(--theme-primary) !important;
+}
+
+.theme-pedra-bela .highlight-box-1 {
+  background-color: var(--theme-accent) !important;
+}
+
+.theme-pedra-bela .highlight-box-2 {
+  background-color: #ff5722 !important;
+}
+
+/* Card backgrounds and borders */
+.theme-fazenda-ipanema .theme-card {
+  background-color: var(--theme-card-background);
+  border-color: var(--theme-border);
+}
+
+.theme-pedra-bela .theme-card {
+  background-color: var(--theme-card-background);
+  border-color: var(--theme-border);
+}
+
+/* Utility classes for theme-aware styling */
+.theme-primary-bg {
+  background-color: var(--theme-primary) !important;
+}
+
+.theme-primary-text {
+  color: var(--theme-primary) !important;
+}
+
+.theme-accent-bg {
+  background-color: var(--theme-accent) !important;
+}
+
+.theme-accent-text {
+  color: var(--theme-accent) !important;
+}
+
+.theme-gradient-bg {
+  background: linear-gradient(135deg, var(--theme-gradient-from), var(--theme-gradient-to)) !important;
+}

@@ -3,16 +3,20 @@
 import React, { useState } from 'react';
 import { useTheme } from '@/themes/ThemeProvider';
 import { Button } from '@/components/ui';
+import { cn } from '@/lib/utils';
 
 export function ThemeSelector() {
   const { currentTheme, availableThemes, setTheme, isLoading } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Show loading state with fallback to prevent infinite loading
   if (isLoading) {
     return (
       <div className="flex items-center space-x-2">
         <div className="h-4 w-4 animate-spin rounded-full border-2 border-orange-400 border-t-transparent"></div>
-        <span className="text-sm text-neutral-600">Carregando...</span>
+        <span className="text-sm text-neutral-600">
+          {currentTheme?.name ? currentTheme.name : 'Carregando...'}
+        </span>
       </div>
     );
   }
@@ -23,11 +27,14 @@ export function ThemeSelector() {
         variant="outline"
         size="sm"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 border-orange-400/30 text-orange-600 hover:bg-orange-50"
+        className="flex items-center space-x-2 border-climb-400/30 text-climb-600 hover:bg-climb-50 font-medium"
       >
-        <span className="text-lg">🏔️</span>
-        <span className="hidden sm:inline">{currentTheme.name}</span>
-        <span className="text-xs">▼</span>
+        <span className="text-base">🏔️</span>
+        <span className="text-sm">{currentTheme.name}</span>
+        <span className={cn(
+          "text-xs transition-transform duration-200",
+          isOpen ? "rotate-180" : ""
+        )}>▼</span>
       </Button>
 
       {isOpen && (

@@ -392,14 +392,14 @@ export class CreateOrder {
 
       const result = await processGitHubPayment.execute({
         orderId: order.id,
-        amount: order.total,
+        amount: order.total.amount,
         sponsorUsername,
         frequency: 'one-time',
         metadata: {
-          orderNumber: order.orderNumber,
-          customerName: order.participantDetails[Object.keys(order.participantDetails)[0]]?.name,
+          orderId: order.id,
+          customerName: order.items[0]?.participantDetails?.name || 'Cliente',
           items: order.items.map(item => ({
-            name: item.name,
+            packageName: item.packageName,
             quantity: item.quantity,
             price: item.price
           }))

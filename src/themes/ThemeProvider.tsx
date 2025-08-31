@@ -31,52 +31,28 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         
         let selectedTheme: ThemeConfig | null = null;
         
-        // Priority: URL param > localStorage > default
-        if (themeFromUrl) {
-          // First check if it's a static theme
-          if (themes[themeFromUrl as keyof typeof themes]) {
-            selectedTheme = themes[themeFromUrl as keyof typeof themes];
-          } else {
-            // Try to load dynamic theme from tour API
-            try {
-              const response = await fetch(`/api/tours/${themeFromUrl}/theme`);
-              if (response.ok) {
-                const data = await response.json();
-                selectedTheme = data.theme;
-              }
-            } catch (error) {
-              console.warn('Failed to load dynamic theme:', error);
-            }
-          }
-          
-          // Save to localStorage for future visits if theme was found
-          if (selectedTheme) {
-            localStorage.setItem('xperience-theme', themeFromUrl);
-          }
+
+        
+        // Simple theme loading logic using only static themes for now
+        if (themeFromUrl && themes[themeFromUrl as keyof typeof themes]) {
+          selectedTheme = themes[themeFromUrl as keyof typeof themes];
+          localStorage.setItem('xperience-theme', themeFromUrl);
         } else {
-          // Fallback to saved theme from localStorage
           const savedTheme = localStorage.getItem('xperience-theme');
-          if (savedTheme) {
-            // Check static themes first
-            if (themes[savedTheme as keyof typeof themes]) {
-              selectedTheme = themes[savedTheme as keyof typeof themes];
-            } else {
-              // Try to load dynamic theme
-              try {
-                const response = await fetch(`/api/tours/${savedTheme}/theme`);
-                if (response.ok) {
-                  const data = await response.json();
-                  selectedTheme = data.theme;
-                }
-              } catch (error) {
-                console.warn('Failed to load saved dynamic theme:', error);
-              }
-            }
+          if (savedTheme && themes[savedTheme as keyof typeof themes]) {
+            selectedTheme = themes[savedTheme as keyof typeof themes];
+          } else {
+            selectedTheme = fazendaIpanemaTheme;
+            localStorage.removeItem('xperience-theme');
           }
         }
+
+
         
         if (selectedTheme) {
           setCurrentTheme(selectedTheme);
+        } else {
+          setCurrentTheme(fazendaIpanemaTheme);
         }
       } catch (error) {
         console.error('Error loading theme:', error);

@@ -143,6 +143,52 @@ npm run test:pre-commit
 - **5 suites** de teste
 - **Cobertura > 90%** nas funcionalidades críticas
 
+## 🎨 Sistema de Temas
+
+Suporte para múltiplos destinos de escalada com sistema de imagens externas:
+
+### Características dos Temas
+- **🎨 Temas Personalizáveis** - Cores, conteúdo e imagens específicas
+- **🌐 Imagens Externas** - URLs de serviços como Unsplash, Picsum e outros
+- **💾 Economia de Armazenamento** - Não precisa hospedar imagens localmente
+- **🚀 Performance Otimizada** - CDNs especializadas em imagens
+- **🔄 Flexibilidade** - Fácil troca de imagens sem reupload
+
+### Temas Disponíveis
+- **🏔️ Fazenda Ipanema** - Escalada na Floresta Nacional de Ipanema
+- **🏞️ Pedra Bela** - Aventura completa com tirolesa e cachoeiras
+- **🌐 Exemplo Externo** - Demonstração do sistema de imagens externas
+
+### Criar Novos Temas
+```bash
+# Script interativo para criar temas
+npm run create-theme
+
+# Ou manualmente editando os arquivos de configuração
+```
+
+### Sistema de Imagens Externas
+O projeto suporta URLs externas de serviços confiáveis:
+
+- **Unsplash** - Fotos gratuitas de alta qualidade
+- **Picsum** - Imagens placeholder aleatórias  
+- **Placeholder.com** - Placeholders simples
+- **URLs Customizadas** - Qualquer CDN confiável
+
+```typescript
+// Exemplo de configuração
+{
+  src: 'https://images.unsplash.com/photo-123?w=800&h=600&fit=crop',
+  alt: 'Escalada técnica',
+  title: 'Escalada Técnica',
+  category: 'climb',
+  isExternal: true,
+  externalDomain: 'images.unsplash.com'
+}
+```
+
+📚 **Documentação Completa**: [docs/EXTERNAL_IMAGES.md](docs/EXTERNAL_IMAGES.md)
+
 ## 🔧 Pré-requisitos
 
 - **Node.js** v18 ou superior

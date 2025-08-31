@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { PrivyProvider } from '@/components/providers/PrivyProvider'
 import { ThemeProvider } from '@/themes/ThemeProvider'
+import { ThemeStyleProvider } from '@/themes/components/ThemeStyleProvider'
 import '../styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -38,12 +39,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR" className="scroll-smooth">
-      <body className={inter.className}>
+    <html lang="pt-BR">
+      <body className={`${inter.className} bg-white`}>
         <ThemeProvider>
-          <PrivyProvider>
-            {children}
-          </PrivyProvider>
+          <ThemeStyleProvider>
+            <PrivyProvider>
+              {children}
+            </PrivyProvider>
+          </ThemeStyleProvider>
         </ThemeProvider>
       </body>
     </html>

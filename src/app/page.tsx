@@ -3,8 +3,10 @@ import {
   HeroSection,
   AboutSection,
   PackagesSection,
+  IncludedServicesSection,
   GallerySection,
   SafetySection,
+  InsuranceSection,
   CommunitySection,
   LocationSection,
   Footer,
@@ -18,8 +20,10 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <PackagesSection />
+      <IncludedServicesSection />
       <GallerySection />
       <SafetySection />
+      <InsuranceSection />
       <CommunitySection />
       <LocationSection />
       {/* <TestimonialsSection /> */}

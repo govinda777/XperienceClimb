@@ -3,41 +3,40 @@
 import React from 'react';
 import Image from 'next/image';
 import { useTheme } from '@/themes/ThemeProvider';
-// import { Button } from '@/components/ui';
+import { normalizeImageUrl } from '@/lib/image-utils';
 
 export function AboutSection() {
   const { currentTheme } = useTheme();
-  
+
+  // Encontra uma imagem de natureza ou usa a primeira imagem disponível
+  const natureImage = currentTheme.gallery.images.find(img => img.category === 'nature') || currentTheme.gallery.images[0];
+
   return (
-    <section id="sobre" className="bg-white py-20">
+    <section id="sobre" className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Text Content */}
-          <div className="space-y-6">
-            <div>
-              <h2 className="mb-6 text-4xl font-bold text-climb-600 md:text-5xl">
-                {currentTheme.content.about.title.split(' ').slice(0, -2).join(' ')}
-                <span className="text-orange-400"> {currentTheme.content.about.title.split(' ').slice(-2).join(' ')}</span>
+          <div>
+            <div className="mb-8">
+              <h2 className="text-4xl md:text-5xl font-bold text-climb-600 mb-6">
+                {currentTheme.content.about.title}
               </h2>
-              <p className="text-xl leading-relaxed text-neutral-700">
+              <p className="text-xl text-neutral-700 leading-relaxed">
                 {currentTheme.content.about.description}
               </p>
             </div>
 
-            <div className="space-y-4">
+            {/* Highlights */}
+            <div className="space-y-6 mb-8">
               {currentTheme.content.about.highlights.map((highlight, index) => (
                 <div key={index} className="flex items-start space-x-4">
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-full text-xl text-white ${
-                    index === 0 ? 'bg-climb-500' : 
-                    index === 1 ? 'bg-orange-400' : 
-                    'bg-purple-500'
-                  }`}>
-                    {highlight.icon}
+                  <div className="flex-shrink-0 w-12 h-12 bg-climb-100 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">{highlight.icon}</span>
                   </div>
                   <div>
-                    <h3 className="mb-2 text-lg font-semibold text-climb-600">
+                    <h4 className="text-lg font-semibold text-climb-600 mb-2">
                       {highlight.title}
-                    </h3>
+                    </h4>
                     <p className="text-neutral-700">
                       {highlight.description}
                     </p>
@@ -63,11 +62,12 @@ export function AboutSection() {
           <div className="relative">
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
               <Image
-                src={currentTheme.gallery.images.find(img => img.category === 'nature')?.src || currentTheme.gallery.images[0].src}
-                alt={currentTheme.gallery.images.find(img => img.category === 'nature')?.alt || currentTheme.gallery.images[0].alt}
+                src={normalizeImageUrl(natureImage?.src || '')}
+                alt={natureImage?.alt || 'Imagem da localização'}
                 width={600}
                 height={400}
                 className="h-[400px] w-full object-cover"
+                unoptimized={natureImage?.isExternal}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               <div className="absolute bottom-6 left-6 text-white">
@@ -78,21 +78,16 @@ export function AboutSection() {
 
             {/* Floating Stats */}
             <div className="absolute -bottom-6 -left-6 rounded-2xl border border-neutral-200 bg-white p-6 shadow-lg">
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-climb-600">50+</div>
-                  <div className="text-sm text-neutral-600">Vias Diferentes</div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-climb-600">120km</div>
+                  <div className="text-sm text-neutral-600">de São Paulo</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-orange-400">600M</div>
-                  <div className="text-sm text-neutral-600">Anos de História</div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-climb-600">600M</div>
+                  <div className="text-sm text-neutral-600">anos de história</div>
                 </div>
               </div>
-            </div>
-
-            <div className="absolute -right-6 -top-6 rounded-2xl bg-orange-400 p-4 text-center text-white shadow-lg">
-              <div className="text-xl font-bold">{currentTheme.location.distance.split(' ')[0]}</div>
-              <div className="text-xs">de São Paulo</div>
             </div>
           </div>
         </div>

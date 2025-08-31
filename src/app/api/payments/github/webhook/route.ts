@@ -1,100 +1,85 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { GitHubPaymentService } from '@/infrastructure/services/GitHubPaymentService';
+import { OrderRepository } from '@/infrastructure/repositories/OrderRepository';
+import { WebhookHandler } from '@/lib/webhook-handler';
 import { GitHubSponsorshipWebhook } from '@/core/entities/GitHubPayment';
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    
-    console.log('GitHub Sponsors webhook received:', body);
+const gitHubPaymentService = new GitHubPaymentService();
+const orderRepository = new OrderRepository();
 
-    // Validate webhook signature (in production)
-    // const signature = request.headers.get('x-hub-signature-256');
-    // if (!validateGitHubWebhookSignature(body, signature)) {
-    //   return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
-    // }
-
-    const gitHubPaymentService = new GitHubPaymentService();
+// Configure webhook handler
+const githubWebhook = new WebhookHandler(
+  {
+    provider: 'github',
+    secret: process.env.GITHUB_WEBHOOK_SECRET || '',
+    signatureConfig: {
+      headerName: 'x-hub-signature-256',
+      algorithm: 'sha256',
+      encoding: 'hex'
+    },
+    requiredFields: ['action', 'sponsorship.id', 'sponsorship.sponsor.login'],
+    allowedFields: [
+      'action',
+      'sponsorship',
+      'sender',
+      'repository',
+      'organization',
+      'installation'
+    ]
+  },
+  async (context) => {
+    const { body, headers } = context;
 
     // Process GitHub Sponsors webhook
     if (body.action && body.sponsorship) {
       const webhook: GitHubSponsorshipWebhook = body;
       
-      try {
-        await gitHubPaymentService.processWebhook(webhook, {
-          webhook_id: body.sponsorship?.id,
-          received_at: new Date().toISOString(),
-          headers: {
-            'user-agent': request.headers.get('user-agent'),
-            'x-github-delivery': request.headers.get('x-github-delivery'),
-            'x-github-event': request.headers.get('x-github-event'),
-          }
-        });
+      // Process webhook with metadata
+      await gitHubPaymentService.processWebhook(webhook, {
+        webhook_id: body.sponsorship?.id,
+        received_at: new Date().toISOString(),
+        headers: {
+          'user-agent': headers['user-agent'],
+          'x-github-delivery': headers['x-github-delivery'],
+          'x-github-event': headers['x-github-event']
+        }
+      });
 
-        console.log(`GitHub Sponsors webhook processed successfully: ${webhook.action}`);
+      // Update order status based on sponsorship action
+      switch (webhook.action) {
+        case 'created':
+          // New sponsorship created
+          await orderRepository.updateStatus(webhook.sponsorship.node_id, 'confirmed');
+          return { status: 'sponsorship_created' };
 
-        // Here you would typically update the order status in your database
-        // Example:
-        // if (webhook.action === 'created') {
-        //   await updateOrderStatus(orderId, 'paid');
-        //   await sendPaymentConfirmationEmail(orderId);
-        // }
+        case 'cancelled':
+          // Sponsorship cancelled
+          await orderRepository.updateStatus(webhook.sponsorship.node_id, 'cancelled');
+          return { status: 'sponsorship_cancelled' };
 
-        return NextResponse.json({ 
-          success: true, 
-          message: 'Webhook processed successfully' 
-        });
+        case 'tier_changed':
+          // Sponsorship tier changed
+          await orderRepository.updateStatus(webhook.sponsorship.node_id, 'pending_payment');
+          return { status: 'sponsorship_tier_changed' };
 
-      } catch (error) {
-        console.error('Error processing GitHub Sponsors webhook:', error);
-        return NextResponse.json({ 
-          error: 'Failed to process webhook' 
-        }, { status: 500 });
+        case 'pending_cancellation':
+          // Sponsorship pending cancellation
+          await orderRepository.updateStatus(webhook.sponsorship.node_id, 'cancelled');
+          return { status: 'sponsorship_pending_cancellation' };
+
+        default:
+          return { status: 'ignored', action: webhook.action };
       }
     }
 
-    // Handle other webhook types
-    console.log(`Unhandled GitHub webhook type: ${body.action || 'unknown'}`);
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Webhook received but not processed' 
-    });
-
-  } catch (error) {
-    console.error('Error parsing GitHub webhook:', error);
-    return NextResponse.json({ 
-      error: 'Invalid webhook payload' 
-    }, { status: 400 });
+    return { status: 'ignored', reason: 'unsupported_event' };
   }
+);
+
+export async function POST(request: NextRequest) {
+  return githubWebhook.handleWebhook(request);
 }
 
-export async function GET(request: NextRequest) {
-  // Health check endpoint for GitHub webhook
-  return NextResponse.json({
-    status: 'GitHub Sponsors webhook endpoint is active',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
-}
-
-// Helper function to validate GitHub webhook signature (implement in production)
-function validateGitHubWebhookSignature(payload: any, signature: string | null): boolean {
-  if (!signature || !process.env.GITHUB_WEBHOOK_SECRET) {
-    console.warn('GitHub webhook signature validation skipped - no signature or secret');
-    return true; // Skip validation in development
-  }
-
-  // In production, implement proper HMAC-SHA256 signature validation
-  // const crypto = require('crypto');
-  // const expectedSignature = 'sha256=' + crypto
-  //   .createHmac('sha256', process.env.GITHUB_WEBHOOK_SECRET)
-  //   .update(JSON.stringify(payload))
-  //   .digest('hex');
-  // 
-  // return crypto.timingSafeEqual(
-  //   Buffer.from(signature),
-  //   Buffer.from(expectedSignature)
-  // );
-
-  return true;
+export async function GET() {
+  return new Response('GitHub Sponsors Webhook Endpoint', { status: 200 });
 }

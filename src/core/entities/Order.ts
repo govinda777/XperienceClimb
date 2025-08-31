@@ -56,6 +56,8 @@ export interface PaymentInfo {
 
 export type OrderStatus =
   | 'pending_payment'
+  | 'pending_review'
+  | 'pending_cancellation'
   | 'confirmed'
   | 'in_progress'
   | 'completed'

@@ -15,6 +15,8 @@ export interface GalleryImage {
   alt: string;
   title: string;
   category: string;
+  isExternal?: boolean; // Indica se é uma URL externa
+  externalDomain?: string; // Domínio da URL externa para validação
 }
 
 export interface LocationInfo {
@@ -88,6 +90,22 @@ export interface CommunityInfo {
   visitedLocationId?: string; // ID of the visited location if it exists in community data
 }
 
+export interface VisualTheme {
+  primaryColor: string;
+  primaryColorHover: string;
+  primaryColorActive: string;
+  accentColor: string;
+  backgroundColor: string;
+  surfaceColor: string;
+  textColor: string;
+  textSecondaryColor: string;
+  borderColor: string;
+  gradientFrom: string;
+  gradientTo: string;
+  heroOverlay: string;
+  cardBackground: string;
+}
+
 export interface ThemeConfig {
   id: string;
   name: string;
@@ -98,4 +116,5 @@ export interface ThemeConfig {
   logistics: LogisticsInfo;
   community: CommunityInfo;
   seo: SEOInfo;
+  visual: VisualTheme;
 }

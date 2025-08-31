@@ -3,6 +3,35 @@ import '@testing-library/jest-dom';
 // Polyfill fetch for Jest
 global.fetch = jest.fn();
 
+// Mock Next.js server components
+global.Request = class Request {
+  constructor(input, init) {
+    this.url = input;
+    this.method = init?.method || 'GET';
+    this.headers = new Map(Object.entries(init?.headers || {}));
+    this.body = init?.body;
+  }
+};
+
+global.Response = class Response {
+  constructor(body, init) {
+    this.body = body;
+    this.status = init?.status || 200;
+    this.statusText = init?.statusText || 'OK';
+    this.headers = new Map(Object.entries(init?.headers || {}));
+  }
+  
+  static json(data, init) {
+    return new Response(JSON.stringify(data), {
+      ...init,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(init?.headers || {})
+      }
+    });
+  }
+};
+
 // Mock Privy authentication
 jest.mock('@privy-io/react-auth', () => ({
   usePrivy: () => ({
@@ -72,6 +101,9 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
+// Mock window.location.reload - skip for now due to JSDOM compatibility issues
+// The location.reload functionality will be tested in e2e tests instead
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {

@@ -36,28 +36,28 @@ export const fazendaIpanemaTheme: ThemeConfig = {
   },
   content: {
     hero: {
-      title: 'XPERIENCE CLIMB',
-      subtitle: 'Viva a Experiência Definitiva de Escalada',
-      description: 'Escalada no coração da Mata Atlântica'
+      title: 'XPERIENCE CLIMB FLONA',
+      subtitle: 'Escalada Sustentável na Mata Atlântica',
+      description: 'Conservação, educação e aventura em harmonia'
     },
     about: {
       title: 'Escalada no Coração da Mata Atlântica',
       description: 'O Morro Araçoiaba, localizado na Floresta Nacional de Ipanema (FLONA), oferece uma das experiências de escalada mais autênticas e seguras do interior de São Paulo.',
       highlights: [
         {
-          icon: '🏔️',
-          title: 'Rochas Naturais Únicas',
-          description: 'Formações rochosas de quartzito com mais de 600 milhões de anos, oferecendo vias para todos os níveis de experiência.'
+          icon: '🌳',
+          title: 'Unidade de Conservação Federal',
+          description: 'Escalada responsável em área protegida pelo ICMBio, contribuindo para a conservação da Mata Atlântica e educação ambiental.'
         },
         {
-          icon: '🌿',
-          title: 'Conservação e Natureza',
-          description: 'Localizado em uma unidade de conservação federal, garantindo a preservação do ambiente e biodiversidade local.'
+          icon: '🔬',
+          title: 'Geologia Milenar',
+          description: 'Formações rochosas de quartzito com mais de 600 milhões de anos, um verdadeiro laboratório natural de geologia.'
         },
         {
-          icon: '👨‍🏫',
-          title: 'Instrutores Certificados',
-          description: 'Equipe de profissionais com certificação nacional e internacional, garantindo segurança e aprendizado de qualidade.'
+          icon: '🦋',
+          title: 'Biodiversidade Preservada',
+          description: 'Experiência única de escalada em meio à fauna e flora nativas, com possibilidade de avistamento de espécies endêmicas.'
         }
       ],
       infoBox: {
@@ -69,34 +69,44 @@ export const fazendaIpanemaTheme: ThemeConfig = {
   gallery: {
     images: [
       {
-        src: '/images/themes/fazenda-ipanema/climb.jpg',
+        src: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop',
         alt: 'Escalador nas rochas do Morro Araçoiaba',
         title: 'Escalada Técnica',
-        category: 'climb'
+        category: 'climb',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/fazenda-ipanema/climb-2.jpg',
+        src: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&h=600&fit=crop',
         alt: 'Vista panorâmica durante a escalada',
         title: 'Vista Panorâmica',
-        category: 'climb'
+        category: 'climb',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/fazenda-ipanema/flona.jpg',
+        src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop',
         alt: 'Floresta Nacional de Ipanema',
         title: 'Mata Atlântica Preservada',
-        category: 'nature'
+        category: 'nature',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/fazenda-ipanema/flona-2.jpg',
+        src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
         alt: 'Trilhas da Floresta Nacional',
         title: 'Trilhas Ecológicas',
-        category: 'nature'
+        category: 'nature',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/fazenda-ipanema/setor-map.jpg',
+        src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
         alt: 'Mapa dos setores de escalada',
         title: 'Setores de Escalada',
-        category: 'equipment'
+        category: 'equipment',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       }
     ],
     categories: {
@@ -145,5 +155,20 @@ export const fazendaIpanemaTheme: ThemeConfig = {
     description: 'Viva a experiência definitiva de escalada no Morro Araçoiaba, localizado na Floresta Nacional de Ipanema. Escalada segura com instrutores certificados.',
     keywords: ['escalada', 'fazenda ipanema', 'morro araçoiaba', 'flona', 'mata atlântica', 'escalada em rocha'],
     ogImage: '/images/themes/fazenda-ipanema/og-image.jpg'
+  },
+  visual: {
+    primaryColor: '#2d5a3d', // Deep forest green
+    primaryColorHover: '#245032',
+    primaryColorActive: '#1e4429',
+    accentColor: '#7cb342', // Fresh green accent
+    backgroundColor: '#f8fdf9', // Very light green background
+    surfaceColor: '#ffffff',
+    textColor: '#1b3b1f', // Dark forest green text
+    textSecondaryColor: '#4a6b4d',
+    borderColor: '#c8e6c9',
+    gradientFrom: '#2d5a3d',
+    gradientTo: '#4caf50',
+    heroOverlay: 'rgba(45, 90, 61, 0.7)', // Forest green overlay
+    cardBackground: '#ffffff'
   }
 };

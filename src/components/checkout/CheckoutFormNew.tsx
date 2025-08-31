@@ -15,6 +15,8 @@ import { PaymentMethodSelector } from './PaymentMethodSelector';
 import { CouponInput } from './CouponInput';
 import { CouponService } from '@/infrastructure/services/CouponService';
 import { ValidateCoupon } from '@/core/use-cases/coupons/ValidateCoupon';
+import { PaymentProcessingModal } from './PaymentProcessingModal';
+import { PaymentRetryModal } from './PaymentRetryModal';
 
 interface CheckoutFormProps {
   cartItems: CartItem[];
@@ -33,10 +35,36 @@ interface FormData {
   };
 }
 
+interface PixModalData {
+  qr_code_base64: string;
+  ticket_url: string;
+  expires_at: Date;
+  amount: number;
+}
+
+interface CryptoModalData {
+  address: string;
+  amount: number;
+  amountFiat: number;
+  cryptoType: 'bitcoin' | 'usdt';
+  exchangeRate: number;
+  expiresAt: Date;
+}
+
 export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps) {
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPixModal, setShowPixModal] = useState(false);
+  const [showCryptoModal, setShowCryptoModal] = useState(false);
+  const [pixModalData, setPixModalData] = useState<PixModalData | null>(null);
+  const [cryptoModalData, setCryptoModalData] = useState<CryptoModalData | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState<'processing' | 'success' | 'error'>('processing');
+  const [showProcessingModal, setShowProcessingModal] = useState(false);
+  const [showRetryModal, setShowRetryModal] = useState(false);
+  const [processingError, setProcessingError] = useState<string | undefined>();
+  const [retryCount, setRetryCount] = useState(0);
+  const [lastOrderData, setLastOrderData] = useState<any>(null);
   const [formData, setFormData] = useState<FormData>({
     participantDetails: {},
     climbingDetails: {
@@ -182,85 +210,213 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
     setCurrentStep(prev => prev - 1);
   };
 
-  const handleSubmit = async () => {
+  // Validate payment data before submission
+  const validatePaymentData = (): { isValid: boolean; error?: string } => {
     if (!user) {
-      alert('Usuário não autenticado');
-      return;
+      return { isValid: false, error: 'Usuário não autenticado. Por favor, faça login novamente.' };
     }
 
     if (!formData.paymentMethod) {
-      alert('Selecione um método de pagamento');
+      return { isValid: false, error: 'Por favor, selecione um método de pagamento.' };
+    }
+
+    if (finalPrice <= 0) {
+      return { isValid: false, error: 'Valor total inválido. Por favor, verifique os itens do carrinho.' };
+    }
+
+    // Validate participant details
+    for (const item of cartItems) {
+      const details = formData.participantDetails[item.id];
+      if (!details?.name || !details?.age || !details?.experienceLevel || !details?.healthDeclaration) {
+        return { isValid: false, error: 'Por favor, preencha todos os dados dos participantes.' };
+      }
+    }
+
+    // Validate climbing details
+    if (!formData.climbingDetails.selectedDate) {
+      return { isValid: false, error: 'Por favor, selecione uma data para a escalada.' };
+    }
+
+    return { isValid: true };
+  };
+
+  // Handle payment method specific validation and processing
+  const processPayment = async (result: any): Promise<{ success: boolean; error?: string }> => {
+    if (!result.success || !formData.paymentMethod) {
+      return { success: false, error: result.error || 'Erro ao processar pagamento.' };
+    }
+
+    try {
+      switch (formData.paymentMethod) {
+        case 'whatsapp':
+          if (!result.whatsappUrl) {
+            return { success: false, error: 'Link do WhatsApp não gerado.' };
+          }
+          onSuccess();
+          window.open(result.whatsappUrl, '_blank', 'noopener,noreferrer');
+          return { success: true };
+
+        case 'mercadopago':
+          if (!result.checkoutUrl) {
+            return { success: false, error: 'URL de checkout não gerada.' };
+          }
+          window.location.href = result.checkoutUrl;
+          return { success: true };
+
+        case 'pix':
+          if (!result.pixPayment?.qr_code_base64) {
+            return { success: false, error: 'QR Code PIX não gerado.' };
+          }
+          // Show PIX QR code modal
+          setPixModalData(result.pixPayment);
+          setShowPixModal(true);
+          return { success: true };
+
+        case 'bitcoin':
+        case 'usdt':
+          if (!result.cryptoPayment?.address || !result.cryptoPayment?.amount) {
+            return { success: false, error: 'Dados de pagamento em crypto não gerados.' };
+          }
+          // Show crypto payment modal
+          setCryptoModalData(result.cryptoPayment);
+          setShowCryptoModal(true);
+          return { success: true };
+
+        case 'github':
+          if (!result.githubPayment?.sponsorshipUrl) {
+            return { success: false, error: 'URL do GitHub Sponsors não gerada.' };
+          }
+          onSuccess();
+          window.open(result.githubPayment.sponsorshipUrl, '_blank', 'noopener,noreferrer');
+          return { success: true };
+
+        default:
+          return { success: false, error: 'Método de pagamento não suportado.' };
+      }
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      return { success: false, error: 'Erro ao processar pagamento. Por favor, tente novamente.' };
+    }
+  };
+
+  const createAndProcessOrder = async (orderData: any) => {
+    const orderRepository = new OrderRepository();
+    const createOrderUseCase = new CreateOrder(orderRepository);
+
+    // Create order
+    const result = await createOrderUseCase.execute(orderData);
+
+    // Process payment
+    const paymentResult = await processPayment(result);
+    if (!paymentResult.success) {
+      throw new Error(paymentResult.error);
+    }
+
+    return result;
+  };
+
+  const handlePaymentRetry = async () => {
+    if (!lastOrderData) return;
+
+    setShowRetryModal(false);
+    setShowProcessingModal(true);
+    setPaymentStatus('processing');
+    setIsSubmitting(true);
+
+    try {
+      const result = await createAndProcessOrder(lastOrderData);
+
+      // Payment initiated successfully
+      setPaymentStatus('success');
+      setRetryCount(0); // Reset retry count on success
+      
+      // For payment methods that don't redirect immediately
+      if (['pix', 'bitcoin', 'usdt'].includes(formData.paymentMethod!)) {
+        setTimeout(() => {
+          setShowProcessingModal(false);
+        }, 2000);
+      }
+
+    } catch (error) {
+      console.error('Error retrying payment:', error);
+      setRetryCount(prev => prev + 1);
+      setPaymentStatus('error');
+      setProcessingError(error instanceof Error ? error.message : 'Erro ao processar pedido. Por favor, tente novamente.');
+      setShowProcessingModal(false);
+      setShowRetryModal(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChangePaymentMethod = () => {
+    setShowRetryModal(false);
+    setCurrentStep(3); // Go back to payment method selection
+    setRetryCount(0); // Reset retry count
+  };
+
+  const handleSubmit = async () => {
+    // Validate payment data
+    const validation = validatePaymentData();
+    if (!validation.isValid) {
+      setPaymentStatus('error');
+      setProcessingError(validation.error);
+      setShowProcessingModal(true);
       return;
     }
 
     setIsSubmitting(true);
+    setPaymentStatus('processing');
+    setShowProcessingModal(true);
 
     try {
-      const orderRepository = new OrderRepository();
-      const createOrderUseCase = new CreateOrder(orderRepository);
-
-      const result = await createOrderUseCase.execute({
-        userId: user.id,
+      // Prepare order data
+      const orderData = {
+        userId: user!.id,
         cartItems,
         participantDetails: formData.participantDetails,
         climbingDetails: formData.climbingDetails,
-        paymentMethod: formData.paymentMethod,
+        paymentMethod: formData.paymentMethod!,
         appliedCoupon: formData.appliedCoupon ? {
           code: formData.appliedCoupon.code,
           discountAmount: formData.appliedCoupon.discountAmount
         } : undefined
-      });
+      };
 
-      if (result.success) {
-        // Handle different payment methods
-        switch (formData.paymentMethod) {
-          case 'whatsapp':
-            if (result.whatsappUrl) {
-              onSuccess();
-              const link = document.createElement('a');
-              link.href = result.whatsappUrl;
-              link.target = '_blank';
-              link.rel = 'noopener noreferrer';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }
-            break;
-          case 'mercadopago':
-            if (result.checkoutUrl) {
-              window.location.href = result.checkoutUrl;
-            }
-            break;
-          case 'pix':
-            // Handle PIX payment flow
-            if (result.pixPayment) {
-              // Show PIX QR code modal or redirect
-              console.log('PIX Payment:', result.pixPayment);
-            }
-            break;
-          case 'bitcoin':
-          case 'usdt':
-            // Handle crypto payment flow
-            if (result.cryptoPayment) {
-              // Show crypto payment modal or redirect
-              console.log('Crypto Payment:', result.cryptoPayment);
-            }
-            break;
-          case 'github':
-            // Handle GitHub Sponsors payment flow
-            if (result.githubPayment) {
-              onSuccess();
-              // Redirect to GitHub Sponsors page
-              window.open(result.githubPayment.sponsorshipUrl, '_blank');
-            }
-            break;
-        }
-      } else {
-        alert(result.error || 'Erro ao processar pedido');
+      // Store order data for potential retries
+      setLastOrderData(orderData);
+
+      const result = await createAndProcessOrder(orderData);
+
+      // Payment initiated successfully
+      setPaymentStatus('success');
+      
+      // For payment methods that don't redirect immediately
+      if (['pix', 'bitcoin', 'usdt'].includes(formData.paymentMethod!)) {
+        // Keep the processing modal open briefly to show success state
+        setTimeout(() => {
+          setShowProcessingModal(false);
+          // Redirect to confirmation page
+          window.location.href = `/checkout/confirmation?orderId=${result.orderId}&method=${formData.paymentMethod}&status=pending`;
+        }, 2000);
+      } else if (formData.paymentMethod === 'whatsapp') {
+        // WhatsApp payments are handled through chat
+        window.location.href = `/checkout/confirmation?orderId=${result.orderId}&method=whatsapp&status=pending`;
+      } else if (formData.paymentMethod === 'github') {
+        // GitHub payments redirect to GitHub Sponsors
+        window.location.href = `/checkout/confirmation?orderId=${result.orderId}&method=github&status=pending`;
+      } else if (formData.paymentMethod === 'mercadopago') {
+        // MercadoPago redirects to their checkout
+        window.location.href = `/checkout/confirmation?orderId=${result.orderId}&method=mercadopago&status=pending`;
       }
+
     } catch (error) {
-      console.error('Error creating order:', error);
-      alert('Erro ao processar pedido. Tente novamente.');
+      console.error('Error in payment flow:', error);
+      setPaymentStatus('error');
+      setProcessingError(error instanceof Error ? error.message : 'Erro ao processar pedido. Por favor, tente novamente.');
+      setShowProcessingModal(false);
+      setShowRetryModal(true);
+      setRetryCount(prev => prev + 1);
     } finally {
       setIsSubmitting(false);
     }
@@ -325,8 +481,35 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
     }
   };
 
+  const handleProcessingModalClose = () => {
+    setShowProcessingModal(false);
+    setPaymentStatus('processing');
+    setProcessingError(undefined);
+  };
+
   return (
     <div className="flex h-full flex-col">
+      {/* Payment Processing Modal */}
+      <PaymentProcessingModal
+        isOpen={showProcessingModal}
+        status={paymentStatus}
+        paymentMethod={formData.paymentMethod || ''}
+        errorMessage={processingError}
+        onClose={handleProcessingModalClose}
+      />
+
+      {/* Payment Retry Modal */}
+      <PaymentRetryModal
+        isOpen={showRetryModal}
+        onClose={() => setShowRetryModal(false)}
+        onRetry={handlePaymentRetry}
+        onChangeMethod={handleChangePaymentMethod}
+        paymentMethod={formData.paymentMethod!}
+        error={processingError || 'Erro desconhecido'}
+        retryCount={retryCount}
+        maxRetries={3}
+      />
+
       {/* Progress Steps */}
       <div className="border-b border-neutral-200 px-4 py-4">
         <div className="mb-3 flex items-center justify-between text-sm">

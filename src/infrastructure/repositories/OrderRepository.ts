@@ -175,6 +175,41 @@ export class OrderRepository implements IOrderRepository {
     }
   }
 
+  async update(order: Order): Promise<void> {
+    try {
+      // Find order by ID across all preferences
+      const allOrders = this.getAllOrdersFromLocalStorage();
+      const orderIndex = allOrders.findIndex(o => o.id === order.id);
+      
+      if (orderIndex === -1) {
+        throw new Error(`Order not found: ${order.id}`);
+      }
+
+      // Update order
+      allOrders[orderIndex] = {
+        ...allOrders[orderIndex],
+        ...order,
+        updatedAt: new Date()
+      };
+
+      // Update in localStorage
+      localStorage.setItem('xc_orders', JSON.stringify(allOrders));
+
+      // Also update individual order storage if we have preferenceId
+      const preferenceId = this.findPreferenceIdByOrderId(order.id);
+      if (preferenceId) {
+        this.storeOrderLocally(allOrders[orderIndex], preferenceId);
+      }
+
+      console.log(`Order ${order.id} updated successfully`);
+    } catch (error) {
+      console.error('Error updating order:', error);
+      throw error;
+    }
+  }
+
+
+
   private storeOrderLocally(order: Order, preferenceId: string): void {
     try {
       const orderData = {
@@ -251,6 +286,17 @@ export class OrderRepository implements IOrderRepository {
     }
   }
 
+  private findPreferenceIdByOrderId(orderId: string): string | null {
+    try {
+      const allOrders = this.getAllOrdersFromLocalStorage();
+      const order = allOrders.find(o => o.id === orderId);
+      return order?.preferenceId || null;
+    } catch (error) {
+      console.error('Error finding preference ID by order ID:', error);
+      return null;
+    }
+  }
+
   private reconstructOrderFromMetadata(metadata: any): Order {
     return {
       id: metadata.order_id,
@@ -272,6 +318,17 @@ export class OrderRepository implements IOrderRepository {
       createdAt: new Date(metadata.created_at),
       updatedAt: new Date(),
     };
+  }
+
+  private findPreferenceIdByOrderId(orderId: string): string | null {
+    try {
+      const allOrders = this.getAllOrdersFromLocalStorage();
+      const order = allOrders.find(o => o.id === orderId);
+      return order ? (order as any).preferenceId : null;
+    } catch (error) {
+      console.error('Error finding preference ID by order ID:', error);
+      return null;
+    }
   }
 
   private mapPaymentStatus(mpStatus: string): Order['payment']['status'] {

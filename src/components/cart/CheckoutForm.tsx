@@ -119,6 +119,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
         cartItems,
         participantDetails: formData.participantDetails,
         climbingDetails: formData.climbingDetails,
+        paymentMethod: 'whatsapp', // Default to WhatsApp for this form
       });
 
       if (result.success) {

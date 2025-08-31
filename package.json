@@ -14,6 +14,7 @@
     "test:pre-commit": "jest --passWithNoTests --silent --watchAll=false --testPathIgnorePatterns=integration",
     "pre-commit": "echo '🧪 Pre-commit hook executed successfully!'",
     "create-tour": "node scripts/create-tour.js",
+    "create-theme": "node scripts/create-theme-with-external-images.js",
     "precommit": "node scripts/pre-commit-tests.js"
   },
   "dependencies": {

@@ -31,9 +31,9 @@ export const pedraBellaTheme: ThemeConfig = {
   },
   content: {
     hero: {
-      title: 'XPERIENCE CLIMB',
-      subtitle: 'Aventura Completa em Pedra Bela',
-      description: 'Escalada, tirolesa e natureza exuberante'
+      title: 'XPERIENCE ADVENTURE',
+      subtitle: 'Parque de Aventuras em Pedra Bela',
+      description: 'Tirolesa gigante, escalada, cachoeiras e muito mais!'
     },
     about: {
       title: 'Aventura Completa na Natureza de Pedra Bela',
@@ -41,18 +41,18 @@ export const pedraBellaTheme: ThemeConfig = {
       highlights: [
         {
           icon: '🚁',
-          title: 'Tirolesa Gigante',
-          description: 'A maior tirolesa da América Latina com quase 2km de extensão, proporcionando uma experiência única de voo sobre a natureza.'
+          title: 'Tirolesa Record Mundial',
+          description: 'A maior tirolesa da América Latina com 1.950m de extensão e velocidade de até 80km/h - uma experiência inesquecível de voo!'
+        },
+        {
+          icon: '🏍️',
+          title: 'Múltiplas Aventuras',
+          description: 'Quadriciclo, escalada, cachoeiras e trilhas - um verdadeiro parque de aventuras com atividades para toda família.'
         },
         {
           icon: '🏔️',
-          title: 'Montanhas Espetaculares',
-          description: 'Pedra do Santuário e Pedra Maria Antônia oferecem vistas panorâmicas deslumbrantes e desafios únicos de escalada.'
-        },
-        {
-          icon: '💧',
-          title: 'Cachoeiras Refrescantes',
-          description: 'Cachoeiras Boca da Mata e Antônio Souza proporcionam momentos de relaxamento e conexão com a natureza.'
+          title: 'Montanhas Místicas',
+          description: 'Pedra do Santuário com sua igreja no topo e Pedra Maria Antônia oferecem experiências espirituais e vistas de 360°.'
         }
       ],
       infoBox: {
@@ -64,76 +64,100 @@ export const pedraBellaTheme: ThemeConfig = {
   gallery: {
     images: [
       {
-        src: '/images/themes/pedra-bela/tirolesa-1.jpg',
+        src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop',
         alt: 'Tirolesa de 2km em Pedra Bela',
         title: 'Tirolesa Gigante',
-        category: 'adventure'
+        category: 'adventure',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/pedra-santuario-1.jpg',
+        src: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop',
         alt: 'Vista da Pedra do Santuário',
         title: 'Pedra do Santuário',
-        category: 'climb'
+        category: 'climb',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/pedra-santuario-2.jpg',
+        src: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&h=600&fit=crop',
         alt: 'Igreja no cume da Pedra do Santuário',
         title: 'Igreja do Santuário',
-        category: 'climb'
+        category: 'climb',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/pedra-maria-antonia.jpg',
+        src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
         alt: 'Vista da Pedra Maria Antônia',
         title: 'Pedra Maria Antônia',
-        category: 'climb'
+        category: 'climb',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/cachoeira-boca-mata.jpg',
+        src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop',
         alt: 'Cachoeira Boca da Mata',
         title: 'Cachoeira Boca da Mata',
-        category: 'waterfalls'
+        category: 'waterfalls',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/cachoeira-antonio-souza.jpg',
+        src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
         alt: 'Cachoeira Antônio Souza',
         title: 'Cachoeira Antônio Souza',
-        category: 'waterfalls'
+        category: 'waterfalls',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/corredeiras-tuncuns.jpg',
+        src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop',
         alt: 'Corredeiras dos Tuncuns',
         title: 'Corredeiras dos Tuncuns',
-        category: 'waterfalls'
+        category: 'waterfalls',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/templo-budista.jpg',
+        src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop',
         alt: 'Templo Budista em Pedra Bela',
         title: 'Templo Budista',
-        category: 'nature'
+        category: 'nature',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/quadriciclo.jpg',
+        src: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop',
         alt: 'Passeio de quadriciclo',
         title: 'Passeio de Quadriciclo',
-        category: 'adventure'
+        category: 'adventure',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/escalada-1.jpg',
+        src: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop',
         alt: 'Escalada nas pedras de Pedra Bela',
         title: 'Escalada Técnica',
-        category: 'climb'
+        category: 'climb',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/paisagem-1.jpg',
+        src: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&h=600&fit=crop',
         alt: 'Vista panorâmica das montanhas',
         title: 'Vista Panorâmica',
-        category: 'nature'
+        category: 'nature',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       },
       {
-        src: '/images/themes/pedra-bela/paisagem-2.jpg',
+        src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
         alt: 'Pôr do sol em Pedra Bela',
         title: 'Pôr do Sol',
-        category: 'nature'
+        category: 'nature',
+        isExternal: true,
+        externalDomain: 'images.unsplash.com'
       }
     ],
     categories: {
@@ -209,5 +233,20 @@ export const pedraBellaTheme: ThemeConfig = {
     description: 'Viva uma experiência única com escalada, tirolesa de 2km e cachoeiras em Pedra Bela. Aventura completa na natureza paulista.',
     keywords: ['pedra bela', 'tirolesa', 'escalada', 'cachoeiras', 'aventura', 'pedra do santuário', 'pedra maria antônia'],
     ogImage: '/images/themes/pedra-bela/og-image.jpg'
+  },
+  visual: {
+    primaryColor: '#d84315', // Deep orange-red for adventure
+    primaryColorHover: '#bf360c',
+    primaryColorActive: '#a52714',
+    accentColor: '#ff7043', // Bright orange accent
+    backgroundColor: '#fff8f5', // Warm light background
+    surfaceColor: '#ffffff',
+    textColor: '#3e2723', // Dark brown text
+    textSecondaryColor: '#6d4c41',
+    borderColor: '#ffccbc',
+    gradientFrom: '#d84315',
+    gradientTo: '#ff5722',
+    heroOverlay: 'rgba(216, 67, 21, 0.7)', // Orange overlay
+    cardBackground: '#ffffff'
   }
 };

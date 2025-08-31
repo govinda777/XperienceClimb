@@ -1,12 +1,16 @@
 import { IPaymentService, CreatePreferenceRequest, PaymentPreference, CreatePixPaymentRequest, PixPaymentResponse } from '@/core/services/IPaymentService';
+import { PaymentMonitor } from '@/lib/payment-monitor';
 
 export class PaymentService implements IPaymentService {
   private accessToken: string;
   private publicKey: string;
   
+  private monitor: PaymentMonitor;
+
   constructor() {
     this.accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN || '';
     this.publicKey = process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY || '';
+    this.monitor = PaymentMonitor.getInstance();
     
     if (!this.accessToken && typeof window === 'undefined') {
       console.warn('MERCADOPAGO_ACCESS_TOKEN not configured');
@@ -18,6 +22,14 @@ export class PaymentService implements IPaymentService {
 
   async createPreference(request: CreatePreferenceRequest): Promise<PaymentPreference> {
     try {
+      // Track payment attempt
+      this.monitor.trackPaymentAttempt(
+        request.orderId,
+        'mercadopago',
+        request.items.reduce((total, item) => total + (item.unit_price * item.quantity), 0) * 100, // Convert to cents
+        'BRL',
+        { items: request.items }
+      );
       const preference = {
         items: request.items,
         payer: {
@@ -55,12 +67,21 @@ export class PaymentService implements IPaymentService {
       };
     } catch (error) {
       console.error('Error creating Mercado Pago preference:', error);
+      this.monitor.trackPaymentError(request.orderId, 'mercadopago', error as Error);
       throw new Error('Failed to create payment preference');
     }
   }
 
   async createPixPayment(request: CreatePixPaymentRequest): Promise<PixPaymentResponse> {
     try {
+      // Track payment attempt
+      this.monitor.trackPaymentAttempt(
+        request.orderId,
+        'pix',
+        request.amount,
+        'BRL',
+        { description: request.description }
+      );
       const pixPayment = {
         transaction_amount: request.amount / 100, // Convert cents to reais
         description: request.description,
@@ -90,6 +111,7 @@ export class PaymentService implements IPaymentService {
       };
     } catch (error) {
       console.error('Error creating PIX payment:', error);
+      this.monitor.trackPaymentError(request.orderId, 'pix', error as Error);
       throw new Error('Failed to create PIX payment');
     }
   }
@@ -122,12 +144,39 @@ export class PaymentService implements IPaymentService {
         const paymentId = webhookData.data.id;
         const payment = await this.getPayment(paymentId);
         
+        // Track payment event
+        this.monitor.trackPaymentEvent({
+          type: 'webhook_received',
+          orderId: payment.external_reference,
+          paymentId: payment.id,
+          amount: payment.transaction_amount * 100, // Convert to cents
+          currency: payment.currency_id,
+          status: payment.status,
+          provider: 'mercadopago',
+          metadata: {
+            payment_type: payment.payment_type_id,
+            payment_method: payment.payment_method_id,
+            status_detail: payment.status_detail,
+            payer: payment.payer,
+            webhook_type: webhookData.type,
+            webhook_action: webhookData.action
+          }
+        });
+
         // Update order status based on payment status
         // This would typically update your database
         console.log('Payment status updated:', payment);
       }
     } catch (error) {
       console.error('Error processing webhook:', error);
+      if (webhookData.data?.id) {
+        this.monitor.trackPaymentError(
+          webhookData.data.id,
+          'mercadopago',
+          error as Error,
+          { webhook_type: webhookData.type }
+        );
+      }
       throw error;
     }
   }
