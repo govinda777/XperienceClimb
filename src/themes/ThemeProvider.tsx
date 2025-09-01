@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeConfig } from './types';
 import { getThemeFromUrl } from '@/lib/theme-utils';
@@ -33,7 +33,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(fazendaIpanemaTheme);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -130,6 +130,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     >
       {children}
     </ThemeContext.Provider>
+  );
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ThemeProviderContent>
+        {children}
+      </ThemeProviderContent>
+    </Suspense>
   );
 }
 

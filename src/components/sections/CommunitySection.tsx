@@ -167,7 +167,7 @@ function PartnerCard({ partner }: { partner: Partner }) {
           alt={partner.name}
           className="w-16 h-16 rounded-lg object-cover"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/images/placeholder-partner.jpg';
+            (e.target as HTMLImageElement).src = '/images/logo.png';
           }}
         />
         <div className="flex-1">
@@ -265,7 +265,7 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
           alt={instructor.name}
           className="w-20 h-20 rounded-full object-cover"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/images/placeholder-instructor.jpg';
+            (e.target as HTMLImageElement).src = '/images/logo.png';
           }}
         />
         <div className="flex-1">
@@ -519,7 +519,7 @@ function LocationCard({ location }: { location: VisitedLocation }) {
           alt={location.name}
           className="w-full h-48 object-cover"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/images/placeholder-location.jpg';
+            (e.target as HTMLImageElement).src = '/images/climb.jpg';
           }}
         />
       )}

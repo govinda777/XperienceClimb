@@ -106,8 +106,8 @@ export const PACKAGES: Record<string, PackageType> = {
 // Dynamic available dates - can be easily modified
 export const AVAILABLE_DATES = {
   // Data única disponível para escalada
-  singleDate: '16/08/2025',
+  singleDate: '06/09/2025',
   // Para compatibilidade com diferentes formatos
-  singleDateISO: '2025-08-16',
-  singleDateDisplay: '16 de Agosto de 2025',
+  singleDateISO: '2025-09-06',
+  singleDateDisplay: '06 de Setembro de 2025',
 } as const;

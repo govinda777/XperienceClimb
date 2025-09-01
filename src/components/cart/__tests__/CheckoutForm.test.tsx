@@ -164,7 +164,7 @@ describe('CheckoutForm', () => {
     });
 
     it('should display fixed date', () => {
-      expect(screen.getByDisplayValue('16 de Agosto de 2025')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('06 de Setembro de 2025')).toBeInTheDocument();
       expect(screen.getByText('Disponível')).toBeInTheDocument();
     });
 
