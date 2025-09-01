@@ -4,17 +4,17 @@ export interface ITourRepository {
   /**
    * Create a new tour
    */
-  create(tour: Tour): Promise<Tour>;
+  create(_tour: Tour): Promise<Tour>;
 
   /**
    * Update an existing tour
    */
-  update(tour: Tour): Promise<Tour>;
+  update(_tour: Tour): Promise<Tour>;
 
   /**
    * Find tour by ID
    */
-  findById(id: string): Promise<Tour | null>;
+  findById(_id: string): Promise<Tour | null>;
 
   /**
    * Find all tours
@@ -24,25 +24,25 @@ export interface ITourRepository {
   /**
    * Find tours by active status
    */
-  findByActive(isActive: boolean): Promise<Tour[]>;
+  findByActive(_isActive: boolean): Promise<Tour[]>;
 
   /**
    * Find tours by name (for uniqueness check)
    */
-  findByName(name: string): Promise<Tour[]>;
+  findByName(_name: string): Promise<Tour[]>;
 
   /**
    * Find tours by theme ID (for uniqueness check)
    */
-  findByThemeId(themeId: string): Promise<Tour[]>;
+  findByThemeId(_themeId: string): Promise<Tour[]>;
 
   /**
    * Delete a tour (hard delete)
    */
-  delete(id: string): Promise<boolean>;
+  delete(_id: string): Promise<boolean>;
 
   /**
    * Check if tour exists
    */
-  exists(id: string): Promise<boolean>;
+  exists(_id: string): Promise<boolean>;
 }

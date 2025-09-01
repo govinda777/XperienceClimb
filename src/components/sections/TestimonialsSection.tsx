@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, Button } from '@/components/ui';
+import { Card, Button } from '@/components/ui';
 
 interface Testimonial {
   id: number;
@@ -179,7 +179,7 @@ export function TestimonialsSection() {
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-400/5 rounded-full translate-y-8 -translate-x-8"></div>
             
             <div className="relative z-10">
-              <div className="text-6xl text-climb-500/20 mb-6 leading-none">"</div>
+              <div className="text-6xl text-climb-500/20 mb-6 leading-none">&ldquo;</div>
               
               <div className="flex items-center justify-center space-x-1 mb-6">
                 {[...Array(5)].map((_, i) => (

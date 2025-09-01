@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui';
 import { useTheme } from '@/themes/ThemeProvider';
-import { normalizeImageUrl, isValidImageUrl } from '@/lib/image-utils';
+import { normalizeImageUrl } from '@/lib/image-utils';
 
 interface GalleryImage {
   src: string;

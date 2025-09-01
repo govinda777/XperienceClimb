@@ -4,7 +4,7 @@
  */
 
 import { CreateOrder } from '@/core/use-cases/orders/CreateOrder';
-import { ProcessPixPayment } from '@/core/use-cases/payments/ProcessPixPayment';
+
 import { ProcessCryptoPayment } from '@/core/use-cases/payments/ProcessCryptoPayment';
 import { PaymentService } from '@/infrastructure/services/PaymentService';
 import { CryptoPaymentService } from '@/infrastructure/services/CryptoPaymentService';

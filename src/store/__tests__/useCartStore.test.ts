@@ -1,6 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
 import { useCartStore } from '../useCartStore';
-import { CartItem } from '@/types';
 
 // Mock zustand persist
 jest.mock('zustand/middleware', () => ({

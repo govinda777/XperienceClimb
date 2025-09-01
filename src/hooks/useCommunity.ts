@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   CommunityData, 
   Partner, 
@@ -38,7 +38,7 @@ export function useCommunity(options: UseCommunityOptions = {}): UseCommunityRet
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCommunityData = async () => {
+  const fetchCommunityData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -68,7 +68,7 @@ export function useCommunity(options: UseCommunityOptions = {}): UseCommunityRet
     } finally {
       setLoading(false);
     }
-  };
+  }, [type, state, category]);
 
   const fetchPartners = async (filters: { category?: string; state?: string; active?: boolean } = {}): Promise<Partner[]> => {
     try {
@@ -196,7 +196,7 @@ export function useCommunity(options: UseCommunityOptions = {}): UseCommunityRet
     if (autoFetch) {
       fetchCommunityData();
     }
-  }, [type, state, category, autoFetch]);
+  }, [type, state, category, autoFetch, fetchCommunityData]);
 
   return {
     data,

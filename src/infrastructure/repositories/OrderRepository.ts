@@ -2,7 +2,7 @@ import { IOrderRepository } from '@/core/repositories/IOrderRepository';
 import { Order } from '@/core/entities/Order';
 import { PaymentService } from '../services/PaymentService';
 import { WhatsAppService } from '../services/WhatsAppService';
-import { generateId } from '@/lib/utils';
+
 
 export class OrderRepository implements IOrderRepository {
   private paymentService: PaymentService;

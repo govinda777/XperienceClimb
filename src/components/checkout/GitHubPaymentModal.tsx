@@ -79,7 +79,7 @@ export function GitHubPaymentModal({
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs font-medium mr-2 mt-0.5">
                 1
               </span>
-              Click "Open GitHub Sponsors" below
+              Click &ldquo;Open GitHub Sponsors&rdquo; below
             </li>
             <li className="flex items-start">
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs font-medium mr-2 mt-0.5">
@@ -151,7 +151,7 @@ export function GitHubPaymentModal({
         {/* Footer Note */}
         <div className="text-xs text-neutral-500 text-center">
           <p>
-            By proceeding, you'll be redirected to GitHub Sponsors.
+            By proceeding, you&apos;ll be redirected to GitHub Sponsors.
             Your order will be processed automatically after payment confirmation.
           </p>
         </div>

@@ -19,7 +19,7 @@ export function validateWebhookSignature(
   const {
     secret,
     algorithm = 'sha256',
-    headerName = 'x-signature',
+    headerName: _headerName = 'x-signature',
     encoding = 'hex'
   } = config;
 

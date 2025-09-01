@@ -1,9 +1,9 @@
-import { Package, PackageAvailability } from '../entities/Package';
+import { Package } from '../entities/Package';
 
 export interface IPackageRepository {
-  findById(id: string): Promise<Package | null>;
+  findById(_id: string): Promise<Package | null>;
   findAll(): Promise<Package[]>;
-  checkAvailability(packageId: string, date?: Date): Promise<{
+  checkAvailability(_packageId: string, _date?: Date): Promise<{
     available: boolean;
     spotsLeft: number;
     nextAvailableDate?: Date;

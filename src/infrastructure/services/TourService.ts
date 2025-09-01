@@ -4,7 +4,7 @@ import { ThemeConfig } from '../../themes/types';
 import { ITourRepository } from '../../core/repositories/ITourRepository';
 
 export class TourService implements ITourService {
-  constructor(private tourRepository: ITourRepository) {}
+  constructor(private _tourRepository: ITourRepository) {}
 
   async createTour(request: CreateTourRequest): Promise<Tour> {
     // Validate the request
@@ -76,11 +76,11 @@ export class TourService implements ITourService {
     };
 
     // Save to repository
-    return await this.tourRepository.create(tour);
+    return await this._tourRepository.create(tour);
   }
 
   async updateTour(request: UpdateTourRequest): Promise<Tour> {
-    const existingTour = await this.tourRepository.findById(request.id);
+    const existingTour = await this._tourRepository.findById(request.id);
     if (!existingTour) {
       throw new Error('Tour not found');
     }
@@ -148,11 +148,11 @@ export class TourService implements ITourService {
   }
 
   async getTourById(id: string): Promise<Tour | null> {
-    return await this.tourRepository.findById(id);
+    return await this._tourRepository.findById(id);
   }
 
   async getAllTours(): Promise<Tour[]> {
-    return await this.tourRepository.findAll();
+    return await this._tourRepository.findAll();
   }
 
   async getActiveTours(): Promise<Tour[]> {

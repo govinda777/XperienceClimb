@@ -2,7 +2,7 @@ import { IAuthService } from '@/core/services/IAuthService';
 import { User, LoginCredentials, LoginResult } from '@/core/entities/User';
 
 export class AuthService implements IAuthService {
-  async login(credentials: LoginCredentials): Promise<LoginResult> {
+  async login(_credentials: LoginCredentials): Promise<LoginResult> {
     try {
       // Note: This service is a bridge between use cases and Privy
       // The actual login logic is handled by Privy hooks in components

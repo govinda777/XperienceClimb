@@ -60,7 +60,7 @@ export class GitHubPaymentService implements IGitHubPaymentService {
     return this.payments.get(paymentId) || null;
   }
 
-  async processWebhook(webhook: GitHubSponsorshipWebhook, metadata?: Record<string, any>): Promise<void> {
+  async processWebhook(webhook: GitHubSponsorshipWebhook, _metadata?: Record<string, any>): Promise<void> {
     try {
       console.log('Processing GitHub Sponsors webhook:', webhook);
 

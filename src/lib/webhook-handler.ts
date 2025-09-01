@@ -27,7 +27,7 @@ interface WebhookContext {
   headers: Record<string, string | null>;
 }
 
-type WebhookProcessor = (context: WebhookContext) => Promise<any>;
+type WebhookProcessor = (_context: WebhookContext) => Promise<any>;
 
 export class WebhookHandler {
   private config: WebhookConfig;

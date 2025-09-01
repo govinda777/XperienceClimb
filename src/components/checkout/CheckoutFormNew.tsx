@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui';
-import { ArrowLeft, Calendar, AlertTriangle } from 'lucide-react';
-import { formatPrice } from '@/lib/utils';
+import { ArrowLeft, Calendar } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { CreateOrder } from '@/core/use-cases/orders/CreateOrder';
 import { OrderRepository } from '@/infrastructure/repositories/OrderRepository';
@@ -35,30 +34,14 @@ interface FormData {
   };
 }
 
-interface PixModalData {
-  qr_code_base64: string;
-  ticket_url: string;
-  expires_at: Date;
-  amount: number;
-}
 
-interface CryptoModalData {
-  address: string;
-  amount: number;
-  amountFiat: number;
-  cryptoType: 'bitcoin' | 'usdt';
-  exchangeRate: number;
-  expiresAt: Date;
-}
 
 export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps) {
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showPixModal, setShowPixModal] = useState(false);
-  const [showCryptoModal, setShowCryptoModal] = useState(false);
-  const [pixModalData, setPixModalData] = useState<PixModalData | null>(null);
-  const [cryptoModalData, setCryptoModalData] = useState<CryptoModalData | null>(null);
+
+
   const [paymentStatus, setPaymentStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [showProcessingModal, setShowProcessingModal] = useState(false);
   const [showRetryModal, setShowRetryModal] = useState(false);
@@ -267,9 +250,8 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
           if (!result.pixPayment?.qr_code_base64) {
             return { success: false, error: 'QR Code PIX não gerado.' };
           }
-          // Show PIX QR code modal
-          setPixModalData(result.pixPayment);
-          setShowPixModal(true);
+          // Redirect to confirmation page for PIX
+          window.location.href = `/checkout/confirmation?orderId=${result.orderId}&method=pix&status=pending`;
           return { success: true };
 
         case 'bitcoin':
@@ -277,9 +259,8 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
           if (!result.cryptoPayment?.address || !result.cryptoPayment?.amount) {
             return { success: false, error: 'Dados de pagamento em crypto não gerados.' };
           }
-          // Show crypto payment modal
-          setCryptoModalData(result.cryptoPayment);
-          setShowCryptoModal(true);
+          // Redirect to confirmation page for crypto
+          window.location.href = `/checkout/confirmation?orderId=${result.orderId}&method=${formData.paymentMethod}&status=pending`;
           return { success: true };
 
         case 'github':

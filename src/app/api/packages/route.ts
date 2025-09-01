@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { PACKAGES } from '@/lib/constants';
 
-export async function GET(_request: NextRequest) {
+export async function GET(_request: Request) {
   try {
     // Convert packages object to array format for easier consumption
     const packagesArray = Object.values(PACKAGES).map(pkg => ({
@@ -37,7 +37,7 @@ export async function GET(_request: NextRequest) {
   }
 }
 
-export async function POST(_request: NextRequest) {
+export async function POST(_request: Request) {
   // For future use - e.g., checking availability
   return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }

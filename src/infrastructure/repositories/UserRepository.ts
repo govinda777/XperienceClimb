@@ -13,7 +13,7 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async getUserProfile(privyId: string): Promise<User | null> {
+  async getUserProfile(_privyId: string): Promise<User | null> {
     try {
       // In a real implementation, this might fetch additional user data
       // from your backend or Privy's API

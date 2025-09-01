@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { COMMUNITY_DATA } from '@/lib/community-data';
 import { 
@@ -162,9 +163,11 @@ function PartnerCard({ partner }: { partner: Partner }) {
   return (
     <div className="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start space-x-4 mb-4">
-        <img
+        <Image
           src={partner.logo}
           alt={partner.name}
+          width={64}
+          height={64}
           className="w-16 h-16 rounded-lg object-cover"
           onError={(e) => {
             (e.target as HTMLImageElement).src = '/images/logo.png';
@@ -260,9 +263,11 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
   return (
     <div className="bg-gray-50 rounded-xl p-6">
       <div className="flex items-start space-x-4 mb-4">
-        <img
+        <Image
           src={instructor.photo}
           alt={instructor.name}
+          width={80}
+          height={80}
           className="w-20 h-20 rounded-full object-cover"
           onError={(e) => {
             (e.target as HTMLImageElement).src = '/images/logo.png';
@@ -514,9 +519,11 @@ function LocationCard({ location }: { location: VisitedLocation }) {
   return (
     <div className="bg-gray-50 rounded-xl overflow-hidden">
       {location.images.length > 0 && (
-        <img
+        <Image
           src={location.images[0].url}
           alt={location.name}
+          width={400}
+          height={192}
           className="w-full h-48 object-cover"
           onError={(e) => {
             (e.target as HTMLImageElement).src = '/images/climb.jpg';

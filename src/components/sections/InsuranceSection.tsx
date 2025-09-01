@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useTheme } from '@/themes/ThemeProvider';
 
 export function InsuranceSection() {
-  const { currentTheme } = useTheme();
   
   return (
     <section id="seguro" className="bg-gradient-to-br from-blue-50 to-indigo-50 py-20">
