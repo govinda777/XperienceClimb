@@ -144,7 +144,7 @@ export class TourService implements ITourService {
 
 
 
-    return await this.tourRepository.update(updatedTour);
+    return await this._tourRepository.update(updatedTour);
   }
 
   async getTourById(id: string): Promise<Tour | null> {
@@ -156,11 +156,11 @@ export class TourService implements ITourService {
   }
 
   async getActiveTours(): Promise<Tour[]> {
-    return await this.tourRepository.findByActive(true);
+    return await this._tourRepository.findByActive(true);
   }
 
   async deleteTour(id: string): Promise<boolean> {
-    const tour = await this.tourRepository.findById(id);
+    const tour = await this._tourRepository.findById(id);
     if (!tour) {
       return false;
     }
@@ -168,7 +168,7 @@ export class TourService implements ITourService {
     tour.isActive = false;
     tour.updatedAt = new Date();
     
-    await this.tourRepository.update(tour);
+    await this._tourRepository.update(tour);
     return true;
   }
 
@@ -356,14 +356,14 @@ export class TourService implements ITourService {
   }
 
   async isTourNameUnique(name: string, excludeId?: string): Promise<boolean> {
-    const tours = await this.tourRepository.findByName(name);
+    const tours = await this._tourRepository.findByName(name);
     if (tours.length === 0) return true;
     if (excludeId) return tours.every(tour => tour.id === excludeId);
     return false;
   }
 
   async isThemeIdUnique(themeId: string, excludeId?: string): Promise<boolean> {
-    const tours = await this.tourRepository.findByThemeId(themeId);
+    const tours = await this._tourRepository.findByThemeId(themeId);
     if (tours.length === 0) return true;
     if (!excludeId) return false;
     return tours.every(tour => tour.id === excludeId);
