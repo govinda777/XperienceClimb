@@ -89,9 +89,9 @@ export const PARTNERS: Partner[] = [
 // 👨‍🏫 INSTRUTORES CERTIFICADOS
 export const CERTIFIED_INSTRUCTORS: CertifiedInstructor[] = [
   {
-    id: 'marcos-ishino',
-    name: 'Marcos Ishino',
-    photo: '/images/instructors/marcos-ishino.jpg',
+    id: 'celso-ossamu',
+    name: 'Celso Ossamu',
+    photo: 'https://www.instagram.com/celsoossamu/',
     bio: 'Instrutor principal da XperienceClimb com mais de 15 anos de experiência em escalada. Especialista em escalada esportiva e tradicional, com foco em segurança e desenvolvimento técnico.',
     certifications: [
       {
@@ -127,10 +127,10 @@ export const CERTIFIED_INSTRUCTORS: CertifiedInstructor[] = [
       operatingRadius: 150
     },
     contact: {
-      email: 'marcosishino@gmail.com',
-      phone: '(11) 99541-3539',
-      instagram: '@xperiencehubs',
-      whatsapp: '5511995413539'
+      email: 'ossamucelso@gmail.com',
+      phone: '19 99725-9691',
+      instagram: '@celsoossamu',
+      whatsapp: '5519997259691'
     },
     availability: {
       isActive: true,
@@ -157,9 +157,9 @@ export const CERTIFIED_INSTRUCTORS: CertifiedInstructor[] = [
     updatedAt: new Date('2024-12-01')
   },
   {
-    id: 'ana-silva',
-    name: 'Ana Silva',
-    photo: '/images/instructors/ana-silva.jpg',
+    id: 'academia-boulder-sorocaba',
+    name: 'Boulder - Cross Training e Academia de Escalada Sorocaba',
+    photo: 'https://share.google/kmt3AbSELJAXM573k',
     bio: 'Instrutora especializada em escalada feminina e escalada adaptada. Pioneira em várias vias na região de Pedra Bela.',
     certifications: [
       {
@@ -180,15 +180,15 @@ export const CERTIFIED_INSTRUCTORS: CertifiedInstructor[] = [
       routesCompleted: 150
     },
     location: {
-      city: 'Bragança Paulista',
+      city: 'Sorocaba',
       state: 'São Paulo',
       operatingRadius: 100
     },
     contact: {
-      email: 'ana.silva@xperienceclimb.com',
-      phone: '(11) 98765-4321',
-      instagram: '@anaclimbs',
-      whatsapp: '5511987654321'
+      email: 'contato@academiaboulder.com.br',
+      phone: '19 98106-2640',
+      instagram: '@academiabouldersorocaba',
+      whatsapp: '5519981062640'
     },
     availability: {
       isActive: true,

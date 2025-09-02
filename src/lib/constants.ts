@@ -9,19 +9,34 @@ export const CONTACT_INFO = {
   instagram: '@xperiencehubs',
 };
 
-// Navigation items for the site menu
+// Navigation items for the site menu - grouped for better organization
 export const NAVIGATION_ITEMS = [
-  { id: 'hero', label: 'Início', icon: '🏔️' },
-  { id: 'sobre', label: 'Sobre', icon: '🌿' },
-  { id: 'pacotes', label: 'Pacotes', icon: '💎' },
-  { id: 'servicos-inclusos', label: 'Incluso', icon: '🍎' },
-  { id: 'galeria', label: 'Galeria', icon: '📸' },
-  { id: 'seguranca', label: 'Segurança', icon: '🛡️' },
-  { id: 'seguro', label: 'Seguro', icon: '📋' },
-  { id: 'comunidade', label: 'Comunidade', icon: '🤝' },
-  { id: 'localizacao', label: 'Local', icon: '📍' },
-  { id: 'depoimentos', label: 'Depoimentos', icon: '⭐' },
+  // Main sections
+  { id: 'hero', label: 'Início', icon: '🏔️', group: 'main' },
+  { id: 'sobre', label: 'Sobre', icon: '🌿', group: 'main' },
+  { id: 'pacotes', label: 'Pacotes', icon: '💎', group: 'main' },
+  
+  // Services and features
+  { id: 'servicos-inclusos', label: 'Incluso', icon: '🍎', group: 'services' },
+  { id: 'seguranca', label: 'Segurança', icon: '🛡️', group: 'services' },
+  { id: 'seguro', label: 'Seguro', icon: '📋', group: 'services' },
+  
+  // Content and community
+  { id: 'galeria', label: 'Galeria', icon: '📸', group: 'content' },
+  { id: 'comunidade', label: 'Comunidade', icon: '🤝', group: 'content' },
+  { id: 'depoimentos', label: 'Depoimentos', icon: '⭐', group: 'content' },
+  
+  // Location
+  { id: 'localizacao', label: 'Local', icon: '📍', group: 'location' },
 ];
+
+// Navigation groups for better organization
+export const NAVIGATION_GROUPS = {
+  main: { label: 'Principal', items: ['hero', 'sobre', 'pacotes'] },
+  services: { label: 'Serviços', items: ['servicos-inclusos', 'seguranca', 'seguro'] },
+  content: { label: 'Conteúdo', items: ['galeria', 'comunidade', 'depoimentos'] },
+  location: { label: 'Localização', items: ['localizacao'] },
+};
 
 // Dynamic packages - IDs and properties can be changed freely
 export const PACKAGES: Record<string, PackageType> = {

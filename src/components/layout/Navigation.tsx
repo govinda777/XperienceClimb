@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn, openWhatsApp } from '@/lib/utils';
-import { NAVIGATION_ITEMS, CONTACT_INFO } from '@/lib/constants';
+import { NAVIGATION_ITEMS, NAVIGATION_GROUPS, CONTACT_INFO } from '@/lib/constants';
 import { LoginButton } from '@/components/auth';
 import { ThemeSelector } from '@/components/theme';
 
@@ -10,6 +10,7 @@ export function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,12 +36,74 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (openDropdown && !(event.target as Element).closest('.dropdown-container')) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [openDropdown]);
+
   const handleNavClick = (targetId: string) => {
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false); // Close mobile menu after navigation
+      setIsMobileMenuOpen(false);
+      setOpenDropdown(null);
     }
+  };
+
+  const getItemsByGroup = (groupKey: string) => {
+    return NAVIGATION_ITEMS.filter(item => item.group === groupKey);
+  };
+
+  const renderDropdownMenu = (groupKey: string, groupLabel: string) => {
+    const items = getItemsByGroup(groupKey);
+    const isOpen = openDropdown === groupKey;
+
+    return (
+      <div className="relative dropdown-container" key={groupKey}>
+        <button
+          onClick={() => setOpenDropdown(isOpen ? null : groupKey)}
+          className={cn(
+            "flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-200 font-medium",
+            "hover:bg-climb-500/10 hover:scale-105 active:scale-95",
+            isOpen ? "bg-climb-500/10 text-climb-700" : "text-climb-600 hover:text-climb-700"
+          )}
+        >
+          <span className="text-sm">{groupLabel}</span>
+          <span className={cn(
+            "text-xs transition-transform duration-200",
+            isOpen ? "rotate-180" : ""
+          )}>▼</span>
+        </button>
+        
+        {isOpen && (
+          <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-lg rounded-xl border border-white/30 shadow-xl py-2 min-w-[200px] z-50">
+            {items.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={cn(
+                  "flex items-center space-x-2 w-full px-4 py-2.5 text-left transition-all duration-200",
+                  "hover:bg-climb-500/10",
+                  activeSection === item.id 
+                    ? "bg-climb-500 text-white" 
+                    : "text-climb-600 hover:text-climb-700"
+                )}
+              >
+                <span className="text-base">{item.icon}</span>
+                <span className="text-sm">{item.label}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -52,9 +115,9 @@ export function Navigation() {
       )}>
         <div className="bg-white/95 backdrop-blur-lg rounded-2xl border border-white/30 shadow-xl px-6 py-3">
           <div className="flex items-center space-x-1">
-            {/* Main Navigation Items */}
+            {/* Main Navigation Items (always visible) */}
             <div className="flex items-center space-x-1">
-              {NAVIGATION_ITEMS.map((item) => (
+              {getItemsByGroup('main').map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
@@ -70,6 +133,16 @@ export function Navigation() {
                   <span className="text-sm">{item.label}</span>
                 </button>
               ))}
+            </div>
+            
+            {/* Separator */}
+            <div className="h-8 w-px bg-gradient-to-b from-transparent via-climb-300 to-transparent mx-3"></div>
+            
+            {/* Grouped Navigation Items */}
+            <div className="flex items-center space-x-1">
+              {renderDropdownMenu('services', 'Serviços')}
+              {renderDropdownMenu('content', 'Conteúdo')}
+              {renderDropdownMenu('location', 'Local')}
             </div>
             
             {/* Separator */}
@@ -128,23 +201,89 @@ export function Navigation() {
           {/* Mobile Menu Items */}
           {isMobileMenuOpen && (
             <div className="mt-4 pt-4 border-t border-climb-200">
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                {NAVIGATION_ITEMS.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => handleNavClick(item.id)}
-                    className={cn(
-                      "flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200",
-                      "hover:bg-climb-500/10 active:scale-95",
-                      activeSection === item.id 
-                        ? "bg-climb-500 text-white shadow-md" 
-                        : "text-climb-600 hover:text-climb-700"
-                    )}
-                  >
-                    <span className="text-lg">{item.icon}</span>
-                    <span className="text-xs font-medium">{item.label}</span>
-                  </button>
-                ))}
+              {/* Main sections */}
+              <div className="mb-4">
+                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">PRINCIPAL</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  {getItemsByGroup('main').map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavClick(item.id)}
+                      className={cn(
+                        "flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200",
+                        "hover:bg-climb-500/10 active:scale-95",
+                        activeSection === item.id 
+                          ? "bg-climb-500 text-white shadow-md" 
+                          : "text-climb-600 hover:text-climb-700"
+                      )}
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="text-xs font-medium">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Services */}
+              <div className="mb-4">
+                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">SERVIÇOS</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  {getItemsByGroup('services').map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavClick(item.id)}
+                      className={cn(
+                        "flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200",
+                        "hover:bg-climb-500/10 active:scale-95",
+                        activeSection === item.id 
+                          ? "bg-climb-500 text-white shadow-md" 
+                          : "text-climb-600 hover:text-climb-700"
+                      )}
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="text-xs font-medium">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Content and Location */}
+              <div className="mb-4">
+                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">CONTEÚDO & LOCAL</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {getItemsByGroup('content').map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavClick(item.id)}
+                      className={cn(
+                        "flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200",
+                        "hover:bg-climb-500/10 active:scale-95",
+                        activeSection === item.id 
+                          ? "bg-climb-500 text-white shadow-md" 
+                          : "text-climb-600 hover:text-climb-700"
+                      )}
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="text-xs font-medium">{item.label}</span>
+                    </button>
+                  ))}
+                  {getItemsByGroup('location').map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavClick(item.id)}
+                      className={cn(
+                        "flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200",
+                        "hover:bg-climb-500/10 active:scale-95",
+                        activeSection === item.id 
+                          ? "bg-climb-500 text-white shadow-md" 
+                          : "text-climb-600 hover:text-climb-700"
+                      )}
+                    >
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="text-xs font-medium">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
               
               {/* Mobile Action Buttons */}
