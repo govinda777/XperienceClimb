@@ -6,38 +6,77 @@ import { ThemeConfig } from './types';
 import { getThemeFromUrl } from '@/lib/theme-utils';
 import { fazendaIpanemaTheme } from './configs/fazenda-ipanema';
 import { pedraBellaTheme } from './configs/pedra-bela';
+import { useTours } from '@/hooks/useTours';
+import { TourService } from '@/infrastructure/services/TourService';
+import { TourRepository } from '@/infrastructure/repositories/TourRepository';
 
 const THEME_IDS = {
   FAZENDA_IPANEMA: 'fazenda-ipanema',
   PEDRA_BELA: 'pedra-bela',
 } as const;
 
-const themes = {
+const staticThemes = {
   [THEME_IDS.FAZENDA_IPANEMA]: fazendaIpanemaTheme,
   [THEME_IDS.PEDRA_BELA]: pedraBellaTheme,
 };
 
-const isValidThemeId = (themeId: string): themeId is keyof typeof themes => {
-  return themeId in themes;
+const isValidThemeId = (themeId: string): themeId is keyof typeof staticThemes => {
+  return themeId in staticThemes;
 };
 
-console.log('ThemeProvider: Available themes:', Object.keys(themes));
-console.log('ThemeProvider: Theme objects:', themes);
+console.log('ThemeProvider: Available static themes:', Object.keys(staticThemes));
 
 interface ThemeContextType {
   currentTheme: ThemeConfig;
   availableThemes: ThemeConfig[];
   setTheme: (themeId: string) => void;
   isLoading: boolean;
+  refreshThemes: () => Promise<void>;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(fazendaIpanemaTheme);
+  const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>(Object.values(staticThemes));
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { tours, loading: toursLoading } = useTours();
+
+  // Initialize tour service
+  const tourService = new TourService(TourRepository.getInstance());
+
+  const loadDynamicThemes = async () => {
+    try {
+      const dynamicThemes: ThemeConfig[] = [];
+      
+      for (const tour of tours) {
+        try {
+          const themeConfig = tourService.generateThemeFromTour(tour);
+          dynamicThemes.push(themeConfig);
+        } catch (error) {
+          console.error(`Error generating theme for tour ${tour.id}:`, error);
+        }
+      }
+
+      // Combine static and dynamic themes
+      const allThemes = [...Object.values(staticThemes), ...dynamicThemes];
+      setAvailableThemes(allThemes);
+      
+      console.log('ThemeProvider: Loaded themes:', allThemes.map(t => t.id));
+    } catch (error) {
+      console.error('Error loading dynamic themes:', error);
+      // Fallback to static themes only
+      setAvailableThemes(Object.values(staticThemes));
+    }
+  };
+
+  useEffect(() => {
+    if (!toursLoading) {
+      loadDynamicThemes();
+    }
+  }, [tours, toursLoading]);
 
   useEffect(() => {
     const loadTheme = async () => {
@@ -47,18 +86,24 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
         
         let selectedTheme: ThemeConfig | null = null;
         
-        // Simple theme loading logic using only static themes for now
-        if (themeFromUrl && themes[themeFromUrl]) {
-          selectedTheme = themes[themeFromUrl];
-          localStorage.setItem('xperience-theme', themeFromUrl);
-        } else {
-          const savedTheme = localStorage.getItem('xperience-theme');
-          if (savedTheme && isValidThemeId(savedTheme) && themes[savedTheme]) {
-            selectedTheme = themes[savedTheme];
-          } else {
-            selectedTheme = fazendaIpanemaTheme;
-            localStorage.removeItem('xperience-theme');
+        // Try to find theme in available themes
+        if (themeFromUrl) {
+          selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
+          if (selectedTheme) {
+            localStorage.setItem('xperience-theme', themeFromUrl);
           }
+        }
+        
+        if (!selectedTheme) {
+          const savedTheme = localStorage.getItem('xperience-theme');
+          if (savedTheme) {
+            selectedTheme = availableThemes.find(theme => theme.id === savedTheme) || null;
+          }
+        }
+        
+        if (!selectedTheme) {
+          selectedTheme = availableThemes[0] || fazendaIpanemaTheme;
+          localStorage.removeItem('xperience-theme');
         }
         
         if (selectedTheme) {
@@ -73,16 +118,19 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
       }
     };
 
-    loadTheme();
-  }, [searchParams]);
+    if (availableThemes.length > 0) {
+      loadTheme();
+    }
+  }, [searchParams, availableThemes]);
 
+  // eslint-disable-next-line no-unused-vars
   const setTheme = (themeId: string) => {
-    if (!isValidThemeId(themeId) || !themes[themeId]) {
+    const theme = availableThemes.find(t => t.id === themeId);
+    if (!theme) {
       console.error('Invalid theme ID:', themeId);
       return;
     }
 
-    const theme = themes[themeId];
     setCurrentTheme(theme);
     localStorage.setItem('xperience-theme', themeId);
     
@@ -119,13 +167,18 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const refreshThemes = async () => {
+    await loadDynamicThemes();
+  };
+
   return (
     <ThemeContext.Provider
       value={{
         currentTheme,
-        availableThemes: Object.values(themes),
+        availableThemes,
         setTheme,
-        isLoading,
+        isLoading: isLoading || toursLoading,
+        refreshThemes,
       }}
     >
       {children}

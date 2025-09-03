@@ -243,7 +243,7 @@ export class TourRepository implements ITourRepository {
         country: 'Brazil',
         coordinates: { lat: -22.7892, lng: -46.4658 },
         distance: '150km de São Paulo',
-        mapsUrl: '',
+        mapsUrl: 'https://maps.app.goo.gl/D4o8NKMu85udZs6e8',
         directions: [
           {
             step: 1,
@@ -257,8 +257,23 @@ export class TourRepository implements ITourRepository {
           },
           {
             step: 3,
-            title: 'Chegada',
-            description: 'Siga as placas para o centro de aventuras'
+            title: 'Importante',
+            description: 'já próximo a Pedra do Santuário se o maps mandar sair da rodovia `SPA 109/008` e entrar a esquerda sentido `ES`. Manter a direita para continuar na `SPA 109` e NÃO seguir via `Estrada dos Limas`'
+          },
+          {
+            step: 4,
+            title: 'Importante',
+            description: 'Uma vez que subirem uma serrinha e cruzarem pelo portal da pedra do santuário, já estão no centro de aventuras, vcs vão seguir mais uns metros e no final da rua virar a direita onde em seguida terminará o `asfalto`. Assim q virarem a direita e avistarem uma estrada de terra o estacionamento e local de encontro estará a esquerda de vcs'
+          },
+          {
+            step: 5,
+            title: 'Ponto de encontro',
+            description: 'https://maps.app.goo.gl/D4o8NKMu85udZs6e8'
+          },
+          {
+            step: 6,
+            title: 'Estacionamento',
+            description: 'Fica bem na base da Pedra a esquerda'
           }
         ]
       },
