@@ -1,6 +1,7 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@jest/globals';
 import { CustomWorld } from '../support/world';
+import { AVAILABLE_DATES } from '../../../lib/constants';
 
 // Mock services and stores
 const mockCartStore = {

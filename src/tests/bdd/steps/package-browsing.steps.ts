@@ -2,6 +2,7 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@jest/globals';
 import { CustomWorld } from '../support/world';
 import { PackagesSection } from '@/components/sections/PackagesSection';
+import { AVAILABLE_DATES } from '../../../lib/constants';
 import React from 'react';
 
 // Mock the usePackages hook
