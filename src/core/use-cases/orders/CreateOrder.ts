@@ -116,9 +116,6 @@ export class CreateOrder {
         updatedAt: new Date(),
       };
 
-      // Save order to repository
-      await this.orderRepository.create(order);
-
       // Process payment based on selected method
       return await this.processPayment(order, request);
 
@@ -139,19 +136,29 @@ export class CreateOrder {
 
     switch (request.paymentMethod) {
       case 'whatsapp':
+        await this.orderRepository.createWhatsAppOrder(order);
         return this.processWhatsAppPayment(order, baseResult);
       
       case 'mercadopago':
-        return this.processMercadoPagoPayment(order, baseResult);
+        const preferenceId = await this.orderRepository.create(order);
+        const checkoutUrl = await this.orderRepository.getCheckoutUrl(preferenceId);
+        return {
+          ...baseResult,
+          preferenceId,
+          checkoutUrl
+        };
       
       case 'pix':
+        await this.orderRepository.save(order);
         return this.processPixPayment(order, baseResult);
       
       case 'bitcoin':
       case 'usdt':
+        await this.orderRepository.save(order);
         return this.processCryptoPayment(order, baseResult, request.paymentMethod);
       
       case 'github':
+        await this.orderRepository.save(order);
         return this.processGitHubPayment(order, baseResult);
       
       default:
@@ -166,34 +173,6 @@ export class CreateOrder {
     return {
       ...baseResult,
       whatsappUrl: `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodeURIComponent(whatsappMessage)}`,
-    };
-  }
-
-  private async processMercadoPagoPayment(order: Order, baseResult: any): Promise<CreateOrderResult> {
-    const paymentService = new PaymentService();
-    
-    const preference = await paymentService.createPreference({
-      orderId: order.id,
-      items: order.items.map(item => ({
-        title: item.packageName,
-        unit_price: item.price.amount / 100,
-        quantity: item.quantity,
-        id: item.packageId
-      })),
-      payer: {
-        name: order.items[0].participantDetails.name,
-        email: 'customer@example.com' // In production, get from user profile
-      },
-      metadata: {
-        order_id: order.id,
-        user_id: order.userId
-      }
-    });
-
-    return {
-      ...baseResult,
-      preferenceId: preference.id,
-      checkoutUrl: preference.init_point
     };
   }
 
