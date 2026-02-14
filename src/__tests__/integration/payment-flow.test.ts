@@ -9,6 +9,7 @@ import { ProcessCryptoPayment } from '@/core/use-cases/payments/ProcessCryptoPay
 import { PaymentService } from '@/infrastructure/services/PaymentService';
 import { CryptoPaymentService } from '@/infrastructure/services/CryptoPaymentService';
 import { CartItem } from '@/types';
+import { AVAILABLE_DATES } from '@/lib/constants';
 
 // Mock external services
 jest.mock('@/infrastructure/services/PaymentService');
@@ -71,7 +72,7 @@ describe('Payment Flow Integration Tests', () => {
   };
 
   const mockClimbingDetails = {
-    selectedDate: new Date('2024-12-25'),
+    selectedDate: new Date(AVAILABLE_DATES.singleDateISO),
     preferredTime: 'morning',
     specialRequests: 'Vegetarian lunch',
   };

@@ -189,6 +189,11 @@ When('I select climbing date {string}', async function (this: CustomWorld, date:
   this.attach(`Selected climbing date: ${date}`);
 });
 
+When('I select the available climbing date', async function (this: CustomWorld) {
+  this.climbingDate = new Date(AVAILABLE_DATES.singleDateISO);
+  this.attach(`Selected available climbing date: ${AVAILABLE_DATES.singleDateISO}`);
+});
+
 When('I add special requests {string}', async function (this: CustomWorld, requests: string) {
   this.specialRequests = requests;
   this.attach(`Added special requests: ${requests}`);
@@ -333,7 +338,7 @@ Given('I have an existing booking {string}', async function (this: CustomWorld, 
   this.existingBooking = {
     id: bookingId,
     status: 'confirmed',
-    climbingDate: new Date('2024-12-25'),
+    climbingDate: new Date('2026-03-14'),
     participants: 2,
     totalAmount: 300,
     paid: true,
