@@ -26,7 +26,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
     "mercadopago": "^2.0.15",
-    "next": "15.0.3",
+    "next": "15.0.7",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^3.3.1",
