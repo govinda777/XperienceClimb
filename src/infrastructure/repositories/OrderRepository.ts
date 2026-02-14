@@ -74,6 +74,15 @@ export class OrderRepository implements IOrderRepository {
     }
   }
 
+  async save(order: Order): Promise<void> {
+    try {
+      this.storeOrderLocally(order, order.id);
+    } catch (error) {
+      console.error('Error saving order:', error);
+      throw new Error('Failed to save order');
+    }
+  }
+
   async findById(preferenceId: string): Promise<Order | null> {
     try {
       // First try to get from local storage
