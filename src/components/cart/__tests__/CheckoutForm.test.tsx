@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CheckoutForm } from '../CheckoutForm';
 import { createMockCartItem, createMockUser } from '@/__tests__/test-utils';
+import { AVAILABLE_DATES } from '@/lib/constants';
 
 // Mock Lucide React icons
 jest.mock('lucide-react', () => ({
@@ -164,7 +165,7 @@ describe('CheckoutForm', () => {
     });
 
     it('should display fixed date', () => {
-      expect(screen.getByDisplayValue('06 de Setembro de 2025')).toBeInTheDocument();
+      expect(screen.getByDisplayValue(AVAILABLE_DATES.singleDateDisplay)).toBeInTheDocument();
       expect(screen.getByText('Disponível')).toBeInTheDocument();
     });
 

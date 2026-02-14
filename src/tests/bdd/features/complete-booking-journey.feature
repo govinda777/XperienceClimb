@@ -19,7 +19,7 @@ Feature: Complete Booking Journey
     And I fill in participant details:
       | name           | age | experience  | health_declaration |
       | João Silva     | 28  | beginner    | true              |
-    And I select climbing date "2024-12-25"
+    And I select the available climbing date
     And I choose PIX as payment method
     And I confirm my booking
     Then I should see PIX payment instructions
@@ -37,7 +37,7 @@ Feature: Complete Booking Journey
       | Maria Santos   | 25  | intermediate  | true              |
       | Pedro Costa    | 30  | beginner      | true              |
       | Ana Oliveira   | 27  | advanced      | true              |
-    And I select climbing date "2024-12-30"
+    And I select the available climbing date
     And I add special requests "Vegetarian lunch for Maria"
     And I choose MercadoPago as payment method
     And I confirm my booking
@@ -57,7 +57,7 @@ Feature: Complete Booking Journey
     And I apply coupon "CLIMB20"
     Then the discount should be applied correctly
     And the final price should be 20% less than original
-    When I select climbing date "2025-01-15"
+    When I select the available climbing date
     And I choose crypto payment with Bitcoin
     And I confirm my booking
     Then I should see Bitcoin payment instructions
@@ -76,18 +76,18 @@ Feature: Complete Booking Journey
     And a refund should be initiated
 
   Scenario: Weather-dependent booking rescheduling
-    Given I have a confirmed booking for "2024-12-20"
+    Given I have a confirmed booking for a date 5 days from now
     And the weather forecast shows unsafe conditions
     When the system sends a weather alert
     Then I should receive a rescheduling notification
-    When I choose to reschedule to "2024-12-27"
+    When I choose to reschedule to a date 12 days from now
     And I confirm the new date
     Then my booking should be updated with the new date
     And I should receive updated booking confirmation
 
   Scenario: Last-minute booking availability
-    Given today is "2024-12-15"
-    And I want to book for "2024-12-16" (tomorrow)
+    Given today is the current date
+    And I want to book for tomorrow
     When I check package availability
     Then I should see real-time availability
     And I should see any last-minute restrictions

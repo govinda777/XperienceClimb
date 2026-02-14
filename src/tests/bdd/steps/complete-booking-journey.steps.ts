@@ -1,6 +1,7 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@jest/globals';
 import { CustomWorld } from '../support/world';
+import { AVAILABLE_DATES } from '../../../lib/constants';
 
 // Mock services and stores
 const mockCartStore = {
@@ -189,6 +190,40 @@ When('I select climbing date {string}', async function (this: CustomWorld, date:
   this.attach(`Selected climbing date: ${date}`);
 });
 
+When('I select the available climbing date', async function (this: CustomWorld) {
+  this.climbingDate = new Date(AVAILABLE_DATES.singleDateISO);
+  this.attach(`Selected available climbing date: ${AVAILABLE_DATES.singleDateISO}`);
+});
+
+Given('I have a confirmed booking for a date {int} days from now', async function (this: CustomWorld, days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+
+  this.confirmedBooking = {
+    id: 'BOOK-WEATHER-123',
+    climbingDate: date,
+    status: 'confirmed',
+    participants: 2,
+    totalAmount: 300,
+  };
+});
+
+When('I choose to reschedule to a date {int} days from now', async function (this: CustomWorld, days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  this.newClimbingDate = date;
+});
+
+Given('today is the current date', async function (this: CustomWorld) {
+  // No-op, just context
+});
+
+Given('I want to book for tomorrow', async function (this: CustomWorld) {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  this.climbingDate = tomorrow;
+});
+
 When('I add special requests {string}', async function (this: CustomWorld, requests: string) {
   this.specialRequests = requests;
   this.attach(`Added special requests: ${requests}`);
@@ -333,7 +368,7 @@ Given('I have an existing booking {string}', async function (this: CustomWorld, 
   this.existingBooking = {
     id: bookingId,
     status: 'confirmed',
-    climbingDate: new Date('2024-12-25'),
+    climbingDate: new Date(AVAILABLE_DATES.singleDateISO),
     participants: 2,
     totalAmount: 300,
     paid: true,

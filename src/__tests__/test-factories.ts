@@ -9,9 +9,13 @@ import { Tour, CreateTourRequest } from '@/core/entities/Tour';
 import { Order, OrderItem, ParticipantDetails, ClimbingDetails } from '@/core/entities/Order';
 import { CartItem } from '@/types';
 import { Coupon } from '@/core/entities/Coupon';
+import { AVAILABLE_DATES } from '@/lib/constants';
 
 // Counter for generating unique IDs
 let idCounter = 1;
+
+// Base test date for consistent testing
+export const TEST_BASE_DATE_ISO = '2026-01-01T10:00:00Z';
 
 /**
  * Generates a unique ID for testing
@@ -26,7 +30,7 @@ export const createMockUser = (overrides?: Partial<User>): User => ({
   email: 'test@example.com',
   name: 'Test User',
   avatar: 'https://avatar.example.com/test.jpg',
-  createdAt: new Date('2024-01-01T10:00:00Z'),
+  createdAt: new Date(TEST_BASE_DATE_ISO),
   isAdmin: false,
   preferences: {
     experienceLevel: 'beginner',
@@ -86,8 +90,8 @@ export const createMockPackage = (overrides?: Partial<Package>): Package => ({
   difficulty: 'easy',
   includes: ['Capacete', 'Cadeirinha', 'Corda'],
   requirements: ['Idade mínima: 12 anos', 'Boa condição física'],
-  createdAt: new Date('2024-01-01T10:00:00Z'),
-  updatedAt: new Date('2024-01-01T10:00:00Z'),
+  createdAt: new Date(TEST_BASE_DATE_ISO),
+  updatedAt: new Date(TEST_BASE_DATE_ISO),
   isActive: true,
   ...overrides,
 });
@@ -143,7 +147,7 @@ export const createMockCartItem = (overrides?: Partial<CartItem>): CartItem => (
   quantity: 1,
   participantName: 'João Silva',
   experience: 'beginner',
-  addedAt: new Date('2024-01-01T10:00:00Z'),
+  addedAt: new Date(TEST_BASE_DATE_ISO),
   ...overrides,
 });
 
@@ -191,7 +195,7 @@ export const createMockParticipantDetails = (overrides?: Partial<ParticipantDeta
  * Climbing Details Factory
  */
 export const createMockClimbingDetails = (overrides?: Partial<ClimbingDetails>): ClimbingDetails => ({
-  selectedDate: new Date('2024-12-25T08:00:00Z'),
+  selectedDate: new Date(`${AVAILABLE_DATES.singleDateISO}T08:00:00Z`),
   preferredTime: 'morning',
   specialRequests: '',
   groupSize: 1,
@@ -234,8 +238,8 @@ export const createMockOrder = (overrides?: Partial<Order>): Order => ({
     amount: 15000,
     currency: 'BRL',
   },
-  createdAt: new Date('2024-01-01T10:00:00Z'),
-  updatedAt: new Date('2024-01-01T10:00:00Z'),
+  createdAt: new Date(TEST_BASE_DATE_ISO),
+  updatedAt: new Date(TEST_BASE_DATE_ISO),
   ...overrides,
 });
 
@@ -249,7 +253,7 @@ export const createMockConfirmedOrder = (overrides?: Partial<Order>): Order =>
       method: 'pix',
       status: 'approved',
       transactionId: 'txn-123',
-      paidAt: new Date('2024-01-01T10:30:00Z'),
+      paidAt: new Date('2026-01-01T10:30:00Z'),
     },
     ...overrides,
   });
@@ -266,15 +270,15 @@ export const createMockCoupon = (overrides?: Partial<Coupon>): Coupon => ({
   isActive: true,
   usageLimit: 100,
   usedCount: 0,
-  validFrom: new Date('2024-01-01T00:00:00Z'),
-  validUntil: new Date('2024-12-31T23:59:59Z'),
+  validFrom: new Date('2026-01-01T00:00:00Z'),
+  validUntil: new Date('2026-12-31T23:59:59Z'),
   applicablePackages: [],
   minimumAmount: {
     amount: 10000, // R$ 100.00
     currency: 'BRL',
   },
-  createdAt: new Date('2024-01-01T10:00:00Z'),
-  updatedAt: new Date('2024-01-01T10:00:00Z'),
+  createdAt: new Date(TEST_BASE_DATE_ISO),
+  updatedAt: new Date(TEST_BASE_DATE_ISO),
   ...overrides,
 });
 
@@ -396,8 +400,8 @@ export const createMockTour = (overrides?: Partial<Tour>): Tour => ({
     keywords: ['escalada', 'pedra grande', 'atibaia', 'aventura', 'turismo'],
     ogImage: '/images/pedra-grande/og-image.jpg',
   },
-  createdAt: new Date('2024-01-01T10:00:00Z'),
-  updatedAt: new Date('2024-01-01T10:00:00Z'),
+  createdAt: new Date(TEST_BASE_DATE_ISO),
+  updatedAt: new Date(TEST_BASE_DATE_ISO),
   isActive: true,
   ...overrides,
 });

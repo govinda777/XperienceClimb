@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { usePackages } from '../usePackages';
 import { Package } from '@/core/entities/Package';
+import { AVAILABLE_DATES } from '@/lib/constants';
 
 // Mock the repositories and use cases
 const mockPackages: Package[] = [
@@ -169,7 +170,7 @@ describe('usePackages Hook', () => {
 
     it('should check availability with specific date', async () => {
       const { result } = renderHook(() => usePackages());
-      const testDate = new Date('2024-12-25');
+      const testDate = new Date(AVAILABLE_DATES.singleDateISO);
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
