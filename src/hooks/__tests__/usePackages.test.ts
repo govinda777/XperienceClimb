@@ -38,17 +38,21 @@ const mockPackages: Package[] = [
 ];
 
 // Mock the use cases first
-jest.mock('@/core/use-cases/packages/GetAllPackages', () => ({
-  GetAllPackages: jest.fn().mockImplementation(() => ({
-    execute: jest.fn(),
-  })),
-}));
+jest.mock('@/core/use-cases/packages/GetAllPackages', () => {
+  const execute = jest.fn();
+  const GetAllPackages = jest.fn().mockImplementation(() => ({ execute }));
+  // @ts-ignore
+  GetAllPackages.mockExecute = execute;
+  return { GetAllPackages };
+});
 
-jest.mock('@/core/use-cases/packages/GetPackageAvailability', () => ({
-  GetPackageAvailability: jest.fn().mockImplementation(() => ({
-    execute: jest.fn(),
-  })),
-}));
+jest.mock('@/core/use-cases/packages/GetPackageAvailability', () => {
+  const execute = jest.fn();
+  const GetPackageAvailability = jest.fn().mockImplementation(() => ({ execute }));
+  // @ts-ignore
+  GetPackageAvailability.mockExecute = execute;
+  return { GetPackageAvailability };
+});
 
 // Mock the repository
 jest.mock('@/infrastructure/repositories/PackageRepository', () => ({
@@ -66,9 +70,14 @@ describe('usePackages Hook', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     
-    // Create new instances and get their mocks
-    mockGetAllPackages = new GetAllPackages();
-    mockGetPackageAvailability = new GetPackageAvailability();
+    // Get the shared mocks
+    // @ts-ignore
+    const getAllPackagesExecute = GetAllPackages.mockExecute;
+    // @ts-ignore
+    const getPackageAvailabilityExecute = GetPackageAvailability.mockExecute;
+
+    mockGetAllPackages = { execute: getAllPackagesExecute };
+    mockGetPackageAvailability = { execute: getPackageAvailabilityExecute };
     
     mockGetAllPackages.execute.mockResolvedValue(mockPackages);
     mockGetPackageAvailability.execute.mockResolvedValue({
