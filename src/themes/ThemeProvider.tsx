@@ -57,7 +57,7 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
       for (const tour of tours) {
         try {
           // If we have a static theme for this tour, skip generating one
-          // We will include the static one later
+          // We will include the static one if it matches an active tour
           if (!staticThemes[tour.themeId as keyof typeof staticThemes]) {
             const themeConfig = tourService.generateThemeFromTour(tour);
             dynamicThemes.push(themeConfig);
@@ -67,22 +67,20 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // Filter static themes based on active tours
-      // Only include themes that are associated with an active tour
-      const activeStaticThemes = Object.values(staticThemes).filter(theme =>
-        activeThemeIds.has(theme.id)
-      );
+      // We want availableThemes to contain ALL themes (static + dynamic)
+      // so the app knows about them, even if we only select the active one by default.
+      // This supports the requirement: "Temos que registrar todos os temas"
+      // while "Carregar apenas primeiro ativo" is handled in the selection logic.
 
-      // Combine filtered static and dynamic themes
-      const activeThemes = [...activeStaticThemes, ...dynamicThemes];
-      setAvailableThemes(activeThemes);
+      const allThemes = [...Object.values(staticThemes), ...dynamicThemes];
+      setAvailableThemes(allThemes);
 
-      console.log('ThemeProvider: Loaded active themes:', activeThemes.map(t => t.id));
+      console.log('ThemeProvider: Loaded all themes:', allThemes.map(t => t.id));
 
     } catch (error) {
       console.error('Error loading dynamic themes:', error);
-      // Fallback: don't clear everything, maybe keep static themes but filtered if possible
-      // Safe fallback: keep current availableThemes
+      // Fallback: keep static themes
+      setAvailableThemes(Object.values(staticThemes));
     }
   }, [tours]);
 
@@ -96,17 +94,13 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
     const loadTheme = async () => {
       try {
         // Priority 1: Check for theme in URL query parameters
+        // This allows accessing any theme (active or inactive) via URL
         const themeFromUrl = getThemeFromUrl(searchParams);
         let selectedTheme: ThemeConfig | null = null;
 
         if (themeFromUrl) {
-          // If URL param exists, try to find it in available (active) themes
+          // Try to find theme in ALL available themes
           selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
-
-          // If not found in active themes, check static themes directly (for inactive/preview)
-          if (!selectedTheme && staticThemes[themeFromUrl as keyof typeof staticThemes]) {
-             selectedTheme = staticThemes[themeFromUrl as keyof typeof staticThemes];
-          }
 
           if (selectedTheme) {
             console.log('ThemeProvider: Using theme from URL:', selectedTheme.id);
@@ -114,10 +108,15 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
           }
         }
 
-        // Priority 2: Use the first ACTIVE tour found (which is now in availableThemes)
-        if (!selectedTheme && availableThemes.length > 0) {
-          selectedTheme = availableThemes[0];
-          console.log('ThemeProvider: Using first active theme:', selectedTheme.id);
+        // Priority 2: Use the first ACTIVE tour found
+        // "tours" comes from useTours hook which returns only active tours
+        if (!selectedTheme && tours.length > 0) {
+          const firstActiveTour = tours[0];
+          // Find the theme corresponding to the first active tour
+          selectedTheme = availableThemes.find(t => t.id === firstActiveTour.themeId) || null;
+          if (selectedTheme) {
+             console.log('ThemeProvider: Using first active tour theme:', selectedTheme.id);
+          }
         }
 
         // Priority 3: Fallback to Pedra Bela (default static)
@@ -137,11 +136,11 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
       }
     };
 
-    // Run this effect when params change, or when availableThemes are loaded
+    // Run this effect when params change, or when availableThemes/tours are loaded
     if (!toursLoading) {
       loadTheme();
     }
-  }, [searchParams, availableThemes, toursLoading]);
+  }, [searchParams, availableThemes, tours, toursLoading]);
 
   // eslint-disable-next-line no-unused-vars
   const setTheme = (themeId: string) => {
