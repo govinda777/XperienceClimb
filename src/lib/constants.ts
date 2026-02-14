@@ -2,8 +2,8 @@ import { PackageType } from '@/types';
 
 // Contact information
 export const CONTACT_INFO = {
-  address: 'Floresta Nacional de Ipanema',
-  distance: '120km de São Paulo',
+  address: 'Pedra Bela Vista, São Paulo - SP',
+  distance: '119km de São Paulo',
   phone: '(11) 99541-3539',
   email: 'marcosishino@gmail.com',
   instagram: '@xperiencehubs',
@@ -43,23 +43,23 @@ export const PACKAGES: Record<string, PackageType> = {
   basico: {
     id: 'basico',
     name: 'Pacote AGARRÃO',
-    price: 19900, // in cents
-    originalPrice: 25000,
+    price: 27700, // in cents
+    originalPrice: 33000,
     description: 'Curta uma vivência de escalada na natureza.',
     features: [
       '🧗 Escalada em rocha natural',
-      '🛡️ Equipamentos de segurança',
+      '🛡️ Equipamento de segurança',
       '👨‍🏫 Instrutor experiente',
-      '🍎 Lanche de trilha completo',
-      '☕ Café da manhã',
-      '💧 Água mineral',
+      '📋 Seguro Aventura',
+      '🍽️ Saboroso Almoço (restaurante à vontade)',
+      '🌅 Pôr do Sol Mirante com café',
     ],
     bonus: ['💡 Coach de vida'],
     shape: 'hexagon',
     color: 'climb-300',
     duration: '1 dia',
     maxParticipants: 8,
-    popular: true, // Now the only available package, should be popular
+    popular: true,
     requiresExperience: false,
     minAge: 12,
     cancellationPolicy: '',
@@ -67,43 +67,42 @@ export const PACKAGES: Record<string, PackageType> = {
   intermediario: {
     id: 'intermediario',
     name: 'Pacote CRUX',
-    price: 29900,
-    originalPrice: 37000,
+    price: 44700, // in cents
+    originalPrice: 51000,
     description: 'Aproveite seu dia de escalada e um descanso merecido.',
     features: [
       '🧗 Escalada em rocha natural',
-      '🛡️ Equipamentos de segurança',
+      '🛡️ Equipamento de segurança',
       '👨‍🏫 Instrutor experiente',
-      '🍎 Lanche de trilha completo',
-      '☕ Café da manhã',
-      '💧 Água mineral',
-      '🛏️ Hospedagem em AirBnB',
+      '📋 Seguro Aventura',
+      '🛏️ Hospedagem',
+      '🍽️ Saboroso Almoço (restaurante à vontade)',
+      '🌅 Pôr do Sol Mirante com café',
     ],
     bonus: ['💡 Coach de vida'],
     shape: 'triangle',
     color: 'orange-400',
     duration: '1 dia',
     maxParticipants: 6,
-    popular: false, // Disabled packages shouldn't be popular
+    popular: false,
     requiresExperience: false,
     minAge: 14,
     cancellationPolicy: '',
-    disabled: true,
   },
   avancado: {
     id: 'avancado',
     name: 'Pacote ALMA VERTICAL',
-    price: 43500,
-    originalPrice: 55000,
+    price: 66700, // in cents
+    originalPrice: 75000,
     description: 'Seu fim de semana intenso de escalada e aventura.',
     features: [
       '🧗 Escalada em rocha natural',
-      '🛡️ Equipamentos de segurança',
+      '🛡️ Equipamento de segurança',
       '👨‍🏫 Instrutor experiente',
-      '🍎 Lanche de trilha completo',
-      '☕ Café da manhã',
-      '💧 Água mineral',
-      '🛏️ Hospedagem em AirBnB',
+      '📋 Seguro Aventura',
+      '🛏️ Hospedagem + Café da manhã completo',
+      '🍽️ Saboroso Almoço (restaurante à vontade)',
+      '🌅 Pôr do Sol Mirante com café',
       '🧗 Mais um super dia extra de escalada',
     ],
     bonus: ['💡 Coach de vida'],
@@ -111,10 +110,9 @@ export const PACKAGES: Record<string, PackageType> = {
     color: 'purple-500',
     duration: '2 dias',
     maxParticipants: 4,
-    requiresExperience: true, // This package requires experience
+    requiresExperience: true,
     minAge: 16,
     cancellationPolicy: '',
-    disabled: true,
   },
 };
 
