@@ -1,4 +1,3 @@
-import { Order } from '../entities/Order';
 import { PaymentMethod } from '../entities/Coupon';
 
 export interface CreatePreferenceRequest {

@@ -99,7 +99,7 @@ export class GetPackageAvailability {
     return Math.max(0, maxSpots - bookedSpots);
   }
 
-  private getWeatherConditions(date: Date): 'good' | 'warning' | 'poor' {
+  private getWeatherConditions(_date: Date): 'good' | 'warning' | 'poor' {
     // Mock weather API - in real app would call weather service
     const conditions: ('good' | 'warning' | 'poor')[] = ['good', 'good', 'warning', 'poor'];
     return conditions[Math.floor(Math.random() * conditions.length)];

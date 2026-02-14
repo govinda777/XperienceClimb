@@ -1,5 +1,4 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { CustomWorld } from '../support/world';
 
@@ -24,12 +23,6 @@ const mockBookingService = {
   updateBooking: jest.fn(),
   cancelBooking: jest.fn(),
   getBooking: jest.fn(),
-};
-
-const mockPaymentService = {
-  createPixPayment: jest.fn(),
-  createCryptoPayment: jest.fn(),
-  processPayment: jest.fn(),
 };
 
 // Background steps

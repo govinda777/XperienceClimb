@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn, openWhatsApp } from '@/lib/utils';
-import { NAVIGATION_ITEMS, NAVIGATION_GROUPS, CONTACT_INFO } from '@/lib/constants';
+import { NAVIGATION_ITEMS, CONTACT_INFO } from '@/lib/constants';
 import { LoginButton } from '@/components/auth';
 
 export function Navigation() {

@@ -305,7 +305,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
     setIsSubmitting(true);
 
     try {
-      const result = await createAndProcessOrder(lastOrderData);
+      await createAndProcessOrder(lastOrderData);
 
       // Payment initiated successfully
       setPaymentStatus('success');

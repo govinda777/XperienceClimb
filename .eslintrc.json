@@ -1,8 +1,14 @@
 {
   "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["@typescript-eslint"],
   "rules": {
     "prefer-const": "error",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["warn", {
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "caughtErrorsIgnorePattern": "^_"
+    }],
     "react/no-unescaped-entities": "warn"
   },
   "ignorePatterns": ["node_modules/", ".next/", "out/", "build/", "*.config.js", "*.setup.js"]
