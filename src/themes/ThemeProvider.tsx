@@ -15,6 +15,10 @@ const THEME_IDS = {
   PEDRA_BELA: 'pedra-bela',
 } as const;
 
+// Configuration for Single Theme Mode
+const SINGLE_THEME_MODE = true;
+const DEFAULT_THEME_ID = THEME_IDS.PEDRA_BELA;
+
 const staticThemes = {
   [THEME_IDS.FAZENDA_IPANEMA]: fazendaIpanemaTheme,
   [THEME_IDS.PEDRA_BELA]: pedraBellaTheme,
@@ -37,7 +41,10 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 function ThemeProviderContent({ children }: { children: React.ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(fazendaIpanemaTheme);
+  // Initialize with the default theme if in single theme mode, otherwise use the first available
+  const initialTheme = SINGLE_THEME_MODE ? staticThemes[DEFAULT_THEME_ID] : fazendaIpanemaTheme;
+
+  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(initialTheme);
   const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>(Object.values(staticThemes));
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -62,7 +69,15 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
 
       // Combine static and dynamic themes
       const allThemes = [...Object.values(staticThemes), ...dynamicThemes];
-      setAvailableThemes(allThemes);
+
+      if (SINGLE_THEME_MODE) {
+        // In single theme mode, we still load other themes but only expose the default one in the UI logic if needed
+        // However, to strictly enforce it, we might want to filter availableThemes
+        // For now, let's keep all themes available in state but force selection logic
+        setAvailableThemes(allThemes);
+      } else {
+        setAvailableThemes(allThemes);
+      }
       
       console.log('ThemeProvider: Loaded themes:', allThemes.map(t => t.id));
     } catch (error) {
@@ -81,35 +96,43 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        // Check for theme in URL query parameters first
-        const themeFromUrl = getThemeFromUrl(searchParams);
-        
-        let selectedTheme: ThemeConfig | null = null;
-        
-        // Try to find theme in available themes
-        if (themeFromUrl) {
-          selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
-          if (selectedTheme) {
-            localStorage.setItem('xperience-theme', themeFromUrl);
+        if (SINGLE_THEME_MODE) {
+          // If in single theme mode, always use the default theme
+          const defaultTheme = availableThemes.find(t => t.id === DEFAULT_THEME_ID) || staticThemes[DEFAULT_THEME_ID];
+          if (defaultTheme) {
+            setCurrentTheme(defaultTheme);
           }
-        }
-        
-        if (!selectedTheme) {
-          const savedTheme = localStorage.getItem('xperience-theme');
-          if (savedTheme) {
-            selectedTheme = availableThemes.find(theme => theme.id === savedTheme) || null;
-          }
-        }
-        
-        if (!selectedTheme) {
-          selectedTheme = availableThemes[0] || fazendaIpanemaTheme;
-          localStorage.removeItem('xperience-theme');
-        }
-        
-        if (selectedTheme) {
-          setCurrentTheme(selectedTheme);
         } else {
-          setCurrentTheme(fazendaIpanemaTheme);
+          // Check for theme in URL query parameters first
+          const themeFromUrl = getThemeFromUrl(searchParams);
+
+          let selectedTheme: ThemeConfig | null = null;
+
+          // Try to find theme in available themes
+          if (themeFromUrl) {
+            selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
+            if (selectedTheme) {
+              localStorage.setItem('xperience-theme', themeFromUrl);
+            }
+          }
+
+          if (!selectedTheme) {
+            const savedTheme = localStorage.getItem('xperience-theme');
+            if (savedTheme) {
+              selectedTheme = availableThemes.find(theme => theme.id === savedTheme) || null;
+            }
+          }
+
+          if (!selectedTheme) {
+            selectedTheme = availableThemes[0] || fazendaIpanemaTheme;
+            localStorage.removeItem('xperience-theme');
+          }
+
+          if (selectedTheme) {
+            setCurrentTheme(selectedTheme);
+          } else {
+            setCurrentTheme(fazendaIpanemaTheme);
+          }
         }
       } catch (error) {
         console.error('Error loading theme:', error);
