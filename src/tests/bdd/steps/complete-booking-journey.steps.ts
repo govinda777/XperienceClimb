@@ -194,6 +194,35 @@ When('I select the available climbing date', async function (this: CustomWorld) 
   this.attach(`Selected available climbing date: ${AVAILABLE_DATES.singleDateISO}`);
 });
 
+Given('I have a confirmed booking for a date {int} days from now', async function (this: CustomWorld, days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+
+  this.confirmedBooking = {
+    id: 'BOOK-WEATHER-123',
+    climbingDate: date,
+    status: 'confirmed',
+    participants: 2,
+    totalAmount: 300,
+  };
+});
+
+When('I choose to reschedule to a date {int} days from now', async function (this: CustomWorld, days: number) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  this.newClimbingDate = date;
+});
+
+Given('today is the current date', async function (this: CustomWorld) {
+  // No-op, just context
+});
+
+Given('I want to book for tomorrow', async function (this: CustomWorld) {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  this.climbingDate = tomorrow;
+});
+
 When('I add special requests {string}', async function (this: CustomWorld, requests: string) {
   this.specialRequests = requests;
   this.attach(`Added special requests: ${requests}`);

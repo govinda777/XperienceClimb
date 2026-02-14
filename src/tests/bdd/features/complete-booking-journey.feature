@@ -76,18 +76,18 @@ Feature: Complete Booking Journey
     And a refund should be initiated
 
   Scenario: Weather-dependent booking rescheduling
-    Given I have a confirmed booking for "2026-12-20"
+    Given I have a confirmed booking for a date 5 days from now
     And the weather forecast shows unsafe conditions
     When the system sends a weather alert
     Then I should receive a rescheduling notification
-    When I choose to reschedule to "2026-12-27"
+    When I choose to reschedule to a date 12 days from now
     And I confirm the new date
     Then my booking should be updated with the new date
     And I should receive updated booking confirmation
 
   Scenario: Last-minute booking availability
-    Given today is "2026-12-15"
-    And I want to book for "2026-12-16" (tomorrow)
+    Given today is the current date
+    And I want to book for tomorrow
     When I check package availability
     Then I should see real-time availability
     And I should see any last-minute restrictions
