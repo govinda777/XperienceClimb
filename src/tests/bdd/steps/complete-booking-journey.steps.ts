@@ -367,7 +367,7 @@ Given('I have an existing booking {string}', async function (this: CustomWorld, 
   this.existingBooking = {
     id: bookingId,
     status: 'confirmed',
-    climbingDate: new Date('2026-03-14'),
+    climbingDate: new Date(AVAILABLE_DATES.singleDateISO),
     participants: 2,
     totalAmount: 300,
     paid: true,

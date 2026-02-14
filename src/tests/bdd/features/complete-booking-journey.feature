@@ -57,7 +57,7 @@ Feature: Complete Booking Journey
     And I apply coupon "CLIMB20"
     Then the discount should be applied correctly
     And the final price should be 20% less than original
-    When I select climbing date "2027-01-15"
+    When I select the available climbing date
     And I choose crypto payment with Bitcoin
     And I confirm my booking
     Then I should see Bitcoin payment instructions

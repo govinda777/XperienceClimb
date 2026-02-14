@@ -47,7 +47,7 @@ When('I click on a package', async function (this: CustomWorld) {
 });
 
 When('I select a date for the activity', async function (this: CustomWorld) {
-  const testDate = new Date('2026-03-14');
+  const testDate = new Date(AVAILABLE_DATES.singleDateISO);
   mockUsePackages.checkAvailability.mockResolvedValue({
     available: true,
     spotsLeft: 5,
