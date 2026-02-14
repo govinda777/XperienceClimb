@@ -37,8 +37,9 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 function ThemeProviderContent({ children }: { children: React.ReactNode }) {
-  // Initialize with the first available static theme, will be updated when tours load
+  // Initialize with pedraBellaTheme as default fallback
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(pedraBellaTheme);
+  // Keep all themes available for URL loading
   const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>(Object.values(staticThemes));
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -56,7 +57,7 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
       for (const tour of tours) {
         try {
           // If we have a static theme for this tour, skip generating one
-          // We will include the static one if it matches an active tour
+          // We will include the static one later
           if (!staticThemes[tour.themeId as keyof typeof staticThemes]) {
             const themeConfig = tourService.generateThemeFromTour(tour);
             dynamicThemes.push(themeConfig);
@@ -66,34 +67,31 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // Filter static themes based on active tours
-      const activeStaticThemes = Object.values(staticThemes).filter(theme =>
-        activeThemeIds.has(theme.id)
-      );
-
-      // Combine filtered static and dynamic themes
-      const allThemes = [...activeStaticThemes, ...dynamicThemes];
+      // Keep ALL static themes + dynamic themes in availableThemes
+      // This allows URL parameters to load any theme, even if not "active" in the repo
+      const allThemes = [...Object.values(staticThemes), ...dynamicThemes];
       setAvailableThemes(allThemes);
       
       console.log('ThemeProvider: Loaded themes:', allThemes.map(t => t.id));
 
-      // If we have available themes, ensure the current theme is one of them
-      if (allThemes.length > 0) {
-        // If current theme is not in available themes, switch to the first available
-        if (!allThemes.find(t => t.id === currentTheme.id)) {
-           setCurrentTheme(allThemes[0]);
-           localStorage.setItem('xperience-theme', allThemes[0].id);
-        }
+      // Determine the default active theme based on the first tour in the fetched list
+      // tours list comes from useTours which filters by active=true
+      if (tours.length > 0) {
+        const firstActiveTour = tours[0];
+        const activeTheme = allThemes.find(t => t.id === firstActiveTour.themeId);
+
+        // If we found a theme corresponding to the first active tour, set it as current
+        // BUT only if no URL parameter is overriding it (handled in the next effect)
+        // Actually, we can just let the next effect handle the selection logic
+        // This effect is mainly for populating availableThemes
       }
 
     } catch (error) {
       console.error('Error loading dynamic themes:', error);
-      // Fallback to static themes only if error, but try to respect active flag if possible?
-      // If error, we might default to all static themes or just keep current state
-      // For safety, let's keep what we have or fallback to static
+      // Fallback to static themes
       setAvailableThemes(Object.values(staticThemes));
     }
-  }, [tours, currentTheme.id]);
+  }, [tours]);
 
   useEffect(() => {
     if (!toursLoading) {
@@ -104,48 +102,51 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        // Check for theme in URL query parameters first
+        // Priority 1: Check for theme in URL query parameters
         const themeFromUrl = getThemeFromUrl(searchParams);
-
         let selectedTheme: ThemeConfig | null = null;
 
-        // Try to find theme in available themes
         if (themeFromUrl) {
+          // Try to find theme in available themes (which now includes inactive ones if they are static)
           selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
           if (selectedTheme) {
+            console.log('ThemeProvider: Using theme from URL:', selectedTheme.id);
             localStorage.setItem('xperience-theme', themeFromUrl);
           }
         }
 
-        if (!selectedTheme) {
-          const savedTheme = localStorage.getItem('xperience-theme');
-          if (savedTheme) {
-            selectedTheme = availableThemes.find(theme => theme.id === savedTheme) || null;
+        // Priority 2: Use the first ACTIVE tour found
+        // tours comes from useTours hook which returns only active tours
+        if (!selectedTheme && tours.length > 0) {
+          const firstActiveTour = tours[0];
+          selectedTheme = availableThemes.find(t => t.id === firstActiveTour.themeId) || null;
+          if (selectedTheme) {
+             console.log('ThemeProvider: Using first active tour theme:', selectedTheme.id);
           }
         }
 
-        // If no theme selected or selected theme is not available, default to the first one
+        // Priority 3: Fallback to Pedra Bela (default static)
         if (!selectedTheme) {
-          selectedTheme = availableThemes[0] || pedraBellaTheme;
-          localStorage.removeItem('xperience-theme');
+           console.log('ThemeProvider: Fallback to default theme');
+           selectedTheme = pedraBellaTheme;
+           localStorage.removeItem('xperience-theme');
         }
 
-        if (selectedTheme) {
-          setCurrentTheme(selectedTheme);
-        } else {
-          setCurrentTheme(pedraBellaTheme);
-        }
+        setCurrentTheme(selectedTheme);
+
       } catch (error) {
         console.error('Error loading theme:', error);
+        setCurrentTheme(pedraBellaTheme);
       } finally {
         setIsLoading(false);
       }
     };
 
+    // Run this effect when params change, or when availableThemes/tours are loaded
     if (!toursLoading) {
       loadTheme();
     }
-  }, [searchParams, availableThemes, toursLoading]);
+  }, [searchParams, availableThemes, tours, toursLoading]);
 
   // eslint-disable-next-line no-unused-vars
   const setTheme = (themeId: string) => {
