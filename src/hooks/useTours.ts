@@ -43,7 +43,6 @@ export function useTours(): UseToursResult {
     fetchTours();
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getTourById = (id: string): Tour | undefined => {
     return tours.find(tour => tour.id === id);
   };
