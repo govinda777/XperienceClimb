@@ -15,10 +15,6 @@ const THEME_IDS = {
   PEDRA_BELA: 'pedra-bela',
 } as const;
 
-// Configuration for Single Theme Mode
-const SINGLE_THEME_MODE = true;
-const DEFAULT_THEME_ID = THEME_IDS.PEDRA_BELA;
-
 const staticThemes = {
   [THEME_IDS.FAZENDA_IPANEMA]: fazendaIpanemaTheme,
   [THEME_IDS.PEDRA_BELA]: pedraBellaTheme,
@@ -41,10 +37,8 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 function ThemeProviderContent({ children }: { children: React.ReactNode }) {
-  // Initialize with the default theme if in single theme mode, otherwise use the first available
-  const initialTheme = SINGLE_THEME_MODE ? staticThemes[DEFAULT_THEME_ID] : fazendaIpanemaTheme;
-
-  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(initialTheme);
+  // Initialize with the first available static theme, will be updated when tours load
+  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(pedraBellaTheme);
   const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>(Object.values(staticThemes));
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -57,35 +51,49 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
 
     try {
       const dynamicThemes: ThemeConfig[] = [];
+      const activeThemeIds = new Set(tours.map(t => t.themeId));
       
       for (const tour of tours) {
         try {
-          const themeConfig = tourService.generateThemeFromTour(tour);
-          dynamicThemes.push(themeConfig);
+          // If we have a static theme for this tour, skip generating one
+          // We will include the static one if it matches an active tour
+          if (!staticThemes[tour.themeId as keyof typeof staticThemes]) {
+            const themeConfig = tourService.generateThemeFromTour(tour);
+            dynamicThemes.push(themeConfig);
+          }
         } catch (error) {
           console.error(`Error generating theme for tour ${tour.id}:`, error);
         }
       }
 
-      // Combine static and dynamic themes
-      const allThemes = [...Object.values(staticThemes), ...dynamicThemes];
+      // Filter static themes based on active tours
+      const activeStaticThemes = Object.values(staticThemes).filter(theme =>
+        activeThemeIds.has(theme.id)
+      );
 
-      if (SINGLE_THEME_MODE) {
-        // In single theme mode, we still load other themes but only expose the default one in the UI logic if needed
-        // However, to strictly enforce it, we might want to filter availableThemes
-        // For now, let's keep all themes available in state but force selection logic
-        setAvailableThemes(allThemes);
-      } else {
-        setAvailableThemes(allThemes);
-      }
+      // Combine filtered static and dynamic themes
+      const allThemes = [...activeStaticThemes, ...dynamicThemes];
+      setAvailableThemes(allThemes);
       
       console.log('ThemeProvider: Loaded themes:', allThemes.map(t => t.id));
+
+      // If we have available themes, ensure the current theme is one of them
+      if (allThemes.length > 0) {
+        // If current theme is not in available themes, switch to the first available
+        if (!allThemes.find(t => t.id === currentTheme.id)) {
+           setCurrentTheme(allThemes[0]);
+           localStorage.setItem('xperience-theme', allThemes[0].id);
+        }
+      }
+
     } catch (error) {
       console.error('Error loading dynamic themes:', error);
-      // Fallback to static themes only
+      // Fallback to static themes only if error, but try to respect active flag if possible?
+      // If error, we might default to all static themes or just keep current state
+      // For safety, let's keep what we have or fallback to static
       setAvailableThemes(Object.values(staticThemes));
     }
-  }, [tours]);
+  }, [tours, currentTheme.id]);
 
   useEffect(() => {
     if (!toursLoading) {
@@ -96,43 +104,36 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        if (SINGLE_THEME_MODE) {
-          // If in single theme mode, always use the default theme
-          const defaultTheme = availableThemes.find(t => t.id === DEFAULT_THEME_ID) || staticThemes[DEFAULT_THEME_ID];
-          if (defaultTheme) {
-            setCurrentTheme(defaultTheme);
-          }
-        } else {
-          // Check for theme in URL query parameters first
-          const themeFromUrl = getThemeFromUrl(searchParams);
+        // Check for theme in URL query parameters first
+        const themeFromUrl = getThemeFromUrl(searchParams);
 
-          let selectedTheme: ThemeConfig | null = null;
+        let selectedTheme: ThemeConfig | null = null;
 
-          // Try to find theme in available themes
-          if (themeFromUrl) {
-            selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
-            if (selectedTheme) {
-              localStorage.setItem('xperience-theme', themeFromUrl);
-            }
-          }
-
-          if (!selectedTheme) {
-            const savedTheme = localStorage.getItem('xperience-theme');
-            if (savedTheme) {
-              selectedTheme = availableThemes.find(theme => theme.id === savedTheme) || null;
-            }
-          }
-
-          if (!selectedTheme) {
-            selectedTheme = availableThemes[0] || fazendaIpanemaTheme;
-            localStorage.removeItem('xperience-theme');
-          }
-
+        // Try to find theme in available themes
+        if (themeFromUrl) {
+          selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
           if (selectedTheme) {
-            setCurrentTheme(selectedTheme);
-          } else {
-            setCurrentTheme(fazendaIpanemaTheme);
+            localStorage.setItem('xperience-theme', themeFromUrl);
           }
+        }
+
+        if (!selectedTheme) {
+          const savedTheme = localStorage.getItem('xperience-theme');
+          if (savedTheme) {
+            selectedTheme = availableThemes.find(theme => theme.id === savedTheme) || null;
+          }
+        }
+
+        // If no theme selected or selected theme is not available, default to the first one
+        if (!selectedTheme) {
+          selectedTheme = availableThemes[0] || pedraBellaTheme;
+          localStorage.removeItem('xperience-theme');
+        }
+
+        if (selectedTheme) {
+          setCurrentTheme(selectedTheme);
+        } else {
+          setCurrentTheme(pedraBellaTheme);
         }
       } catch (error) {
         console.error('Error loading theme:', error);
@@ -141,10 +142,10 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
       }
     };
 
-    if (availableThemes.length > 0) {
+    if (!toursLoading) {
       loadTheme();
     }
-  }, [searchParams, availableThemes]);
+  }, [searchParams, availableThemes, toursLoading]);
 
   // eslint-disable-next-line no-unused-vars
   const setTheme = (themeId: string) => {
