@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, Suspense } from 'react';
+import React, { createContext, useContext, useEffect, useState, Suspense, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeConfig } from './types';
 import { getThemeFromUrl } from '@/lib/theme-utils';
@@ -44,10 +44,10 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const { tours, loading: toursLoading } = useTours();
 
-  // Initialize tour service
-  const tourService = new TourService(TourRepository.getInstance());
+  const loadDynamicThemes = useCallback(async () => {
+    // Initialize tour service
+    const tourService = new TourService(TourRepository.getInstance());
 
-  const loadDynamicThemes = async () => {
     try {
       const dynamicThemes: ThemeConfig[] = [];
       
@@ -70,13 +70,13 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
       // Fallback to static themes only
       setAvailableThemes(Object.values(staticThemes));
     }
-  };
+  }, [tours]);
 
   useEffect(() => {
     if (!toursLoading) {
       loadDynamicThemes();
     }
-  }, [tours, toursLoading]);
+  }, [tours, toursLoading, loadDynamicThemes]);
 
   useEffect(() => {
     const loadTheme = async () => {
