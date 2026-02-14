@@ -347,10 +347,10 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
                 onChange={e => onChange(item.id, 'experienceLevel', e.target.value)}
               >
                 <option value="">Selecione</option>
+                <option value="minha_primeira_vez">Minha primeira vez</option>
                 <option value="beginner">Iniciante</option>
                 <option value="intermediate">Intermediário</option>
                 <option value="advanced">Avançado</option>
-                <option value="minha_primeira_vez">Minha primeira vez</option>
               </select>
             </div>
 
