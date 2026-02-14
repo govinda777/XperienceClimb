@@ -37,7 +37,9 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 function ThemeProviderContent({ children }: { children: React.ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(fazendaIpanemaTheme);
+  // Initialize with pedraBellaTheme as default fallback
+  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(pedraBellaTheme);
+  // Keep all themes available for URL loading
   const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>(Object.values(staticThemes));
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -50,24 +52,34 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
 
     try {
       const dynamicThemes: ThemeConfig[] = [];
+      const activeThemeIds = new Set(tours.map(t => t.themeId));
       
       for (const tour of tours) {
         try {
-          const themeConfig = tourService.generateThemeFromTour(tour);
-          dynamicThemes.push(themeConfig);
+          // If we have a static theme for this tour, skip generating one
+          // We will include the static one if it matches an active tour
+          if (!staticThemes[tour.themeId as keyof typeof staticThemes]) {
+            const themeConfig = tourService.generateThemeFromTour(tour);
+            dynamicThemes.push(themeConfig);
+          }
         } catch (error) {
           console.error(`Error generating theme for tour ${tour.id}:`, error);
         }
       }
 
-      // Combine static and dynamic themes
+      // We want availableThemes to contain ALL themes (static + dynamic)
+      // so the app knows about them, even if we only select the active one by default.
+      // This supports the requirement: "Temos que registrar todos os temas"
+      // while "Carregar apenas primeiro ativo" is handled in the selection logic.
+
       const allThemes = [...Object.values(staticThemes), ...dynamicThemes];
       setAvailableThemes(allThemes);
-      
-      console.log('ThemeProvider: Loaded themes:', allThemes.map(t => t.id));
+
+      console.log('ThemeProvider: Loaded all themes:', allThemes.map(t => t.id));
+
     } catch (error) {
       console.error('Error loading dynamic themes:', error);
-      // Fallback to static themes only
+      // Fallback: keep static themes
       setAvailableThemes(Object.values(staticThemes));
     }
   }, [tours]);
@@ -81,47 +93,54 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        // Check for theme in URL query parameters first
+        // Priority 1: Check for theme in URL query parameters
+        // This allows accessing any theme (active or inactive) via URL
         const themeFromUrl = getThemeFromUrl(searchParams);
-        
         let selectedTheme: ThemeConfig | null = null;
-        
-        // Try to find theme in available themes
+
         if (themeFromUrl) {
+          // Try to find theme in ALL available themes
           selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
+
           if (selectedTheme) {
+            console.log('ThemeProvider: Using theme from URL:', selectedTheme.id);
             localStorage.setItem('xperience-theme', themeFromUrl);
           }
         }
-        
-        if (!selectedTheme) {
-          const savedTheme = localStorage.getItem('xperience-theme');
-          if (savedTheme) {
-            selectedTheme = availableThemes.find(theme => theme.id === savedTheme) || null;
+
+        // Priority 2: Use the first ACTIVE tour found
+        // "tours" comes from useTours hook which returns only active tours
+        if (!selectedTheme && tours.length > 0) {
+          const firstActiveTour = tours[0];
+          // Find the theme corresponding to the first active tour
+          selectedTheme = availableThemes.find(t => t.id === firstActiveTour.themeId) || null;
+          if (selectedTheme) {
+             console.log('ThemeProvider: Using first active tour theme:', selectedTheme.id);
           }
         }
-        
+
+        // Priority 3: Fallback to Pedra Bela (default static)
         if (!selectedTheme) {
-          selectedTheme = availableThemes[0] || fazendaIpanemaTheme;
-          localStorage.removeItem('xperience-theme');
+           console.log('ThemeProvider: Fallback to default theme');
+           selectedTheme = pedraBellaTheme;
+           localStorage.removeItem('xperience-theme');
         }
-        
-        if (selectedTheme) {
-          setCurrentTheme(selectedTheme);
-        } else {
-          setCurrentTheme(fazendaIpanemaTheme);
-        }
+
+        setCurrentTheme(selectedTheme);
+
       } catch (error) {
         console.error('Error loading theme:', error);
+        setCurrentTheme(pedraBellaTheme);
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (availableThemes.length > 0) {
+    // Run this effect when params change, or when availableThemes/tours are loaded
+    if (!toursLoading) {
       loadTheme();
     }
-  }, [searchParams, availableThemes]);
+  }, [searchParams, availableThemes, tours, toursLoading]);
 
   // eslint-disable-next-line no-unused-vars
   const setTheme = (themeId: string) => {

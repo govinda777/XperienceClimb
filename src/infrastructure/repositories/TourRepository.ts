@@ -227,7 +227,7 @@ export class TourRepository implements ITourRepository {
       },
       createdAt: new Date('2024-01-01'),
       updatedAt: new Date('2024-01-01'),
-      isActive: true
+      isActive: false
     };
 
     // Pedra Bela Tour
