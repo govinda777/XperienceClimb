@@ -4,7 +4,6 @@ import { expect } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { CustomWorld } from '../support/world';
 import { LoginButton } from '@/components/auth/LoginButton';
-import { AuthGuard } from '@/components/auth/AuthGuard';
 import React from 'react';
 
 // Mock the useAuth hook for testing

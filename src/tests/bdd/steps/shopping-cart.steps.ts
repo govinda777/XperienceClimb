@@ -1,5 +1,5 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { expect } from '@jest/globals';
 import { CustomWorld } from '../support/world';
 import { CartButton } from '@/components/cart/CartButton';

@@ -20,10 +20,6 @@ const staticThemes = {
   [THEME_IDS.PEDRA_BELA]: pedraBellaTheme,
 };
 
-const isValidThemeId = (themeId: string): themeId is keyof typeof staticThemes => {
-  return themeId in staticThemes;
-};
-
 console.log('ThemeProvider: Available static themes:', Object.keys(staticThemes));
 
 interface ThemeContextType {
@@ -52,7 +48,6 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
 
     try {
       const dynamicThemes: ThemeConfig[] = [];
-      const activeThemeIds = new Set(tours.map(t => t.themeId));
       
       for (const tour of tours) {
         try {
