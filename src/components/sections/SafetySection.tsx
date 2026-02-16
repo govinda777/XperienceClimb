@@ -182,28 +182,9 @@ export function SafetySection() {
                     </div>
                   </div>
                 ))}
-
-              {/* Custo FLONA */}
-              <div className="mt-8 rounded-lg border-2 border-blue-200 bg-blue-50 p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-lg text-blue-500">🏞️</span>
-                    <div>
-                      <span className="font-medium text-neutral-800">Cadastro na FLONA</span>
-                      <p className="text-sm text-neutral-600">
-                        Taxa de entrada na Floresta Nacional de Ipanema
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <span className="rounded-full bg-blue-500 px-2 py-1 text-xs text-white">
-                      R$ 30,00
-                    </span>
-                  </div>
-                </div>
-              </div>
+ 
             </div>
+            
           </div>
 
           {/* Safety Certifications */}
