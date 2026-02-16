@@ -2,8 +2,10 @@
  * Utilitários para gerenciamento de imagens externas
  */
 
+import { StaticImageData } from 'next/image';
+
 export interface ImageUrlConfig {
-  src: string;
+  src: string | StaticImageData;
   isExternal?: boolean;
   externalDomain?: string;
 }
@@ -11,26 +13,28 @@ export interface ImageUrlConfig {
 /**
  * Valida se uma URL é externa
  */
-export function isExternalUrl(url: string): boolean {
+export function isExternalUrl(url: string | StaticImageData): boolean {
   if (!url) return false;
-  
+  if (typeof url !== 'string') return false; // StaticImageData is local
+
   // URLs que começam com http/https são externas
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return true;
   }
-  
+
   // URLs que começam com // são externas (protocolo relativo)
   if (url.startsWith('//')) {
     return true;
   }
-  
+
   return false;
 }
 
 /**
  * Extrai o domínio de uma URL
  */
-export function extractDomain(url: string): string | null {
+export function extractDomain(url: string | StaticImageData): string | null {
+  if (typeof url !== 'string') return null;
   try {
     const urlObj = new URL(url.startsWith('//') ? `https:${url}` : url);
     return urlObj.hostname;
@@ -42,14 +46,14 @@ export function extractDomain(url: string): string | null {
 /**
  * Valida se uma URL de imagem é segura
  */
-export function isValidImageUrl(url: string): boolean {
+export function isValidImageUrl(url: string | StaticImageData): boolean {
   if (!url) return false;
-  
+
   // URLs locais são sempre válidas
   if (!isExternalUrl(url)) {
     return true;
   }
-  
+
   // Lista de domínios confiáveis para imagens
   const trustedDomains = [
     'images.unsplash.com',
@@ -95,11 +99,11 @@ export function isValidImageUrl(url: string): boolean {
     'cdnb.artstation.com',
     'cdn.artstation.com'
   ];
-  
+
   const domain = extractDomain(url);
   if (!domain) return false;
-  
-  return trustedDomains.some(trustedDomain => 
+
+  return trustedDomains.some(trustedDomain =>
     domain === trustedDomain || domain.endsWith(`.${trustedDomain}`)
   );
 }
@@ -107,24 +111,25 @@ export function isValidImageUrl(url: string): boolean {
 /**
  * Normaliza uma URL de imagem
  */
-export function normalizeImageUrl(url: string): string {
+export function normalizeImageUrl(url: string | StaticImageData): string | StaticImageData {
   if (!url) return '';
-  
+  if (typeof url !== 'string') return url;
+
   // Se já é uma URL completa, retorna como está
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return url;
   }
-  
+
   // Se é uma URL relativa com //, adiciona https:
   if (url.startsWith('//')) {
     return `https:${url}`;
   }
-  
+
   // Se é uma URL local, adiciona / no início se necessário
   if (!url.startsWith('/')) {
     return `/${url}`;
   }
-  
+
   return url;
 }
 
@@ -137,7 +142,7 @@ export function getPlaceholderUrl(width: number = 400, height: number = 300, tex
   const color = 'CCCCCC';
   const textColor = '666666';
   const placeholderText = text || `${width}x${height}`;
-  
+
   return `${baseUrl}/${size}/${color}/${textColor}?text=${encodeURIComponent(placeholderText)}`;
 }
 
@@ -148,7 +153,7 @@ export function getUnsplashUrl(width: number = 400, height: number = 300, query?
   const baseUrl = 'https://images.unsplash.com';
   const size = `${width}x${height}`;
   const searchQuery = query ? `?${encodeURIComponent(query)}` : '';
-  
+
   return `${baseUrl}/random/${size}${searchQuery}`;
 }
 
@@ -159,7 +164,7 @@ export function getPicsumUrl(width: number = 400, height: number = 300, seed?: n
   const baseUrl = 'https://picsum.photos';
   const size = `${width}/${height}`;
   const seedParam = seed ? `?random=${seed}` : '';
-  
+
   return `${baseUrl}/${size}${seedParam}`;
 }
 
@@ -167,7 +172,7 @@ export function getPicsumUrl(width: number = 400, height: number = 300, seed?: n
  * Configura uma imagem com validação
  */
 export function configureImage(image: {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   title: string;
   category: string;
@@ -176,7 +181,7 @@ export function configureImage(image: {
 }): ImageUrlConfig {
   const isExternal = image.isExternal ?? isExternalUrl(image.src);
   const externalDomain = image.externalDomain ?? extractDomain(image.src) ?? undefined;
-  
+
   return {
     src: normalizeImageUrl(image.src),
     isExternal,
@@ -188,30 +193,33 @@ export function configureImage(image: {
  * Configura uma imagem de galeria com domínio extraído automaticamente
  */
 export function configureGalleryImage(image: {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   title: string;
   category: string;
   isExternal?: boolean;
   externalDomain?: string;
+  isVideo?: boolean;
 }): {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   title: string;
   category: string;
   isExternal: boolean;
   externalDomain?: string;
+  isVideo?: boolean;
 } {
   const isExternal = image.isExternal ?? isExternalUrl(image.src);
   const externalDomain = isExternal ? (image.externalDomain ?? extractDomain(image.src) ?? undefined) : undefined;
-  
+
   return {
     src: normalizeImageUrl(image.src),
     alt: image.alt,
     title: image.title,
     category: image.category,
     isExternal,
-    externalDomain
+    externalDomain,
+    isVideo: image.isVideo
   };
 }
 
@@ -219,19 +227,21 @@ export function configureGalleryImage(image: {
  * Processa todas as imagens de um tema, extraindo domínios automaticamente
  */
 export function processThemeImages(images: Array<{
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   title: string;
   category: string;
   isExternal?: boolean;
   externalDomain?: string;
+  isVideo?: boolean;
 }>): Array<{
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   title: string;
   category: string;
   isExternal: boolean;
   externalDomain?: string;
+  isVideo?: boolean;
 }> {
   return images.map(image => configureGalleryImage(image));
 }

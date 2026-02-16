@@ -1,6 +1,18 @@
 import { BaseTheme } from './base-theme';
+import pedraBelaMain from '@/assets/images/themes/pedra-bela/pedra-bela-main.jpg';
+import pedraBela1 from '@/assets/images/themes/pedra-bela/pedra-bela-1.jpg';
+import pedraBela2 from '@/assets/images/themes/pedra-bela/pedra-bela-2.jpg';
+import pedraBela3 from '@/assets/images/themes/pedra-bela/pedra-bela-3.jpg';
+import pedraBela4 from '@/assets/images/themes/pedra-bela/pedra-bela-4.jpg';
+import pedraBela5 from '@/assets/images/themes/pedra-bela/pedra-bela-5.jpg';
+import pedraBela6 from '@/assets/images/themes/pedra-bela/pedra-bela-6.jpg';
 
 export class PedraBellaTheme extends BaseTheme {
+  // ... (rest of the file until the image to replace)
+
+  // I cannot use replace_file_content for non-contiguous changes (import + array usage).
+  // I must use multi_replace_file_content.
+
   id = 'pedra-bela';
   name = 'Pedra Bela';
 
@@ -60,18 +72,61 @@ export class PedraBellaTheme extends BaseTheme {
       infoBox: {
         title: 'Sobre Pedra Bela',
         content: 'Pedra Bela é uma pequena cidade do interior de São Paulo conhecida por sua natureza exuberante e atividades de aventura. Com montanhas imponentes, cachoeiras cristalinas e a famosa tirolesa de 2km, é um destino perfeito para quem busca experiências únicas na natureza. A cidade também abriga um templo budista e oferece diversas trilhas ecológicas.'
-      }
+      },
+      image: pedraBelaMain
     }
   );
 
   gallery = {
     images: this.processGalleryImages([
       {
+        src: pedraBela1,
+        alt: 'Pedra Bela',
+        title: 'Pedra Bela',
+        category: 'adventure',
+        isExternal: false
+      },
+      {
+        src: pedraBela2,
+        alt: 'Pedra Bela',
+        title: 'Pedra Bela',
+        category: 'adventure',
+        isExternal: false
+      },
+      {
+        src: pedraBela3,
+        alt: 'Pedra Bela',
+        title: 'Pedra Bela',
+        category: 'adventure',
+        isExternal: false
+      },
+      {
+        src: pedraBela4,
+        alt: 'Pedra Bela',
+        title: 'Pedra Bela',
+        category: 'adventure',
+        isExternal: false
+      },
+      {
+        src: pedraBela5,
+        alt: 'Pedra Bela',
+        title: 'Pedra Bela',
+        category: 'adventure',
+        isExternal: false
+      },
+      {
         src: 'https://static.wixstatic.com/media/c08e80_87a6d58aa4be4e6191d3361aa7998f8a~mv2.jpg/v1/fill/w_980,h_1307,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/c08e80_87a6d58aa4be4e6191d3361aa7998f8a~mv2.jpg',
         alt: 'Tirolesa de 2km em Pedra Bela',
         title: 'Tirolesa Gigante',
         category: 'adventure',
         isExternal: true
+      },
+      {
+        src: pedraBela6,
+        alt: 'Pedra Bela',
+        title: 'Pedra Bela',
+        category: 'adventure',
+        isExternal: false
       },
       {
         src: 'https://visitesocorrosp.com.br/content/images/2024/09/VS_POSTBLOG1_FEED1-3.png',
@@ -88,67 +143,11 @@ export class PedraBellaTheme extends BaseTheme {
         isExternal: true
       },
       {
-        src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
-        alt: 'Vista da Pedra Maria Antônia',
-        title: 'Pedra Maria Antônia',
-        category: 'climb',
-        isExternal: true
-      },
-      {
-        src: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop',
-        alt: 'Cachoeira Boca da Mata',
-        title: 'Cachoeira Boca da Mata',
-        category: 'waterfalls',
-        isExternal: true
-      },
-      {
-        src: 'https://i.ytimg.com/vi/nzdNPIdUIhk/maxresdefault.jpg',
-        alt: 'Cachoeira Antônio Souza',
-        title: 'Cachoeira Antônio Souza',
-        category: 'waterfalls',
-        isExternal: true
-      },
-      {
-        src: 'https://pedrabela.tur.br/wp-content/uploads/2018/05/IMG_1578.jpg',
-        alt: 'Corredeiras dos Tuncuns',
-        title: 'Corredeiras dos Tuncuns',
-        category: 'waterfalls',
-        isExternal: true
-      },
-      {
-        src: 'https://media.istockphoto.com/id/937164520/pt/foto/beautiful-rock-buddha-image-in-ruined-buddhist-temple.jpg?s=1024x1024&w=is&k=20&c=6EltbyHjFuFePax0q_arZb4oQLWaXarpqPyKa8vc9Hw=',
-        alt: 'Templo Budista em Pedra Bela',
-        title: 'Templo Budista',
-        category: 'nature',
-        isExternal: true
-      },
-      {
-        src: 'https://imagedelivery.net/EafvxYlk8cSUsWEWsetEdQ/d0e1e896-350a-488d-bc12-66cd2db6d500/w=1000',
-        alt: 'Passeio de quadriciclo',
-        title: 'Passeio de Quadriciclo',
+        src: '/images/themes/pedra-bela/pedra-bela--restaurante-muvuca-caipira.mp4',
+        alt: 'Restaurante Muvuca Caipira',
+        title: 'Muvuca Caipira',
         category: 'adventure',
-        isExternal: true
-      },
-      {
-        src: 'https://www.escaladas.com.br/img/dinamica/montanha/1183/principal/1183-160521-1.png',
-        alt: 'Escalada nas pedras de Pedra Bela',
-        title: 'Escalada Técnica',
-        category: 'climb',
-        isExternal: true
-      },
-      {
-        src: 'https://visitesocorrosp.com.br/content/images/2024/04/Facebook-Pedra-Bela-Vista.jpg',
-        alt: 'Vista panorâmica das montanhas',
-        title: 'Vista Panorâmica',
-        category: 'nature',
-        isExternal: true
-      },
-      {
-        src: 'https://www.guapposocorro.com.br/wp-content/uploads/2019/01/pedra-bela-vista-socorro-sp-1024x576_destaq.jpg',
-        alt: 'Pôr do sol em Pedra Bela',
-        title: 'Pôr do Sol',
-        category: 'nature',
-        isExternal: true
+        isVideo: true
       }
     ]),
     categories: {

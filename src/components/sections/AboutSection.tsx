@@ -8,8 +8,12 @@ import { normalizeImageUrl } from '@/lib/image-utils';
 export function AboutSection() {
   const { currentTheme } = useTheme();
 
-  // Encontra uma imagem de natureza ou usa a primeira imagem disponível
-  const natureImage = currentTheme.gallery.images.find(img => img.category === 'nature') || currentTheme.gallery.images[0];
+  // Encontra, pela ordem: imagem específica configurada, imagem de natureza ou primeira imagem da galeria
+  const natureImage = {
+    src: currentTheme.content.about.image || currentTheme.gallery.images.find(img => img.category === 'nature')?.src || currentTheme.gallery.images[0]?.src,
+    alt: currentTheme.content.about.image ? 'Destaque da localização' : (currentTheme.gallery.images.find(img => img.category === 'nature')?.alt || currentTheme.gallery.images[0]?.alt),
+    isExternal: !currentTheme.content.about.image && (currentTheme.gallery.images.find(img => img.category === 'nature')?.isExternal || currentTheme.gallery.images[0]?.isExternal)
+  };
 
   return (
     <section id="sobre" className="py-20 bg-white">

@@ -1,3 +1,5 @@
+import { StaticImageData } from 'next/image';
+
 export interface DirectionStep {
   step: number;
   title: string;
@@ -11,12 +13,13 @@ export interface Highlight {
 }
 
 export interface GalleryImage {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   title: string;
   category: string;
   isExternal?: boolean; // Indica se é uma URL externa
   externalDomain?: string; // Domínio da URL externa para validação
+  isVideo?: boolean; // Indica se o item é um vídeo
 }
 
 export interface LocationInfo {
@@ -47,6 +50,7 @@ export interface ContentInfo {
       title: string;
       content: string;
     };
+    image?: string | StaticImageData;
   };
 }
 

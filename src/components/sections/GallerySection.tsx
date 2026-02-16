@@ -1,18 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { Button } from '@/components/ui';
 import { useTheme } from '@/themes/ThemeProvider';
 import { normalizeImageUrl } from '@/lib/image-utils';
 
 interface GalleryImage {
-  src: string;
+  src: string | StaticImageData;
   alt: string;
   title: string;
   category: string;
   isExternal?: boolean;
   externalDomain?: string;
+  isVideo?: boolean;
 }
 
 export function GallerySection() {
@@ -20,12 +21,13 @@ export function GallerySection() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
-  const filteredImages = selectedCategory === 'all' 
-    ? currentTheme.gallery.images 
+  const filteredImages = selectedCategory === 'all'
+    ? currentTheme.gallery.images
     : currentTheme.gallery.images.filter(img => img.category === selectedCategory);
 
   const handleImageError = (image: GalleryImage) => {
-    console.warn(`Failed to load image: ${image.src}`);
+    const imgSrc = typeof image.src === 'string' ? image.src : 'Local Image';
+    console.warn(`Failed to load image: ${imgSrc}`);
     // Você pode implementar fallback aqui se necessário
   };
 
@@ -38,7 +40,7 @@ export function GallerySection() {
               Galeria de Experiências
             </h2>
             <p className="text-xl text-neutral-700 max-w-3xl mx-auto mb-8">
-              Conheça a beleza única de {currentTheme.location.name} e veja o que te espera 
+              Conheça a beleza única de {currentTheme.location.name} e veja o que te espera
               nesta experiência inesquecível.
             </p>
 
@@ -62,7 +64,7 @@ export function GallerySection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredImages.map((image, index) => (
               <div
-                key={`${image.src}-${index}`}
+                key={`gallery-img-${index}`}
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
                 onClick={() => setSelectedImage(image)}
               >
@@ -74,9 +76,10 @@ export function GallerySection() {
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                     onError={() => handleImageError(image)}
                     unoptimized={image.isExternal} // Otimização desabilitada para imagens externas
+                    placeholder={typeof image.src !== 'string' ? 'blur' : undefined}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  
+
                   {/* Image Info Overlay */}
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     <h3 className="text-lg font-semibold mb-2">{image.title}</h3>
@@ -84,20 +87,87 @@ export function GallerySection() {
                   </div>
 
                   {/* Category Badge */}
-                  <div className="absolute top-3 right-3">
+                  <div className="absolute top-3 right-3 z-10">
                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm text-white">
                       {currentTheme.gallery.categories[image.category] || image.category}
                     </span>
                   </div>
 
-                  {/* External Image Indicator */}
-                  {image.isExternal && (
-                    <div className="absolute top-3 left-3">
+                  {/* External/Video Indicator */}
+                  <div className="absolute top-3 left-3 z-10 flex gap-2">
+                    {image.isExternal && (
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/80 backdrop-blur-sm text-white">
                         🌐 Externa
                       </span>
+                    )}
+                    {image.isVideo && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-500/80 backdrop-blur-sm text-white">
+                        🎥 Vídeo
+                      </span>
+                    )}
+                  </div>
+
+                  {image.isVideo ? (
+                    <div className="relative w-full h-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                      <video
+                        src={typeof image.src === 'string' ? image.src : ''}
+                        className="w-full h-full object-cover"
+                        muted
+                        loop
+                        playsInline
+                        onMouseOver={(e) => e.currentTarget.play()}
+                        onMouseOut={(e) => {
+                          e.currentTarget.pause();
+                          e.currentTarget.currentTime = 0;
+                        }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
+                          <svg className="w-6 h-6 text-white fill-current" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
                     </div>
+                  ) : (
+                    <Image
+                      src={normalizeImageUrl(image.src)}
+                      alt={image.alt}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={() => handleImageError(image)}
+                      unoptimized={image.isExternal}
+                      placeholder={typeof image.src !== 'string' ? 'blur' : undefined}
+                    />
                   )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+
+                  {/* Image Info Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 className="text-lg font-semibold mb-2">{image.title}</h3>
+                    <p className="text-sm opacity-90">{image.alt}</p>
+                  </div>
+
+                  {/* Category Badge */}
+                  <div className="absolute top-3 right-3 z-10">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm text-white">
+                      {currentTheme.gallery.categories[image.category] || image.category}
+                    </span>
+                  </div>
+
+                  {/* External/Video Indicator */}
+                  <div className="absolute top-3 left-3 z-10 flex gap-2">
+                    {image.isExternal && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/80 backdrop-blur-sm text-white">
+                        🌐 Externa
+                      </span>
+                    )}
+                    {image.isVideo && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-500/80 backdrop-blur-sm text-white">
+                        🎥 Vídeo
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -116,15 +186,25 @@ export function GallerySection() {
               ✕
             </button>
             <div className="relative">
-              <Image
-                src={normalizeImageUrl(selectedImage.src)}
-                alt={selectedImage.alt}
-                width={800}
-                height={600}
-                className="rounded-lg object-contain max-h-[80vh]"
-                onError={() => handleImageError(selectedImage)}
-                unoptimized={selectedImage.isExternal}
-              />
+              {selectedImage.isVideo ? (
+                <video
+                  src={typeof selectedImage.src === 'string' ? selectedImage.src : ''}
+                  className="rounded-lg object-contain max-h-[80vh] w-full"
+                  controls
+                  autoPlay
+                />
+              ) : (
+                <Image
+                  src={normalizeImageUrl(selectedImage.src)}
+                  alt={selectedImage.alt}
+                  width={800}
+                  height={600}
+                  className="rounded-lg object-contain max-h-[80vh]"
+                  onError={() => handleImageError(selectedImage)}
+                  unoptimized={selectedImage.isExternal}
+                  placeholder={typeof selectedImage.src !== 'string' ? 'blur' : undefined}
+                />
+              )}
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent text-white rounded-b-lg">
                 <h3 className="text-2xl font-bold mb-2">{selectedImage.title}</h3>
                 <p className="text-lg opacity-90">{selectedImage.alt}</p>

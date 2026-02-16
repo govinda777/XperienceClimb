@@ -43,7 +43,7 @@ export abstract class BaseTheme implements ThemeConfig {
 
   protected createContentInfo(
     hero: { title: string; subtitle: string; description: string },
-    about: { title: string; description: string; highlights: any[]; infoBox: { title: string; content: string } }
+    about: { title: string; description: string; highlights: any[]; infoBox: { title: string; content: string }; image?: any }
   ): ContentInfo {
     return {
       hero,
