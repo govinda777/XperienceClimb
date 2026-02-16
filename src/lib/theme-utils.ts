@@ -26,11 +26,17 @@ export function validateThemeConfig(theme: ThemeConfig): boolean {
   });
 }
 
+import { normalizeImageUrl } from './image-utils';
+
 /**
  * Gets the primary image for a theme (first image in gallery)
  */
 export function getThemePrimaryImage(theme: ThemeConfig): string {
-  return theme.gallery.images[0]?.src || '/images/placeholder.jpg';
+  const firstImage = theme.gallery.images[0]?.src;
+  if (!firstImage) return '/images/placeholder.jpg';
+
+  const normalized = normalizeImageUrl(firstImage);
+  return typeof normalized === 'string' ? normalized : normalized.src;
 }
 
 /**
@@ -94,8 +100,8 @@ export function generateThemeUrl(pathname: string, themeId: ThemeId): string {
  */
 export function getThemeFromUrl(searchParams: URLSearchParams | ReadonlyURLSearchParams): ThemeId | null {
   const theme = searchParams.get('theme');
-  return theme && Object.values(THEME_IDS).includes(theme as ThemeId) 
-    ? theme as ThemeId 
+  return theme && Object.values(THEME_IDS).includes(theme as ThemeId)
+    ? theme as ThemeId
     : null;
 }
 
@@ -135,7 +141,7 @@ export function getThemeLocation(themeId: ThemeId) {
     },
     [THEME_IDS.PEDRA_BELA]: {
       city: 'Pedra Bela',
-      state: 'São Paulo', 
+      state: 'São Paulo',
       distance: '119km de São Paulo',
     },
   };
