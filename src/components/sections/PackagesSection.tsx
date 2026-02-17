@@ -13,6 +13,7 @@ import {
 import { formatPrice, openWhatsApp } from '@/lib/utils';
 import { useCartStore } from '@/store/useCartStore';
 import { CONTACT_INFO } from '@/lib/constants';
+import { WaitlistModal } from './WaitlistModal';
 
 // Interface for API package data (includes styling information)
 interface ApiPackage {
@@ -46,6 +47,7 @@ export function PackagesSection() {
   const { addItem, openCart } = useCartStore();
   const [apiPackages, setApiPackages] = React.useState<ApiPackage[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [waitlistPackage, setWaitlistPackage] = React.useState<string | null>(null);
 
   // Fetch API data with styling information
   React.useEffect(() => {
@@ -138,10 +140,10 @@ export function PackagesSection() {
               return (
                 <Card
                   key={pkg.id}
-                  interactive={!pkg.disabled}
+                  interactive={true}
                   className={`relative overflow-hidden ${
                     pkg.popular && !pkg.disabled ? 'scale-105 ring-2 ring-orange-400' : ''
-                  } ${pkg.disabled ? 'cursor-not-allowed opacity-60' : ''}`}
+                  } ${pkg.disabled ? 'opacity-90 grayscale-[0.3]' : ''}`}
                 >
                   {pkg.popular && !pkg.disabled && (
                     <div className="absolute right-0 top-0 bg-orange-400 px-4 py-1 text-sm font-semibold text-white">
@@ -215,17 +217,18 @@ export function PackagesSection() {
                   <CardFooter>
                     <Button
                       className="w-full"
-                      variant={pkg.disabled ? 'outline' : pkg.popular ? 'primary' : 'outline'}
+                      variant={pkg.disabled ? 'secondary' : pkg.popular ? 'primary' : 'outline'}
                       size="lg"
-                      disabled={pkg.disabled}
                       onClick={() => {
-                        if (!pkg.disabled) {
+                        if (pkg.disabled) {
+                          setWaitlistPackage(pkg.name);
+                        } else {
                           console.log('Button clicked for package:', pkg.id);
                           handleAddToCart(pkg.id);
                         }
                       }}
                     >
-                      {pkg.disabled ? 'Pacote Indisponível' : 'Adicionar ao Carrinho'}
+                      {pkg.disabled ? 'Entrar na Lista de Espera' : 'Adicionar ao Carrinho'}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -251,6 +254,12 @@ export function PackagesSection() {
           </Button>
         </div>
       </div>
+
+      <WaitlistModal
+        isOpen={!!waitlistPackage}
+        onClose={() => setWaitlistPackage(null)}
+        packageName={waitlistPackage || ''}
+      />
     </section>
   );
 }

@@ -11,6 +11,7 @@ const mockTourRepository: jest.Mocked<ITourRepository> = {
   findByActive: jest.fn(),
   findByName: jest.fn(),
   findByThemeId: jest.fn(),
+  exists: jest.fn(),
   delete: jest.fn(),
 };
 
@@ -32,37 +33,42 @@ describe('TourService', () => {
         address: 'Atibaia, SP',
         city: 'Atibaia',
         state: 'SP',
+        country: 'Brazil',
         coordinates: { lat: -23.1234, lng: -46.5678 },
         mapsUrl: 'https://maps.google.com/test',
-        directions: [
-          { step: 1, instruction: 'Take highway BR-381', distance: '50km' },
-        ],
+        directions: [{ title: 'Departure', description: 'Take highway BR-381' }],
       },
       activities: [
         {
           name: 'Rock Climbing',
           description: 'Climb the main rock face',
           icon: '🧗‍♂️',
-          difficulty: 'intermediate',
+          difficulty: 'medium',
           duration: '4 hours',
           price: 150,
+          included: true,
         },
       ],
       logistics: {
         schedule: {
-          departure: '08:00',
-          arrival: '18:00',
-          duration: '10 hours',
+          openTime: '08:00',
+          closeTime: '18:00',
         },
         meetingPoint: 'Central Station',
+        duration: '10 hours',
         groupSize: { min: 4, max: 12 },
         importantNotes: ['Bring water', 'Wear appropriate shoes'],
         tips: ['Check weather conditions'],
+        requirements: [],
+        included: [],
+        notIncluded: [],
       },
       pricing: {
         basePrice: 150,
         currency: 'BRL',
-        discounts: [],
+        cancellationPolicy: 'flexible',
+        seasonalPricing: [],
+        groupDiscounts: [],
       },
       gallery: {
         images: [
@@ -88,9 +94,7 @@ describe('TourService', () => {
       ...mockCreateRequest,
       location: {
         ...mockCreateRequest.location,
-        directions: [
-          { step: 1, instruction: 'Take highway BR-381', distance: '50km' },
-        ],
+        directions: [{ step: 1, title: 'Departure', description: 'Take highway BR-381' }],
       },
       activities: [
         {
@@ -98,9 +102,10 @@ describe('TourService', () => {
           name: 'Rock Climbing',
           description: 'Climb the main rock face',
           icon: '🧗‍♂️',
-          difficulty: 'intermediate',
+          difficulty: 'medium',
           duration: '4 hours',
           price: 150,
+          included: true,
         },
       ],
       availability: {
@@ -125,6 +130,13 @@ describe('TourService', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isActive: true,
+      pricing: {
+        basePrice: 150,
+        currency: 'BRL',
+        cancellationPolicy: 'flexible',
+      },
+      logistics: mockCreateRequest.logistics,
+      seo: mockCreateRequest.seo,
     };
 
     beforeEach(() => {
@@ -162,8 +174,8 @@ describe('TourService', () => {
       const createCall = mockTourRepository.create.mock.calls[0][0];
       expect(createCall.location.directions[0]).toMatchObject({
         step: 1,
-        instruction: 'Take highway BR-381',
-        distance: '50km',
+        title: 'Departure',
+        description: 'Take highway BR-381',
       });
     });
 
@@ -225,23 +237,34 @@ describe('TourService', () => {
           address: 'Test Address',
           city: 'Test City',
           state: 'TS',
+          country: 'Test Country',
+          coordinates: { lat: 0, lng: 0 },
         },
         activities: [],
         logistics: {
           schedule: {
-            departure: '08:00',
-            arrival: '18:00',
-            duration: '10 hours',
+            openTime: '08:00',
+            closeTime: '18:00',
           },
           meetingPoint: 'Test Point',
+          duration: '10 hours',
+          groupSize: { min: 4, max: 12 },
+          requirements: [],
+          included: [],
+          notIncluded: [],
+          importantNotes: [],
+          tips: [],
         },
         pricing: {
           basePrice: 100,
           currency: 'BRL',
+          cancellationPolicy: 'flexible',
         },
         seo: {
           title: 'Minimal Tour',
           description: 'Basic tour description',
+          keywords: [],
+          ogImage: '',
         },
       };
 
@@ -267,19 +290,29 @@ describe('TourService', () => {
         address: 'Existing Address',
         city: 'Existing City',
         state: 'EX',
+        country: 'Existing Country',
+        coordinates: { lat: 0, lng: 0 },
+        directions: [],
       },
       activities: [],
       logistics: {
         schedule: {
-          departure: '08:00',
-          arrival: '18:00',
-          duration: '10 hours',
+          openTime: '08:00',
+          closeTime: '18:00',
         },
         meetingPoint: 'Existing Point',
+        duration: '10 hours',
+        groupSize: { min: 4, max: 12 },
+        requirements: [],
+        included: [],
+        notIncluded: [],
+        importantNotes: [],
+        tips: [],
       },
       pricing: {
         basePrice: 100,
         currency: 'BRL',
+        cancellationPolicy: 'flexible',
       },
       availability: {
         available: true,
@@ -294,6 +327,8 @@ describe('TourService', () => {
       seo: {
         title: 'Existing Tour',
         description: 'Existing description',
+        keywords: [],
+        ogImage: '',
       },
       createdAt: new Date('2024-01-01'),
       updatedAt: new Date('2024-01-01'),
@@ -314,7 +349,7 @@ describe('TourService', () => {
         ...existingTour,
         ...updateRequest,
         updatedAt: new Date(),
-      });
+      } as Tour);
     });
 
     it('should update tour successfully', async () => {
@@ -328,9 +363,7 @@ describe('TourService', () => {
     it('should throw error if tour not found', async () => {
       mockTourRepository.findById.mockResolvedValue(null);
 
-      await expect(tourService.updateTour(updateRequest)).rejects.toThrow(
-        'Tour not found'
-      );
+      await expect(tourService.updateTour(updateRequest)).rejects.toThrow('Tour not found');
     });
 
     it('should validate uniqueness when name changes', async () => {
@@ -383,9 +416,10 @@ describe('TourService', () => {
             name: 'New Activity',
             description: 'New activity description',
             icon: '🎯',
-            difficulty: 'beginner' as const,
+            difficulty: 'easy' as const,
             duration: '2 hours',
             price: 75,
+            included: true,
           },
         ],
       };
@@ -502,11 +536,10 @@ describe('TourService', () => {
         address: 'Test Address',
         city: 'Test City',
         state: 'TS',
+        country: 'Test Country',
         coordinates: { lat: -23.1234, lng: -46.5678 },
         mapsUrl: 'https://maps.test.com',
-        directions: [
-          { step: 1, instruction: 'Go straight', distance: '1km' },
-        ],
+        directions: [{ step: 1, title: 'Go straight', description: 'Go straight' }],
       },
       activities: [
         {
@@ -514,20 +547,25 @@ describe('TourService', () => {
           name: 'Test Activity',
           description: 'Test activity description',
           icon: '🎯',
-          difficulty: 'beginner',
+          difficulty: 'medium',
           duration: '2 hours',
           price: 100,
+          included: true,
         },
       ],
       logistics: {
         schedule: {
-          departure: '08:00',
-          arrival: '18:00',
-          duration: '10 hours',
+          openTime: '08:00',
+          closeTime: '18:00',
         },
         meetingPoint: 'Test Point',
+        duration: '10 hours',
+        groupSize: { min: 4, max: 12 },
         importantNotes: ['Note 1'],
         tips: ['Tip 1'],
+        requirements: [],
+        included: [],
+        notIncluded: [],
       },
       gallery: {
         images: [
@@ -546,7 +584,22 @@ describe('TourService', () => {
       seo: {
         title: 'Test Tour SEO',
         description: 'Test SEO description',
+        keywords: [],
+        ogImage: '',
       },
+      pricing: {
+        basePrice: 100,
+        currency: 'BRL',
+        cancellationPolicy: 'flexible',
+      },
+      availability: {
+        available: true,
+        weatherDependent: false,
+        restrictions: [],
+      },
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isActive: true,
     } as Tour;
 
     it('should generate theme config from tour', () => {
@@ -579,11 +632,17 @@ describe('TourService', () => {
             name: 'Test Activity',
             description: 'Test activity description',
             icon: '🎯',
-            difficulty: 'beginner',
+            difficulty: 'medium',
             duration: '2 hours',
             price: 100,
           },
         ],
+        seo: {
+          title: 'Test Tour SEO',
+          description: 'Test SEO description',
+          keywords: [],
+          ogImage: '',
+        },
       });
     });
 
@@ -608,9 +667,8 @@ describe('TourService', () => {
 
       expect(theme.logistics).toMatchObject({
         schedule: {
-          departure: '08:00',
-          arrival: '18:00',
-          duration: '10 hours',
+          openTime: '08:00',
+          closeTime: '18:00',
         },
         meetingPoint: 'Test Point',
         importantNotes: ['Note 1'],
@@ -629,25 +687,34 @@ describe('TourService', () => {
         address: 'Valid Address',
         city: 'Valid City',
         state: 'VS',
+        country: 'Valid Country',
         coordinates: { lat: -23.1234, lng: -46.5678 },
       },
       activities: [],
       logistics: {
         schedule: {
-          departure: '08:00',
-          arrival: '18:00',
-          duration: '10 hours',
+          openTime: '08:00',
+          closeTime: '18:00',
         },
         meetingPoint: 'Valid Point',
+        duration: '10 hours',
         groupSize: { min: 2, max: 10 },
+        requirements: [],
+        included: [],
+        notIncluded: [],
+        importantNotes: [],
+        tips: [],
       },
       pricing: {
         basePrice: 150,
         currency: 'BRL',
+        cancellationPolicy: 'flexible',
       },
       seo: {
         title: 'Valid SEO Title',
         description: 'Valid SEO description',
+        keywords: [],
+        ogImage: '',
       },
     };
 
@@ -805,10 +872,10 @@ describe('TourService', () => {
   describe('ID generation', () => {
     it('should generate tour ID from name', () => {
       const service = new TourService(mockTourRepository);
-      
+
       // Access private method through any casting for testing
       const generateTourId = (service as any).generateTourId;
-      
+
       expect(generateTourId('Pedra Grande Adventure')).toBe('pedra-grande-adventure');
       expect(generateTourId('Tour with Special Characters!')).toBe('tour-with-special-characters');
       expect(generateTourId('Multiple   Spaces')).toBe('multiple-spaces');
@@ -817,18 +884,18 @@ describe('TourService', () => {
 
     it('should generate activity ID with index', () => {
       const service = new TourService(mockTourRepository);
-      
+
       const generateActivityId = (service as any).generateActivityId;
-      
+
       expect(generateActivityId('Rock Climbing', 0)).toBe('rock-climbing-1');
       expect(generateActivityId('Via Ferrata', 1)).toBe('via-ferrata-2');
     });
 
     it('should generate image ID with index', () => {
       const service = new TourService(mockTourRepository);
-      
+
       const generateImageId = (service as any).generateImageId;
-      
+
       expect(generateImageId('Main View', 0)).toBe('img-main-view-1');
       expect(generateImageId('Action Shot', 1)).toBe('img-action-shot-2');
     });

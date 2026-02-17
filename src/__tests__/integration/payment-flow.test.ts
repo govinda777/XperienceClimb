@@ -9,6 +9,7 @@ import { ProcessCryptoPayment } from '@/core/use-cases/payments/ProcessCryptoPay
 import { PaymentService } from '@/infrastructure/services/PaymentService';
 import { CryptoPaymentService } from '@/infrastructure/services/CryptoPaymentService';
 import { CartItem } from '@/types';
+import { ParticipantDetails } from '@/core/entities/Order';
 import { AVAILABLE_DATES } from '@/lib/constants';
 
 // Mock external services
@@ -48,7 +49,7 @@ describe('Payment Flow Integration Tests', () => {
     },
   ];
 
-  const mockParticipantDetails = {
+  const mockParticipantDetails: Record<string, ParticipantDetails> = {
     'cart-1': {
       name: 'João Silva',
       age: 28,
@@ -419,7 +420,7 @@ describe('Payment Flow Integration Tests', () => {
       // Assert
       expect(result.whatsappUrl).toBeDefined();
       expect(mockOrderRepository.createWhatsAppOrder).toHaveBeenCalled();
-      
+
       const decodedMessage = decodeURIComponent(result.whatsappUrl!.split('text=')[1]);
       expect(decodedMessage).toContain('NOVA RESERVA');
       expect(decodedMessage).toContain('João Silva');

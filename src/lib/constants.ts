@@ -15,17 +15,17 @@ export const NAVIGATION_ITEMS = [
   { id: 'hero', label: 'Início', icon: '🏔️', group: 'main' },
   { id: 'sobre', label: 'Sobre', icon: '🌿', group: 'main' },
   { id: 'pacotes', label: 'Pacotes', icon: '💎', group: 'main' },
-  
+
   // Services and features
   { id: 'servicos-inclusos', label: 'Incluso', icon: '🍎', group: 'services' },
   { id: 'seguranca', label: 'Segurança', icon: '🛡️', group: 'services' },
   { id: 'seguro', label: 'Seguro', icon: '📋', group: 'services' },
-  
+
   // Content and community
   { id: 'galeria', label: 'Galeria', icon: '📸', group: 'content' },
   { id: 'comunidade', label: 'Comunidade', icon: '🤝', group: 'content' },
   { id: 'depoimentos', label: 'Depoimentos', icon: '⭐', group: 'content' },
-  
+
   // Location
   { id: 'localizacao', label: 'Local', icon: '📍', group: 'location' },
 ];
@@ -88,6 +88,7 @@ export const PACKAGES: Record<string, PackageType> = {
     requiresExperience: false,
     minAge: 14,
     cancellationPolicy: '',
+    disabled: true,
   },
   avancado: {
     id: 'avancado',
@@ -113,6 +114,7 @@ export const PACKAGES: Record<string, PackageType> = {
     requiresExperience: true,
     minAge: 16,
     cancellationPolicy: '',
+    disabled: true,
   },
 };
 
