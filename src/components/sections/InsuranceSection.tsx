@@ -1,8 +1,11 @@
 'use client';
 
 import React from 'react';
+import { CONTACT_INFO } from '@/lib/constants';
 
 export function InsuranceSection() {
+  const phone = CONTACT_INFO.phone.replace(/\D/g, '');
+  const whatsappLink = `https://wa.me/55${phone}?text=Olá! Gostaria de mais informações sobre o seguro das aventuras.`;
   
   return (
     <section id="seguro" className="bg-gradient-to-br from-blue-50 to-indigo-50 py-20">
@@ -155,7 +158,7 @@ export function InsuranceSection() {
               </p>
               <div className="space-y-3">
                 <a
-                  href="https://wa.me/5511999999999?text=Olá! Gostaria de mais informações sobre o seguro das aventuras."
+                  href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center space-x-2 rounded-lg bg-white px-6 py-3 text-climb-600 transition-all duration-300 hover:bg-climb-50 hover:shadow-lg"
@@ -163,10 +166,6 @@ export function InsuranceSection() {
                   <span>📞</span>
                   <span className="font-semibold">Falar com Especialista</span>
                 </a>
-                <div className="text-sm text-climb-100">
-                  <p>📧 Email: seguro@xperienceclimb.com</p>
-                  <p>📱 WhatsApp: +55 11 99999-9999</p>
-                </div>
               </div>
             </div>
           </div>
