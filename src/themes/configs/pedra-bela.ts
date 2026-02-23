@@ -21,8 +21,8 @@ export class PedraBellaTheme extends BaseTheme {
     'Pedra Bela',
     'São Paulo',
     '119km de São Paulo',
-    { lat: -22.7894, lng: -46.4567 }, // Coordenadas aproximadas
-    'https://www.google.com/maps/place/Pedra+Bela+-+SP',
+    { lat: -22.78544, lng: -46.45512 }, // Coordenadas aproximadas
+    'https://www.google.com/maps/dir/?api=1&destination=-22.78544,-46.45512&travelmode=driving',
     [
       {
         step: 1,
