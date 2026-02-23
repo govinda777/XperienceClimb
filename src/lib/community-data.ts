@@ -37,7 +37,7 @@ export const PARTNERS: Partner[] = [
     id: 'equipamentos-verticais',
     name: 'Equipamentos Verticais',
     description: 'Fornecedor especializado em equipamentos de escalada e segurança vertical.',
-    logo: '/images/partners/equipamentos-verticais.jpg',
+    logo: '/images/partners/equipamentos-verticais.png',
     website: 'https://equipamentosverticais.com.br',
     category: 'equipment',
     location: {
@@ -63,7 +63,7 @@ export const PARTNERS: Partner[] = [
     id: 'pousada-aventura',
     name: 'Pousada Aventura Ipanema',
     description: 'Hospedagem especializada para escaladores e aventureiros na região de Ipanema.',
-    logo: '/images/partners/pousada-aventura.jpg',
+    logo: '/images/partners/pousada-aventura.png',
     category: 'accommodation',
     location: {
       city: 'Iperó',
