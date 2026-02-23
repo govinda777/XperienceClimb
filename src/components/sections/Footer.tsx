@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui';
-import { CONTACT_INFO } from '@/lib/constants';
+import { CONTACT_INFO, AVAILABLE_DATES } from '@/lib/constants';
 import { openWhatsApp } from '@/lib/utils';
 
 export function Footer() {
@@ -12,7 +12,7 @@ export function Footer() {
   const handleWhatsAppClick = () => {
     openWhatsApp(
       CONTACT_INFO.phone,
-      'Olá! Gostaria de mais informações sobre os pacotes de escalada no Morro Araçoiaba. 🏔️'
+      `Olá! Gostaria de mais informações sobre os pacotes de escalada para o dia ${AVAILABLE_DATES.singleDate}`
     );
   };
 
