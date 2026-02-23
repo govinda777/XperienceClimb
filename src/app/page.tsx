@@ -6,7 +6,6 @@ import {
   IncludedServicesSection,
   GallerySection,
   SafetySection,
-  InsuranceSection,
   CommunitySection,
   LocationSection,
   Footer,
@@ -22,7 +21,6 @@ export default function Home() {
       <PackagesSection />
       <GallerySection />
       <SafetySection />
-      <InsuranceSection />
       <CommunitySection />
       <LocationSection />
       {/* <TestimonialsSection /> */}
