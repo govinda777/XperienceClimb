@@ -241,9 +241,9 @@ export class TourRepository implements ITourRepository {
         city: 'Pedra Bela',
         state: 'São Paulo',
         country: 'Brazil',
-        coordinates: { lat: -22.7892, lng: -46.4658 },
+        coordinates: { lat: -22.78544, lng: -46.45512 },
         distance: '150km de São Paulo',
-        mapsUrl: 'https://maps.app.goo.gl/D4o8NKMu85udZs6e8',
+        mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=-22.78544,-46.45512&travelmode=driving',
         directions: [
           {
             step: 1,
@@ -268,7 +268,7 @@ export class TourRepository implements ITourRepository {
           {
             step: 5,
             title: 'Ponto de encontro',
-            description: 'https://maps.app.goo.gl/D4o8NKMu85udZs6e8'
+            description: 'https://www.google.com/maps/dir/?api=1&destination=-22.78544,-46.45512&travelmode=driving'
           },
           {
             step: 6,
