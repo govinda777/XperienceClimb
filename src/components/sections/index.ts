@@ -4,7 +4,6 @@ export * from './PackagesSection';
 export * from './GallerySection';
 export * from './LocationSection';
 export * from './SafetySection';
-export * from './InsuranceSection';
 export * from './CommunitySection';
 export * from './IncludedServicesSection';
 export * from './TestimonialsSection';
