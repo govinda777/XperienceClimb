@@ -10,9 +10,18 @@ export function AboutSection() {
 
   // Encontra, pela ordem: imagem específica configurada, imagem de natureza ou primeira imagem da galeria
   const natureImage = {
-    src: currentTheme.content.about.image || currentTheme.gallery.images.find(img => img.category === 'nature')?.src || currentTheme.gallery.images[0]?.src,
-    alt: currentTheme.content.about.image ? 'Destaque da localização' : (currentTheme.gallery.images.find(img => img.category === 'nature')?.alt || currentTheme.gallery.images[0]?.alt),
-    isExternal: !currentTheme.content.about.image && (currentTheme.gallery.images.find(img => img.category === 'nature')?.isExternal || currentTheme.gallery.images[0]?.isExternal)
+    src:
+      currentTheme.content.about.image ||
+      currentTheme.gallery.images.find(img => img.category === 'nature')?.src ||
+      currentTheme.gallery.images[0]?.src,
+    alt: currentTheme.content.about.image
+      ? 'Destaque da localização'
+      : currentTheme.gallery.images.find(img => img.category === 'nature')?.alt ||
+        currentTheme.gallery.images[0]?.alt,
+    isExternal:
+      !currentTheme.content.about.image &&
+      (currentTheme.gallery.images.find(img => img.category === 'nature')?.isExternal ||
+        currentTheme.gallery.images[0]?.isExternal),
   };
 
   return (
@@ -38,12 +47,8 @@ export function AboutSection() {
                     <span className="text-2xl">{highlight.icon}</span>
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-climb-600 mb-2">
-                      {highlight.title}
-                    </h4>
-                    <p className="text-neutral-700">
-                      {highlight.description}
-                    </p>
+                    <h4 className="text-lg font-semibold text-climb-600 mb-2">{highlight.title}</h4>
+                    <p className="text-neutral-700">{highlight.description}</p>
                   </div>
                 </div>
               ))}
@@ -56,27 +61,26 @@ export function AboutSection() {
                   {currentTheme.content.about.infoBox.title}
                 </h4>
               </div>
-              <p className="text-neutral-700">
-                {currentTheme.content.about.infoBox.content}
-              </p>
+              <p className="text-neutral-700">{currentTheme.content.about.infoBox.content}</p>
             </div>
           </div>
 
           {/* Image Content */}
           <div className="relative">
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl h-[400px] w-full">
               <Image
                 src={normalizeImageUrl(natureImage?.src || '')}
                 alt={natureImage?.alt || 'Imagem da localização'}
-                width={600}
-                height={400}
-                className="h-[400px] w-full object-cover"
+                fill
+                className="object-cover"
                 unoptimized={natureImage?.isExternal}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-white">
+              <div className="absolute bottom-6 left-6 text-white z-10">
                 <p className="text-sm font-medium">📍 {currentTheme.location.address}</p>
-                <p className="text-xs opacity-90">{currentTheme.location.city}, {currentTheme.location.state}</p>
+                <p className="text-xs opacity-90">
+                  {currentTheme.location.city}, {currentTheme.location.state}
+                </p>
               </div>
             </div>
 
