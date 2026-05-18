@@ -12,8 +12,9 @@ import {
 } from '@/components/ui';
 import { formatPrice, openWhatsApp } from '@/lib/utils';
 import { useCartStore } from '@/store/useCartStore';
-import { CONTACT_INFO } from '@/lib/constants';
+import { CONTACT_INFO, AVAILABLE_DATES } from '@/lib/constants';
 import { WaitlistModal } from './WaitlistModal';
+import { Calendar } from 'lucide-react';
 
 // Interface for API package data (includes styling information)
 interface ApiPackage {
@@ -112,6 +113,17 @@ export function PackagesSection() {
             Escolha a experiência perfeita para o seu nível. Todos os pacotes incluem equipamentos
             de segurança e instrução profissional.
           </p>
+          <div className="mt-8 flex justify-center">
+            <div className="inline-flex items-center gap-3 rounded-full border border-orange-200 bg-orange-50/80 px-6 py-2.5 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:bg-orange-100/90 md:px-8 md:py-3">
+              <Calendar className="h-5 w-5 text-orange-500 animate-pulse-soft md:h-6 md:w-6" />
+              <span className="text-sm font-semibold text-orange-800 md:text-base">
+                📅 Próxima Saída Confirmada:{' '}
+                <span className="font-bold text-orange-900 underline decoration-orange-400 decoration-2 underline-offset-2">
+                  {AVAILABLE_DATES.singleDateDisplay}
+                </span>
+              </span>
+            </div>
+          </div>
         </div>
 
         {loading ? (

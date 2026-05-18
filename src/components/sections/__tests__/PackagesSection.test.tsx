@@ -40,6 +40,11 @@ jest.mock('@/lib/constants', () => ({
   CONTACT_INFO: {
     phone: '+5511999999999',
   },
+  AVAILABLE_DATES: {
+    singleDate: '17/06/2026',
+    singleDateISO: '2026-06-17',
+    singleDateDisplay: '17 de Junho de 2026',
+  },
 }));
 
 // Mock fetch
@@ -435,6 +440,19 @@ describe('PackagesSection Component', () => {
     it('should have responsive text classes', () => {
       const heading = screen.getByText('Pacotes de Escalada');
       expect(heading).toHaveClass('text-4xl', 'md:text-5xl');
+    });
+  });
+
+  describe('global trip date badge', () => {
+    it('should render the global trip date badge with correct text', async () => {
+      render(<PackagesSection />);
+      expect(screen.getByText(/Próxima Saída Confirmada:/i)).toBeInTheDocument();
+      expect(screen.getByText('17 de Junho de 2026')).toBeInTheDocument();
+
+      // Wait for packages to load to prevent act warning
+      await waitFor(() => {
+        expect(screen.getByText('Escalada Iniciante')).toBeInTheDocument();
+      });
     });
   });
 
