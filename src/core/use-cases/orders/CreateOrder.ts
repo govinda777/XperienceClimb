@@ -7,23 +7,19 @@ import {
   DiscountInfo,
 } from '@/core/entities/Order';
 import { PaymentMethod } from '@/core/entities/Coupon';
+// Apenas o serviço de WhatsApp é necessário
 import { generateId } from '@/lib/utils';
 import { CartItem } from '@/types';
 import { CONTACT_INFO } from '@/lib/constants';
-import { PaymentService } from '@/infrastructure/services/PaymentService';
-import { CryptoPaymentService } from '@/infrastructure/services/CryptoPaymentService';
 import { CouponService } from '@/infrastructure/services/CouponService';
-import { ProcessPixPayment } from '../payments/ProcessPixPayment';
-import { ProcessCryptoPayment } from '../payments/ProcessCryptoPayment';
-import { ProcessGitHubPayment } from '../payments/ProcessGitHubPayment';
-import { GitHubPaymentService } from '@/infrastructure/services/GitHubPaymentService';
 
 export interface CreateOrderRequest {
   userId: string;
   cartItems: CartItem[];
   participantDetails: Record<string, ParticipantDetails>; // Keyed by cart item ID
   climbingDetails: ClimbingDetails;
-  paymentMethod: PaymentMethod;
+  // O método pode ser informado, mas padrão é WhatsApp
+  paymentMethod?: PaymentMethod;
   appliedCoupon?: {
     code: string;
     discountAmount: number;
@@ -33,12 +29,7 @@ export interface CreateOrderRequest {
 export interface CreateOrderResult {
   success: boolean;
   orderId?: string;
-  preferenceId?: string;
-  checkoutUrl?: string;
   whatsappUrl?: string;
-  pixPayment?: any;
-  cryptoPayment?: any;
-  githubPayment?: any;
   error?: string;
 }
 
@@ -105,7 +96,7 @@ export class CreateOrder {
         items: orderItems,
         status: 'pending_payment',
         payment: {
-          method: request.paymentMethod,
+          method: request.paymentMethod || 'whatsapp',
           status: 'pending',
         },
         climbingDetails: request.climbingDetails,
@@ -142,36 +133,10 @@ export class CreateOrder {
       orderId: order.id,
     };
 
-    switch (request.paymentMethod) {
-      case 'whatsapp':
-        await this.orderRepository.createWhatsAppOrder(order);
-        return this.processWhatsAppPayment(order, baseResult);
-
-      case 'mercadopago':
-        const preferenceId = await this.orderRepository.create(order);
-        const checkoutUrl = await this.orderRepository.getCheckoutUrl(preferenceId);
-        return {
-          ...baseResult,
-          preferenceId,
-          checkoutUrl,
-        };
-
-      case 'pix':
-        await this.orderRepository.save(order);
-        return this.processPixPayment(order, baseResult);
-
-      case 'bitcoin':
-      case 'usdt':
-        await this.orderRepository.save(order);
-        return this.processCryptoPayment(order, baseResult, request.paymentMethod);
-
-      case 'github':
-        await this.orderRepository.save(order);
-        return this.processGitHubPayment(order, baseResult);
-
-      default:
-        throw new Error(`Unsupported payment method: ${request.paymentMethod}`);
-    }
+    // Se o método for explicitamente whatsapp ou ausente, usa WhatsApp
+    // Only WhatsApp payment is supported
+    await this.orderRepository.createWhatsAppOrder(order);
+    return this.processWhatsAppPayment(order, baseResult);
   }
 
   private async processWhatsAppPayment(order: Order, baseResult: any): Promise<CreateOrderResult> {
@@ -184,54 +149,19 @@ export class CreateOrder {
     };
   }
 
+  // Stub para pagamento PIX (mantido para compatibilidade)
   private async processPixPayment(order: Order, baseResult: any): Promise<CreateOrderResult> {
-    const paymentService = new PaymentService();
-    const processPixPayment = new ProcessPixPayment(paymentService);
-
-    const result = await processPixPayment.execute({
-      orderId: order.id,
-      amount: order.total.amount,
-      customerName: order.items[0].participantDetails.name,
-      customerEmail: 'customer@example.com', // In production, get from user profile
-      description: `Xperience Climb - ${order.items.map(i => i.packageName).join(', ')}`,
-    });
-
-    if (result.success && result.pixPayment) {
-      return {
-        ...baseResult,
-        pixPayment: result.pixPayment,
-      };
-    } else {
-      throw new Error(result.error || 'Failed to create PIX payment');
-    }
+    // Implementação mínima: retorna baseResult sem detalhes de pagamento
+    return { ...baseResult };
   }
 
+  // Stub para pagamento cripto (mantido para compatibilidade)
   private async processCryptoPayment(
     order: Order,
     baseResult: any,
     cryptoType: 'bitcoin' | 'usdt'
   ): Promise<CreateOrderResult> {
-    const cryptoPaymentService = new CryptoPaymentService();
-    const processCryptoPayment = new ProcessCryptoPayment(cryptoPaymentService);
-
-    const result = await processCryptoPayment.execute({
-      orderId: order.id,
-      cryptoType,
-      amountFiat: order.total.amount,
-    });
-
-    if (result.success && result.cryptoPayment) {
-      // Update order with crypto payment ID
-      order.payment.cryptoPaymentId = result.cryptoPayment.paymentId;
-      await this.orderRepository.update(order);
-
-      return {
-        ...baseResult,
-        cryptoPayment: result.cryptoPayment,
-      };
-    } else {
-      throw new Error(result.error || 'Failed to create crypto payment');
-    }
+    return { ...baseResult };
   }
 
   private validateRequest(request: CreateOrderRequest): void {
@@ -342,80 +272,17 @@ export class CreateOrder {
     return message;
   }
 
-  private getPaymentMethodName(method: PaymentMethod): string {
-    const methodNames: Record<PaymentMethod, string> = {
-      mercadopago: 'Cartão de Crédito',
-      pix: 'PIX',
-      bitcoin: 'Bitcoin',
-      usdt: 'USDT',
-      whatsapp: 'WhatsApp',
-      github: 'GitHub Sponsors',
-      crypto: 'Criptomoedas',
-    };
-    return methodNames[method] || method;
+  private getPaymentMethodName(_: any): string {
+    return 'WhatsApp';
   }
 
-  private getPaymentStatusMessage(method: PaymentMethod): string {
-    switch (method) {
-      case 'whatsapp':
-        return 'Aguardando confirmação via WhatsApp';
-      case 'pix':
-        return 'Aguardando pagamento PIX';
-      case 'bitcoin':
-        return 'Aguardando pagamento Bitcoin';
-      case 'usdt':
-        return 'Aguardando pagamento USDT';
-      case 'mercadopago':
-        return 'Processando pagamento';
-      case 'github':
-        return 'Aguardando patrocínio GitHub';
-      default:
-        return 'Aguardando pagamento';
-    }
+  private getPaymentStatusMessage(_: any): string {
+    return 'Aguardando confirmação via WhatsApp';
   }
 
+  // Stub para pagamento via GitHub (mantido para compatibilidade)
   private async processGitHubPayment(order: Order, baseResult: any): Promise<CreateOrderResult> {
-    try {
-      const gitHubPaymentService = new GitHubPaymentService();
-      const processGitHubPayment = new ProcessGitHubPayment(gitHubPaymentService);
-
-      // Use a default sponsor username (in production, this should be configurable)
-      const sponsorUsername = process.env.GITHUB_SPONSOR_USERNAME || 'govinda777';
-
-      const result = await processGitHubPayment.execute({
-        orderId: order.id,
-        amount: order.total.amount,
-        sponsorUsername,
-        frequency: 'one-time',
-        metadata: {
-          orderId: order.id,
-          customerName: order.items[0]?.participantDetails?.name || 'Cliente',
-          items: order.items.map(item => ({
-            packageName: item.packageName,
-            quantity: item.quantity,
-            price: item.price,
-          })),
-        },
-      });
-
-      if (!result.success) {
-        return {
-          success: false,
-          error: result.error || 'Failed to create GitHub payment',
-        };
-      }
-
-      return {
-        ...baseResult,
-        githubPayment: result.githubPayment,
-      };
-    } catch (error) {
-      console.error('Error processing GitHub payment:', error);
-      return {
-        success: false,
-        error: 'Failed to process GitHub payment',
-      };
-    }
+    return { ...baseResult };
   }
 
   private translateExperience(level: string): string {

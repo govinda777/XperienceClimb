@@ -135,9 +135,6 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-        } else if (result.checkoutUrl) {
-          // Fallback to Mercado Pago if WhatsApp fails
-          window.location.href = result.checkoutUrl;
         }
       } else {
         alert(result.error || 'Erro ao processar pedido');
