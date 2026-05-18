@@ -23,12 +23,7 @@ jest.mock('@/components/ui', () => ({
   CardHeader: ({ children }: any) => <div>{children}</div>,
   CardTitle: ({ children }: any) => <h3>{children}</h3>,
   Button: ({ children, onClick, disabled, variant, size }: any) => (
-    <button 
-      onClick={onClick} 
-      disabled={disabled}
-      data-variant={variant}
-      data-size={size}
-    >
+    <button onClick={onClick} disabled={disabled} data-variant={variant} data-size={size}>
       {children}
     </button>
   ),
@@ -100,19 +95,20 @@ describe('PackagesSection Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (global.fetch as jest.Mock).mockResolvedValue({
-      json: () => Promise.resolve({
-        success: true,
-        data: mockPackages,
-      }),
+      json: () =>
+        Promise.resolve({
+          success: true,
+          data: mockPackages,
+        }),
     });
   });
 
   describe('loading state', () => {
     it('should show loading skeleton initially', async () => {
       render(<PackagesSection />);
-      
+
       expect(screen.getByText('Pacotes de Escalada')).toBeInTheDocument();
-      
+
       // Should show loading skeleton
       const skeletons = document.querySelectorAll('.animate-pulse');
       expect(skeletons.length).toBeGreaterThan(0);
@@ -120,11 +116,11 @@ describe('PackagesSection Component', () => {
 
     it('should hide loading state after data loads', async () => {
       render(<PackagesSection />);
-      
+
       await waitFor(() => {
         expect(screen.getByText('Escalada Iniciante')).toBeInTheDocument();
       });
-      
+
       const skeletons = document.querySelectorAll('.animate-pulse');
       expect(skeletons).toHaveLength(0);
     });
@@ -216,16 +212,16 @@ describe('PackagesSection Component', () => {
     it('should apply disabled styling', () => {
       const disabledCard = screen.getByText('Indisponível').closest('div');
       const parentCard = disabledCard?.parentElement;
-      expect(parentCard).toHaveClass('cursor-not-allowed', 'opacity-60');
+      expect(parentCard).toHaveClass('opacity-90', 'grayscale-[0.3]');
     });
 
     it('should show disabled button text', () => {
-      expect(screen.getByText('Pacote Indisponível')).toBeInTheDocument();
+      expect(screen.getByText('Entrar na Lista de Espera')).toBeInTheDocument();
     });
 
     it('should disable button for unavailable packages', () => {
-      const disabledButton = screen.getByText('Pacote Indisponível');
-      expect(disabledButton).toBeDisabled();
+      const disabledButton = screen.getByText('Entrar na Lista de Espera');
+      expect(disabledButton).not.toBeDisabled();
     });
   });
 
@@ -258,7 +254,7 @@ describe('PackagesSection Component', () => {
     });
 
     it('should not add disabled packages to cart', () => {
-      const disabledButton = screen.getByText('Pacote Indisponível');
+      const disabledButton = screen.getByText('Entrar na Lista de Espera');
       fireEvent.click(disabledButton);
 
       expect(mockCartStore.addItem).not.toHaveBeenCalled();
@@ -311,22 +307,27 @@ describe('PackagesSection Component', () => {
       render(<PackagesSection />);
 
       await waitFor(() => {
-        expect(screen.getByText('Erro ao carregar pacotes. Verifique a conexão.')).toBeInTheDocument();
+        expect(
+          screen.getByText('Erro ao carregar pacotes. Verifique a conexão.')
+        ).toBeInTheDocument();
       });
     });
 
     it('should show error message when API returns success: false', async () => {
       (global.fetch as jest.Mock).mockResolvedValue({
-        json: () => Promise.resolve({
-          success: false,
-          data: [],
-        }),
+        json: () =>
+          Promise.resolve({
+            success: false,
+            data: [],
+          }),
       });
 
       render(<PackagesSection />);
 
       await waitFor(() => {
-        expect(screen.getByText('Erro ao carregar pacotes. Verifique a conexão.')).toBeInTheDocument();
+        expect(
+          screen.getByText('Erro ao carregar pacotes. Verifique a conexão.')
+        ).toBeInTheDocument();
       });
     });
 
@@ -334,10 +335,11 @@ describe('PackagesSection Component', () => {
       // Skipping this test due to JSDOM location.reload mocking complexity
       // This functionality should be tested in e2e tests instead
       (global.fetch as jest.Mock).mockResolvedValue({
-        json: () => Promise.resolve({
-          success: false,
-          data: [],
-        }),
+        json: () =>
+          Promise.resolve({
+            success: false,
+            data: [],
+          }),
       });
 
       render(<PackagesSection />);
@@ -368,7 +370,7 @@ describe('PackagesSection Component', () => {
 
     it('should open WhatsApp when contact button is clicked', () => {
       const { openWhatsApp } = require('@/lib/utils');
-      
+
       const contactButton = screen.getByText('📞 Fale Conosco');
       fireEvent.click(contactButton);
 
@@ -398,9 +400,11 @@ describe('PackagesSection Component', () => {
     it('should have accessible buttons', () => {
       const buttons = screen.getAllByRole('button');
       expect(buttons.length).toBeGreaterThan(0);
-      
+
       buttons.forEach(button => {
-        expect(button).toHaveTextContent(/adicionar ao carrinho|pacote indisponível|fale conosco/i);
+        expect(button).toHaveTextContent(
+          /adicionar ao carrinho|entrar na lista de espera|fale conosco/i
+        );
       });
     });
 
@@ -410,8 +414,8 @@ describe('PackagesSection Component', () => {
         expect(button).not.toBeDisabled();
       });
 
-      const disabledButton = screen.getByText('Pacote Indisponível');
-      expect(disabledButton).toBeDisabled();
+      const disabledButton = screen.getByText('Entrar na Lista de Espera');
+      expect(disabledButton).not.toBeDisabled();
     });
   });
 
@@ -452,7 +456,9 @@ describe('PackagesSection Component', () => {
         expect(screen.getByText('Escalada Iniciante')).toBeInTheDocument();
       });
 
-      expect(consoleSpy).toHaveBeenCalledWith('🔍 useEffect executado - iniciando fetch dos pacotes');
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '🔍 useEffect executado - iniciando fetch dos pacotes'
+      );
       expect(consoleSpy).toHaveBeenCalledWith('📡 Iniciando fetch para /api/packages');
     });
 

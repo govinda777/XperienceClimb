@@ -28,7 +28,20 @@ export class PackageRepository implements IPackageRepository {
     }
   }
 
-  async checkAvailability(packageId: string, date?: Date): Promise<{
+  async findByActive(): Promise<Package[]> {
+    try {
+      const packages = await this.findAll();
+      return packages.filter(pkg => pkg.isActive !== false && !pkg.disabled);
+    } catch (error) {
+      console.error('Error finding active packages:', error);
+      return [];
+    }
+  }
+
+  async checkAvailability(
+    packageId: string,
+    date?: Date
+  ): Promise<{
     available: boolean;
     spotsLeft: number;
     nextAvailableDate?: Date;
@@ -41,23 +54,25 @@ export class PackageRepository implements IPackageRepository {
         return {
           available: false,
           spotsLeft: 0,
-          restrictions: ['Pacote não encontrado']
+          restrictions: ['Pacote não encontrado'],
         };
       }
 
       const baseAvailability = {
         available: true,
-        spotsLeft: packageData.availability.spotsLeft,
+        spotsLeft: packageData.availability?.spotsLeft ?? 8,
         restrictions: [] as string[],
         nextAvailableDate: undefined as Date | undefined,
-        weatherConditions: undefined as 'good' | 'warning' | 'poor' | undefined
+        weatherConditions: undefined as 'good' | 'warning' | 'poor' | undefined,
       };
 
       if (date) {
         // Check if it's a Monday (maintenance day)
         if (date.getDay() === 1) {
           baseAvailability.available = false;
-          baseAvailability.restrictions.push('Escalada não disponível às segundas-feiras (manutenção)');
+          baseAvailability.restrictions.push(
+            'Escalada não disponível às segundas-feiras (manutenção)'
+          );
           baseAvailability.nextAvailableDate = this.getNextAvailableDate(date);
         }
 
@@ -75,57 +90,57 @@ export class PackageRepository implements IPackageRepository {
       return {
         available: false,
         spotsLeft: 0,
-        restrictions: ['Erro ao verificar disponibilidade']
+        restrictions: ['Erro ao verificar disponibilidade'],
       };
     }
   }
 
   private async getPackagesData(): Promise<PackageType[]> {
     const now = Date.now();
-    
+
     // Return cached data if still valid
     if (this.packagesCache && now < this.cacheExpiry) {
       return this.packagesCache.map(pkg => ({
         id: pkg.id,
         name: pkg.name,
-        price: pkg.price.amount / 100, // Convert back to reais for API consistency
+        price: typeof pkg.price === 'number' ? pkg.price : pkg.price.amount / 100, // Convert back to reais for API consistency
         description: pkg.description,
-        features: pkg.features,
+        features: pkg.features || [],
         bonus: [], // Default empty bonus for cached data
         shape: 'hexagon' as const, // Default shape for cached data
         color: 'climb-300',
         duration: '1 dia',
-        maxParticipants: pkg.rules.maxParticipants,
-        requiresExperience: pkg.rules.requiresExperience,
-        minAge: pkg.rules.minAge,
-        cancellationPolicy: pkg.rules.cancellationPolicy,
-        popular: false
+        maxParticipants: pkg.rules?.maxParticipants ?? 8,
+        requiresExperience: pkg.rules?.requiresExperience ?? false,
+        minAge: pkg.rules?.minAge ?? 12,
+        cancellationPolicy: pkg.rules?.cancellationPolicy ?? '',
+        popular: false,
       }));
     }
 
     // Fetch fresh data
     const packagesData = await this.fetchPackagesFromAPI();
-    
+
     // Cache the mapped entities
     this.packagesCache = packagesData.map(pkg => this.mapToPackageEntity(pkg));
     this.cacheExpiry = now + this.CACHE_DURATION;
-    
+
     return packagesData;
   }
 
   private async fetchPackagesFromAPI(): Promise<PackageType[]> {
     const response = await fetch('/api/packages');
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch packages: ${response.statusText}`);
     }
-    
+
     const result = await response.json();
-    
+
     if (!result.success) {
       throw new Error('API returned error');
     }
-    
+
     return result.data;
   }
 
@@ -135,28 +150,28 @@ export class PackageRepository implements IPackageRepository {
       name: packageData.name,
       price: {
         amount: packageData.price * 100, // Convert to cents for Money entity
-        currency: 'BRL'
+        currency: 'BRL',
       },
       description: packageData.description,
       features: packageData.features,
       availability: {
         available: true,
         spotsLeft: this.getSpotsLeft(packageData),
-        restrictions: []
+        restrictions: [],
       },
       rules: {
         minAge: packageData.minAge || 12, // Use dynamic value or default
         maxParticipants: packageData.maxParticipants || 8,
         requiresExperience: packageData.requiresExperience || false, // Use dynamic value
-        cancellationPolicy: packageData.cancellationPolicy || ''
-      }
+        cancellationPolicy: packageData.cancellationPolicy || '',
+      },
     };
   }
 
   private getSpotsLeft(packageData: PackageType): number {
     // Mock logic - in real app would check actual bookings
     const maxSpots = packageData.maxParticipants || 8; // Use dynamic maxParticipants
-    
+
     // Simulate some random bookings
     const bookedSpots = Math.floor(Math.random() * 3);
     return Math.max(0, maxSpots - bookedSpots);
@@ -171,12 +186,12 @@ export class PackageRepository implements IPackageRepository {
   private getNextAvailableDate(fromDate: Date): Date {
     const nextDate = new Date(fromDate);
     nextDate.setDate(nextDate.getDate() + 1);
-    
+
     // Skip Mondays
     if (nextDate.getDay() === 1) {
       nextDate.setDate(nextDate.getDate() + 1);
     }
-    
+
     return nextDate;
   }
 }

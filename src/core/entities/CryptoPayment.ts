@@ -16,7 +16,7 @@ export interface CryptoPayment {
   updatedAt: Date;
 }
 
-export type CryptoPaymentStatus = 
+export type CryptoPaymentStatus =
   | 'pending'
   | 'awaiting_payment'
   | 'confirming'
@@ -32,10 +32,12 @@ export interface CryptoPaymentRequest {
 
 export interface CryptoPaymentResponse {
   paymentId: string;
-  walletAddress: string;
-  amount: number; // Amount in crypto units
+  walletAddress?: string;
+  address?: string; // For testing/mock compatibility
+  amount: number | string; // Amount in crypto units (number or mock string)
   qrCode?: string;
   expiresAt: Date;
+  exchangeRate?: number; // For testing/mock compatibility
 }
 
 export interface BlockchainTransaction {

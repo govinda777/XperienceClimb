@@ -20,13 +20,13 @@ describe('PaymentService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Mock environment variables
     originalEnv = process.env;
     process.env = { ...originalEnv, ...mockEnv };
-    
+
     paymentService = new PaymentService();
-    
+
     // Mock console methods to avoid noise in tests
     jest.spyOn(console, 'warn').mockImplementation();
     jest.spyOn(console, 'error').mockImplementation();
@@ -44,42 +44,47 @@ describe('PaymentService', () => {
     });
 
     it('should warn when access token is missing', () => {
-      // Store original env
+      // Store original env and window
       const originalToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
-      
-      // Delete the environment variable to simulate missing token
+      const originalWindow = (global as any).window;
+
+      // Delete the environment variable and window to simulate missing token on server
       delete process.env.MERCADOPAGO_ACCESS_TOKEN;
-      
+      delete (global as any).window;
+
       // Clear mocks and create new instance
       jest.clearAllMocks();
       const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
-      
+
       new PaymentService();
-      
+
       expect(warnSpy).toHaveBeenCalledWith('MERCADOPAGO_ACCESS_TOKEN not configured');
-      
+
       // Restore
       warnSpy.mockRestore();
       if (originalToken) process.env.MERCADOPAGO_ACCESS_TOKEN = originalToken;
+      if (originalWindow) (global as any).window = originalWindow;
     });
 
     it('should warn when public key is missing', () => {
       process.env.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY = '';
-      
+
       new PaymentService();
-      
-      expect(console.warn).toHaveBeenCalledWith('NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY not configured');
+
+      expect(console.warn).toHaveBeenCalledWith(
+        'NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY not configured'
+      );
     });
 
     it('should not warn about access token in browser environment', () => {
       // Mock window to simulate browser environment
       (global as any).window = {};
       process.env.MERCADOPAGO_ACCESS_TOKEN = '';
-      
+
       new PaymentService();
-      
+
       expect(console.warn).not.toHaveBeenCalledWith('MERCADOPAGO_ACCESS_TOKEN not configured');
-      
+
       // Clean up
       delete (global as any).window;
     });
@@ -137,7 +142,7 @@ describe('PaymentService', () => {
         expect.objectContaining({
           method: 'POST',
           headers: {
-            'Authorization': 'Bearer test_access_token',
+            Authorization: 'Bearer test_access_token',
             'Content-Type': 'application/json',
           },
           body: expect.stringContaining('"external_reference":"order-123"'),
@@ -425,7 +430,10 @@ describe('PaymentService', () => {
 
       await paymentService.processWebhook(nonPaymentWebhook);
 
-      expect(console.log).toHaveBeenCalledWith('Processing Mercado Pago webhook:', nonPaymentWebhook);
+      expect(console.log).toHaveBeenCalledWith(
+        'Processing Mercado Pago webhook:',
+        nonPaymentWebhook
+      );
       // Should not call getPayment for non-payment webhooks
       expect(global.fetch).not.toHaveBeenCalled();
     });

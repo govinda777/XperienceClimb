@@ -3,7 +3,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { LoginButton } from '../LoginButton';
 
 // Mock Privy hooks
-const mockPrivyHook = {
+const mockPrivyHook: {
+  ready: boolean;
+  authenticated: boolean;
+  user: any;
+} = {
   ready: true,
   authenticated: false,
   user: null,
@@ -21,8 +25,8 @@ jest.mock('@privy-io/react-auth', () => ({
 // Mock UI components and icons
 jest.mock('@/components/ui', () => ({
   Button: ({ children, onClick, variant, size, disabled, leftIcon, ...props }: any) => (
-    <button 
-      onClick={onClick} 
+    <button
+      onClick={onClick}
       disabled={disabled}
       data-variant={variant}
       data-size={size}
@@ -35,8 +39,16 @@ jest.mock('@/components/ui', () => ({
 }));
 
 jest.mock('lucide-react', () => ({
-  User: ({ className }: any) => <span data-testid="user-icon" className={className}>👤</span>,
-  LogOut: ({ className }: any) => <span data-testid="logout-icon" className={className}>🚪</span>,
+  User: ({ className }: any) => (
+    <span data-testid="user-icon" className={className}>
+      👤
+    </span>
+  ),
+  LogOut: ({ className }: any) => (
+    <span data-testid="logout-icon" className={className}>
+      🚪
+    </span>
+  ),
 }));
 
 describe('LoginButton Component', () => {

@@ -3,7 +3,7 @@ import { PACKAGES } from '@/lib/constants';
 
 describe('GET /api/packages', () => {
   it('should return packages with prices in reais', async () => {
-    const response = await GET();
+    const response = await GET(new Request('http://localhost/api/packages'));
     const data = await response.json();
 
     expect(response.status).toBe(200);

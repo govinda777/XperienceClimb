@@ -4,7 +4,8 @@ export interface User {
   name?: string;
   avatar?: string;
   createdAt: Date;
-  preferences: UserPreferences;
+  preferences?: UserPreferences;
+  isAdmin?: boolean;
 }
 
 export interface UserPreferences {
@@ -16,10 +17,11 @@ export interface UserPreferences {
 export interface LoginCredentials {
   email?: string;
   provider?: 'email';
+  password?: string;
 }
 
 export interface LoginResult {
   success: boolean;
   user?: User;
   error?: string;
-} 
+}

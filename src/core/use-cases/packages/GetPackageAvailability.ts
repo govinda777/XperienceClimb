@@ -15,14 +15,14 @@ export class GetPackageAvailability {
   async execute(packageId: string, date?: Date): Promise<AvailabilityResult> {
     try {
       const packageData = await this.packageRepository.findById(packageId);
-      
+
       if (!packageData) {
         throw new Error('Package not found');
       }
 
       // Check availability with climbing-specific rules
       const availability = await this.checkClimbingAvailability(packageId, date);
-      
+
       return {
         available: availability.available,
         spotsLeft: availability.spotsLeft,
@@ -41,12 +41,12 @@ export class GetPackageAvailability {
   }
 
   private async checkClimbingAvailability(
-    packageId: string, 
+    packageId: string,
     date?: Date
   ): Promise<PackageAvailability> {
     // Business logic specific to climbing experiences
     const spotsLeft = await this.getSpotsLeft(packageId);
-    
+
     const baseAvailability: PackageAvailability = {
       available: true,
       spotsLeft: spotsLeft,
@@ -56,14 +56,14 @@ export class GetPackageAvailability {
     // Check date restrictions
     if (date) {
       const dayOfWeek = date.getDay();
-      
+
       // No climbing on Mondays (maintenance day)
       if (dayOfWeek === 1) {
         baseAvailability.available = false;
         baseAvailability.restrictions.push('Climbing not available on Mondays (maintenance day)');
         baseAvailability.nextAvailableDate = this.getNextAvailableDate(date);
       }
-      
+
       // Check weather conditions (mock logic)
       baseAvailability.weatherConditions = this.getWeatherConditions(date);
       if (baseAvailability.weatherConditions === 'poor') {
@@ -75,8 +75,9 @@ export class GetPackageAvailability {
     // Check seasonal restrictions
     const now = new Date();
     const month = now.getMonth() + 1; // 1-12
-    
-    if (month >= 6 && month <= 8) { // Winter months
+
+    if (month >= 6 && month <= 8) {
+      // Winter months
       baseAvailability.restrictions.push('Winter season - earlier end times');
     }
 
@@ -86,13 +87,13 @@ export class GetPackageAvailability {
   private async getSpotsLeft(packageId: string): Promise<number> {
     // Get dynamic package data instead of hardcoded values
     const packageData = await this.packageRepository.findById(packageId);
-    
+
     if (!packageData) {
       return 0;
     }
-    
-    const maxSpots = packageData.rules.maxParticipants;
-    
+
+    const maxSpots = packageData.rules?.maxParticipants ?? 10;
+
     // Mock implementation - in real app would check actual bookings
     // Simulate some bookings
     const bookedSpots = Math.floor(Math.random() * 3);
@@ -108,12 +109,12 @@ export class GetPackageAvailability {
   private getNextAvailableDate(fromDate: Date): Date {
     const nextDate = new Date(fromDate);
     nextDate.setDate(nextDate.getDate() + 1);
-    
+
     // Skip Mondays
     while (nextDate.getDay() === 1) {
       nextDate.setDate(nextDate.getDate() + 1);
     }
-    
+
     return nextDate;
   }
 }

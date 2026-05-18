@@ -2,7 +2,13 @@ import { renderHook, act } from '@testing-library/react';
 import { useAuth } from '../useAuth';
 
 // Mock Privy
-const mockPrivyHook = {
+const mockPrivyHook: {
+  ready: boolean;
+  authenticated: boolean;
+  user: any;
+  login: any;
+  logout: any;
+} = {
   ready: true,
   authenticated: false,
   user: null,
@@ -82,7 +88,7 @@ describe('useAuth Hook', () => {
         notifications: false,
         language: 'en',
       };
-      
+
       localStorageMock.getItem.mockReturnValue(JSON.stringify(mockPreferences));
 
       const { result } = renderHook(() => useAuth());

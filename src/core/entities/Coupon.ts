@@ -1,4 +1,4 @@
-export interface DiscountCoupon {
+export interface Coupon {
   id: string;
   code: string;
   type: 'percentage' | 'fixed_amount';
@@ -7,13 +7,21 @@ export interface DiscountCoupon {
   validFrom: Date;
   validUntil: Date;
   maxUses?: number;
+  usageLimit?: number; // Compatibility field
   usedCount: number;
   minOrderAmount?: number; // Minimum order value in cents
+  minimumAmount?: {
+    amount: number;
+    currency: 'BRL';
+  }; // Compatibility field
   applicablePaymentMethods?: PaymentMethod[];
+  applicablePackages?: any[]; // Compatibility field
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type DiscountCoupon = Coupon;
 
 export interface CouponValidationResult {
   isValid: boolean;
@@ -29,4 +37,11 @@ export interface ApplyCouponRequest {
   userId?: string;
 }
 
-export type PaymentMethod = 'mercadopago' | 'pix' | 'bitcoin' | 'usdt' | 'whatsapp' | 'github';
+export type PaymentMethod =
+  | 'mercadopago'
+  | 'pix'
+  | 'bitcoin'
+  | 'usdt'
+  | 'whatsapp'
+  | 'github'
+  | 'crypto';

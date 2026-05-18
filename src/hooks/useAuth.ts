@@ -1,7 +1,7 @@
 'use client';
 
 import { usePrivy } from '@privy-io/react-auth';
-import { User } from '@/core/entities/User';
+import { User, UserPreferences } from '@/core/entities/User';
 import { useMemo } from 'react';
 
 export function useAuth() {
@@ -14,18 +14,19 @@ export function useAuth() {
     // Get user preferences from localStorage or use defaults
     let savedPrefs = null;
     try {
-      savedPrefs = typeof window !== 'undefined' 
-        ? localStorage.getItem(`userPrefs_${user.id}`)
-        : null;
+      savedPrefs =
+        typeof window !== 'undefined' ? localStorage.getItem(`userPrefs_${user.id}`) : null;
     } catch (error) {
       console.warn('Failed to read user preferences from localStorage:', error);
     }
-    
-    const preferences = savedPrefs ? JSON.parse(savedPrefs) : {
-      experienceLevel: 'beginner' as const,
-      notifications: true,
-      language: 'pt' as const
-    };
+
+    const preferences = savedPrefs
+      ? JSON.parse(savedPrefs)
+      : {
+          experienceLevel: 'beginner' as const,
+          notifications: true,
+          language: 'pt' as const,
+        };
 
     // Extract email from Privy user object
     const emailAddress = user.email?.address || '';
@@ -36,18 +37,18 @@ export function useAuth() {
       name: emailAddress.split('@')[0] || 'Usuário',
       avatar: undefined,
       createdAt: new Date(),
-      preferences
+      preferences,
     };
   }, [authenticated, user]);
 
-  const updateUserPreferences = async (newPreferences: Partial<User['preferences']>) => {
+  const updateUserPreferences = async (newPreferences: Partial<UserPreferences>) => {
     if (!domainUser) throw new Error('User not authenticated');
 
-    const updatedPrefs = { ...domainUser.preferences, ...newPreferences };
-    
+    const updatedPrefs = { ...domainUser.preferences, ...newPreferences } as UserPreferences;
+
     // Store in localStorage (in production, you might store this in your backend)
     localStorage.setItem(`userPrefs_${domainUser.id}`, JSON.stringify(updatedPrefs));
-    
+
     // Update the user object (this will trigger a re-render)
     if (domainUser) {
       domainUser.preferences = updatedPrefs;
@@ -58,24 +59,24 @@ export function useAuth() {
     // Privy state
     ready,
     authenticated,
-    
+
     // Domain user
     user: domainUser,
-    
+
     // Actions
     login,
     logout,
     updateUserPreferences,
-    
+
     // Computed values
     isLoading: !ready,
     isGuest: ready && !authenticated,
     isLoggedIn: ready && authenticated && !!domainUser,
-    
+
     // User info shortcuts
     userEmail: domainUser?.email,
     userName: domainUser?.name,
     userAvatar: domainUser?.avatar,
-    userPreferences: domainUser?.preferences
+    userPreferences: domainUser?.preferences,
   };
 }

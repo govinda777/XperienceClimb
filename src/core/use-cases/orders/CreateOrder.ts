@@ -1,5 +1,11 @@
 import { IOrderRepository } from '@/core/repositories/IOrderRepository';
-import { Order, OrderItem, ParticipantDetails, ClimbingDetails, DiscountInfo } from '@/core/entities/Order';
+import {
+  Order,
+  OrderItem,
+  ParticipantDetails,
+  ClimbingDetails,
+  DiscountInfo,
+} from '@/core/entities/Order';
 import { PaymentMethod } from '@/core/entities/Coupon';
 import { generateId } from '@/lib/utils';
 import { CartItem } from '@/types';
@@ -46,15 +52,15 @@ export class CreateOrder {
 
       // Calculate subtotal
       const subtotal = this.calculateTotal(request.cartItems);
-      
+
       // Apply coupon discount if provided
       let discountInfo: DiscountInfo | undefined;
       let finalTotal = subtotal;
-      
+
       if (request.appliedCoupon) {
         const couponService = new CouponService();
         const coupon = await couponService.getCouponByCode(request.appliedCoupon.code);
-        
+
         if (coupon) {
           discountInfo = {
             couponCode: coupon.code,
@@ -63,11 +69,11 @@ export class CreateOrder {
             discountValue: coupon.value,
             discountAmount: {
               amount: request.appliedCoupon.discountAmount,
-              currency: 'BRL'
-            }
+              currency: 'BRL',
+            },
           };
           finalTotal = subtotal - request.appliedCoupon.discountAmount;
-          
+
           // Mark coupon as used
           await couponService.markCouponAsUsed(coupon.id, request.userId);
         }
@@ -118,7 +124,6 @@ export class CreateOrder {
 
       // Process payment based on selected method
       return await this.processPayment(order, request);
-
     } catch (error) {
       console.error('Error creating order:', error);
       return {
@@ -128,7 +133,10 @@ export class CreateOrder {
     }
   }
 
-  private async processPayment(order: Order, request: CreateOrderRequest): Promise<CreateOrderResult> {
+  private async processPayment(
+    order: Order,
+    request: CreateOrderRequest
+  ): Promise<CreateOrderResult> {
     const baseResult = {
       success: true,
       orderId: order.id,
@@ -138,29 +146,29 @@ export class CreateOrder {
       case 'whatsapp':
         await this.orderRepository.createWhatsAppOrder(order);
         return this.processWhatsAppPayment(order, baseResult);
-      
+
       case 'mercadopago':
         const preferenceId = await this.orderRepository.create(order);
         const checkoutUrl = await this.orderRepository.getCheckoutUrl(preferenceId);
         return {
           ...baseResult,
           preferenceId,
-          checkoutUrl
+          checkoutUrl,
         };
-      
+
       case 'pix':
         await this.orderRepository.save(order);
         return this.processPixPayment(order, baseResult);
-      
+
       case 'bitcoin':
       case 'usdt':
         await this.orderRepository.save(order);
         return this.processCryptoPayment(order, baseResult, request.paymentMethod);
-      
+
       case 'github':
         await this.orderRepository.save(order);
         return this.processGitHubPayment(order, baseResult);
-      
+
       default:
         throw new Error(`Unsupported payment method: ${request.paymentMethod}`);
     }
@@ -179,33 +187,37 @@ export class CreateOrder {
   private async processPixPayment(order: Order, baseResult: any): Promise<CreateOrderResult> {
     const paymentService = new PaymentService();
     const processPixPayment = new ProcessPixPayment(paymentService);
-    
+
     const result = await processPixPayment.execute({
       orderId: order.id,
       amount: order.total.amount,
       customerName: order.items[0].participantDetails.name,
       customerEmail: 'customer@example.com', // In production, get from user profile
-      description: `Xperience Climb - ${order.items.map(i => i.packageName).join(', ')}`
+      description: `Xperience Climb - ${order.items.map(i => i.packageName).join(', ')}`,
     });
 
     if (result.success && result.pixPayment) {
       return {
         ...baseResult,
-        pixPayment: result.pixPayment
+        pixPayment: result.pixPayment,
       };
     } else {
       throw new Error(result.error || 'Failed to create PIX payment');
     }
   }
 
-  private async processCryptoPayment(order: Order, baseResult: any, cryptoType: 'bitcoin' | 'usdt'): Promise<CreateOrderResult> {
+  private async processCryptoPayment(
+    order: Order,
+    baseResult: any,
+    cryptoType: 'bitcoin' | 'usdt'
+  ): Promise<CreateOrderResult> {
     const cryptoPaymentService = new CryptoPaymentService();
     const processCryptoPayment = new ProcessCryptoPayment(cryptoPaymentService);
-    
+
     const result = await processCryptoPayment.execute({
       orderId: order.id,
       cryptoType,
-      amountFiat: order.total.amount
+      amountFiat: order.total.amount,
     });
 
     if (result.success && result.cryptoPayment) {
@@ -215,7 +227,7 @@ export class CreateOrder {
 
       return {
         ...baseResult,
-        cryptoPayment: result.cryptoPayment
+        cryptoPayment: result.cryptoPayment,
       };
     } else {
       throw new Error(result.error || 'Failed to create crypto payment');
@@ -290,7 +302,7 @@ export class CreateOrder {
     message += `📋 *Dados do Pedido:*\n`;
     message += `• ID: #${order.id}\n`;
     message += `• Data: ${new Date().toLocaleString('pt-BR')}\n`;
-    
+
     // Pricing info
     message += `• Subtotal: ${this.formatCurrency(order.subtotal.amount)}\n`;
     if (order.discount) {
@@ -331,13 +343,14 @@ export class CreateOrder {
   }
 
   private getPaymentMethodName(method: PaymentMethod): string {
-    const methodNames = {
+    const methodNames: Record<PaymentMethod, string> = {
       mercadopago: 'Cartão de Crédito',
       pix: 'PIX',
       bitcoin: 'Bitcoin',
       usdt: 'USDT',
       whatsapp: 'WhatsApp',
-      github: 'GitHub Sponsors'
+      github: 'GitHub Sponsors',
+      crypto: 'Criptomoedas',
     };
     return methodNames[method] || method;
   }
@@ -380,28 +393,27 @@ export class CreateOrder {
           items: order.items.map(item => ({
             packageName: item.packageName,
             quantity: item.quantity,
-            price: item.price
-          }))
-        }
+            price: item.price,
+          })),
+        },
       });
 
       if (!result.success) {
         return {
           success: false,
-          error: result.error || 'Failed to create GitHub payment'
+          error: result.error || 'Failed to create GitHub payment',
         };
       }
 
       return {
         ...baseResult,
-        githubPayment: result.githubPayment
+        githubPayment: result.githubPayment,
       };
-
     } catch (error) {
       console.error('Error processing GitHub payment:', error);
       return {
         success: false,
-        error: 'Failed to process GitHub payment'
+        error: 'Failed to process GitHub payment',
       };
     }
   }

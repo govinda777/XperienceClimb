@@ -11,7 +11,7 @@ const mockAuthService: jest.Mocked<IAuthService> = {
   isAuthenticated: jest.fn(),
 };
 
-const mockUserRepository: jest.Mocked<IUserRepository> = {
+const mockUserRepository: any = {
   create: jest.fn(),
   update: jest.fn(),
   findById: jest.fn(),
@@ -358,7 +358,7 @@ describe('LoginUser Use Case', () => {
   describe('constructor', () => {
     it('should initialize with required dependencies', () => {
       const instance = new LoginUser(mockAuthService, mockUserRepository);
-      
+
       expect(instance).toBeInstanceOf(LoginUser);
     });
 

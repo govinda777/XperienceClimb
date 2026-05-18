@@ -3,7 +3,7 @@ import { IPackageRepository } from '../../repositories/IPackageRepository';
 import { Package } from '../../entities/Package';
 
 // Mock repository
-const mockPackageRepository: jest.Mocked<IPackageRepository> = {
+const mockPackageRepository: any = {
   create: jest.fn(),
   update: jest.fn(),
   findById: jest.fn(),
@@ -19,7 +19,7 @@ describe('GetAllPackages Use Case', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     getAllPackages = new GetAllPackages(mockPackageRepository);
-    
+
     // Mock console.error to avoid noise in tests
     jest.spyOn(console, 'error').mockImplementation();
   });
@@ -400,7 +400,7 @@ describe('GetAllPackages Use Case', () => {
   describe('constructor', () => {
     it('should initialize with package repository', () => {
       const instance = new GetAllPackages(mockPackageRepository);
-      
+
       expect(instance).toBeInstanceOf(GetAllPackages);
     });
 

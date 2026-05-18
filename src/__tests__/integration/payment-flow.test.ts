@@ -158,9 +158,7 @@ describe('Payment Flow Integration Tests', () => {
 
     it('should handle PIX payment timeout', async () => {
       // Arrange
-      mockPaymentService.createPixPayment.mockRejectedValue(
-        new Error('PIX payment timeout')
-      );
+      mockPaymentService.createPixPayment.mockRejectedValue(new Error('PIX payment timeout'));
 
       const orderRequest = {
         userId: 'user-123',
@@ -323,7 +321,9 @@ describe('Payment Flow Integration Tests', () => {
       // Create returns preference ID
       mockOrderRepository.create.mockResolvedValue('pref-123');
       // getCheckoutUrl returns URL
-      mockOrderRepository.getCheckoutUrl.mockResolvedValue('https://mercadopago.com/checkout/pref-123');
+      mockOrderRepository.getCheckoutUrl.mockResolvedValue(
+        'https://mercadopago.com/checkout/pref-123'
+      );
 
       const orderRequest = {
         userId: 'user-123',
@@ -565,7 +565,7 @@ describe('Payment Flow Integration Tests', () => {
       };
 
       // Act
-      const result = await createOrderUseCase.execute(orderRequest);
+      const result = await createOrderUseCase.execute(orderRequest as any);
 
       // Assert
       expect(result.success).toBe(false);

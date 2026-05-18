@@ -105,11 +105,7 @@ export const createMockAdvancedPackage = (overrides?: Partial<Package>): Package
     price: 250,
     originalPrice: 300,
     description: 'Para escaladores experientes',
-    features: [
-      'Rotas desafiadoras',
-      'Equipamentos profissionais',
-      'Técnicas avançadas',
-    ],
+    features: ['Rotas desafiadoras', 'Equipamentos profissionais', 'Técnicas avançadas'],
     bonus: ['Almoço gourmet', 'Certificado de participação'],
     shape: 'hexagon',
     color: 'bg-orange-500',
@@ -176,7 +172,9 @@ export const createMockCartItems = (count: number = 2): CartItem[] => {
 /**
  * Participant Details Factory
  */
-export const createMockParticipantDetails = (overrides?: Partial<ParticipantDetails>): ParticipantDetails => ({
+export const createMockParticipantDetails = (
+  overrides?: Partial<ParticipantDetails>
+): ParticipantDetails => ({
   name: 'João Silva',
   age: 28,
   experienceLevel: 'beginner',
@@ -194,7 +192,9 @@ export const createMockParticipantDetails = (overrides?: Partial<ParticipantDeta
 /**
  * Climbing Details Factory
  */
-export const createMockClimbingDetails = (overrides?: Partial<ClimbingDetails>): ClimbingDetails => ({
+export const createMockClimbingDetails = (
+  overrides?: Partial<ClimbingDetails>
+): ClimbingDetails => ({
   selectedDate: new Date(`${AVAILABLE_DATES.singleDateISO}T08:00:00Z`),
   preferredTime: 'morning',
   specialRequests: '',
@@ -296,161 +296,161 @@ export const createMockExpiredCoupon = (overrides?: Partial<Coupon>): Coupon =>
 /**
  * Tour Factory
  */
-export const createMockTour = (overrides?: Partial<Tour>): Tour => ({
-  id: generateTestId('tour'),
-  name: 'Pedra Grande Adventure',
-  themeId: 'pedra-grande',
-  description: 'Amazing climbing experience in Atibaia',
-  location: {
-    name: 'Pedra Grande',
-    address: 'Estrada da Pedra Grande, Atibaia, SP',
-    city: 'Atibaia',
-    state: 'SP',
-    coordinates: {
-      lat: -23.1234,
-      lng: -46.5678,
-    },
-    distance: '60km de São Paulo',
-    mapsUrl: 'https://maps.google.com/pedra-grande',
-    directions: [
-      {
-        step: 1,
-        instruction: 'Pegue a Rodovia Fernão Dias (BR-381) sentido Belo Horizonte',
-        distance: '45km',
-        duration: '40 minutos',
+export const createMockTour = (overrides?: Partial<Tour>): Tour =>
+  ({
+    id: generateTestId('tour'),
+    name: 'Pedra Grande Adventure',
+    themeId: 'pedra-grande',
+    description: 'Amazing climbing experience in Atibaia',
+    location: {
+      name: 'Pedra Grande',
+      address: 'Estrada da Pedra Grande, Atibaia, SP',
+      city: 'Atibaia',
+      state: 'SP',
+      coordinates: {
+        lat: -23.1234,
+        lng: -46.5678,
       },
+      distance: '60km de São Paulo',
+      mapsUrl: 'https://maps.google.com/pedra-grande',
+      directions: [
+        {
+          step: 1,
+          instruction: 'Pegue a Rodovia Fernão Dias (BR-381) sentido Belo Horizonte',
+          distance: '45km',
+          duration: '40 minutos',
+        },
+        {
+          step: 2,
+          instruction: 'Saia na saída 61 - Atibaia',
+          distance: '5km',
+          duration: '5 minutos',
+        },
+      ],
+    },
+    activities: [
       {
-        step: 2,
-        instruction: 'Saia na saída 61 - Atibaia',
-        distance: '5km',
-        duration: '5 minutos',
-      },
-    ],
-  },
-  activities: [
-    {
-      id: 'rock-climbing-1',
-      name: 'Rock Climbing',
-      description: 'Climb the main rock face with professional guidance',
-      icon: '🧗‍♂️',
-      difficulty: 'intermediate',
-      duration: '4 hours',
-      price: 150,
-    },
-  ],
-  logistics: {
-    schedule: {
-      departure: '08:00',
-      arrival: '18:00',
-      duration: '10 hours',
-    },
-    meetingPoint: 'Estação da Luz - São Paulo',
-    groupSize: {
-      min: 4,
-      max: 12,
-    },
-    importantNotes: [
-      'Trazer água e lanche',
-      'Usar calçado apropriado',
-      'Protetor solar obrigatório',
-    ],
-    tips: [
-      'Verificar condições climáticas',
-      'Chegar 15 minutos antes do horário',
-    ],
-  },
-  pricing: {
-    basePrice: 150,
-    currency: 'BRL',
-    discounts: [
-      {
-        type: 'group',
-        description: 'Desconto para grupos acima de 8 pessoas',
-        value: 10,
-        minQuantity: 8,
+        id: 'rock-climbing-1',
+        name: 'Rock Climbing',
+        description: 'Climb the main rock face with professional guidance',
+        icon: '🧗‍♂️',
+        difficulty: 'intermediate',
+        duration: '4 hours',
+        price: 150,
       },
     ],
-  },
-  availability: {
-    available: true,
-    weatherDependent: true,
-    restrictions: ['Idade mínima: 12 anos'],
-  },
-  gallery: {
-    images: [
-      {
-        id: 'img-main-view-1',
-        src: '/images/pedra-grande/main-view.jpg',
-        alt: 'Vista principal da Pedra Grande',
-        title: 'Vista Principal',
-        category: 'landscape',
-        order: 1,
+    logistics: {
+      schedule: {
+        departure: '08:00',
+        arrival: '18:00',
+        duration: '10 hours',
       },
-    ],
-    videos: [],
-    categories: {
-      landscape: 'Paisagens',
-      action: 'Ação',
-      equipment: 'Equipamentos',
+      meetingPoint: 'Estação da Luz - São Paulo',
+      groupSize: {
+        min: 4,
+        max: 12,
+      },
+      importantNotes: [
+        'Trazer água e lanche',
+        'Usar calçado apropriado',
+        'Protetor solar obrigatório',
+      ],
+      tips: ['Verificar condições climáticas', 'Chegar 15 minutos antes do horário'],
     },
-  },
-  seo: {
-    title: 'Escalada na Pedra Grande - Atibaia | XperienceClimb',
-    description: 'Viva uma experiência única de escalada na Pedra Grande em Atibaia. Guias especializados, equipamentos inclusos e paisagens incríveis.',
-    keywords: ['escalada', 'pedra grande', 'atibaia', 'aventura', 'turismo'],
-    ogImage: '/images/pedra-grande/og-image.jpg',
-  },
-  createdAt: new Date(TEST_BASE_DATE_ISO),
-  updatedAt: new Date(TEST_BASE_DATE_ISO),
-  isActive: true,
-  ...overrides,
-});
+    pricing: {
+      basePrice: 150,
+      currency: 'BRL',
+      discounts: [
+        {
+          type: 'group',
+          description: 'Desconto para grupos acima de 8 pessoas',
+          value: 10,
+          minQuantity: 8,
+        },
+      ],
+    },
+    availability: {
+      available: true,
+      weatherDependent: true,
+      restrictions: ['Idade mínima: 12 anos'],
+    },
+    gallery: {
+      images: [
+        {
+          id: 'img-main-view-1',
+          src: '/images/pedra-grande/main-view.jpg',
+          alt: 'Vista principal da Pedra Grande',
+          title: 'Vista Principal',
+          category: 'landscape',
+          order: 1,
+        },
+      ],
+      videos: [],
+      categories: {
+        landscape: 'Paisagens',
+        action: 'Ação',
+        equipment: 'Equipamentos',
+      },
+    },
+    seo: {
+      title: 'Escalada na Pedra Grande - Atibaia | XperienceClimb',
+      description:
+        'Viva uma experiência única de escalada na Pedra Grande em Atibaia. Guias especializados, equipamentos inclusos e paisagens incríveis.',
+      keywords: ['escalada', 'pedra grande', 'atibaia', 'aventura', 'turismo'],
+      ogImage: '/images/pedra-grande/og-image.jpg',
+    },
+    createdAt: new Date(TEST_BASE_DATE_ISO),
+    updatedAt: new Date(TEST_BASE_DATE_ISO),
+    isActive: true,
+    ...overrides,
+  }) as any;
 
 /**
  * Create Tour Request Factory
  */
-export const createMockTourRequest = (overrides?: Partial<CreateTourRequest>): CreateTourRequest => ({
-  name: 'New Adventure Tour',
-  themeId: 'new-adventure',
-  description: 'An exciting new climbing experience',
-  location: {
-    name: 'Adventure Rock',
-    address: 'Adventure Street, Adventure City',
-    city: 'Adventure City',
-    state: 'AC',
-    coordinates: {
-      lat: -23.5505,
-      lng: -46.6333,
+export const createMockTourRequest = (overrides?: Partial<CreateTourRequest>): CreateTourRequest =>
+  ({
+    name: 'New Adventure Tour',
+    themeId: 'new-adventure',
+    description: 'An exciting new climbing experience',
+    location: {
+      name: 'Adventure Rock',
+      address: 'Adventure Street, Adventure City',
+      city: 'Adventure City',
+      state: 'AC',
+      coordinates: {
+        lat: -23.5505,
+        lng: -46.6333,
+      },
     },
-  },
-  activities: [
-    {
-      name: 'Basic Climbing',
-      description: 'Learn the basics of rock climbing',
-      icon: '🧗‍♂️',
-      difficulty: 'beginner',
-      duration: '3 hours',
-      price: 120,
+    activities: [
+      {
+        name: 'Basic Climbing',
+        description: 'Learn the basics of rock climbing',
+        icon: '🧗‍♂️',
+        difficulty: 'beginner',
+        duration: '3 hours',
+        price: 120,
+      },
+    ],
+    logistics: {
+      schedule: {
+        departure: '09:00',
+        arrival: '17:00',
+        duration: '8 hours',
+      },
+      meetingPoint: 'Central Station',
     },
-  ],
-  logistics: {
-    schedule: {
-      departure: '09:00',
-      arrival: '17:00',
-      duration: '8 hours',
+    pricing: {
+      basePrice: 120,
+      currency: 'BRL',
     },
-    meetingPoint: 'Central Station',
-  },
-  pricing: {
-    basePrice: 120,
-    currency: 'BRL',
-  },
-  seo: {
-    title: 'New Adventure Tour',
-    description: 'Experience the new adventure tour',
-  },
-  ...overrides,
-});
+    seo: {
+      title: 'New Adventure Tour',
+      description: 'Experience the new adventure tour',
+    },
+    ...overrides,
+  }) as any;
 
 /**
  * Payment Data Factories
@@ -505,7 +505,7 @@ export const createBookingScenario = () => {
   const cartItems = createMockCartItems(2);
   const participantDetails = {
     [cartItems[0].id]: createMockParticipantDetails({ name: cartItems[0].participantName }),
-    [cartItems[1].id]: createMockParticipantDetails({ 
+    [cartItems[1].id]: createMockParticipantDetails({
       name: cartItems[1].participantName,
       experienceLevel: 'advanced',
     }),
@@ -525,12 +525,14 @@ export const createPaymentScenario = (paymentMethod: 'pix' | 'crypto' | 'mercado
   const bookingScenario = createBookingScenario();
   const order = createMockOrder({
     userId: bookingScenario.user.id,
-    items: bookingScenario.cartItems.map(item => createMockOrderItem({
-      packageId: item.packageId,
-      packageName: item.packageName,
-      price: { amount: item.price * 100, currency: 'BRL' },
-      quantity: item.quantity,
-    })),
+    items: bookingScenario.cartItems.map(item =>
+      createMockOrderItem({
+        packageId: item.packageId,
+        packageName: item.packageName,
+        price: { amount: item.price * 100, currency: 'BRL' },
+        quantity: item.quantity,
+      })
+    ),
     payment: { method: paymentMethod, status: 'pending' },
   });
 

@@ -6,7 +6,12 @@ global.fetch = jest.fn();
 // Mock Next.js server components
 global.Request = class Request {
   constructor(input, init) {
-    this.url = input;
+    Object.defineProperty(this, 'url', {
+      value:
+        typeof input === 'string' ? input : input && input.url ? input.url : 'http://localhost',
+      writable: true,
+      configurable: true,
+    });
     this.method = init?.method || 'GET';
     this.headers = new Map(Object.entries(init?.headers || {}));
     this.body = init?.body;
@@ -20,14 +25,14 @@ global.Response = class Response {
     this.statusText = init?.statusText || 'OK';
     this.headers = new Map(Object.entries(init?.headers || {}));
   }
-  
+
   static json(data, init) {
     return new Response(JSON.stringify(data), {
       ...init,
       headers: {
         'Content-Type': 'application/json',
-        ...(init?.headers || {})
-      }
+        ...(init?.headers || {}),
+      },
     });
   }
 

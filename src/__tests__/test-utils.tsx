@@ -10,7 +10,7 @@ interface MockAuthContextValue {
   logout: jest.Mock;
 }
 
-const mockAuthContext: MockAuthContextValue = {
+export const mockAuthContext: MockAuthContextValue = {
   user: null,
   isLoggedIn: false,
   login: jest.fn(),

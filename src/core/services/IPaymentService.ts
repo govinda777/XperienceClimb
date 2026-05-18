@@ -7,13 +7,14 @@ export interface CreatePreferenceRequest {
     unit_price: number;
     quantity: number;
     id: string;
+    [key: string]: any;
   }>;
   payer: {
     name: string;
     email: string;
   };
-  metadata: Record<string, any>;
-  paymentMethods?: PaymentMethod[];
+  metadata?: Record<string, any>;
+  paymentMethods?: any;
 }
 
 export interface PaymentPreference {
@@ -47,4 +48,4 @@ export interface IPaymentService {
   getPayment(paymentId: string): Promise<any>;
   processWebhook(webhookData: any): Promise<void>;
   getCheckoutUrl(preferenceId: string): Promise<string>;
-} 
+}

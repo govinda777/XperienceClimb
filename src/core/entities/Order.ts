@@ -37,21 +37,31 @@ export interface ParticipantDetails {
   experienceLevel: 'beginner' | 'intermediate' | 'advanced';
   healthDeclaration: boolean;
   tenis?: string; // Número do tênis (opcional)
+  emergencyContact?: {
+    name: string;
+    phone: string;
+    relationship?: string;
+  };
+  medicalConditions?: string[];
+  dietaryRestrictions?: string[];
 }
 
 export interface ClimbingDetails {
   selectedDate: Date;
   specialRequests?: string;
   dietaryRestrictions?: string[];
+  preferredTime?: string;
+  groupSize?: number;
 }
 
 export interface PaymentInfo {
   method: PaymentMethod;
-  status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded';
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded' | 'approved';
   transactionId?: string;
   mercadoPagoPreferenceId?: string;
   cryptoPaymentId?: string;
   processedAt?: Date;
+  paidAt?: Date;
 }
 
 export type OrderStatus =

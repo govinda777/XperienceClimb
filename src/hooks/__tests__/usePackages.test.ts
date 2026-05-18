@@ -10,7 +10,7 @@ const mockPackages: Package[] = [
     name: 'Basic Climbing Experience',
     description: 'Perfect for beginners',
     price: 150,
-    duration: 4,
+    duration: '4',
     maxParticipants: 8,
     difficulty: 'beginner',
     includes: ['Equipment', 'Guide', 'Safety briefing'],
@@ -25,7 +25,7 @@ const mockPackages: Package[] = [
     name: 'Advanced Rock Climbing',
     description: 'For experienced climbers',
     price: 250,
-    duration: 6,
+    duration: '6',
     maxParticipants: 4,
     difficulty: 'advanced',
     includes: ['Advanced equipment', 'Expert guide'],
@@ -69,7 +69,7 @@ describe('usePackages Hook', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Get the shared mocks
     // @ts-ignore
     const getAllPackagesExecute = GetAllPackages.mockExecute;
@@ -78,7 +78,7 @@ describe('usePackages Hook', () => {
 
     mockGetAllPackages = { execute: getAllPackagesExecute };
     mockGetPackageAvailability = { execute: getPackageAvailabilityExecute };
-    
+
     mockGetAllPackages.execute.mockResolvedValue(mockPackages);
     mockGetPackageAvailability.execute.mockResolvedValue({
       available: true,
@@ -252,7 +252,10 @@ describe('usePackages Hook', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      const filteredPackages = result.current.getPackagesByType(['basic-climbing', 'advanced-climbing']);
+      const filteredPackages = result.current.getPackagesByType([
+        'basic-climbing',
+        'advanced-climbing',
+      ]);
       expect(filteredPackages).toHaveLength(2);
     });
 
@@ -272,10 +275,10 @@ describe('usePackages Hook', () => {
     it('should show loading during initial fetch', () => {
       // Delay the promise resolution to test loading state
       let resolvePromise: (value: Package[]) => void;
-      const delayedPromise = new Promise<Package[]>((resolve) => {
+      const delayedPromise = new Promise<Package[]>(resolve => {
         resolvePromise = resolve;
       });
-      
+
       mockGetAllPackages.execute.mockReturnValue(delayedPromise);
 
       const { result } = renderHook(() => usePackages());

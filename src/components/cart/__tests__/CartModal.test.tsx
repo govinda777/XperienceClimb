@@ -1,7 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+  createCartStoreState,
+  createMockCartItem,
+  mockAuthLoggedIn,
+  mockAuthLoggedOut,
+  resetAuthMocks,
+} from '@/__tests__/test-utils';
 import { CartModal } from '../CartModal';
-import { createCartStoreState, createMockCartItem, mockAuthLoggedIn, mockAuthLoggedOut, resetAuthMocks } from '@/__tests__/test-utils';
+
+// Mock the useAuth hook explicitly to ensure hoist order
+jest.mock('@/hooks/useAuth', () => ({
+  useAuth: () => require('@/__tests__/test-utils').mockAuthContext,
+}));
 
 // Mock the cart store
 const mockCartStore = createCartStoreState();
@@ -18,9 +29,7 @@ jest.mock('@/components/ui', () => ({
       {children}
     </button>
   ),
-  Card: ({ children, className }: any) => (
-    <div className={className}>{children}</div>
-  ),
+  Card: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 // Mock CheckoutForm
@@ -60,25 +69,25 @@ describe('CartModal Component', () => {
   describe('visibility and mounting', () => {
     it('should not render when modal is closed', () => {
       mockCartStore.isOpen = false;
-      
+
       render(<CartModal />);
-      
+
       expect(screen.queryByText('Meu Carrinho')).not.toBeInTheDocument();
     });
 
     it('should render when modal is open', () => {
       mockCartStore.isOpen = true;
-      
+
       render(<CartModal />);
-      
+
       expect(screen.getByText('Meu Carrinho')).toBeInTheDocument();
     });
 
     it('should handle hydration mismatch prevention', () => {
       mockCartStore.isOpen = true;
-      
+
       const { container } = render(<CartModal />);
-      
+
       // Should render the modal content
       expect(container.firstChild).not.toBeNull();
     });
@@ -93,14 +102,14 @@ describe('CartModal Component', () => {
 
     it('should show empty cart message', () => {
       render(<CartModal />);
-      
+
       expect(screen.getByText('Carrinho vazio')).toBeInTheDocument();
       expect(screen.getByText(/Adicione experiências de escalada/)).toBeInTheDocument();
     });
 
     it('should show empty cart icon', () => {
       render(<CartModal />);
-      
+
       const icons = screen.getAllByTestId('shopping-cart-icon');
       expect(icons.length).toBeGreaterThan(0);
     });
@@ -133,7 +142,7 @@ describe('CartModal Component', () => {
 
     it('should display all cart items', () => {
       render(<CartModal />);
-      
+
       expect(screen.getByText('Escalada Iniciante')).toBeInTheDocument();
       expect(screen.getByText('Escalada Avançada')).toBeInTheDocument();
       expect(screen.getByText('Participante: João Silva')).toBeInTheDocument();
@@ -142,13 +151,13 @@ describe('CartModal Component', () => {
 
     it('should show correct item count in header', () => {
       render(<CartModal />);
-      
+
       expect(screen.getByText('(3 itens)')).toBeInTheDocument();
     });
 
     it('should display correct prices', () => {
       render(<CartModal />);
-      
+
       expect(screen.getByText('R$ 150.00')).toBeInTheDocument();
       expect(screen.getByText('R$ 250.00')).toBeInTheDocument();
       expect(screen.getByText('R$ 650.00')).toBeInTheDocument(); // Total
@@ -156,10 +165,10 @@ describe('CartModal Component', () => {
 
     it('should show quantity controls', () => {
       render(<CartModal />);
-      
+
       const plusButtons = screen.getAllByTestId('plus-icon');
       const minusButtons = screen.getAllByTestId('minus-icon');
-      
+
       expect(plusButtons).toHaveLength(2);
       expect(minusButtons).toHaveLength(2);
     });
@@ -179,37 +188,37 @@ describe('CartModal Component', () => {
 
     it('should increase quantity when plus button is clicked', () => {
       render(<CartModal />);
-      
+
       const plusButton = screen.getByTestId('plus-icon').closest('button');
       fireEvent.click(plusButton!);
-      
+
       expect(mockCartStore.updateQuantity).toHaveBeenCalledWith('item-1', 3);
     });
 
     it('should decrease quantity when minus button is clicked', () => {
       render(<CartModal />);
-      
+
       const minusButton = screen.getByTestId('minus-icon').closest('button');
       fireEvent.click(minusButton!);
-      
+
       expect(mockCartStore.updateQuantity).toHaveBeenCalledWith('item-1', 1);
     });
 
     it('should disable minus button when quantity is 1', () => {
       mockCartStore.items = [{ ...mockItem, quantity: 1 }];
-      
+
       render(<CartModal />);
-      
+
       const minusButton = screen.getByTestId('minus-icon').closest('button');
       expect(minusButton).toBeDisabled();
     });
 
     it('should remove item when clicking remove button', () => {
       render(<CartModal />);
-      
+
       const removeButton = screen.getByText('Remover');
       fireEvent.click(removeButton);
-      
+
       expect(mockCartStore.removeItem).toHaveBeenCalledWith('item-1');
     });
   });
@@ -223,28 +232,28 @@ describe('CartModal Component', () => {
 
     it('should clear cart when clear button is clicked', () => {
       render(<CartModal />);
-      
+
       const clearButton = screen.getByText('Limpar carrinho');
       fireEvent.click(clearButton);
-      
+
       expect(mockCartStore.clearCart).toHaveBeenCalledTimes(1);
     });
 
     it('should close modal when close button is clicked', () => {
       render(<CartModal />);
-      
+
       const closeButton = screen.getByTestId('close-icon').closest('button');
       fireEvent.click(closeButton!);
-      
+
       expect(mockCartStore.closeCart).toHaveBeenCalledTimes(1);
     });
 
     it('should close modal when backdrop is clicked', () => {
       render(<CartModal />);
-      
+
       const backdrop = document.querySelector('.bg-black\\/50');
       fireEvent.click(backdrop!);
-      
+
       expect(mockCartStore.closeCart).toHaveBeenCalledTimes(1);
     });
   });
@@ -258,40 +267,40 @@ describe('CartModal Component', () => {
 
     it('should show login prompt when user is not authenticated', () => {
       mockAuthLoggedOut();
-      
+
       render(<CartModal />);
-      
+
       expect(screen.getByText('Entrar e Comprar')).toBeInTheDocument();
     });
 
     it('should show checkout button when user is authenticated', () => {
       mockAuthLoggedIn();
-      
+
       render(<CartModal />);
-      
+
       expect(screen.getByText(/finalizar compra|entrar e comprar/i)).toBeInTheDocument();
     });
 
     it('should trigger login when checkout is clicked and user is not authenticated', () => {
       mockAuthLoggedOut();
-      
+
       render(<CartModal />);
-      
+
       const checkoutButton = screen.getByText('Entrar e Comprar');
       fireEvent.click(checkoutButton);
-      
+
       // Should call login from useAuth mock
       expect(screen.queryByTestId('checkout-form')).not.toBeInTheDocument();
     });
 
     it('should show checkout form when user is authenticated and clicks checkout', () => {
       mockAuthLoggedIn();
-      
+
       render(<CartModal />);
-      
+
       const checkoutButton = screen.getByText(/finalizar compra|entrar e comprar/i);
       fireEvent.click(checkoutButton);
-      
+
       expect(screen.getByTestId('checkout-form')).toBeInTheDocument();
       expect(screen.getByText('Finalizar Compra')).toBeInTheDocument(); // Header changes
     });
@@ -306,16 +315,16 @@ describe('CartModal Component', () => {
 
     it('should navigate back to cart from checkout', async () => {
       render(<CartModal />);
-      
+
       // Go to checkout
       const checkoutButton = screen.getByText(/finalizar compra|entrar e comprar/i);
       fireEvent.click(checkoutButton);
-      
+
       // Check if back button exists and click it
       const backButton = screen.queryByText('Back to Cart') || screen.queryByText('Voltar');
       if (backButton) {
         fireEvent.click(backButton);
-        
+
         await waitFor(() => {
           expect(screen.getByText('Meu Carrinho')).toBeInTheDocument();
           expect(screen.queryByTestId('checkout-form')).not.toBeInTheDocument();
@@ -328,16 +337,17 @@ describe('CartModal Component', () => {
 
     it('should handle successful checkout', async () => {
       render(<CartModal />);
-      
+
       // Go to checkout
       const checkoutButton = screen.getByText(/finalizar compra|entrar e comprar/i);
       fireEvent.click(checkoutButton);
-      
+
       // Complete purchase - look for any purchase button
-      const completeButton = screen.queryByText('Complete Purchase') || 
-                           screen.queryByText('Finalizar Compra') ||
-                           screen.queryByText('Confirmar Pedido');
-      
+      const completeButton =
+        screen.queryByText('Complete Purchase') ||
+        screen.queryByText('Finalizar Compra') ||
+        screen.queryByText('Confirmar Pedido');
+
       if (completeButton) {
         fireEvent.click(completeButton);
         expect(mockCartStore.clearCart).toHaveBeenCalledTimes(1);
@@ -357,20 +367,22 @@ describe('CartModal Component', () => {
 
     it('should have proper heading structure', () => {
       render(<CartModal />);
-      
+
       expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Meu Carrinho');
     });
 
     it('should have accessible buttons', () => {
       render(<CartModal />);
-      
+
       expect(screen.getByRole('button', { name: /limpar carrinho/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /finalizar compra|entrar e comprar/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /finalizar compra|entrar e comprar/i })
+      ).toBeInTheDocument();
     });
 
     it('should have proper modal structure', () => {
       render(<CartModal />);
-      
+
       const modal = document.querySelector('.fixed.inset-0');
       expect(modal).toBeInTheDocument();
     });
@@ -383,7 +395,7 @@ describe('CartModal Component', () => {
 
     it('should have responsive classes', () => {
       render(<CartModal />);
-      
+
       const modal = document.querySelector('.max-w-md');
       expect(modal).toBeInTheDocument();
     });
@@ -392,14 +404,15 @@ describe('CartModal Component', () => {
   describe('edge cases', () => {
     it('should handle items with long names gracefully', () => {
       const longNameItem = createMockCartItem({
-        packageName: 'Escalada Super Avançada com Instruções Detalhadas e Equipamentos Profissionais Inclusos',
+        packageName:
+          'Escalada Super Avançada com Instruções Detalhadas e Equipamentos Profissionais Inclusos',
       });
-      
+
       mockCartStore.isOpen = true;
       mockCartStore.items = [longNameItem];
-      
+
       render(<CartModal />);
-      
+
       expect(screen.getByText(longNameItem.packageName)).toBeInTheDocument();
     });
 
@@ -407,12 +420,12 @@ describe('CartModal Component', () => {
       const specialCharItem = createMockCartItem({
         participantName: 'José da Silva & Cia. Ltda.',
       });
-      
+
       mockCartStore.isOpen = true;
       mockCartStore.items = [specialCharItem];
-      
+
       render(<CartModal />);
-      
+
       expect(screen.getByText('Participante: José da Silva & Cia. Ltda.')).toBeInTheDocument();
     });
 
@@ -420,13 +433,13 @@ describe('CartModal Component', () => {
       const freeItem = createMockCartItem({
         price: 0,
       });
-      
+
       mockCartStore.isOpen = true;
       mockCartStore.items = [freeItem];
       mockCartStore.getTotalPrice.mockReturnValue(0);
-      
+
       render(<CartModal />);
-      
+
       const priceElements = screen.getAllByText('R$ 0.00');
       expect(priceElements.length).toBeGreaterThan(0);
     });

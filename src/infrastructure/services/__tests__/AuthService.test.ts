@@ -51,9 +51,7 @@ describe('AuthService', () => {
 
   describe('logout', () => {
     it('should throw error indicating Privy should be used', async () => {
-      await expect(authService.logout()).rejects.toThrow(
-        'should be called through Privy hooks'
-      );
+      await expect(authService.logout()).rejects.toThrow('should be called through Privy hooks');
     });
 
     it('should log error to console', async () => {
@@ -65,10 +63,7 @@ describe('AuthService', () => {
         // Expected to throw
       }
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Error during logout:',
-        expect.any(Error)
-      );
+      expect(consoleSpy).toHaveBeenCalledWith('Error during logout:', expect.any(Error));
 
       consoleSpy.mockRestore();
     });
@@ -209,7 +204,7 @@ describe('AuthService', () => {
     it('should indicate this is a bridge service', async () => {
       try {
         await authService.logout();
-      } catch (error) {
+      } catch (error: any) {
         expect(error.message).toContain('Privy hooks');
         expect(error.message).toContain('React components');
       }
