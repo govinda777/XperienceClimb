@@ -118,11 +118,31 @@ export const PACKAGES: Record<string, PackageType> = {
   },
 };
 
-// Dynamic available dates - can be easily modified
+// Base date from which all formats are derived - modify ONLY this one!
+const BASE_TRIP_DATE = '2026-06-17'; // Format: YYYY-MM-DD
+
+const [year, month, day] = BASE_TRIP_DATE.split('-');
+const MONTHS_PT = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
+];
+const monthIndex = parseInt(month, 10) - 1;
+
+// Dynamic available dates - derived from BASE_TRIP_DATE above
 export const AVAILABLE_DATES = {
   // Data única disponível para escalada
-  singleDate: '17/06/2026',
+  singleDate: `${day}/${month}/${year}`,
   // Para compatibilidade com diferentes formatos
-  singleDateISO: '2026-06-17',
-  singleDateDisplay: '17 de Junho de 2026',
+  singleDateISO: BASE_TRIP_DATE,
+  singleDateDisplay: `${parseInt(day, 10)} de ${MONTHS_PT[monthIndex]} de ${year}`,
 } as const;
