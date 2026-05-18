@@ -207,11 +207,15 @@ export function Footer() {
               Cadastre-se para receber dicas de escalada, promoções exclusivas e novidades sobre o
               Morro Araçoiaba.
             </p>
-            <div className="mx-auto flex max-w-md flex-col gap-3 sm:flex-row">
+            <div
+              className="mx-auto flex max-w-md flex-col gap-3 sm:flex-row"
+              suppressHydrationWarning
+            >
               <input
                 type="email"
                 placeholder="Seu melhor e-mail"
                 className="flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white placeholder-white/60 focus:border-orange-400 focus:outline-none"
+                suppressHydrationWarning
               />
               <Button variant="secondary" size="md">
                 Cadastrar

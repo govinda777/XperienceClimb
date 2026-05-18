@@ -21,9 +21,10 @@ export function GallerySection() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
-  const filteredImages = selectedCategory === 'all'
-    ? currentTheme.gallery.images
-    : currentTheme.gallery.images.filter(img => img.category === selectedCategory);
+  const filteredImages =
+    selectedCategory === 'all'
+      ? currentTheme.gallery.images
+      : currentTheme.gallery.images.filter(img => img.category === selectedCategory);
 
   const handleImageError = (image: GalleryImage) => {
     const imgSrc = typeof image.src === 'string' ? image.src : 'Local Image';
@@ -40,8 +41,8 @@ export function GallerySection() {
               Galeria de Experiências
             </h2>
             <p className="text-xl text-neutral-700 max-w-3xl mx-auto mb-8">
-              Conheça a beleza única de {currentTheme.location.name} e veja o que te espera
-              nesta experiência inesquecível.
+              Conheça a beleza única de {currentTheme.location.name} e veja o que te espera nesta
+              experiência inesquecível.
             </p>
 
             {/* Category Filter */}
@@ -69,44 +70,6 @@ export function GallerySection() {
                 onClick={() => setSelectedImage(image)}
               >
                 <div className="aspect-[4/3] relative">
-                  <Image
-                    src={normalizeImageUrl(image.src)}
-                    alt={image.alt}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    onError={() => handleImageError(image)}
-                    unoptimized={image.isExternal} // Otimização desabilitada para imagens externas
-                    placeholder={typeof image.src !== 'string' ? 'blur' : undefined}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                  {/* Image Info Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <h3 className="text-lg font-semibold mb-2">{image.title}</h3>
-                    <p className="text-sm opacity-90">{image.alt}</p>
-                  </div>
-
-                  {/* Category Badge */}
-                  <div className="absolute top-3 right-3 z-10">
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm text-white">
-                      {currentTheme.gallery.categories[image.category] || image.category}
-                    </span>
-                  </div>
-
-                  {/* External/Video Indicator */}
-                  <div className="absolute top-3 left-3 z-10 flex gap-2">
-                    {image.isExternal && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/80 backdrop-blur-sm text-white">
-                        🌐 Externa
-                      </span>
-                    )}
-                    {image.isVideo && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-500/80 backdrop-blur-sm text-white">
-                        🎥 Vídeo
-                      </span>
-                    )}
-                  </div>
-
                   {image.isVideo ? (
                     <div className="relative w-full h-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                       <video
@@ -115,8 +78,8 @@ export function GallerySection() {
                         muted
                         loop
                         playsInline
-                        onMouseOver={(e) => e.currentTarget.play()}
-                        onMouseOut={(e) => {
+                        onMouseOver={e => e.currentTarget.play()}
+                        onMouseOut={e => {
                           e.currentTarget.pause();
                           e.currentTarget.currentTime = 0;
                         }}
