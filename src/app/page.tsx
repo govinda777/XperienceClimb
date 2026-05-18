@@ -3,7 +3,6 @@ import {
   HeroSection,
   AboutSection,
   PackagesSection,
-  IncludedServicesSection,
   GallerySection,
   SafetySection,
   CommunitySection,

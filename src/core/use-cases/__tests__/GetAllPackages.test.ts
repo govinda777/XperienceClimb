@@ -1,5 +1,4 @@
 import { GetAllPackages } from '../packages/GetAllPackages';
-import { IPackageRepository } from '../../repositories/IPackageRepository';
 import { Package } from '../../entities/Package';
 
 // Mock repository

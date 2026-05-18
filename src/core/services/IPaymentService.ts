@@ -1,5 +1,3 @@
-import { PaymentMethod } from '../entities/Coupon';
-
 export interface CreatePreferenceRequest {
   orderId: string;
   items: Array<{

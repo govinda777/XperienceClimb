@@ -1,6 +1,5 @@
 import { LoginUser } from '../auth/LoginUser';
 import { IAuthService } from '../../services/IAuthService';
-import { IUserRepository } from '../../repositories/IUserRepository';
 import { LoginCredentials, LoginResult, User } from '../../entities/User';
 
 // Mock dependencies

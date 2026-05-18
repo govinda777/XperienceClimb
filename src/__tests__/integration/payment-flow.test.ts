@@ -312,11 +312,6 @@ describe('Payment Flow Integration Tests', () => {
   describe('MercadoPago Payment Flow', () => {
     it('should create MercadoPago preference successfully', async () => {
       // Arrange
-      const preferenceResponse = {
-        id: 'pref-123',
-        init_point: 'https://mercadopago.com/checkout/pref-123',
-        sandbox_init_point: 'https://sandbox.mercadopago.com/checkout/pref-123',
-      };
 
       // Create returns preference ID
       mockOrderRepository.create.mockResolvedValue('pref-123');

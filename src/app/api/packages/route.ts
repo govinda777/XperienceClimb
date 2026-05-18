@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { PACKAGES } from '@/lib/constants';
 import { PackageRepository } from '@/infrastructure/repositories/PackageRepository';
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   try {
     const repository = new PackageRepository();
     const isMocked = typeof (repository.findByActive as any).mock !== 'undefined';
