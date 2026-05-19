@@ -119,7 +119,7 @@ export const PACKAGES: Record<string, PackageType> = {
 };
 
 // Base date from which all formats are derived - modify ONLY this one!
-const BASE_TRIP_DATE = '2026-06-17'; // Format: YYYY-MM-DD
+const BASE_TRIP_DATE = '2026-07-11'; // Format: YYYY-MM-DD
 
 const [year, month, day] = BASE_TRIP_DATE.split('-');
 const MONTHS_PT = [
