@@ -1,71 +1,30 @@
 import { IOrderRepository } from '@/core/repositories/IOrderRepository';
 import { Order } from '@/core/entities/Order';
-import { PaymentService } from '../services/PaymentService';
 import { WhatsAppService } from '../services/WhatsAppService';
 
-
 export class OrderRepository implements IOrderRepository {
-  private paymentService: PaymentService;
   private whatsAppService: WhatsAppService;
 
   constructor() {
-    this.paymentService = new PaymentService();
     this.whatsAppService = new WhatsAppService();
-  }
-
-  async create(order: Order): Promise<string> {
-    try {
-      // Convert order to Mercado Pago preference format
-      const preferenceRequest = {
-        orderId: order.id,
-        items: order.items.map(item => ({
-          id: item.packageId,
-          title: item.packageName,
-          unit_price: item.price.amount / 100, // Convert from cents
-          quantity: item.quantity,
-        })),
-        payer: {
-          name: order.items[0]?.participantDetails?.name || 'Cliente',
-          email: 'cliente@xperienceclimb.com', // This should come from authenticated user
-        },
-        metadata: {
-          order_id: order.id,
-          user_id: order.userId,
-          climbing_date: order.climbingDetails.selectedDate.toISOString(),
-          total_amount: order.total.amount,
-          participants: JSON.stringify(order.items.map(item => item.participantDetails)),
-          special_requests: order.climbingDetails.specialRequests || '',
-        },
-      };
-
-      const preference = await this.paymentService.createPreference(preferenceRequest);
-      
-      // Store order locally for quick access (in production, use a database)
-      this.storeOrderLocally(order, preference.id);
-      
-      return preference.id;
-    } catch (error) {
-      console.error('Error creating order:', error);
-      throw new Error('Failed to create order');
-    }
   }
 
   async createWhatsAppOrder(order: Order): Promise<string> {
     try {
       // Store order locally with WhatsApp method
       const orderId = order.id;
-      this.storeOrderLocally(order, orderId);
-      
+      this.storeOrderLocally(order);
+
       // Send WhatsApp message with order details
       await this.whatsAppService.sendOrderConfirmation({
         order,
         paymentData: {
           id: 'whatsapp_' + orderId,
           status: 'pending_whatsapp',
-          date_approved: new Date().toISOString()
-        }
+          date_approved: new Date().toISOString(),
+        },
       });
-      
+
       console.log(`WhatsApp order created: ${orderId}`);
       return orderId;
     } catch (error) {
@@ -76,28 +35,16 @@ export class OrderRepository implements IOrderRepository {
 
   async save(order: Order): Promise<void> {
     try {
-      this.storeOrderLocally(order, order.id);
+      this.storeOrderLocally(order);
     } catch (error) {
       console.error('Error saving order:', error);
       throw new Error('Failed to save order');
     }
   }
 
-  async findById(preferenceId: string): Promise<Order | null> {
+  async findById(orderId: string): Promise<Order | null> {
     try {
-      // First try to get from local storage
-      const localOrder = this.getOrderFromLocalStorage(preferenceId);
-      if (localOrder) {
-        return localOrder;
-      }
-
-      // If not found locally, try to reconstruct from Mercado Pago
-      const preference = await this.paymentService.getPreference(preferenceId);
-      if (preference && preference.metadata) {
-        return this.reconstructOrderFromMetadata(preference.metadata);
-      }
-
-      return null;
+      return this.getOrderFromLocalStorage(orderId);
     } catch (error) {
       console.error('Error finding order by ID:', error);
       return null;
@@ -106,8 +53,6 @@ export class OrderRepository implements IOrderRepository {
 
   async findByUserId(userId: string): Promise<Order[]> {
     try {
-      // In production, this would query your database
-      // For now, we'll check localStorage for orders
       const allOrders = this.getAllOrdersFromLocalStorage();
       return allOrders.filter(order => order.userId === userId);
     } catch (error) {
@@ -116,59 +61,11 @@ export class OrderRepository implements IOrderRepository {
     }
   }
 
-  async updateFromWebhook(paymentData: any): Promise<void> {
-    try {
-      const preferenceId = paymentData.external_reference;
-      if (!preferenceId) {
-        throw new Error('No external reference found in payment data');
-      }
-
-      const order = await this.findById(preferenceId);
-      if (!order) {
-        throw new Error(`Order not found for preference ID: ${preferenceId}`);
-      }
-
-      // Update payment info based on webhook data
-      order.payment.status = this.mapPaymentStatus(paymentData.status);
-      order.payment.transactionId = paymentData.id;
-      order.payment.processedAt = new Date(paymentData.date_approved || new Date());
-      order.updatedAt = new Date();
-
-      // Update order status based on payment status
-      if (order.payment.status === 'completed') {
-        order.status = 'confirmed';
-        
-        // Send WhatsApp notification when payment is approved
-        try {
-          await this.whatsAppService.sendOrderConfirmation({
-            order,
-            paymentData
-          });
-          console.log(`WhatsApp notification sent for order ${order.id}`);
-        } catch (error) {
-          console.error('Failed to send WhatsApp notification:', error);
-          // Don't throw - webhook should still complete successfully
-        }
-      } else if (order.payment.status === 'failed') {
-        order.status = 'cancelled';
-      }
-
-      // Store updated order
-      this.storeOrderLocally(order, preferenceId);
-
-      console.log(`Order ${order.id} updated from webhook:`, order);
-    } catch (error) {
-      console.error('Error updating order from webhook:', error);
-      throw error;
-    }
-  }
-
   async updateStatus(orderId: string, status: Order['status']): Promise<void> {
     try {
-      // Find order by ID across all preferences
       const allOrders = this.getAllOrdersFromLocalStorage();
       const orderIndex = allOrders.findIndex(order => order.id === orderId);
-      
+
       if (orderIndex === -1) {
         throw new Error(`Order not found: ${orderId}`);
       }
@@ -178,6 +75,9 @@ export class OrderRepository implements IOrderRepository {
 
       // Update in localStorage
       localStorage.setItem('xc_orders', JSON.stringify(allOrders));
+
+      // Also update individual order storage
+      this.storeOrderLocally(allOrders[orderIndex]);
     } catch (error) {
       console.error('Error updating order status:', error);
       throw error;
@@ -186,10 +86,9 @@ export class OrderRepository implements IOrderRepository {
 
   async update(order: Order): Promise<void> {
     try {
-      // Find order by ID across all preferences
       const allOrders = this.getAllOrdersFromLocalStorage();
       const orderIndex = allOrders.findIndex(o => o.id === order.id);
-      
+
       if (orderIndex === -1) {
         throw new Error(`Order not found: ${order.id}`);
       }
@@ -198,17 +97,14 @@ export class OrderRepository implements IOrderRepository {
       allOrders[orderIndex] = {
         ...allOrders[orderIndex],
         ...order,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Update in localStorage
       localStorage.setItem('xc_orders', JSON.stringify(allOrders));
 
-      // Also update individual order storage if we have preferenceId
-      const preferenceId = this.findPreferenceIdByOrderId(order.id);
-      if (preferenceId) {
-        this.storeOrderLocally(allOrders[orderIndex], preferenceId);
-      }
+      // Also update individual order storage
+      this.storeOrderLocally(allOrders[orderIndex]);
 
       console.log(`Order ${order.id} updated successfully`);
     } catch (error) {
@@ -217,13 +113,10 @@ export class OrderRepository implements IOrderRepository {
     }
   }
 
-
-
-  private storeOrderLocally(order: Order, preferenceId: string): void {
+  private storeOrderLocally(order: Order): void {
     try {
       const orderData = {
         ...order,
-        preferenceId,
         createdAt: order.createdAt.toISOString(),
         updatedAt: order.updatedAt.toISOString(),
         climbingDetails: {
@@ -233,12 +126,12 @@ export class OrderRepository implements IOrderRepository {
       };
 
       // Store individual order
-      localStorage.setItem(`xc_order_${preferenceId}`, JSON.stringify(orderData));
+      localStorage.setItem(`xc_order_${order.id}`, JSON.stringify(orderData));
 
       // Update orders list
       const allOrders = this.getAllOrdersFromLocalStorage();
       const existingIndex = allOrders.findIndex(o => o.id === order.id);
-      
+
       if (existingIndex >= 0) {
         allOrders[existingIndex] = order;
       } else {
@@ -251,13 +144,13 @@ export class OrderRepository implements IOrderRepository {
     }
   }
 
-  private getOrderFromLocalStorage(preferenceId: string): Order | null {
+  private getOrderFromLocalStorage(orderId: string): Order | null {
     try {
-      const stored = localStorage.getItem(`xc_order_${preferenceId}`);
+      const stored = localStorage.getItem(`xc_order_${orderId}`);
       if (!stored) return null;
 
       const orderData = JSON.parse(stored);
-      
+
       // Convert string dates back to Date objects
       return {
         ...orderData,
@@ -265,7 +158,10 @@ export class OrderRepository implements IOrderRepository {
         updatedAt: new Date(orderData.updatedAt),
         climbingDetails: {
           ...orderData.climbingDetails,
-          selectedDate: new Date(orderData.climbingDetails.selectedDate + (orderData.climbingDetails.selectedDate.includes('T') ? '' : 'T12:00:00')),
+          selectedDate: new Date(
+            orderData.climbingDetails.selectedDate +
+              (orderData.climbingDetails.selectedDate.includes('T') ? '' : 'T12:00:00')
+          ),
         },
       };
     } catch (error) {
@@ -286,7 +182,10 @@ export class OrderRepository implements IOrderRepository {
         updatedAt: new Date(orderData.updatedAt),
         climbingDetails: {
           ...orderData.climbingDetails,
-          selectedDate: new Date(orderData.climbingDetails.selectedDate + (orderData.climbingDetails.selectedDate.includes('T') ? '' : 'T12:00:00')),
+          selectedDate: new Date(
+            orderData.climbingDetails.selectedDate +
+              (orderData.climbingDetails.selectedDate.includes('T') ? '' : 'T12:00:00')
+          ),
         },
       }));
     } catch (error) {
@@ -294,66 +193,4 @@ export class OrderRepository implements IOrderRepository {
       return [];
     }
   }
-
-  private findPreferenceIdByOrderId(orderId: string): string | null {
-    try {
-      const allOrders = this.getAllOrdersFromLocalStorage();
-      const order = allOrders.find(o => o.id === orderId);
-      return order ? (order as any).preferenceId : null;
-    } catch (error) {
-      console.error('Error finding preference ID by order ID:', error);
-      return null;
-    }
-  }
-
-  private reconstructOrderFromMetadata(metadata: any): Order {
-    return {
-      id: metadata.order_id,
-      userId: metadata.user_id,
-      items: JSON.parse(metadata.participants || '[]'),
-      status: 'pending_payment',
-      payment: {
-        method: 'mercadopago',
-        status: 'pending',
-      },
-      climbingDetails: {
-        selectedDate: new Date(metadata.climbing_date + (metadata.climbing_date.includes('T') ? '' : 'T12:00:00')),
-        specialRequests: metadata.special_requests,
-      },
-      subtotal: {
-        amount: metadata.total_amount,
-        currency: 'BRL',
-      },
-      total: {
-        amount: metadata.total_amount,
-        currency: 'BRL',
-      },
-      createdAt: new Date(metadata.created_at),
-      updatedAt: new Date(),
-    };
-  }
-
-
-
-  private mapPaymentStatus(mpStatus: string): Order['payment']['status'] {
-    const statusMap: Record<string, Order['payment']['status']> = {
-      'approved': 'completed',
-      'pending': 'pending',
-      'in_process': 'processing',
-      'rejected': 'failed',
-      'cancelled': 'failed',
-      'refunded': 'refunded',
-    };
-
-    return statusMap[mpStatus] || 'failed';
-  }
-
-  async getCheckoutUrl(preferenceId: string): Promise<string> {
-    try {
-      return await this.paymentService.getCheckoutUrl(preferenceId);
-    } catch (error) {
-      console.error('Error getting checkout URL:', error);
-      throw new Error('Failed to get checkout URL');
-    }
-  }
-} 
+}

@@ -133,7 +133,6 @@ export class CreateOrder {
       orderId: order.id,
     };
 
-    // Se o método for explicitamente whatsapp ou ausente, usa WhatsApp
     // Only WhatsApp payment is supported
     await this.orderRepository.createWhatsAppOrder(order);
     return this.processWhatsAppPayment(order, baseResult);
@@ -147,21 +146,6 @@ export class CreateOrder {
       ...baseResult,
       whatsappUrl: `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${encodeURIComponent(whatsappMessage)}`,
     };
-  }
-
-  // Stub para pagamento PIX (mantido para compatibilidade)
-  private async processPixPayment(order: Order, baseResult: any): Promise<CreateOrderResult> {
-    // Implementação mínima: retorna baseResult sem detalhes de pagamento
-    return { ...baseResult };
-  }
-
-  // Stub para pagamento cripto (mantido para compatibilidade)
-  private async processCryptoPayment(
-    order: Order,
-    baseResult: any,
-    cryptoType: 'bitcoin' | 'usdt'
-  ): Promise<CreateOrderResult> {
-    return { ...baseResult };
   }
 
   private validateRequest(request: CreateOrderRequest): void {
@@ -278,11 +262,6 @@ export class CreateOrder {
 
   private getPaymentStatusMessage(_: any): string {
     return 'Aguardando confirmação via WhatsApp';
-  }
-
-  // Stub para pagamento via GitHub (mantido para compatibilidade)
-  private async processGitHubPayment(order: Order, baseResult: any): Promise<CreateOrderResult> {
-    return { ...baseResult };
   }
 
   private translateExperience(level: string): string {

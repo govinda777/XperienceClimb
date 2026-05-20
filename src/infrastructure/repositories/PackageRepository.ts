@@ -1,6 +1,7 @@
 import { IPackageRepository } from '@/core/repositories/IPackageRepository';
 import { Package } from '@/core/entities/Package';
 import { PackageType } from '@/types';
+import { PACKAGES } from '@/lib/constants';
 
 export class PackageRepository implements IPackageRepository {
   private packagesCache: Package[] | null = null;
@@ -103,7 +104,7 @@ export class PackageRepository implements IPackageRepository {
       return this.packagesCache.map(pkg => ({
         id: pkg.id,
         name: pkg.name,
-        price: typeof pkg.price === 'number' ? pkg.price : pkg.price.amount / 100, // Convert back to reais for API consistency
+        price: typeof pkg.price === 'number' ? pkg.price : pkg.price.amount / 100, // Convert cents back to reais for API consistency
         description: pkg.description,
         features: pkg.features || [],
         bonus: [], // Default empty bonus for cached data
@@ -129,19 +130,8 @@ export class PackageRepository implements IPackageRepository {
   }
 
   private async fetchPackagesFromAPI(): Promise<PackageType[]> {
-    const response = await fetch('/api/packages');
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch packages: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-
-    if (!result.success) {
-      throw new Error('API returned error');
-    }
-
-    return result.data;
+    // Directly return data from PACKAGES constants to avoid circular dependency
+    return Object.values(PACKAGES);
   }
 
   private mapToPackageEntity(packageData: PackageType): Package {

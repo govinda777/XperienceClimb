@@ -12,87 +12,21 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
-export function formatDate(date: Date): string {
-  if (!date || isNaN(date.getTime())) {
-    return 'Data inválida';
-  }
-  return new Intl.DateTimeFormat('pt-BR').format(date);
-}
-
 export function generateId(): string {
   return Math.random().toString(36).substring(2) + Date.now().toString(36);
-}
-
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
-  return (..._args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(..._args), wait);
-  };
-}
-
-export function throttle<T extends (...args: any[]) => any>(
-  func: T,
-  limit: number
-): (...args: Parameters<T>) => void {
-  let inThrottle: boolean;
-  return (..._args: Parameters<T>) => {
-    if (!inThrottle) {
-      func(..._args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
-}
-
-export function isValidEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-export function isValidPhone(phone: string): boolean {
-  const phoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
-  return phoneRegex.test(phone);
-}
-
-export function formatPhone(phone: string): string {
-  const numbers = phone.replace(/\D/g, '');
-  
-  // Handle numbers with country code (+55)
-  if (numbers.length === 13 && numbers.startsWith('55')) {
-    const localNumber = numbers.slice(2); // Remove country code
-    return `(${localNumber.slice(0, 2)}) ${localNumber.slice(2, 7)}-${localNumber.slice(7)}`;
-  }
-  
-  // Handle 11-digit numbers (with 9)
-  if (numbers.length === 11) {
-    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
-  } 
-  
-  // Handle 10-digit numbers (without 9)
-  if (numbers.length === 10) {
-    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
-  }
-  
-  return phone;
 }
 
 export function openWhatsApp(phone: string, message?: string): void {
   // Remove all non-numeric characters from phone
   const cleanPhone = phone.replace(/\D/g, '');
-  
+
   // Add country code if not present (assuming Brazil +55)
   const phoneWithCountryCode = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
-  
+
   // Create WhatsApp URL
   const baseUrl = `https://wa.me/${phoneWithCountryCode}`;
-  const url = message 
-    ? `${baseUrl}?text=${encodeURIComponent(message)}`
-    : baseUrl;
-  
+  const url = message ? `${baseUrl}?text=${encodeURIComponent(message)}` : baseUrl;
+
   // Open in new tab
   window.open(url, '_blank');
-} 
+}

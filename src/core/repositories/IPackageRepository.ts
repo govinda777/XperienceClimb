@@ -14,5 +14,4 @@ export interface IPackageRepository {
     weatherConditions?: 'good' | 'warning' | 'poor';
     restrictions: string[];
   }>;
-  // Note: Packages are now dynamic data from API
 }
