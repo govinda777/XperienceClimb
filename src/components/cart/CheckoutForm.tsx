@@ -10,6 +10,7 @@ import { OrderRepository } from '@/infrastructure/repositories/OrderRepository';
 import { CartItem } from '@/types';
 import { ParticipantDetails, ClimbingDetails } from '@/core/entities/Order';
 import { AVAILABLE_DATES } from '@/lib/constants';
+import InputMask from 'react-input-mask';
 
 interface CheckoutFormProps {
   cartItems: CartItem[];
@@ -71,12 +72,16 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
       case 0: // Participant details
         return cartItems.every(item => {
           const details = formData.participantDetails[item.id];
+          if (!details) return false;
+
+          const isWhatsappValid = details.whatsapp ? details.whatsapp.replace(/\D/g, '').length === 11 : false;
+
           return (
-            details &&
             details.name &&
             details.age &&
             details.experienceLevel &&
-            details.healthDeclaration
+            details.healthDeclaration &&
+            isWhatsappValid
           );
         });
       case 1: // Climbing details
@@ -356,14 +361,15 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
               htmlFor={`whatsapp-${item.id}`}
               className="mb-1 block text-sm font-medium text-neutral-700"
             >
-              WhatsApp
+              WhatsApp *
             </label>
-            <input
+            <InputMask
+              mask="(99) 99999-9999"
               id={`whatsapp-${item.id}`}
               type="text"
               className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
               value={participantDetails[item.id]?.whatsapp || ''}
-              onChange={e => onChange(item.id, 'whatsapp', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(item.id, 'whatsapp', e.target.value)}
               placeholder="(11) 99999-9999"
             />
 

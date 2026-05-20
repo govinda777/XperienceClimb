@@ -127,6 +127,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
+      await user.type(screen.getByLabelText(/WhatsApp \*/), '11999999999');
 
       await user.click(
         screen.getByLabelText(
@@ -148,6 +149,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
+      await user.type(screen.getByLabelText(/WhatsApp \*/), '11999999999');
 
       await user.click(
         screen.getByLabelText(
@@ -199,6 +201,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
+      await user.type(screen.getByLabelText(/WhatsApp \*/), '11999999999');
 
       await user.click(
         screen.getByLabelText(
@@ -253,6 +256,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
+      await user.type(screen.getByLabelText(/WhatsApp \*/), '11999999999');
 
       await user.click(
         screen.getByLabelText(
@@ -287,6 +291,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
+      await user.type(screen.getByLabelText(/WhatsApp \*/), '11999999999');
 
       await user.click(
         screen.getByLabelText(
@@ -309,6 +314,7 @@ describe('CheckoutForm', () => {
       await user.type(screen.getByLabelText(/Nome Completo/), 'João Silva');
       await user.type(screen.getByLabelText(/Idade/), '25');
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
+      await user.type(screen.getByLabelText(/WhatsApp \*/), '11999999999');
 
       await user.click(
         screen.getByLabelText(
@@ -347,6 +353,8 @@ describe('CheckoutForm', () => {
 
       // Complete required fields
       await user.selectOptions(screen.getByLabelText(/Nível de Experiência/), 'beginner');
+
+      await user.type(screen.getByLabelText(/WhatsApp \*/), '11999999999');
 
       await user.click(
         screen.getByLabelText(
