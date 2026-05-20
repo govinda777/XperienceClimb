@@ -36,6 +36,7 @@ export interface ParticipantDetails {
   age: number;
   experienceLevel: 'beginner' | 'intermediate' | 'advanced';
   healthDeclaration: boolean;
+  whatsapp?: string; // WhatsApp number
   tenis?: string; // Número do tênis (opcional)
   emergencyContact?: {
     name: string;
