@@ -9,22 +9,32 @@ import '../styles/globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://xperienceclimb.vercel.app'),
-  title: 'XperienceClimb - Escalada no Morro Araçoiaba',
-  description: 'Experiências únicas de escalada na Floresta Nacional de Ipanema',
-  keywords: 'escalada, climbing, aventura, morro araçoiaba, ipanema, são paulo',
-  authors: [{ name: 'XperienceClimb' }],
+  metadataBase: new URL('https://climb.xperiencehubs.com'),
+  title: 'Xperience Climb | Escalada Pedra Bela',
+  description:
+    'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura em Pedra Bela.',
+  keywords: 'escalada, climbing, aventura, são paulo, pedra bela, escalada em rocha',
+  authors: [{ name: 'climb.xperiencehubs.com' }],
   openGraph: {
-    title: 'XperienceClimb - Escalada no Morro Araçoiaba',
-    description: 'Experiências únicas de escalada na Floresta Nacional de Ipanema',
-    images: ['/images/site.png'],
+    title: 'Xperience Climb | Escalada em Rocha e Aventuras Naturais',
+    description:
+      'Viva uma experiência única de escalada e superação ao ar livre. Condições exclusivas, instrutores certificados e equipamentos premium 100% inclusos.',
+    images: [
+      {
+        url: '/images/site-og.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Xperience Climb Escalada em Rocha',
+      },
+    ],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'XperienceClimb - Escalada no Morro Araçoiaba',
-    description: 'Experiências únicas de escalada na Floresta Nacional de Ipanema',
-    images: ['/images/site.png'],
+    title: 'Xperience Climb | Escalada em Rocha e Aventuras Naturais',
+    description:
+      'Viva uma experiência única de escalada e superação ao ar livre. Condições exclusivas, instrutores certificados e equipamentos premium 100% inclusos.',
+    images: ['/images/site-og.jpg'],
   },
   robots: 'index, follow',
 };
