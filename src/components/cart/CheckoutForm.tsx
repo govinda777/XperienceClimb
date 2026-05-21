@@ -10,7 +10,14 @@ import { OrderRepository } from '@/infrastructure/repositories/OrderRepository';
 import { CartItem } from '@/types';
 import { ParticipantDetails, ClimbingDetails } from '@/core/entities/Order';
 import { AVAILABLE_DATES } from '@/lib/constants';
-import InputMask from 'react-input-mask';
+
+const formatWhatsApp = (value: string) => {
+  const v = value.replace(/\D/g, '').substring(0, 11);
+  if (v.length === 0) return '';
+  if (v.length <= 2) return `(${v}`;
+  if (v.length <= 7) return `(${v.substring(0, 2)}) ${v.substring(2)}`;
+  return `(${v.substring(0, 2)}) ${v.substring(2, 7)}-${v.substring(7, 11)}`;
+};
 
 interface CheckoutFormProps {
   cartItems: CartItem[];
@@ -74,7 +81,9 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
           const details = formData.participantDetails[item.id];
           if (!details) return false;
 
-          const isWhatsappValid = details.whatsapp ? details.whatsapp.replace(/\D/g, '').length === 11 : false;
+          const isWhatsappValid = details.whatsapp
+            ? details.whatsapp.replace(/\D/g, '').length === 11
+            : false;
 
           return (
             details.name &&
@@ -363,13 +372,14 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
             >
               WhatsApp *
             </label>
-            <InputMask
-              mask="(99) 99999-9999"
+            <input
               id={`whatsapp-${item.id}`}
               type="text"
               className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
               value={participantDetails[item.id]?.whatsapp || ''}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(item.id, 'whatsapp', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange(item.id, 'whatsapp', formatWhatsApp(e.target.value))
+              }
               placeholder="(11) 99999-9999"
             />
 
