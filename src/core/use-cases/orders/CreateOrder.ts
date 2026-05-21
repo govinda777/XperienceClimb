@@ -126,7 +126,7 @@ export class CreateOrder {
 
   private async processPayment(
     order: Order,
-    request: CreateOrderRequest
+    _request: CreateOrderRequest
   ): Promise<CreateOrderResult> {
     const baseResult = {
       success: true,
@@ -256,11 +256,11 @@ export class CreateOrder {
     return message;
   }
 
-  private getPaymentMethodName(_: any): string {
+  private getPaymentMethodName(_method: any): string {
     return 'WhatsApp';
   }
 
-  private getPaymentStatusMessage(_: any): string {
+  private getPaymentStatusMessage(_method: any): string {
     return 'Aguardando confirmação via WhatsApp';
   }
 

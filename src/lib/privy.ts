@@ -10,7 +10,12 @@ export const privyConfig: PrivyClientConfig = {
     showWalletLoginFirst: false,
   },
   embeddedWallets: {
-    createOnLogin: 'off',
+    ethereum: {
+      createOnLogin: 'off',
+    },
+    solana: {
+      createOnLogin: 'off',
+    }
   },
   supportedChains: [mainnet], // Minimal chain config (required by Privy)
-}; 
+};
