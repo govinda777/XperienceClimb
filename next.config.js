@@ -2,7 +2,7 @@
 const nextConfig = {
   productionBrowserSourceMaps: false,
   compress: true,
-  swcMinify: true,
+
   images: {
     remotePatterns: [
       {
