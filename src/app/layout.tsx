@@ -4,6 +4,7 @@ import { PrivyProvider } from '@/components/providers/PrivyProvider';
 import { ThemeProvider } from '@/themes/ThemeProvider';
 import { ThemeStyleProvider } from '@/themes/components/ThemeStyleProvider';
 import { ConsoleFilter } from '@/components/providers/ConsoleFilter';
+import { AppAuthProvider } from '@/hooks/useAuth';
 import '../styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -51,7 +52,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ConsoleFilter />
         <ThemeProvider>
           <ThemeStyleProvider>
-            <PrivyProvider>{children}</PrivyProvider>
+            <PrivyProvider>
+              <AppAuthProvider>{children}</AppAuthProvider>
+            </PrivyProvider>
           </ThemeStyleProvider>
         </ThemeProvider>
       </body>

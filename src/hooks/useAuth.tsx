@@ -2,9 +2,27 @@
 
 import { usePrivy } from '@privy-io/react-auth';
 import { User, UserPreferences } from '@/core/entities/User';
-import { useMemo } from 'react';
+import React, { useMemo, createContext, useContext } from 'react';
 
-export function useAuth() {
+export type AuthContextType = {
+  ready: boolean;
+  authenticated: boolean;
+  user: User | null;
+  login: () => void;
+  logout: () => void;
+  updateUserPreferences: (prefs: Partial<UserPreferences>) => Promise<void>;
+  isLoading: boolean;
+  isGuest: boolean;
+  isLoggedIn: boolean;
+  userEmail?: string;
+  userName?: string;
+  userAvatar?: string;
+  userPreferences?: UserPreferences;
+};
+
+export const AuthContext = createContext<AuthContextType | null>(null);
+
+function usePrivyAuthImpl(): AuthContextType {
   const { ready, authenticated, user, login, logout } = usePrivy();
 
   // Convert user to our domain User entity
@@ -79,4 +97,17 @@ export function useAuth() {
     userAvatar: domainUser?.avatar,
     userPreferences: domainUser?.preferences,
   };
+}
+
+export function AppAuthProvider({ children }: { children: React.ReactNode }) {
+  const auth = usePrivyAuthImpl();
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth(): AuthContextType {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AppAuthProvider');
+  }
+  return context;
 }

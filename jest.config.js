@@ -13,7 +13,10 @@ const customJestConfig = {
     '**/__tests__/**/*.(test|spec).(ts|tsx|js)',
     '**/*.(test|spec).(ts|tsx|js)',
     '!**/test-utils.(ts|tsx|js)',
+    '!**/tests/**/*',
+    '!**/tests/e2e/**/*',
   ],
+  testPathIgnorePatterns: ['<rootDir>/tests/'],
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!src/**/*.d.ts', '!src/**/index.ts'],
   transformIgnorePatterns: ['node_modules/(?!(zustand|jose|@privy-io)/)'],
   moduleNameMapper: {

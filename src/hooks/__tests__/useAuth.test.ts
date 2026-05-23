@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { useAuth } from '../useAuth';
+import { useAuth, AppAuthProvider } from '../useAuth';
 
 // Mock Privy
 const mockPrivyHook: {
@@ -33,6 +33,8 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 describe('useAuth Hook', () => {
+  const renderAuthHook = () => renderHook(() => useAuth(), { wrapper: AppAuthProvider });
+
   beforeEach(() => {
     jest.clearAllMocks();
     mockPrivyHook.ready = true;
@@ -42,7 +44,7 @@ describe('useAuth Hook', () => {
 
   describe('when user is not authenticated', () => {
     it('should return correct initial state', () => {
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       expect(result.current.ready).toBe(true);
       expect(result.current.authenticated).toBe(false);
@@ -53,7 +55,7 @@ describe('useAuth Hook', () => {
     });
 
     it('should provide login and logout functions', () => {
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       expect(typeof result.current.login).toBe('function');
       expect(typeof result.current.logout).toBe('function');
@@ -72,7 +74,7 @@ describe('useAuth Hook', () => {
     });
 
     it('should return authenticated user state', () => {
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       expect(result.current.authenticated).toBe(true);
       expect(result.current.user).toBeDefined();
@@ -91,7 +93,7 @@ describe('useAuth Hook', () => {
 
       localStorageMock.getItem.mockReturnValue(JSON.stringify(mockPreferences));
 
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       expect(localStorageMock.getItem).toHaveBeenCalledWith('userPrefs_test-user-id');
       expect(result.current.user?.preferences).toEqual(mockPreferences);
@@ -100,7 +102,7 @@ describe('useAuth Hook', () => {
     it('should use default preferences when none exist in localStorage', () => {
       localStorageMock.getItem.mockReturnValue(null);
 
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       expect(result.current.user?.preferences).toEqual({
         experienceLevel: 'beginner',
@@ -110,7 +112,7 @@ describe('useAuth Hook', () => {
     });
 
     it('should provide user info shortcuts', () => {
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       expect(result.current.userEmail).toBe('test@example.com');
       expect(result.current.userName).toBe('test');
@@ -130,7 +132,7 @@ describe('useAuth Hook', () => {
     });
 
     it('should update user preferences and save to localStorage', async () => {
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       const newPreferences = {
         experienceLevel: 'advanced' as const,
@@ -154,7 +156,7 @@ describe('useAuth Hook', () => {
       mockPrivyHook.authenticated = false;
       mockPrivyHook.user = null;
 
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       await expect(
         result.current.updateUserPreferences({ experienceLevel: 'advanced' })
@@ -166,7 +168,7 @@ describe('useAuth Hook', () => {
     it('should show loading when Privy is not ready', () => {
       mockPrivyHook.ready = false;
 
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       expect(result.current.isLoading).toBe(true);
       expect(result.current.ready).toBe(false);
@@ -181,7 +183,7 @@ describe('useAuth Hook', () => {
         // No email property
       };
 
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       expect(result.current.user?.email).toBe('');
       expect(result.current.user?.name).toBe('Usuário');
@@ -200,7 +202,7 @@ describe('useAuth Hook', () => {
         throw new Error('localStorage error');
       });
 
-      const { result } = renderHook(() => useAuth());
+      const { result } = renderAuthHook();
 
       // Should use default preferences when localStorage fails
       expect(result.current.user?.preferences).toEqual({

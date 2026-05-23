@@ -1,0 +1,41 @@
+# Test files
+**/__tests__/**
+**/*.test.ts
+**/*.test.tsx
+**/*.test.js
+**/*.test.jsx
+**/*.spec.ts
+**/*.spec.tsx
+coverage/
+
+# Development files
+.vscode/
+.idea/
+*.log
+.env.local
+.env.development
+.env.test
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+docs/
+
+# Scripts
+scripts/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Misc
+.DS_Store
+*.swp
+*.swo
+*~

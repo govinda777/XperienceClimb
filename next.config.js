@@ -1,52 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: false,
+  compress: true,
+  swcMinify: true,
   images: {
-    domains: [
-      'localhost',
-      'images.unsplash.com',
-      'picsum.photos',
-      'via.placeholder.com',
-      'imgur.com',
-      'i.imgur.com',
-      'cloudinary.com',
-      'res.cloudinary.com',
-      'amazonaws.com',
-      's3.amazonaws.com',
-      'googleusercontent.com',
-      'lh3.googleusercontent.com',
-      'facebook.com',
-      'fbcdn.net',
-      'instagram.com',
-      'cdninstagram.com',
-      'flickr.com',
-      'staticflickr.com',
-      'pexels.com',
-      'images.pexels.com',
-      'pixabay.com',
-      'cdn.pixabay.com',
-      'freepik.com',
-      'img.freepik.com',
-      'shutterstock.com',
-      'image.shutterstock.com',
-      'gettyimages.com',
-      'media.gettyimages.com',
-      'istockphoto.com',
-      'media.istockphoto.com',
-      'adobe.com',
-      'cc-api-storage.adobe.com',
-      '500px.com',
-      'drscdn.500px.org',
-      'deviantart.com',
-      'images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com',
-      'behance.net',
-      'mir-s3-cdn-cf.behance.net',
-      'dribbble.com',
-      'cdn.dribbble.com',
-      'artstation.com',
-      'cdnb.artstation.com',
-      'cdn.artstation.com'
-    ],
     remotePatterns: [
       {
         protocol: 'https',
@@ -55,6 +12,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    formats: ['image/avif', 'image/webp'],
   },
   async headers() {
     return [
@@ -79,8 +37,8 @@ const nextConfig = {
           },
         ],
       },
-    ]
+    ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

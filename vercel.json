@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build",
+  "installCommand": "npm install --prefer-offline --no-audit --no-fund",
   "headers": [
     {
       "source": "/api/mercadopago/webhook",
