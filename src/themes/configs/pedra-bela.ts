@@ -146,6 +146,13 @@ export class PedraBellaTheme extends BaseTheme {
         category: 'adventure',
         isVideo: true,
       },
+      {
+        src: '/images/themes/pedra-bela/XperienceClimb-03.mp4',
+        alt: 'XperienceClimb',
+        title: 'XperienceClimb',
+        category: 'adventure',
+        isVideo: true,
+      },
     ]),
     categories: {
       all: 'Todas',
