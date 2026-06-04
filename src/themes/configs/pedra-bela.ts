@@ -44,7 +44,7 @@ export class PedraBellaTheme extends BaseTheme {
 
   content = this.createContentInfo(
     {
-      title: 'XPERIENCE ADVENTURE',
+      title: 'XPERIENCE CLIMB',
       subtitle: 'Parque de Aventuras em `Pedra Bela`',
       description: 'Tirolesa gigante, escalada, cachoeiras e muito mais!',
     },
