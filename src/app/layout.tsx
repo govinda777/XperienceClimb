@@ -7,6 +7,10 @@ import { ConsoleFilter } from '@/components/providers/ConsoleFilter';
 import { AppAuthProvider } from '@/hooks/useAuth';
 import '../styles/globals.css';
 
+import CookieBanner from '@/components/analytics/CookieBanner';
+import GoogleScripts from '@/components/analytics/GoogleScripts';
+import FloatingChatButton from '@/components/chat/FloatingChatButton';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -50,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR">
       <body className={`${inter.className} bg-white`}>
         <ConsoleFilter />
+        <GoogleScripts />
         <ThemeProvider>
           <ThemeStyleProvider>
             <PrivyProvider>
@@ -57,6 +62,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </PrivyProvider>
           </ThemeStyleProvider>
         </ThemeProvider>
+        <CookieBanner />
+        <FloatingChatButton />
       </body>
     </html>
   );
