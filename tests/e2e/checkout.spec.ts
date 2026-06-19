@@ -5,6 +5,14 @@ test.describe('Jornada de Checkout', () => {
     // Navigate to the test route where Auth is mocked and Cart Modal is opened
     await page.goto('/test-e2e/checkout');
 
+    // Dismiss cookie consent banner if present
+    const acceptAllButton = page.getByRole('button', { name: 'Aceitar Todos' });
+    try {
+      await acceptAllButton.click({ timeout: 3000 });
+    } catch {
+      // Button not found or not clickable, continue with test
+    }
+
     // 1. Validate we are in the Cart Modal with the mocked item
     await expect(page.getByRole('heading', { name: 'Meu Carrinho' })).toBeVisible();
     await expect(page.getByText('Escalada Tradicional')).toBeVisible();

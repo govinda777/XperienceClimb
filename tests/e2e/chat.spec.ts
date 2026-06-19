@@ -5,6 +5,14 @@ test.describe('Chat Functionality', () => {
     // 1. Navegar até a página inicial
     await page.goto('/');
 
+    // Dismiss cookie consent banner if present
+    const acceptAllButton = page.getByRole('button', { name: 'Aceitar Todos' });
+    try {
+      await acceptAllButton.click({ timeout: 3000 });
+    } catch {
+      // Button not found or not clickable, continue with test
+    }
+
     // 2. Localizar o botão flutuante do chat e clicar
     // Encontramos o botão verificando quem tem o SVG (ícone) do lucide-react
     const chatButton = page
