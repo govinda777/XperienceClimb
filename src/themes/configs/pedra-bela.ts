@@ -45,11 +45,11 @@ export class PedraBellaTheme extends BaseTheme {
   content = this.createContentInfo(
     {
       title: 'XPERIENCE CLIMB',
-      subtitle: 'Parque de Aventuras em `Pedra Bela`',
+      subtitle: 'Viva a aventura de escalada em Pedra Bela',
       description: 'Tirolesa gigante, escalada, cachoeiras e muito mais!',
     },
     {
-      title: 'Aventura Completa na Natureza de Pedra Bela',
+      title: 'Bem vindo a Pedra Bela!',
       description:
         'Pedra Bela oferece uma experiência única combinando escalada, tirolesa e contato com a natureza exuberante das montanhas paulistas. Um destino perfeito para quem busca aventura e tranquilidade.',
       highlights: [
@@ -159,7 +159,8 @@ export class PedraBellaTheme extends BaseTheme {
       climb: 'Escalada',
       adventure: 'Aventura',
       nature: 'Natureza',
-      waterfalls: 'Cachoeiras',
+      waterfalls: 'Pessoas',
+      relax: 'Momento Relax',
     },
   };
 
