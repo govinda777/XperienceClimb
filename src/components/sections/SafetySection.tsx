@@ -63,10 +63,12 @@ const equipmentList = [
   { name: 'Corda dinâmica', required: true, provided: true },
   { name: 'Mosquetões', required: true, provided: true },
   { name: 'Freio', required: true, provided: true },
-  { name: 'Sapatilha de escalada', required: false, provided: false },
-  { name: 'Roupa confortável', required: true, provided: false },
-  { name: 'Protetor solar', required: true, provided: false },
-  { name: 'Água (1,5L mínimo)', required: true, provided: false },
+  { name: 'Sapatilha de escalada', required: true, provided: true },
+  { name: 'Roupa esportiva', required: false, provided: false },
+  { name: 'Protetor solar', required: false, provided: false },
+  { name: 'Água (1,5L mínimo)', required: false, provided: false },
+  { name: 'Chapéu e boné', required: false, provided: false },
+  { name: 'Sleck beliscos', required: false, provided: false },
 ];
 
 export function SafetySection() {
@@ -112,7 +114,9 @@ export function SafetySection() {
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
           {/* Equipamentos Obrigatórios */}
           <div>
-            <h3 className="mb-8 text-3xl font-bold text-climb-600">Equipamentos Obrigatórios</h3>
+            <h3 className="mb-8 text-3xl font-bold text-climb-600">
+              equipamentos para a sua aventura
+            </h3>
             <p className="mb-6 text-neutral-600">
               Itens que você deve trazer para participar da atividade
             </p>
@@ -159,7 +163,7 @@ export function SafetySection() {
 
           {/* Equipamentos Opcionais */}
           <div>
-            <h3 className="mb-8 text-3xl font-bold text-climb-600">Equipamentos Opcionais</h3>
+            <h3 className="mb-8 text-3xl font-bold text-climb-600">itens recomendados</h3>
             <p className="mb-6 text-neutral-600">Itens recomendados para maior conforto</p>
 
             <div className="space-y-4">
@@ -182,9 +186,7 @@ export function SafetySection() {
                     </div>
                   </div>
                 ))}
- 
             </div>
-            
           </div>
 
           {/* Safety Certifications */}
