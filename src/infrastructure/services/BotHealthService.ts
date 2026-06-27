@@ -3,7 +3,7 @@ import { BotService } from './BotService';
 import { randomUUID } from 'node:crypto'; // Importação para gerar ID único
 
 const PING_MESSAGE =
-  '{"nome":"ping","idade":30,"whatsapp":"+5511999999999","experiencia":"intermediário","pacote":"Agarrão","msg":"Quero comprar o pacote Agarrão agora"}';
+  '{"nome":"ping","idade":30,"e-mail":"ping@example.com","whatsapp":"+5511999999999","experiencia":"intermediário","pacote":"Agarrão","msg":"Quero comprar o pacote Agarrão agora"}';
 
 export class BotHealthService implements IBotHealthService {
   private readonly botService: BotService;
