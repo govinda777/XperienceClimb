@@ -1,7 +1,9 @@
 import type { IBotPingService, BotPingStatus } from '@/core/services/IBotPingService';
 import { chatConfig } from '@/config/chat';
 
-// Payload fixo que simula um lead completo
+/**
+ * Fixed payload that simulates a complete lead.
+ */
 const LEAD_PAYLOAD = {
   nome: 'ping',
   idade: 30,
@@ -20,12 +22,20 @@ export class BotPingService implements IBotPingService {
     this.timeoutMs = parseInt(process.env.HEALTH_CHECK_TIMEOUT_MS ?? '10000', 10);
     this.webhookUrl = chatConfig.webhookUrl;
     this.apiKey = process.env.N8N_API_KEY;
+    console.log('[BotPingService] Initialized', {
+      timeoutMs: this.timeoutMs,
+      webhookUrl: this.maskUrl(this.webhookUrl),
+    });
   }
 
   async ping(): Promise<BotPingStatus> {
     const timestamp = new Date().toISOString();
     const start = Date.now();
     const safeUrl = this.maskUrl(this.webhookUrl);
+    console.log('[BotPingService] Sending ping payload', {
+      payload: LEAD_PAYLOAD,
+      url: safeUrl,
+    });
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), this.timeoutMs);
@@ -45,6 +55,14 @@ export class BotPingService implements IBotPingService {
       }
 
       const latencyMs = Date.now() - start;
+      const responseText = await response.text();
+      console.log('[BotPingService] Received response', {
+        status: response.status,
+        ok: response.ok,
+        latencyMs,
+        body: responseText,
+      });
+
       if (!response.ok) {
         return {
           status: 'down',
@@ -55,21 +73,27 @@ export class BotPingService implements IBotPingService {
         };
       }
 
-      // try to extract response text (for audit)
+      // Try to extract response text (for audit)
       let botResponse: string | undefined;
       try {
         const ct = response.headers.get('content-type') ?? '';
         if (ct.includes('application/json')) {
-          const data = await response.json();
+          const data = JSON.parse(responseText);
           botResponse = typeof data === 'string' ? data : JSON.stringify(data);
         } else {
-          botResponse = await response.text();
+          botResponse = responseText;
         }
       } catch {
         botResponse = undefined;
       }
 
-      return { status: 'up', latencyMs, timestamp, botResponse, webhookUrl: safeUrl };
+      return {
+        status: 'up',
+        latencyMs,
+        timestamp,
+        botResponse,
+        webhookUrl: safeUrl,
+      };
     } catch (err: unknown) {
       const latencyMs = Date.now() - start;
       const isTimeout =
@@ -79,10 +103,20 @@ export class BotPingService implements IBotPingService {
         : err instanceof Error
           ? err.message
           : 'Unknown error';
-      return { status: 'down', latencyMs, timestamp, error: errorMessage, webhookUrl: safeUrl };
+      console.error('[BotPingService] Error during ping', { errorMessage, err });
+      return {
+        status: 'down',
+        latencyMs,
+        timestamp,
+        error: errorMessage,
+        webhookUrl: safeUrl,
+      };
     }
   }
 
+  /**
+   * Remove query strings and fragments that may contain tokens/credentials from the URL.
+   */
   private maskUrl(url: string): string {
     try {
       const p = new URL(url);
