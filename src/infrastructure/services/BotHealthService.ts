@@ -1,8 +1,9 @@
 import type { IBotHealthService, BotHealthStatus } from '@/core/services/IBotHealthService';
 import { BotService } from './BotService';
+import { randomUUID } from 'node:crypto'; // Importação para gerar ID único
 
-const PING_SESSION_ID = 'PING_CHECK';
-const PING_MESSAGE = 'ping';
+const PING_MESSAGE =
+  '{"nome":"ping","idade":30,"whatsapp":"+5511999999999","experiencia":"intermediário","pacote":"Agarrão","msg":"Quero comprar o pacote Agarrão agora"}';
 
 export class BotHealthService implements IBotHealthService {
   private readonly botService: BotService;
@@ -13,10 +14,15 @@ export class BotHealthService implements IBotHealthService {
 
   async ping(): Promise<BotHealthStatus> {
     const timestamp = new Date().toISOString();
+
+    // Gera um novo ID de sessão a cada execução do método ping()
+    const sessionId = `PING_CHECK_${randomUUID()}`;
+
     const result = await this.botService.sendMessage({
-      sessionId: PING_SESSION_ID,
+      sessionId: sessionId,
       mensagem: PING_MESSAGE,
     });
+
     const safeUrl = this.botService.maskUrl(this.botService.getWebhookUrl());
 
     if (!result.ok) {

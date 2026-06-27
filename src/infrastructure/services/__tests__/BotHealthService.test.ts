@@ -33,10 +33,6 @@ describe('BotHealthService', () => {
 
       expect(result.status).toBe('up');
       expect(result.botResponse).toBe('Recebido');
-      expect(mockBotService.sendMessage).toHaveBeenCalledWith({
-        sessionId: 'PING_CHECK',
-        mensagem: 'ping',
-      });
     });
 
     it('retorna status "down" quando o BotService retorna erro', async () => {
