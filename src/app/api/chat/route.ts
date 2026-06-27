@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
-import { chatConfig } from '@/config/chat';
+import { BotService } from '@/infrastructure/services/BotService';
 
 // Sistema simples de Rate Limiting em memória.
-// Nota: Na Vercel, a memória é isolada por instância (serverless function).
-// Isso não protege contra ataques distribuídos avançados, mas é perfeito e
-// ultra-leve para evitar que usuários comuns façam spam no botão.
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minuto
 const MAX_REQUESTS_PER_WINDOW = 5;
 
@@ -46,49 +43,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing sessionId or mensagem' }, { status: 400 });
     }
 
-    const apiKey = process.env.N8N_API_KEY;
-    if (!apiKey) {
-      console.error('N8N_API_KEY is not defined');
-      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
-    }
-
-    const response = await fetch(chatConfig.webhookUrl, {
-      method: 'POST',
-      headers: {
-        'X-API-KEY': apiKey,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sessionId,
-        mensagem,
-      }),
+    const botService = new BotService();
+    const result = await botService.sendMessage({
+      sessionId,
+      mensagem,
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      console.error('N8N error response:', text);
+    if (!result.ok) {
+      console.error('N8N error response:', result.responseText);
       return NextResponse.json(
         { error: 'Erro ao se comunicar com o agente de IA' },
-        { status: response.status }
+        { status: result.status }
       );
     }
 
-    let data;
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('application/json')) {
-      data = await response.json();
-    } else {
-      const text = await response.text();
-      data = { response: text };
-    }
-
     let chatResponse = 'Mensagem recebida com sucesso.';
-    if (data) {
-      if (typeof data === 'string') chatResponse = data;
-      else if (data.response) chatResponse = data.response;
-      else if (data.message) chatResponse = data.message;
-      else if (data.output) chatResponse = data.output;
-      else chatResponse = JSON.stringify(data);
+    if (result.data) {
+      if (typeof result.data === 'string') chatResponse = result.data;
+      else if (result.data.response) chatResponse = result.data.response;
+      else if (result.data.message) chatResponse = result.data.message;
+      else if (result.data.output) chatResponse = result.data.output;
+      else chatResponse = JSON.stringify(result.data);
     }
 
     return NextResponse.json({ response: chatResponse });
