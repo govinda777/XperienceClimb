@@ -1,23 +1,26 @@
+import { NextResponse } from 'next/server';
 import { BotHealthService } from '@/infrastructure/services/BotHealthService';
 
-export async function GET(): Promise<Response> {
+/**
+ * GET /api/lead/ping
+ *
+ * Endpoint único para verificação de saúde do bot de lead.
+ */
+export async function GET() {
   const service = new BotHealthService();
   try {
     const result = await service.ping();
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const httpStatus = result.status === 'up' ? 200 : 503;
+    return NextResponse.json(result, { status: httpStatus });
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-    const errorResponse = {
-      status: 'down',
-      timestamp: new Date().toISOString(),
-      error: errorMessage,
-    };
-    return new Response(JSON.stringify(errorResponse), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return NextResponse.json(
+      {
+        status: 'down',
+        timestamp: new Date().toISOString(),
+        error: errorMessage,
+      },
+      { status: 500 }
+    );
   }
 }

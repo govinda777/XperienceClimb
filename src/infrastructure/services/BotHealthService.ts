@@ -1,17 +1,8 @@
 import type { IBotHealthService, BotHealthStatus } from '@/core/services/IBotHealthService';
 import { BotService } from './BotService';
 
-const HEALTH_CHECK_SESSION_ID = 'HEALTH_CHECK';
-const HEALTH_CHECK_MESSAGE = 'ping';
-
-const LEAD_PAYLOAD = {
-  nome: 'ping',
-  idade: 30,
-  whatsapp: '+5511999999999',
-  experiencia: 'intermediário',
-  pacote: 'Agarrão',
-  msg: 'Quero comprar o pacote Agarrão agora',
-};
+const PING_SESSION_ID = 'PING_CHECK';
+const PING_MESSAGE = 'ping';
 
 export class BotHealthService implements IBotHealthService {
   private readonly botService: BotService;
@@ -20,20 +11,12 @@ export class BotHealthService implements IBotHealthService {
     this.botService = botService ?? new BotService();
   }
 
-  async checkHealth(): Promise<BotHealthStatus> {
-    return this.performCall({
-      sessionId: HEALTH_CHECK_SESSION_ID,
-      mensagem: HEALTH_CHECK_MESSAGE,
-    });
-  }
-
   async ping(): Promise<BotHealthStatus> {
-    return this.performCall(LEAD_PAYLOAD);
-  }
-
-  private async performCall(payload: any): Promise<BotHealthStatus> {
     const timestamp = new Date().toISOString();
-    const result = await this.botService.sendMessage(payload);
+    const result = await this.botService.sendMessage({
+      sessionId: PING_SESSION_ID,
+      mensagem: PING_MESSAGE,
+    });
     const safeUrl = this.botService.maskUrl(this.botService.getWebhookUrl());
 
     if (!result.ok) {

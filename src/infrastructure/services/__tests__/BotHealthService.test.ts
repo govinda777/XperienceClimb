@@ -20,22 +20,21 @@ describe('BotHealthService', () => {
     service = new BotHealthService(mockBotService);
   });
 
-  describe('checkHealth()', () => {
-    it('retorna status "up" quando o BotService retorna sucesso', async () => {
+  describe('ping()', () => {
+    it('envia payload correto e retorna status "up"', async () => {
       mockBotService.sendMessage.mockResolvedValue({
         ok: true,
         status: 200,
-        data: { response: 'pong' },
-        latencyMs: 100,
+        data: 'Recebido',
+        latencyMs: 120,
       });
 
-      const result = await service.checkHealth();
+      const result = await service.ping();
 
       expect(result.status).toBe('up');
-      expect(result.botResponse).toBe('pong');
-      expect(result.latencyMs).toBe(100);
+      expect(result.botResponse).toBe('Recebido');
       expect(mockBotService.sendMessage).toHaveBeenCalledWith({
-        sessionId: 'HEALTH_CHECK',
+        sessionId: 'PING_CHECK',
         mensagem: 'ping',
       });
     });
@@ -48,32 +47,10 @@ describe('BotHealthService', () => {
         latencyMs: 50,
       });
 
-      const result = await service.checkHealth();
+      const result = await service.ping();
 
       expect(result.status).toBe('down');
       expect(result.error).toBe('Erro interno');
-    });
-  });
-
-  describe('ping()', () => {
-    it('envia payload de lead e retorna status "up"', async () => {
-      mockBotService.sendMessage.mockResolvedValue({
-        ok: true,
-        status: 200,
-        data: 'Recebido',
-        latencyMs: 120,
-      });
-
-      const result = await service.ping();
-
-      expect(result.status).toBe('up');
-      expect(result.botResponse).toBe('Recebido');
-      expect(mockBotService.sendMessage).toHaveBeenCalledWith(
-        expect.objectContaining({
-          nome: 'ping',
-          pacote: 'Agarrão',
-        })
-      );
     });
   });
 });
