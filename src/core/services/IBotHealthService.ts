@@ -7,6 +7,7 @@ export interface BotHealthStatus {
   latencyMs: number;
   timestamp: string;
   botResponse?: string;
+  history?: string[];
   error?: string;
   webhookUrl: string;
 }
