@@ -1,6 +1,6 @@
 /**
  * Interface para o serviço de health check do bot de IA (n8n).
- * Usada pelo endpoint GET /api/health/bot monitorado pelo UptimeRobot.
+ * Usada pelos endpoints de monitoramento.
  */
 
 export interface BotHealthStatus {
@@ -20,8 +20,13 @@ export interface BotHealthStatus {
 
 export interface IBotHealthService {
   /**
-   * Envia um "ping" ao webhook n8n e retorna o status de saúde.
+   * Envia um "ping" simples ao webhook n8n e retorna o status de saúde.
    * Nunca lança exceção — encapsula o erro no BotHealthStatus.
    */
   checkHealth(): Promise<BotHealthStatus>;
+
+  /**
+   * Envia um payload completo simulando um lead para testar o processamento.
+   */
+  ping(): Promise<BotHealthStatus>;
 }
