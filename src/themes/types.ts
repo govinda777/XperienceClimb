@@ -110,6 +110,18 @@ export interface VisualTheme {
   cardBackground: string;
 }
 
+export interface TimelineEvent {
+  time: string;
+  activity: string;
+}
+
+export interface BeginnerInfo {
+  title: string;
+  description: string;
+  highlights: Highlight[];
+  finalMessage: string;
+}
+
 export interface ThemeConfig {
   id: string;
   name: string;
@@ -120,5 +132,7 @@ export interface ThemeConfig {
   logistics: LogisticsInfo;
   community: CommunityInfo;
   seo: SEOInfo;
+  beginner: BeginnerInfo;
+  timeline: TimelineEvent[];
   visual: VisualTheme;
 }

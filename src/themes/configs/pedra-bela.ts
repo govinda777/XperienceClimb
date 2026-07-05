@@ -7,11 +7,6 @@ import pedraBela5 from '@/assets/images/themes/pedra-bela/pedra-bela-5.jpg';
 import pedraBela6 from '@/assets/images/themes/pedra-bela/pedra-bela-6.jpg';
 
 export class PedraBellaTheme extends BaseTheme {
-  // ... (rest of the file until the image to replace)
-
-  // I cannot use replace_file_content for non-contiguous changes (import + array usage).
-  // I must use multi_replace_file_content.
-
   id = 'pedra-bela';
   name = 'Pedra Bela';
 
@@ -22,7 +17,7 @@ export class PedraBellaTheme extends BaseTheme {
     'São Paulo',
     '119km de São Paulo',
     { lat: -22.78544, lng: -46.45512 }, // Coordenadas aproximadas
-    'https://www.google.com/maps/dir/?api=1&destination=-22.78544,-46.45512&travelmode=driving',
+    'https://maps.app.goo.gl/gpa6CQXj9JNVKGLe9',
     [
       {
         step: 1,
@@ -200,25 +195,52 @@ export class PedraBellaTheme extends BaseTheme {
 
   logistics = this.createLogisticsInfo(
     {
-      openTime: '9h',
-      closeTime: '17h',
-      notes: 'Funcionamento nos finais de semana e feriados',
+      openTime: '08:45h',
+      closeTime: '17:00h',
+      notes: 'Término na rocha às 17:00h (sujeito à meteorologia)',
     },
-    'Portal da Cidade - Pedra Bela',
+    'Padaria São João de Pedra Bela. Rua Bernardino de Lima Paes, n.º 07 - Centro, Pedra Bela - SP, 12990-000',
     [
+      'Meeting Point às 08:45h na Padaria São João',
       'Tirolesa funciona apenas nos finais de semana e feriados',
-      'Entrada gratuita nas cachoeiras',
-      'Consultar agenda do Templo Budista',
       'Atividades sujeitas às condições climáticas',
     ],
     [
-      'Traga roupas de banho para as cachoeiras',
       'Use protetor solar',
       'Calçados adequados para trilha',
       'Leve água e lanche extra',
       'Respeite a natureza local',
     ]
   );
+
+  beginner = this.createBeginnerInfo(
+    'Nunca Escalou?',
+    'Atividade desenhada para quem tem curiosidade, mas zero experiência anterior. Nosso foco é o acolhimento e a superação segura.',
+    [
+      {
+        icon: '🧗',
+        title: 'Campo Escola',
+        description: 'Utilizamos o "Setor dos Fundos", nosso Campo Escola com vias de nível fácil ideais para o primeiro contato.'
+      },
+      {
+        icon: '🚶',
+        title: 'Acesso Fácil',
+        description: 'Trilho de apenas 3 minutos até a base das vias, sem caminhadas extenuantes.'
+      },
+      {
+        icon: '🛡️',
+        title: 'Segurança Total',
+        description: 'Equipamentos certificados e guias especializados acompanhando cada movimento.'
+      }
+    ],
+    'Só o cume importa!'
+  );
+
+  timeline = [
+    this.createTimelineEvent('09:00 - 16:30', 'Escalada na rocha'),
+    this.createTimelineEvent('17:00 - 18:00', 'Jantar'),
+    this.createTimelineEvent('18:00', 'Passeio ao pôr do sol')
+  ];
 
   community = this.createCommunityInfo(
     ['equipamentos-verticais'],

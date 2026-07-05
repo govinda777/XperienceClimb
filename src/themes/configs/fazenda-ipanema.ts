@@ -145,6 +145,30 @@ export class FazendaIpanemaTheme extends BaseTheme {
     ]
   );
 
+  beginner = this.createBeginnerInfo(
+    'Primeira vez na FLONA?',
+    'A Floresta Nacional de Ipanema é o lugar perfeito para começar sua jornada na escalada em rocha natural.',
+    [
+      {
+        icon: '🌳',
+        title: 'Ambiente Seguro',
+        description: 'Setores com sombra e acesso controlado em uma unidade de conservação.'
+      },
+      {
+        icon: '🧗',
+        title: 'Vias Escola',
+        description: 'Vias de escalada preparadas especialmente para instrução e iniciantes.'
+      }
+    ],
+    'A natureza espera por você!'
+  );
+
+  timeline = [
+    this.createTimelineEvent('08:00', 'Encontro no Centro de Visitantes'),
+    this.createTimelineEvent('09:00 - 13:00', 'Escalada e Instrução'),
+    this.createTimelineEvent('14:00', 'Trilha Histórica (Opcional)')
+  ];
+
   community = this.createCommunityInfo(
     ['flona-ipanema', 'equipamentos-verticais', 'pousada-aventura'],
     ['marcos-ishino'],

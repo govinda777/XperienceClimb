@@ -7,4 +7,6 @@ export * from './SafetySection';
 export * from './CommunitySection';
 export * from './IncludedServicesSection';
 export * from './TestimonialsSection';
-export * from './Footer';
+export * from './Footer';export * from './BeginnerSection';
+export * from './ScheduleSection';
+export * from './TimelineSection';

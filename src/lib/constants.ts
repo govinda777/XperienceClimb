@@ -14,17 +14,17 @@ export const NAVIGATION_ITEMS = [
   // Main sections
   { id: 'hero', label: 'Início', icon: '🏔️', group: 'main' },
   { id: 'sobre', label: 'Sobre', icon: '🌿', group: 'main' },
+  { id: 'iniciante', label: 'Iniciantes', icon: '🧗', group: 'main' },
   { id: 'pacotes', label: 'Pacotes', icon: '💎', group: 'main' },
 
   // Services and features
-  { id: 'servicos-inclusos', label: 'Incluso', icon: '🍎', group: 'services' },
+  { id: 'programacao', label: 'Programação', icon: '⏰', group: 'services' },
+  { id: 'timeline', label: 'O Dia', icon: '📅', group: 'services' },
   { id: 'seguranca', label: 'Segurança', icon: '🛡️', group: 'services' },
-  { id: 'seguro', label: 'Seguro', icon: '📋', group: 'services' },
 
   // Content and community
   { id: 'galeria', label: 'Galeria', icon: '📸', group: 'content' },
   { id: 'comunidade', label: 'Comunidade', icon: '🤝', group: 'content' },
-  { id: 'depoimentos', label: 'Depoimentos', icon: '⭐', group: 'content' },
 
   // Location
   { id: 'localizacao', label: 'Local', icon: '📍', group: 'location' },
@@ -32,9 +32,9 @@ export const NAVIGATION_ITEMS = [
 
 // Navigation groups for better organization
 export const NAVIGATION_GROUPS = {
-  main: { label: 'Principal', items: ['hero', 'sobre', 'pacotes'] },
-  services: { label: 'Serviços', items: ['servicos-inclusos', 'seguranca', 'seguro'] },
-  content: { label: 'Conteúdo', items: ['galeria', 'comunidade', 'depoimentos'] },
+  main: { label: 'Principal', items: ['hero', 'sobre', 'iniciante', 'pacotes'] },
+  services: { label: 'Serviços', items: ['programacao', 'timeline', 'seguranca'] },
+  content: { label: 'Conteúdo', items: ['galeria', 'comunidade'] },
   location: { label: 'Localização', items: ['localizacao'] },
 };
 

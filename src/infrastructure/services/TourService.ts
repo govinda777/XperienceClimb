@@ -237,6 +237,20 @@ export class TourService implements ITourService {
         visitedLocationId: tour.themeId
       },
       seo: tour.seo,
+      beginner: {
+        title: `Iniciante em ${tour.name}`,
+        description: tour.description,
+        highlights: tour.activities.slice(0, 3).map(activity => ({
+          icon: activity.icon,
+          title: activity.name,
+          description: activity.description
+        })),
+        finalMessage: "Só o cume importa!"
+      },
+      timeline: [
+        { time: tour.logistics.schedule.openTime, activity: "Início das atividades" },
+        { time: tour.logistics.schedule.closeTime, activity: "Encerramento" }
+      ],
       visual: {
         primaryColor: '#3b82f6',
         primaryColorHover: '#2563eb',

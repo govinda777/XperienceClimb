@@ -1,4 +1,4 @@
-import { ThemeConfig, LocationInfo, ContentInfo, GalleryInfo, ActivityInfo, LogisticsInfo, CommunityInfo, SEOInfo, VisualTheme } from '../types';
+import { ThemeConfig, LocationInfo, ContentInfo, GalleryInfo, ActivityInfo, LogisticsInfo, CommunityInfo, SEOInfo, VisualTheme, BeginnerInfo, TimelineEvent } from '../types';
 import { processThemeImages } from '@/lib/image-utils';
 
 export abstract class BaseTheme implements ThemeConfig {
@@ -11,6 +11,8 @@ export abstract class BaseTheme implements ThemeConfig {
   abstract logistics: LogisticsInfo;
   abstract community: CommunityInfo;
   abstract seo: SEOInfo;
+  abstract beginner: BeginnerInfo;
+  abstract timeline: TimelineEvent[];
   abstract visual: VisualTheme;
 
   // Common validation and processing methods
@@ -125,6 +127,24 @@ export abstract class BaseTheme implements ThemeConfig {
     };
   }
 
+  protected createBeginnerInfo(
+    title: string,
+    description: string,
+    highlights: any[],
+    finalMessage: string
+  ): BeginnerInfo {
+    return {
+      title,
+      description,
+      highlights,
+      finalMessage
+    };
+  }
+
+  protected createTimelineEvent(time: string, activity: string): TimelineEvent {
+    return { time, activity };
+  }
+
   // Method to get the complete theme configuration
   getThemeConfig(): ThemeConfig {
     return {
@@ -137,6 +157,8 @@ export abstract class BaseTheme implements ThemeConfig {
       logistics: this.logistics,
       community: this.community,
       seo: this.seo,
+      beginner: this.beginner,
+      timeline: this.timeline,
       visual: this.visual
     };
   }
