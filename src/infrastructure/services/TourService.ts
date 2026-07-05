@@ -245,7 +245,7 @@ export class TourService implements ITourService {
           title: activity.name,
           description: activity.description
         })),
-        finalMessage: "Só o cume importa!"
+        finalMessage: ""
       },
       timeline: [
         { time: tour.logistics.schedule.openTime, activity: "Início das atividades" },
