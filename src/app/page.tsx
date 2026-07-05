@@ -2,7 +2,10 @@ import { Navigation } from '@/components/layout';
 import {
   HeroSection,
   AboutSection,
+  BeginnerSection,
   PackagesSection,
+  ScheduleSection,
+  TimelineSection,
   GallerySection,
   SafetySection,
   CommunitySection,
@@ -17,7 +20,10 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <AboutSection />
+      <BeginnerSection />
       <PackagesSection />
+      <ScheduleSection />
+      <TimelineSection />
       <GallerySection />
       <SafetySection />
       <CommunitySection />
