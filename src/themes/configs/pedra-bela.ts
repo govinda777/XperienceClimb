@@ -233,7 +233,7 @@ export class PedraBellaTheme extends BaseTheme {
         description: 'Equipamentos certificados e guias especializados acompanhando cada movimento.'
       }
     ],
-    'Só o cume importa!'
+    ''
   );
 
   timeline = [
