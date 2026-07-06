@@ -23,7 +23,8 @@ export interface PackageType {
   requiresExperience?: boolean; // Dynamic property instead of hardcoded logic
   minAge?: number; // Dynamic minimum age
   cancellationPolicy?: string; // Dynamic cancellation policy
-  disabled?: boolean; // Dynamic property to disable packages
+  disabled?: boolean;
+  isQuotation?: boolean; // Package with price on quotation
 }
 
 export interface CartItem {

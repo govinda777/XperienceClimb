@@ -3,7 +3,9 @@ import {
   HeroSection,
   AboutSection,
   BeginnerSection,
+  CalendarSection,
   PackagesSection,
+  AnnualPackageSection,
   ScheduleSection,
   TimelineSection,
   GallerySection,
@@ -21,7 +23,9 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <BeginnerSection />
+      <CalendarSection />
       <PackagesSection />
+      <AnnualPackageSection />
       <ScheduleSection />
       <TimelineSection />
       <GallerySection />

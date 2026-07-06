@@ -253,86 +253,8 @@ export const SAFETY_PROCEDURES: SafetyProcedure[] = [
     version: '2.1',
     isActive: true,
   },
-  {
-    id: 'emergency-descent',
-    title: 'Procedimento de Descida de Emergência',
-    category: 'emergency',
-    priority: 'critical',
-    description:
-      'Protocolo para descida rápida e segura em situações de emergência durante a escalada.',
-    steps: [
-      {
-        order: 1,
-        title: 'Avaliação da Situação',
-        description: 'Identificar o tipo de emergência e avaliar opções de descida',
-        timeRequired: 1,
-        isOptional: false,
-      },
-      {
-        order: 2,
-        title: 'Comunicação de Emergência',
-        description: 'Alertar equipe de apoio e serviços de emergência se necessário',
-        timeRequired: 2,
-        isOptional: false,
-      },
-      {
-        order: 3,
-        title: 'Preparação para Descida',
-        description: 'Configurar sistema de rapel ou descida assistida',
-        timeRequired: 5,
-        isOptional: false,
-        visualAid: '/images/safety/emergency-rappel.jpg',
-      },
-      {
-        order: 4,
-        title: 'Execução da Descida',
-        description: 'Realizar descida controlada mantendo comunicação constante',
-        timeRequired: 10,
-        isOptional: false,
-      },
-    ],
-    equipment: [
-      {
-        name: 'Freio de Descida',
-        isRequired: true,
-        quantity: 1,
-        specifications: 'ATC, GriGri ou similar certificado',
-        checkpoints: ['Funcionamento suave', 'Sem desgaste excessivo'],
-      },
-      {
-        name: 'Mosquetões HMS',
-        isRequired: true,
-        quantity: 2,
-        specifications: 'Certificados, com trava',
-        checkpoints: ['Trava funcionando', 'Gate abrindo suavemente'],
-      },
-    ],
-    warnings: [
-      'Apenas para situações de real emergência',
-      'Sempre manter controle da velocidade de descida',
-      'Nunca descer sem comunicação com equipe de apoio',
-    ],
-    emergencyContacts: [
-      {
-        name: 'SAMU',
-        role: 'Emergência Médica',
-        phone: '192',
-        isAvailable24h: true,
-      },
-      {
-        name: 'Bombeiros',
-        role: 'Resgate',
-        phone: '193',
-        isAvailable24h: true,
-      },
-    ],
-    lastUpdated: new Date('2024-10-20'),
-    version: '1.3',
-    isActive: true,
-  },
-];
 
-// 📍 LOCAIS JÁ VISITADOS
+];
 export const VISITED_LOCATIONS: VisitedLocation[] = [
   {
     id: 'fazenda-ipanema',

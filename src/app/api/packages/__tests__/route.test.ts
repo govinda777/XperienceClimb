@@ -2,13 +2,15 @@ import { GET } from '../route';
 import { PACKAGES } from '@/lib/constants';
 
 describe('GET /api/packages', () => {
-  it('should return packages with prices in reais', async () => {
+  it('should return packages with prices in reais and filter out quotations', async () => {
     const response = await GET(new Request('http://localhost/api/packages'));
     const data = await response.json();
 
+    const nonQuotationPackages = Object.values(PACKAGES).filter(p => !p.isQuotation);
+
     expect(response.status).toBe(200);
     expect(data.success).toBe(true);
-    expect(data.data).toHaveLength(Object.values(PACKAGES).length);
+    expect(data.data).toHaveLength(nonQuotationPackages.length);
 
     // Check first package
     const firstPackage = data.data[0];
