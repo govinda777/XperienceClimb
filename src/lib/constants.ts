@@ -15,6 +15,7 @@ export const NAVIGATION_ITEMS = [
   { id: 'hero', label: 'Início', icon: '🏔️', group: 'main' },
   { id: 'sobre', label: 'Sobre', icon: '🌿', group: 'main' },
   { id: 'iniciante', label: 'Iniciantes', icon: '🧗', group: 'main' },
+  { id: 'calendario', label: 'Calendário', icon: '📅', group: 'main' },
   { id: 'pacotes', label: 'Pacotes', icon: '💎', group: 'main' },
 
   // Services and features
@@ -32,7 +33,7 @@ export const NAVIGATION_ITEMS = [
 
 // Navigation groups for better organization
 export const NAVIGATION_GROUPS = {
-  main: { label: 'Principal', items: ['hero', 'sobre', 'iniciante', 'pacotes'] },
+  main: { label: 'Principal', items: ['hero', 'sobre', 'iniciante', 'calendario', 'pacotes'] },
   services: { label: 'Serviços', items: ['programacao', 'timeline', 'seguranca'] },
   content: { label: 'Conteúdo', items: ['galeria', 'comunidade'] },
   location: { label: 'Localização', items: ['localizacao'] },
@@ -116,13 +117,39 @@ export const PACKAGES: Record<string, PackageType> = {
     cancellationPolicy: '',
     disabled: true,
   },
+  anual: {
+    id: 'anual',
+    name: 'Xperience Anual',
+    price: 0,
+    description: 'A jornada definitiva: uma saída a cada 2 meses para lugares surpreendentes.',
+    features: [
+      '🧗 6 Saídas exclusivas por ano',
+      '🚐 Transporte ida e volta incluso',
+      '🍽️ Almoço completo em cada destino',
+      '🏔️ Roteiros variados e inéditos',
+      '🛡️ Todo equipamento e instrução inclusos',
+      '🤝 Comunidade exclusiva de aventureiros',
+    ],
+    bonus: ['🎁 Kit Xperience exclusivo'],
+    shape: 'hexagon',
+    color: 'climb-500',
+    duration: '12 meses',
+    maxParticipants: 12,
+    isQuotation: true,
+    popular: false,
+    requiresExperience: false,
+  },
 };
 
 // Base date from which all formats are derived - modify ONLY this one!
 const BASE_TRIP_DATE = '2026-07-11'; // Format: YYYY-MM-DD
 
-const [year, month, day] = BASE_TRIP_DATE.split('-');
-const MONTHS_PT = [
+const [yearStr, monthStr, dayStr] = BASE_TRIP_DATE.split('-');
+const year = parseInt(yearStr, 10);
+const month = parseInt(monthStr, 10);
+const day = parseInt(dayStr, 10);
+
+export const MONTHS_PT = [
   'Janeiro',
   'Fevereiro',
   'Março',
@@ -136,13 +163,32 @@ const MONTHS_PT = [
   'Novembro',
   'Dezembro',
 ];
-const monthIndex = parseInt(month, 10) - 1;
+const monthIndex = month - 1;
 
 // Dynamic available dates - derived from BASE_TRIP_DATE above
 export const AVAILABLE_DATES = {
   // Data única disponível para escalada
-  singleDate: `${day}/${month}/${year}`,
+  singleDate: `${dayStr}/${monthStr}/${yearStr}`,
   // Para compatibilidade com diferentes formatos
   singleDateISO: BASE_TRIP_DATE,
-  singleDateDisplay: `${parseInt(day, 10)} de ${MONTHS_PT[monthIndex]} de ${year}`,
+  singleDateDisplay: `${day} de ${MONTHS_PT[monthIndex]} de ${year}`,
 } as const;
+
+// Proximas datas para o calendário
+export const NEXT_EVENTS = [
+  {
+    date: 'Agosto 2026',
+    location: 'Pedra Bela',
+    isSecret: true,
+  },
+  {
+    date: 'Outubro 2026',
+    location: 'Pedra Bela',
+    isSecret: true,
+  },
+  {
+    date: 'Dezembro 2026',
+    location: 'A definir',
+    isSecret: true,
+  },
+];

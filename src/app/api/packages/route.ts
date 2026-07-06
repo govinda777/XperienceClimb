@@ -3,7 +3,8 @@ import { PACKAGES } from '@/lib/constants';
 
 export async function GET(_request: Request) {
   try {
-    const packages = Object.values(PACKAGES);
+    // Filter out packages that are quotations as they are handled in separate sections
+    const packages = Object.values(PACKAGES).filter(pkg => !pkg.isQuotation);
 
     if (!packages || !Array.isArray(packages)) {
       throw new Error('Invalid packages data');
