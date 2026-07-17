@@ -10,72 +10,50 @@ import { useTours } from '@/hooks/useTours';
 import { TourService } from '@/infrastructure/services/TourService';
 import { TourRepository } from '@/infrastructure/repositories/TourRepository';
 
-const THEME_IDS = {
-  FAZENDA_IPANEMA: 'fazenda-ipanema',
-  PEDRA_BELA: 'pedra-bela',
-} as const;
-
-const staticThemes = {
-  [THEME_IDS.FAZENDA_IPANEMA]: fazendaIpanemaTheme,
-  [THEME_IDS.PEDRA_BELA]: pedraBellaTheme,
-};
-
-console.log('ThemeProvider: Available static themes:', Object.keys(staticThemes));
-
 interface ThemeContextType {
   currentTheme: ThemeConfig;
   availableThemes: ThemeConfig[];
   setTheme: (themeId: string) => void;
   isLoading: boolean;
   refreshThemes: () => Promise<void>;
+  cmsEnabled: boolean;
+  activeDestinationId: string | null;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function ThemeProviderContent({ children }: { children: React.ReactNode }) {
-  // Initialize with pedraBellaTheme as default fallback
+function ThemeProviderContent({
+  children,
+  initialCmsEnabled = false,
+  initialActiveSite = null
+}: {
+  children: React.ReactNode;
+  initialCmsEnabled?: boolean;
+  initialActiveSite?: any;
+}) {
   const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(pedraBellaTheme);
-  // Keep all themes available for URL loading
-  const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>(Object.values(staticThemes));
+  const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>([pedraBellaTheme, fazendaIpanemaTheme]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeDestinationId, setActiveDestinationId] = useState<string | null>(null);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const { tours, loading: toursLoading } = useTours();
 
   const loadDynamicThemes = useCallback(async () => {
-    // Initialize tour service
     const tourService = new TourService(TourRepository.getInstance());
-
     try {
       const dynamicThemes: ThemeConfig[] = [];
-      
       for (const tour of tours) {
-        try {
-          // If we have a static theme for this tour, skip generating one
-          // We will include the static one if it matches an active tour
-          if (!staticThemes[tour.themeId as keyof typeof staticThemes]) {
-            const themeConfig = tourService.generateThemeFromTour(tour);
-            dynamicThemes.push(themeConfig);
-          }
-        } catch (error) {
-          console.error(`Error generating theme for tour ${tour.id}:`, error);
+        if (tour.themeId !== 'pedra-bela' && tour.themeId !== 'fazenda-ipanema') {
+          const themeConfig = tourService.generateThemeFromTour(tour);
+          dynamicThemes.push(themeConfig);
         }
       }
-
-      // We want availableThemes to contain ALL themes (static + dynamic)
-      // so the app knows about them, even if we only select the active one by default.
-      // This supports the requirement: "Temos que registrar todos os temas"
-      // while "Carregar apenas primeiro ativo" is handled in the selection logic.
-
-      const allThemes = [...Object.values(staticThemes), ...dynamicThemes];
-      setAvailableThemes(allThemes);
-
-      console.log('ThemeProvider: Loaded all themes:', allThemes.map(t => t.id));
-
+      setAvailableThemes([pedraBellaTheme, fazendaIpanemaTheme, ...dynamicThemes]);
     } catch (error) {
       console.error('Error loading dynamic themes:', error);
-      // Fallback: keep static themes
-      setAvailableThemes(Object.values(staticThemes));
+      setAvailableThemes([pedraBellaTheme, fazendaIpanemaTheme]);
     }
   }, [tours]);
 
@@ -86,99 +64,117 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   }, [tours, toursLoading, loadDynamicThemes]);
 
   useEffect(() => {
-    const loadTheme = async () => {
-      try {
-        // Priority 1: Check for theme in URL query parameters
-        // This allows accessing any theme (active or inactive) via URL
+    if (initialCmsEnabled && initialActiveSite?.activeDestination) {
+      const dest = initialActiveSite.activeDestination;
+      const mergedVisual = {
+        ...pedraBellaTheme.visual,
+        ...dest.visualConfig
+      };
+
+      const mappedConfig: ThemeConfig = {
+        id: dest.id || 'pedra-bela',
+        name: dest.name,
+        location: {
+          name: dest.locationDetails?.displayName || dest.name,
+          address: dest.locationDetails?.address || '',
+          city: dest.locationDetails?.city || '',
+          state: dest.locationDetails?.state || 'São Paulo',
+          distance: dest.locationDetails?.distance || '',
+          coordinates: dest.locationDetails?.coordinates || { lat: 0, lng: 0 },
+          mapsUrl: dest.locationDetails?.mapsUrl || '',
+          directions: (dest.locationDetails?.directions || []).map((d: any, idx: number) => ({
+            step: idx + 1,
+            title: d.title || '',
+            description: d.description || ''
+          }))
+        },
+        content: {
+          hero: {
+            title: dest.content?.hero?.title || '',
+            subtitle: dest.content?.hero?.subtitle || '',
+            description: dest.content?.hero?.description || ''
+          },
+          about: {
+            title: dest.content?.about?.title || '',
+            description: dest.content?.about?.description || '',
+            highlights: dest.content?.about?.highlights || [],
+            infoBox: dest.content?.about?.infoBox || { title: '', content: '' },
+            image: dest.content?.about?.image || ''
+          }
+        },
+        gallery: {
+          categories: (dest.gallery?.categories || []).reduce((acc: any, c: any) => {
+            acc[c.key] = c.value;
+            return acc;
+          }, {}),
+          images: (dest.gallery?.images || []).map((img: any) => ({
+            src: img.src,
+            alt: img.alt || '',
+            title: img.title || '',
+            category: img.category || ''
+          }))
+        },
+        activities: [],
+        logistics: {
+          schedule: {
+            openTime: '08:00',
+            closeTime: '18:00',
+            notes: dest.logistics?.meetingPoint || ''
+          },
+          meetingPoint: dest.logistics?.meetingPoint || '',
+          importantNotes: dest.logistics?.importantNotes || [],
+          tips: dest.logistics?.tips ? [dest.logistics.tips] : []
+        },
+        community: {
+          localPartners: [],
+          localInstructors: [],
+          specificSafetyProcedures: []
+        },
+        seo: {
+          title: dest.seo?.title || dest.name,
+          description: dest.seo?.description || '',
+          keywords: dest.seo?.keywords || [],
+          ogImage: dest.seo?.ogImage || ''
+        },
+        beginner: {
+          title: dest.beginnerSection?.title || '',
+          description: dest.beginnerSection?.description || '',
+          highlights: dest.beginnerSection?.highlights || [],
+          finalMessage: dest.beginnerSection?.finalMessage || ''
+        },
+        timeline: dest.timeline || [],
+        visual: mergedVisual
+      };
+
+      setCurrentTheme(mappedConfig);
+      setActiveDestinationId(dest.id);
+      setIsLoading(false);
+    } else {
+      if (!toursLoading) {
         const themeFromUrl = getThemeFromUrl(searchParams);
         let selectedTheme: ThemeConfig | null = null;
-
         if (themeFromUrl) {
-          // Try to find theme in ALL available themes
           selectedTheme = availableThemes.find(theme => theme.id === themeFromUrl) || null;
-
-          if (selectedTheme) {
-            console.log('ThemeProvider: Using theme from URL:', selectedTheme.id);
-            localStorage.setItem('xperience-theme', themeFromUrl);
-          }
         }
-
-        // Priority 2: Use the first ACTIVE tour found
-        // "tours" comes from useTours hook which returns only active tours
         if (!selectedTheme && tours.length > 0) {
           const firstActiveTour = tours[0];
-          // Find the theme corresponding to the first active tour
           selectedTheme = availableThemes.find(t => t.id === firstActiveTour.themeId) || null;
-          if (selectedTheme) {
-             console.log('ThemeProvider: Using first active tour theme:', selectedTheme.id);
-          }
         }
-
-        // Priority 3: Fallback to Pedra Bela (default static)
         if (!selectedTheme) {
-           console.log('ThemeProvider: Fallback to default theme');
-           selectedTheme = pedraBellaTheme;
-           localStorage.removeItem('xperience-theme');
+          selectedTheme = pedraBellaTheme;
         }
-
         setCurrentTheme(selectedTheme);
-
-      } catch (error) {
-        console.error('Error loading theme:', error);
-        setCurrentTheme(pedraBellaTheme);
-      } finally {
+        setActiveDestinationId(selectedTheme.id);
         setIsLoading(false);
       }
-    };
-
-    // Run this effect when params change, or when availableThemes/tours are loaded
-    if (!toursLoading) {
-      loadTheme();
     }
-  }, [searchParams, availableThemes, tours, toursLoading]);
+  }, [searchParams, availableThemes, tours, toursLoading, initialCmsEnabled, initialActiveSite]);
 
-  // eslint-disable-next-line no-unused-vars
   const setTheme = (themeId: string) => {
     const theme = availableThemes.find(t => t.id === themeId);
-    if (!theme) {
-      console.error('Invalid theme ID:', themeId);
-      return;
-    }
-
+    if (!theme) return;
     setCurrentTheme(theme);
     localStorage.setItem('xperience-theme', themeId);
-    
-    // Update URL with theme query parameter
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('theme', themeId);
-    router.push(currentUrl.pathname + currentUrl.search, { scroll: false });
-    
-    // Update document title and meta tags
-    document.title = theme.seo.title;
-    
-    // Update meta description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', theme.seo.description);
-    }
-    
-    // Update og:title
-    const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) {
-      ogTitle.setAttribute('content', theme.seo.title);
-    }
-    
-    // Update og:description
-    const ogDescription = document.querySelector('meta[property="og:description"]');
-    if (ogDescription) {
-      ogDescription.setAttribute('content', theme.seo.description);
-    }
-    
-    // Update og:image
-    const ogImage = document.querySelector('meta[property="og:image"]');
-    if (ogImage) {
-      ogImage.setAttribute('content', theme.seo.ogImage);
-    }
   };
 
   const refreshThemes = async () => {
@@ -193,6 +189,8 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
         setTheme,
         isLoading: isLoading || toursLoading,
         refreshThemes,
+        cmsEnabled: initialCmsEnabled,
+        activeDestinationId
       }}
     >
       {children}
@@ -200,10 +198,18 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({
+  children,
+  initialCmsEnabled = false,
+  initialActiveSite = null
+}: {
+  children: React.ReactNode;
+  initialCmsEnabled?: boolean;
+  initialActiveSite?: any;
+}) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ThemeProviderContent>
+      <ThemeProviderContent initialCmsEnabled={initialCmsEnabled} initialActiveSite={initialActiveSite}>
         {children}
       </ThemeProviderContent>
     </Suspense>

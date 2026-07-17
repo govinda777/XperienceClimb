@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { SanityContentRepository } from '@/infrastructure/repositories/SanityContentRepository';
 import { ThemeProvider } from '@/themes/ThemeProvider';
 import { Navigation } from '@/components/layout';
@@ -18,15 +19,29 @@ import {
 } from '@/components/sections';
 import { CartButton, CartModal } from '@/components/cart';
 
-export const revalidate = 3600; // 1 hour cached statically
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
-export default async function Home() {
-  const cmsEnabled = process.env.NEXT_PUBLIC_CMS_ENABLED === 'true';
+export default async function DestinationPage({ params }: PageProps) {
+  const { slug } = await params;
   const repository = new SanityContentRepository();
-  const activeSite = cmsEnabled ? await repository.getActiveSite() : null;
+  const destination = await repository.getDestinationBySlug(slug);
+
+  if (!destination) {
+    notFound();
+  }
+
+  // Map ActiveSiteContent structure for the ThemeProvider
+  const mockActiveSite = {
+    nextEventStartsAt: '',
+    contactInfo: { phone: '', email: '', instagram: '' },
+    footerSettings: { certificationsText: '', legalText: '' },
+    activeDestination: destination,
+  };
 
   return (
-    <ThemeProvider initialCmsEnabled={cmsEnabled} initialActiveSite={activeSite}>
+    <ThemeProvider initialCmsEnabled={true} initialActiveSite={mockActiveSite}>
       <main className="min-h-screen">
         <Navigation />
         <HeroSection />
