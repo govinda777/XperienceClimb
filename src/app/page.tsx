@@ -7,7 +7,6 @@ import {
   BeginnerSection,
   CalendarSection,
   PackagesSection,
-  AnnualPackageSection,
   TimelineSection,
   GallerySection,
   SafetySection,
@@ -129,12 +128,7 @@ export default async function Home() {
             case 'calendar':
               return <CalendarSection key="calendar" cmsData={calendarCmsData} />;
             case 'packages':
-              return (
-                <div key="packages-group">
-                  <PackagesSection cmsData={packagesCmsData} />
-                  <AnnualPackageSection />
-                </div>
-              );
+              return <PackagesSection key="packages-group" cmsData={packagesCmsData} />;
             case 'includedServices':
               return <IncludedServicesSection key="includedServices" cmsData={servicesCmsData} />;
             case 'timeline':
