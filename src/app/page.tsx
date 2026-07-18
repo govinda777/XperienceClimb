@@ -1,4 +1,4 @@
-import { SanityContentRepository } from '@/infrastructure/repositories/SanityContentRepository';
+import { getContentRepository } from '@/infrastructure/repositories/ContentRepositoryFactory';
 import { ThemeProvider } from '@/themes/ThemeProvider';
 import { Navigation } from '@/components/layout';
 import {
@@ -18,20 +18,21 @@ import {
   TestimonialsSection,
 } from '@/components/sections';
 import { CartButton, CartModal } from '@/components/cart';
+import { ConfigService } from '@/infrastructure/services/ConfigService';
 
 export const revalidate = 3600; // 1 hour cached statically
 
 export default async function Home() {
-  const cmsEnabled = process.env.NEXT_PUBLIC_CMS_ENABLED === 'true';
-  const repository = new SanityContentRepository();
+  const cmsEnabled = ConfigService.getCmsEnabled();
+  const repository = getContentRepository();
 
   // Fetch CMS settings
-  const activeSite = cmsEnabled ? await repository.getActiveSite() : null;
-  const homePage = cmsEnabled ? await repository.getHomePage() : null;
-  const testimonials = cmsEnabled ? await repository.listTestimonials() : undefined;
-  const services = cmsEnabled ? await repository.listIncludedServices() : undefined;
-  const safetyProcedures = cmsEnabled ? await repository.listSafetyProcedures() : undefined;
-  const visitedLocations = cmsEnabled ? await repository.listVisitedLocations() : undefined;
+  const activeSite = await repository.getActiveSite();
+  const homePage = await repository.getHomePage();
+  const testimonials = await repository.listTestimonials();
+  const services = await repository.listIncludedServices();
+  const safetyProcedures = await repository.listSafetyProcedures();
+  const visitedLocations = await repository.listVisitedLocations();
 
   // Build section order from CMS page config or fallback to default
   const defaultSectionOrder = [
@@ -84,29 +85,29 @@ export default async function Home() {
     description: homePage.packagesSection.description
   } : undefined;
 
-  const servicesCmsData = services ? {
-    title: "Tudo Incluso nas Nossas Aventuras",
-    description: "Cuidamos de toda a alimentação e hidratação para você.",
+  const servicesCmsData = services && services.length > 0 ? {
+    title: homePage?.includedServicesSection?.title,
+    description: homePage?.includedServicesSection?.description,
     services
   } : undefined;
 
-  const testimonialsCmsData = testimonials ? {
-    title: "O Que Nossos Aventureiros Dizem",
-    description: "Centenas de escaladores já viveram essa experiência com a Xperience Climb.",
+  const testimonialsCmsData = testimonials && testimonials.length > 0 ? {
+    title: homePage?.testimonialsSection?.title,
+    description: homePage?.testimonialsSection?.description,
     testimonials
   } : undefined;
 
-  const communityCmsData = visitedLocations || safetyProcedures || activeDest?.instructors ? {
-    title: "Nossa Comunidade",
-    description: "Os melhores guias, protocolos e locais em um só lugar.",
+  const communityCmsData = (visitedLocations && visitedLocations.length > 0) || (safetyProcedures && safetyProcedures.length > 0) || activeDest?.instructors ? {
+    title: homePage?.communitySection?.title,
+    description: homePage?.communitySection?.description,
     instructors: activeDest?.instructors,
     procedures: safetyProcedures,
     locations: visitedLocations
   } : undefined;
 
   const safetyCmsData = activeDest?.safetySection ? {
-    title: activeDest.safetySection.title,
-    description: activeDest.safetySection.description,
+    title: homePage?.safetySection?.title || activeDest.safetySection.title,
+    description: homePage?.safetySection?.description || activeDest.safetySection.description,
     safetyItems: activeDest.safetySection.safetyItems,
     equipmentList: activeDest.safetySection.equipmentList
   } : undefined;

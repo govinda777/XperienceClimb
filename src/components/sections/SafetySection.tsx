@@ -89,19 +89,19 @@ const defaultEquipmentList = [
 ];
 
 export function SafetySection({ cmsData }: SafetySectionProps) {
-  const title = cmsData?.title || "Segurança em Primeiro Lugar";
-  const description = cmsData?.description || "Nossa prioridade máxima é garantir que você tenha uma experiência segura e inesquecível. Conheça nossos produtos e equipamentos.";
+  const title = cmsData?.title ?? "Segurança em Primeiro Lugar";
+  const description = cmsData?.description ?? "Nossa prioridade máxima é garantir que você tenha uma experiência segura e inesquecível. Conheça nossos produtos e equipamentos.";
 
   const itemsToRender: SafetyItem[] = cmsData?.safetyItems
     ? cmsData.safetyItems.map(item => ({
-        icon: item.icon || '🛡️',
+        icon: item.icon ?? '🛡️',
         title: item.title,
         description: item.description,
-        details: item.details || []
+        details: item.details ?? []
       }))
     : defaultSafetyItems;
 
-  const equipmentToRender = cmsData?.equipmentList || defaultEquipmentList;
+  const equipmentToRender = cmsData?.equipmentList ?? defaultEquipmentList;
 
   return (
     <section id="seguranca" className="bg-white py-20">

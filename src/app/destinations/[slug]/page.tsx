@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { SanityContentRepository } from '@/infrastructure/repositories/SanityContentRepository';
+import { getContentRepository } from '@/infrastructure/repositories/ContentRepositoryFactory';
 import { ThemeProvider } from '@/themes/ThemeProvider';
 import { Navigation } from '@/components/layout';
 import {
@@ -19,6 +19,7 @@ import {
   TestimonialsSection,
 } from '@/components/sections';
 import { CartButton, CartModal } from '@/components/cart';
+import { ConfigService } from '@/infrastructure/services/ConfigService';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -26,7 +27,8 @@ interface PageProps {
 
 export default async function DestinationPage({ params }: PageProps) {
   const { slug } = await params;
-  const repository = new SanityContentRepository();
+  const cmsEnabled = ConfigService.getCmsEnabled();
+  const repository = getContentRepository();
   const destination = await repository.getDestinationBySlug(slug);
 
   if (!destination) {
@@ -96,35 +98,35 @@ export default async function DestinationPage({ params }: PageProps) {
     description: homePage.packagesSection.description
   } : undefined;
 
-  const servicesCmsData = services ? {
-    title: "Tudo Incluso nas Nossas Aventuras",
-    description: "Cuidamos de toda a alimentação e hidratação para você.",
+  const servicesCmsData = services && services.length > 0 ? {
+    title: homePage?.includedServicesSection?.title,
+    description: homePage?.includedServicesSection?.description,
     services
   } : undefined;
 
-  const testimonialsCmsData = testimonials ? {
-    title: "O Que Nossos Aventureiros Dizem",
-    description: "Centenas de escaladores já viveram essa experiência com a Xperience Climb.",
+  const testimonialsCmsData = testimonials && testimonials.length > 0 ? {
+    title: homePage?.testimonialsSection?.title,
+    description: homePage?.testimonialsSection?.description,
     testimonials
   } : undefined;
 
-  const communityCmsData = visitedLocations || safetyProcedures || destination.instructors ? {
-    title: "Nossa Comunidade",
-    description: "Os melhores guias, protocolos e locais em um só lugar.",
+  const communityCmsData = (visitedLocations && visitedLocations.length > 0) || (safetyProcedures && safetyProcedures.length > 0) || destination.instructors ? {
+    title: homePage?.communitySection?.title,
+    description: homePage?.communitySection?.description,
     instructors: destination.instructors,
     procedures: safetyProcedures,
     locations: visitedLocations
   } : undefined;
 
   const safetyCmsData = destination.safetySection ? {
-    title: destination.safetySection.title,
-    description: destination.safetySection.description,
+    title: homePage?.safetySection?.title || destination.safetySection.title,
+    description: destination.safetySection.description || destination.safetySection.description,
     safetyItems: destination.safetySection.safetyItems,
     equipmentList: destination.safetySection.equipmentList
   } : undefined;
 
   return (
-    <ThemeProvider initialCmsEnabled={true} initialActiveSite={mockActiveSite}>
+    <ThemeProvider initialCmsEnabled={cmsEnabled} initialActiveSite={mockActiveSite}>
       <main className="min-h-screen">
         <Navigation />
 

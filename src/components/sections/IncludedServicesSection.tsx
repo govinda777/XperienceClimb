@@ -37,15 +37,15 @@ const defaultIncludedServices = [
 ];
 
 export function IncludedServicesSection({ cmsData }: IncludedServicesSectionProps) {
-  const title = cmsData?.title || "Tudo Incluso nas Nossas Aventuras";
-  const description = cmsData?.description || "Todas as nossas experiências de escalada incluem alimentação completa e hidratação para garantir que você tenha energia suficiente para aproveitar ao máximo sua aventura.";
+  const title = cmsData?.title ?? "Tudo Incluso nas Nossas Aventuras";
+  const description = cmsData?.description ?? "Todas as nossas experiências de escalada incluem alimentação completa e hidratação para garantir que você tenha energia suficiente para aproveitar ao máximo sua aventura.";
 
   const servicesToRender = cmsData?.services
     ? cmsData.services.map(s => ({
-        icon: s.iconKey || '🧗',
+        icon: s.iconKey ?? '🧗',
         title: s.title,
-        description: s.description || '',
-        details: s.condition || 'Incluso na experiência'
+        description: s.description ?? '',
+        details: s.condition ?? 'Incluso na experiência'
       }))
     : defaultIncludedServices;
 

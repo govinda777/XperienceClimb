@@ -67,12 +67,18 @@ interface CommunitySectionProps {
 export function CommunitySection({ cmsData }: CommunitySectionProps) {
   const [activeTab, setActiveTab] = useState<CommunityTab>('instructors');
 
-  const title = cmsData?.title || "Nossa Comunidade";
-  const description = cmsData?.description || "Conheça os instrutores, procedimentos de segurança e locais que fazem parte da família XperienceClimb. Juntos, construímos experiências seguras e inesquecíveis.";
+  const fallbackTitle = "Nossa Comunidade";
+  const fallbackDescription = "Conheça os instrutores, procedimentos de segurança e locais que fazem parte da família XperienceClimb. Juntos, construímos experiências seguras e inesquecíveis.";
 
-  const totalInstructors = cmsData?.instructors?.length || COMMUNITY_DATA.statistics.totalInstructors;
-  const totalProcedures = cmsData?.procedures?.length || COMMUNITY_DATA.statistics.totalProcedures;
-  const totalLocations = cmsData?.locations?.length || COMMUNITY_DATA.statistics.totalLocations;
+  const title = cmsData?.title ?? fallbackTitle;
+  const description = cmsData?.description ?? fallbackDescription;
+
+  const totalInstructors = cmsData?.instructors ? cmsData.instructors.length : COMMUNITY_DATA.statistics.totalInstructors;
+  const totalProcedures = cmsData?.procedures ? cmsData.procedures.length : COMMUNITY_DATA.statistics.totalProcedures;
+  const totalLocations = cmsData?.locations ? cmsData.locations.length : COMMUNITY_DATA.statistics.totalLocations;
+
+  const titlePart1 = title.split(' ')[0] ?? '';
+  const titlePart2 = title.split(' ').slice(1).join(' ') ?? '';
 
   return (
     <section id="comunidade" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
@@ -80,7 +86,7 @@ export function CommunitySection({ cmsData }: CommunitySectionProps) {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            {title.split(' ')[0]} <span className="text-climb-600">{title.split(' ').slice(1).join(' ')}</span>
+            {titlePart1} <span className="text-climb-600">{titlePart2}</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             {description}
@@ -149,16 +155,16 @@ function InstructorsContent({ cmsInstructors }: { cmsInstructors?: any[] }) {
     ? cmsInstructors.map((ins, idx) => ({
         id: `ins-${idx}`,
         name: ins.name,
-        photo: ins.photo || '/images/logo.png',
-        bio: `${ins.role || 'Instrutor'} certificado com foco em segurança. Specialties: ${ins.specialties?.join(', ') || ''}`,
-        certifications: (ins.certifications || []).map((c: string, cidx: number) => ({
+        photo: ins.photo ?? '/images/logo.png',
+        bio: `${ins.role ?? 'Instrutor'} certificado com foco em segurança. Especialidades: ${ins.specialties?.join(', ') ?? ''}`,
+        certifications: (ins.certifications ?? []).map((c: string, cidx: number) => ({
           id: `c-${cidx}`,
           name: c,
           organization: 'Xperience Climb'
         })),
-        specialties: ins.specialties || ['sport_climbing'],
+        specialties: ins.specialties ?? ['sport_climbing'],
         experience: { yearsActive: 10, totalClients: 150, routesCompleted: 80 },
-        location: { city: 'São Paulo', state: 'São Paulo' },
+        location: { city: 'Socorro', state: 'São Paulo' },
         rating: { average: 5, totalReviews: 10 },
         contact: { instagram: '@xperienceclimb' },
         availability: { priceRange: { min: 15000, max: 35000 } }
@@ -195,6 +201,14 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
     via_ferrata: 'Via Ferrata',
   };
 
+  const city = instructor.location?.city ?? 'Socorro';
+  const state = instructor.location?.state ?? 'São Paulo';
+  const yearsActive = instructor.experience?.yearsActive ?? 10;
+  const totalClients = instructor.experience?.totalClients ?? 100;
+  const ratingAverage = instructor.rating?.average ?? 5;
+  const priceMin = instructor.availability?.priceRange?.min ?? 15000;
+  const priceMax = instructor.availability?.priceRange?.max ?? 35000;
+
   return (
     <div className="bg-gray-50 rounded-xl p-6">
       <div className="flex items-start space-x-4 mb-4">
@@ -211,14 +225,14 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
         <div className="flex-1">
           <h4 className="font-semibold text-gray-900 text-lg mb-1">{instructor.name}</h4>
           <div className="flex items-center space-x-4 text-sm text-gray-500 mb-2">
-            <span>⭐ {instructor.rating?.average || 5}/5</span>
+            <span>⭐ {ratingAverage}/5</span>
             <span>
-              📍 {instructor.location?.city || 'São Paulo'}, {instructor.location?.state || 'São Paulo'}
+              📍 {city}, {state}
             </span>
           </div>
           <div className="flex items-center space-x-4 text-sm text-gray-500">
-            <span>🏔️ {instructor.experience?.yearsActive || 10} anos</span>
-            <span>👥 {instructor.experience?.totalClients || 100} clientes</span>
+            <span>🏔️ {yearsActive} anos</span>
+            <span>👥 {totalClients} clientes</span>
           </div>
         </div>
       </div>
@@ -234,7 +248,7 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
                 key={specialty}
                 className="inline-block px-2 py-1 bg-climb-100 text-climb-700 text-xs rounded"
               >
-                {(specialtyLabels as any)[specialty] || specialty}
+                {(specialtyLabels as any)[specialty] ?? specialty}
               </span>
             ))}
           </div>
@@ -253,8 +267,8 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
 
         <div className="flex items-center justify-between pt-3 border-t border-gray-200">
           <div className="text-xs text-gray-500">
-            Faixa de preço: R$ {((instructor.availability?.priceRange?.min || 15000) / 100).toFixed(0)} - R${' '}
-            {((instructor.availability?.priceRange?.max || 35000) / 100).toFixed(0)}
+            Faixa de preço: R$ {(priceMin / 100).toFixed(0)} - R${' '}
+            {(priceMax / 100).toFixed(0)}
           </div>
         </div>
       </div>
@@ -268,11 +282,11 @@ function SafetyContent({ cmsProcedures }: { cmsProcedures?: any[] }) {
     ? cmsProcedures.map((proc, idx) => ({
         id: `proc-${idx}`,
         title: proc.title,
-        description: proc.description || '',
+        description: proc.description ?? '',
         priority: 'high' as const,
         version: '1.0',
         lastUpdated: new Date(),
-        steps: (proc.details || []).map((step: string, sidx: number) => ({
+        steps: (proc.details ?? []).map((step: string, sidx: number) => ({
           order: sidx + 1,
           title: step,
           description: step
@@ -319,6 +333,10 @@ function SafetyProcedureCard({ procedure }: { procedure: SafetyProcedure }) {
     low: 'Baixo',
   };
 
+  const priorityColorClass = priorityColors[procedure.priority];
+  const priorityLabelText = priorityLabels[procedure.priority];
+  const isExpandedClass = isExpanded ? 'rotate-180' : '';
+
   return (
     <div className="bg-gray-50 rounded-xl p-6">
       <div className="flex items-start justify-between mb-4">
@@ -326,9 +344,9 @@ function SafetyProcedureCard({ procedure }: { procedure: SafetyProcedure }) {
           <h4 className="font-semibold text-gray-900 text-lg mb-2">{procedure.title}</h4>
           <div className="flex items-center space-x-3 mb-2">
             <span
-              className={cn('px-2 py-1 text-xs rounded-full', priorityColors[procedure.priority])}
+              className={cn('px-2 py-1 text-xs rounded-full', priorityColorClass)}
             >
-              {priorityLabels[procedure.priority]}
+              {priorityLabelText}
             </span>
             <span className="text-xs text-gray-500">
               Versão {procedure.version} • Atualizado em{' '}
@@ -341,7 +359,7 @@ function SafetyProcedureCard({ procedure }: { procedure: SafetyProcedure }) {
           className="text-climb-600 hover:text-climb-700 ml-4"
         >
           <span
-            className={cn('transform transition-transform text-xl', isExpanded ? 'rotate-180' : '')}
+            className={cn('transform transition-transform text-xl', isExpandedClass)}
           >
             ▼
           </span>
@@ -416,9 +434,9 @@ function LocationsContent({ cmsLocations }: { cmsLocations?: any[] }) {
         name: loc.name,
         state: 'São Paulo',
         city: 'Socorro',
-        region: 'southeast',
+        region: loc.region ?? 'Socorro/SP',
         coordinates: { lat: -22.5901, lng: -46.5123 },
-        description: loc.description || '',
+        description: loc.description ?? '',
         images: loc.image ? [{ url: loc.image }] : [],
         routes: [
           { name: 'Via Clássica', grade: 'IV', type: 'sport', length: 20, pitches: 1, description: 'Via do visual' }
@@ -434,7 +452,7 @@ function LocationsContent({ cmsLocations }: { cmsLocations?: any[] }) {
 
   const locationsByState = mappedLocations.reduce(
     (acc: any, location: any) => {
-      const state = location.state || 'São Paulo';
+      const state = location.state ?? 'São Paulo';
       if (!acc[state]) {
         acc[state] = [];
       }
@@ -483,6 +501,18 @@ function LocationCard({ location }: { location: VisitedLocation }) {
     extreme: 'bg-red-100 text-red-800',
   };
 
+  const popularity = location.popularity ?? 5;
+  const city = location.city ?? 'Socorro';
+  const state = location.state ?? 'São Paulo';
+  const accessDifficulty = location.access?.difficulty ?? 'easy';
+  const difficultyMin = location.difficulty?.min ?? 'III';
+  const difficultyMax = location.difficulty?.max ?? 'V';
+  const lastVisitedDate = location.lastVisited ?? new Date();
+  const visitCountNumber = location.visitCount ?? 10;
+
+  const difficultyColorClass = difficultyColors[accessDifficulty];
+  const difficultyLabelText = difficultyLabels[accessDifficulty];
+
   return (
     <div className="bg-gray-50 rounded-xl overflow-hidden">
       {location.images && location.images.length > 0 && (
@@ -503,7 +533,7 @@ function LocationCard({ location }: { location: VisitedLocation }) {
           <div>
             <h5 className="font-semibold text-gray-900 text-lg mb-1">{location.name}</h5>
             <div className="text-sm text-gray-500">
-              📍 {location.city || 'Socorro'}, {location.state || 'São Paulo'}
+              📍 {city}, {state}
             </div>
           </div>
           <div className="flex items-center space-x-1">
@@ -512,7 +542,7 @@ function LocationCard({ location }: { location: VisitedLocation }) {
                 key={i}
                 className={cn(
                   'text-lg',
-                  i < (location.popularity || 5) ? 'text-yellow-400' : 'text-gray-300'
+                  i < popularity ? 'text-yellow-400' : 'text-gray-300'
                 )}
               >
                 ⭐
@@ -529,30 +559,30 @@ function LocationCard({ location }: { location: VisitedLocation }) {
             <span
               className={cn(
                 'px-2 py-1 text-xs rounded-full',
-                difficultyColors[location.access?.difficulty || 'easy']
+                difficultyColorClass
               )}
             >
-              {difficultyLabels[location.access?.difficulty || 'easy']}
+              {difficultyLabelText}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-500">Dificuldade das vias:</span>
             <span className="text-gray-700">
-              {location.difficulty?.min || 'III'} - {location.difficulty?.max || 'V'}
+              {difficultyMin} - {difficultyMax}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-500">Última visita:</span>
             <span className="text-gray-700">
-              {(location.lastVisited || new Date()).toLocaleDateString('pt-BR')}
+              {lastVisitedDate.toLocaleDateString('pt-BR')}
             </span>
           </div>
 
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-500">Visitas realizadas:</span>
-            <span className="text-climb-600 font-medium">{location.visitCount || 10}</span>
+            <span className="text-climb-600 font-medium">{visitCountNumber}</span>
           </div>
         </div>
       </div>

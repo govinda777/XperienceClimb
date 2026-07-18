@@ -48,7 +48,7 @@ const getColorClass = (color: string) => {
     'purple-500': 'bg-purple-500',
     'climb-500': 'bg-climb-500',
   };
-  return colorMap[color] || 'bg-gray-500';
+  return colorMap[color] ?? 'bg-gray-500';
 };
 
 export function PackagesSection({ cmsData }: PackagesSectionProps) {
@@ -57,8 +57,8 @@ export function PackagesSection({ cmsData }: PackagesSectionProps) {
   const [loading, setLoading] = React.useState(true);
   const [waitlistPackage, setWaitlistPackage] = React.useState<string | null>(null);
 
-  const title = cmsData?.title || "Pacotes de Escalada";
-  const description = cmsData?.description || "Escolha a experiência perfeita para o seu nível. Todos os pacotes incluem equipamentos de segurança e instrução profissional.";
+  const title = cmsData?.title ?? "Pacotes de Escalada";
+  const description = cmsData?.description ?? "Escolha a experiência perfeita para o seu nível. Todos os pacotes incluem equipamentos de segurança e instrução profissional.";
 
   // Fetch API data with styling information
   React.useEffect(() => {
@@ -277,7 +277,7 @@ export function PackagesSection({ cmsData }: PackagesSectionProps) {
       <WaitlistModal
         isOpen={!!waitlistPackage}
         onClose={() => setWaitlistPackage(null)}
-        packageName={waitlistPackage || ''}
+        packageName={waitlistPackage ?? ''}
       />
     </section>
   );

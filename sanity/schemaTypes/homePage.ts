@@ -16,7 +16,6 @@ export default {
         'calendar',
         'packages',
         'includedServices',
-        'schedule',
         'timeline',
         'gallery',
         'safety',
@@ -47,6 +46,33 @@ export default {
           type: 'array',
           of: [{ type: 'reference', to: [{ type: 'package' }] }]
         }
+      ]
+    },
+    {
+      name: 'includedServicesSection',
+      title: 'Included Services Section Config',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'Title', type: 'string' },
+        { name: 'description', title: 'Description', type: 'text' }
+      ]
+    },
+    {
+      name: 'safetySection',
+      title: 'Safety Section Config',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'Title', type: 'string' },
+        { name: 'description', title: 'Description', type: 'text' }
+      ]
+    },
+    {
+      name: 'communitySection',
+      title: 'Community Section Config',
+      type: 'object',
+      fields: [
+        { name: 'title', title: 'Title', type: 'string' },
+        { name: 'description', title: 'Description', type: 'text' }
       ]
     },
     {

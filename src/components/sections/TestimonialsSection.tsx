@@ -72,17 +72,17 @@ export function TestimonialsSection({ cmsData }: TestimonialsSectionProps) {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [filter, setFilter] = useState<'all' | 'first-time' | 'beginner' | 'intermediate' | 'advanced'>('all');
 
-  const title = cmsData?.title || "O Que Nossos Aventureiros Dizem";
-  const description = cmsData?.description || "Mais de 500 pessoas já viveram essa experiência única. Confira alguns dos depoimentos dos nossos escaladores!";
+  const title = cmsData?.title ?? "O Que Nossos Aventureiros Dizem";
+  const description = cmsData?.description ?? "Mais de 500 pessoas já viveram essa experiência única. Confira alguns dos depoimentos dos nossos escaladores!";
 
   // Map CMS testimonials to match our UI state schema
   const testimonialsToRender: Testimonial[] = cmsData?.testimonials
     ? cmsData.testimonials.map((t, _idx) => ({
         name: t.name,
-        rating: t.rating || 5,
+        rating: t.rating ?? 5,
         comment: t.text,
-        date: t.date || '2026-01-01',
-        experience: (t.experience as any) || 'first-time',
+        date: t.date ?? '2026-01-01',
+        experience: (t.experience as any) ?? 'first-time',
         city: 'São Paulo, SP',
         package: 'Especial'
       }))
@@ -113,6 +113,12 @@ export function TestimonialsSection({ cmsData }: TestimonialsSectionProps) {
   if (!currentTest) {
     return null;
   }
+
+  const commentText = currentTest.comment;
+  const ratingValue = currentTest.rating;
+  const avatarInitials = currentTest.name.split(' ').map(n => n[0] ?? '').join('');
+  const clientAgeText = currentTest.age ? `${currentTest.age} anos • ${currentTest.city ?? 'São Paulo'}` : '';
+  const experienceLabel = experienceLabels[currentTest.experience] ?? 'Iniciante';
 
   return (
     <section id="depoimentos" className="py-20 bg-gradient-to-br from-orange-50 to-climb-50">
@@ -175,23 +181,23 @@ export function TestimonialsSection({ cmsData }: TestimonialsSectionProps) {
               <div className="text-6xl text-climb-500/20 mb-6 leading-none">&ldquo;</div>
               
               <div className="flex items-center justify-center space-x-1 mb-6">
-                {[...Array(currentTest.rating)].map((_, i) => (
+                {[...Array(ratingValue)].map((_, i) => (
                   <span key={i} className="text-lg text-yellow-400">⭐</span>
                 ))}
               </div>
               
               <blockquote className="text-xl md:text-2xl text-neutral-700 text-center leading-relaxed mb-8 italic">
-                {currentTest.comment}
+                {commentText}
               </blockquote>
               
               <div className="text-center">
                 <div className="flex items-center justify-center space-x-4 mb-4">
                   <div className="w-16 h-16 bg-gradient-to-br from-climb-500 to-climb-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-                    {currentTest.name.split(' ').map(n => n[0]).join('')}
+                    {avatarInitials}
                   </div>
                   <div className="text-left">
                     <h4 className="text-lg font-bold text-climb-600">{currentTest.name}</h4>
-                    {currentTest.age && <p className="text-neutral-600">{currentTest.age} anos • {currentTest.city}</p>}
+                    {clientAgeText && <p className="text-neutral-600">{clientAgeText}</p>}
                   </div>
                 </div>
                 
@@ -202,7 +208,7 @@ export function TestimonialsSection({ cmsData }: TestimonialsSectionProps) {
                     </span>
                   )}
                   <span className="px-3 py-1 bg-climb-100 text-climb-600 rounded-full text-sm font-medium">
-                    {experienceLabels[currentTest.experience]}
+                    {experienceLabel}
                   </span>
                   {currentTest.date && (
                     <span className="px-3 py-1 bg-neutral-100 text-neutral-600 rounded-full text-sm">

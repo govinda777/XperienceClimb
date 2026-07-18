@@ -108,6 +108,22 @@ export interface HomePageContent {
     description?: string;
     packageRefs?: string[];
   };
+  includedServicesSection?: {
+    title?: string;
+    description?: string;
+  };
+  safetySection?: {
+    title?: string;
+    description?: string;
+  };
+  communitySection?: {
+    title?: string;
+    description?: string;
+  };
+  testimonialsSection?: {
+    title?: string;
+    description?: string;
+  };
 }
 
 export interface TestimonialContent {
