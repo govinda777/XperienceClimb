@@ -4,12 +4,12 @@ import { ThemeProvider, useTheme } from '../ThemeProvider';
 
 // Test component to read theme properties
 const TestComponent = () => {
-  const { theme, cmsEnabled, activeDestinationId } = useTheme();
+  const { currentTheme, cmsEnabled, activeDestinationId } = useTheme();
   return (
     <div>
       <span data-testid="cms-enabled">{cmsEnabled ? 'true' : 'false'}</span>
       <span data-testid="destination-id">{activeDestinationId || 'null'}</span>
-      <span data-testid="primary-color">{theme.primaryColor}</span>
+      <span data-testid="primary-color">{currentTheme.visual.primaryColor}</span>
     </div>
   );
 };
