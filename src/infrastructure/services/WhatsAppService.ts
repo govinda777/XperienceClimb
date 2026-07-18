@@ -10,7 +10,8 @@ export class WhatsAppService {
 
   constructor() {
     // Use contact info from constants, converting to WhatsApp format
-    this.phoneNumber = this.formatPhoneForWhatsApp(CONTACT_INFO.phone);
+    const defaultPhone = this.formatPhoneForWhatsApp(CONTACT_INFO.phone);
+    this.phoneNumber = process.env.WHATSAPP_PHONE_NUMBER || defaultPhone;
   }
 
   private formatPhoneForWhatsApp(phone: string): string {
