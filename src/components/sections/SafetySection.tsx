@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-// import { Button } from '@/components/ui';
 
 interface SafetyItem {
   icon: string;
@@ -10,7 +9,25 @@ interface SafetyItem {
   details: string[];
 }
 
-const safetyItems: SafetyItem[] = [
+interface SafetySectionProps {
+  cmsData?: {
+    title?: string;
+    description?: string;
+    safetyItems?: Array<{
+      icon: string;
+      title: string;
+      description: string;
+      details?: string[];
+    }>;
+    equipmentList?: Array<{
+      name: string;
+      required: boolean;
+      provided: boolean;
+    }>;
+  };
+}
+
+const defaultSafetyItems: SafetyItem[] = [
   {
     icon: '🛡️',
     title: 'Equipamentos Certificados',
@@ -24,7 +41,7 @@ const safetyItems: SafetyItem[] = [
     ],
   },
   {
-    icon: '👨‍🏫',
+    icon: '👨',
     title: 'Instrutores Qualificados',
     description: 'Equipe com certificação nacional e internacional',
     details: [
@@ -57,7 +74,7 @@ const safetyItems: SafetyItem[] = [
   },
 ];
 
-const equipmentList = [
+const defaultEquipmentList = [
   { name: 'Capacete', required: true, provided: true },
   { name: 'Cadeirinha', required: true, provided: true },
   { name: 'Corda dinâmica', required: true, provided: true },
@@ -71,23 +88,36 @@ const equipmentList = [
   { name: 'Sleck beliscos', required: false, provided: false },
 ];
 
-export function SafetySection() {
+export function SafetySection({ cmsData }: SafetySectionProps) {
+  const title = cmsData?.title || "Segurança em Primeiro Lugar";
+  const description = cmsData?.description || "Nossa prioridade máxima é garantir que você tenha uma experiência segura e inesquecível. Conheça nossos produtos e equipamentos.";
+
+  const itemsToRender: SafetyItem[] = cmsData?.safetyItems
+    ? cmsData.safetyItems.map(item => ({
+        icon: item.icon || '🛡️',
+        title: item.title,
+        description: item.description,
+        details: item.details || []
+      }))
+    : defaultSafetyItems;
+
+  const equipmentToRender = cmsData?.equipmentList || defaultEquipmentList;
+
   return (
     <section id="seguranca" className="bg-white py-20">
       <div className="container mx-auto px-4">
         <div className="mb-16 text-center">
           <h2 className="mb-6 text-4xl font-bold text-climb-600 md:text-5xl">
-            Segurança em Primeiro Lugar
+            {title}
           </h2>
           <p className="mx-auto max-w-3xl text-xl text-neutral-700">
-            Nossa prioridade máxima é garantir que você tenha uma experiência segura e inesquecível.
-            Conheça nossos protocolos e equipamentos.
+            {description}
           </p>
         </div>
 
         {/* Safety Features */}
         <div className="mb-20 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {safetyItems.map((item, index) => (
+          {itemsToRender.map((item, index) => (
             <div
               key={index}
               className="group rounded-2xl bg-neutral-50 p-6 transition-all duration-300 hover:bg-climb-50 hover:shadow-lg"
@@ -122,7 +152,7 @@ export function SafetySection() {
             </p>
 
             <div className="space-y-4">
-              {equipmentList
+              {equipmentToRender
                 .filter(item => item.required)
                 .map((item, index) => (
                   <div
@@ -167,7 +197,7 @@ export function SafetySection() {
             <p className="mb-6 text-neutral-600">Itens recomendados para maior conforto</p>
 
             <div className="space-y-4">
-              {equipmentList
+              {equipmentToRender
                 .filter(item => !item.required)
                 .map((item, index) => (
                   <div
@@ -188,69 +218,6 @@ export function SafetySection() {
                 ))}
             </div>
           </div>
-
-          {/* Safety Certifications */}
-          {/* <div>
-            <h3 className="text-3xl font-bold text-climb-600 mb-8">
-              Certificações e Seguros
-            </h3>
-
-            <div className="space-y-6">
-              <div className="bg-climb-500 text-white p-6 rounded-2xl">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">🏛️</span>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold">Autorização ICMBio</h4>
-                    <p className="text-climb-100 text-sm">Operação turística autorizada</p>
-                  </div>
-                </div>
-                <p className="text-climb-100">
-                  Empresa credenciada pelo Instituto Chico Mendes para operação 
-                  turística na Floresta Nacional de Ipanema.
-                </p>
-              </div>
-
-              <div className="bg-orange-400 text-white p-6 rounded-2xl">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">🛡️</span>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold">ABETA</h4>
-                    <p className="text-orange-100 text-sm">Associação Brasileira de Ecoturismo</p>
-                  </div>
-                </div>
-                <p className="text-orange-100">
-                  Certificação em turismo de aventura e práticas sustentáveis 
-                  de operação em ambientes naturais.
-                </p>
-              </div>
-
-              <div className="bg-green-500 text-white p-6 rounded-2xl">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">📋</span>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold">Seguro de Acidentes</h4>
-                    <p className="text-green-100 text-sm">Cobertura total incluída</p>
-                  </div>
-                </div>
-                <p className="text-green-100">
-                  Todos os participantes são automaticamente cobertos por 
-                  seguro de acidentes pessoais durante a atividade.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center">
-              <Button variant="outline" size="lg" className="border-climb-500 text-climb-600">
-                📄 Ver Certificados Completos
-              </Button>
-            </div>
-          </div> */}
         </div>
       </div>
     </section>

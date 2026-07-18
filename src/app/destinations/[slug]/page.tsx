@@ -9,13 +9,14 @@ import {
   CalendarSection,
   PackagesSection,
   AnnualPackageSection,
-  ScheduleSection,
   TimelineSection,
   GallerySection,
   SafetySection,
   CommunitySection,
   LocationSection,
   Footer,
+  IncludedServicesSection,
+  TestimonialsSection,
 } from '@/components/sections';
 import { CartButton, CartModal } from '@/components/cart';
 
@@ -32,6 +33,13 @@ export default async function DestinationPage({ params }: PageProps) {
     notFound();
   }
 
+  // Fetch standard page components
+  const homePage = await repository.getHomePage();
+  const testimonials = await repository.listTestimonials();
+  const services = await repository.listIncludedServices();
+  const safetyProcedures = await repository.listSafetyProcedures();
+  const visitedLocations = await repository.listVisitedLocations();
+
   // Map ActiveSiteContent structure for the ThemeProvider
   const mockActiveSite = {
     nextEventStartsAt: '',
@@ -40,22 +48,123 @@ export default async function DestinationPage({ params }: PageProps) {
     activeDestination: destination,
   };
 
+  const defaultSectionOrder = [
+    'hero',
+    'about',
+    'beginner',
+    'calendar',
+    'packages',
+    'includedServices',
+    'timeline',
+    'gallery',
+    'safety',
+    'community',
+    'location',
+    'testimonials'
+  ];
+
+  const sectionOrder = homePage?.sectionOrder || defaultSectionOrder;
+
+  // Prop Mappers
+  const heroCmsData = destination.content?.hero ? {
+    title: destination.content.hero.title,
+    subtitle: destination.content.hero.subtitle,
+    description: destination.content.hero.description,
+    backgroundImage: destination.content.hero.backgroundImage
+  } : undefined;
+
+  const aboutCmsData = destination.content?.about ? {
+    title: destination.content.about.title,
+    description: destination.content.about.description,
+    highlights: destination.content.about.highlights,
+    image: destination.content.about.image
+  } : undefined;
+
+  const beginnerCmsData = destination.beginnerSection ? {
+    title: destination.beginnerSection.title,
+    description: destination.beginnerSection.description,
+    highlights: destination.beginnerSection.highlights
+  } : undefined;
+
+  const calendarCmsData = homePage?.calendarSection ? {
+    title: homePage.calendarSection.title,
+    description: homePage.calendarSection.description
+  } : undefined;
+
+  const packagesCmsData = homePage?.packagesSection ? {
+    title: homePage.packagesSection.title,
+    description: homePage.packagesSection.description
+  } : undefined;
+
+  const servicesCmsData = services ? {
+    title: "Tudo Incluso nas Nossas Aventuras",
+    description: "Cuidamos de toda a alimentação e hidratação para você.",
+    services
+  } : undefined;
+
+  const testimonialsCmsData = testimonials ? {
+    title: "O Que Nossos Aventureiros Dizem",
+    description: "Centenas de escaladores já viveram essa experiência com a Xperience Climb.",
+    testimonials
+  } : undefined;
+
+  const communityCmsData = visitedLocations || safetyProcedures || destination.instructors ? {
+    title: "Nossa Comunidade",
+    description: "Os melhores guias, protocolos e locais em um só lugar.",
+    instructors: destination.instructors,
+    procedures: safetyProcedures,
+    locations: visitedLocations
+  } : undefined;
+
+  const safetyCmsData = destination.safetySection ? {
+    title: destination.safetySection.title,
+    description: destination.safetySection.description,
+    safetyItems: destination.safetySection.safetyItems,
+    equipmentList: destination.safetySection.equipmentList
+  } : undefined;
+
   return (
     <ThemeProvider initialCmsEnabled={true} initialActiveSite={mockActiveSite}>
       <main className="min-h-screen">
         <Navigation />
-        <HeroSection />
-        <AboutSection />
-        <BeginnerSection />
-        <CalendarSection />
-        <PackagesSection />
-        <AnnualPackageSection />
-        <ScheduleSection />
-        <TimelineSection />
-        <GallerySection />
-        <SafetySection />
-        <CommunitySection />
-        <LocationSection />
+
+        {/* Render sections conditionally and in order if defined */}
+        {sectionOrder.map((sectionKey) => {
+          switch (sectionKey) {
+            case 'hero':
+              return <HeroSection key="hero" cmsData={heroCmsData} />;
+            case 'about':
+              return <AboutSection key="about" cmsData={aboutCmsData} />;
+            case 'beginner':
+              return <BeginnerSection key="beginner" cmsData={beginnerCmsData} />;
+            case 'calendar':
+              return <CalendarSection key="calendar" cmsData={calendarCmsData} />;
+            case 'packages':
+              return (
+                <div key="packages-group">
+                  <PackagesSection cmsData={packagesCmsData} />
+                  <AnnualPackageSection />
+                </div>
+              );
+            case 'includedServices':
+              return <IncludedServicesSection key="includedServices" cmsData={servicesCmsData} />;
+            case 'timeline':
+              return <TimelineSection key="timeline" />;
+            case 'gallery':
+              return <GallerySection key="gallery" />;
+            case 'safety':
+              return <SafetySection key="safety" cmsData={safetyCmsData} />;
+            case 'community':
+              return <CommunitySection key="community" cmsData={communityCmsData} />;
+            case 'location':
+              return <LocationSection key="location" />;
+            case 'testimonials':
+              return <TestimonialsSection key="testimonials" cmsData={testimonialsCmsData} />;
+            default:
+              return null;
+          }
+        })}
+
         <Footer />
 
         {/* Floating Cart Button */}

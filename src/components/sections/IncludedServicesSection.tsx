@@ -2,45 +2,67 @@
 
 import React from 'react';
 
-export function IncludedServicesSection() {
-  // const { currentTheme } = useTheme(); // Not used in this component
-  
-  const includedServices = [
-    {
-      icon: '🥪',
-      title: 'Lanche de Trilha',
-      description: 'Lanche completo e nutritivo preparado especialmente para suas aventuras na natureza',
-      details: 'Sanduíches naturais, frutas e snacks energéticos'
-    },
-    {
-      icon: '☕',
-      title: 'Café da Manhã',
-      description: 'Café fresco e quentinho para começar o dia com energia',
-      details: 'Café coado, chás e acompanhamentos'
-    },
-    {
-      icon: '💧',
-      title: 'Água Mineral',
-      description: 'Hidratação garantida durante toda a sua aventura',
-      details: 'Água mineral em garrafas reutilizáveis'
-    }
-  ];
+interface IncludedServicesSectionProps {
+  cmsData?: {
+    title?: string;
+    description?: string;
+    services?: Array<{
+      title: string;
+      description?: string;
+      iconKey?: string;
+      condition?: string;
+    }>;
+  };
+}
+
+const defaultIncludedServices = [
+  {
+    icon: '🥪',
+    title: 'Lanche de Trilha',
+    description: 'Lanche completo e nutritivo preparado especialmente para suas aventuras na natureza',
+    details: 'Sanduíches naturais, frutas e snacks energéticos'
+  },
+  {
+    icon: '☕',
+    title: 'Café da Manhã',
+    description: 'Café fresco e quentinho para começar o dia com energia',
+    details: 'Café coado, chás e acompanhamentos'
+  },
+  {
+    icon: '💧',
+    title: 'Água Mineral',
+    description: 'Hidratação garantida durante toda a sua aventura',
+    details: 'Água mineral em garrafas reutilizáveis'
+  }
+];
+
+export function IncludedServicesSection({ cmsData }: IncludedServicesSectionProps) {
+  const title = cmsData?.title || "Tudo Incluso nas Nossas Aventuras";
+  const description = cmsData?.description || "Todas as nossas experiências de escalada incluem alimentação completa e hidratação para garantir que você tenha energia suficiente para aproveitar ao máximo sua aventura.";
+
+  const servicesToRender = cmsData?.services
+    ? cmsData.services.map(s => ({
+        icon: s.iconKey || '🧗',
+        title: s.title,
+        description: s.description || '',
+        details: s.condition || 'Incluso na experiência'
+      }))
+    : defaultIncludedServices;
 
   return (
     <section id="servicos-inclusos" className="bg-gradient-to-br from-orange-50 to-climb-50 py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="mb-6 text-4xl font-bold text-climb-600 md:text-5xl">
-            Tudo Incluso nas Nossas{' '}
-            <span className="text-orange-400">Aventuras</span>
+            {title}
           </h2>
           <p className="mx-auto max-w-3xl text-xl leading-relaxed text-neutral-700">
-            Todas as nossas experiências de escalada incluem alimentação completa e hidratação para garantir que você tenha energia suficiente para aproveitar ao máximo sua aventura.
+            {description}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {includedServices.map((service, index) => (
+          {servicesToRender.map((service, index) => (
             <div
               key={index}
               className="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-2"

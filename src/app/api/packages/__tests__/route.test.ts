@@ -1,5 +1,4 @@
 import { GET } from '../route';
-import { NextResponse } from 'next/server';
 
 jest.mock('@/infrastructure/repositories/SanityContentRepository', () => {
   return {

@@ -110,10 +110,46 @@ export interface HomePageContent {
   };
 }
 
+export interface TestimonialContent {
+  name: string;
+  photo?: string;
+  text: string;
+  date?: string;
+  experience?: string;
+  rating?: number;
+}
+
+export interface ServiceContent {
+  title: string;
+  description?: string;
+  iconKey?: string;
+  condition?: string;
+}
+
+export interface SafetyProcedureContent {
+  title: string;
+  description?: string;
+  details?: string[];
+  iconKey?: string;
+}
+
+export interface VisitedLocationContent {
+  name: string;
+  slug: string;
+  region?: string;
+  image?: string;
+  description?: string;
+  status: 'planned' | 'completed' | 'active' | 'archived';
+}
+
 export interface IContentRepository {
   getActiveSite(): Promise<ActiveSiteContent | null>;
   getHomePage(): Promise<HomePageContent | null>;
   getDestinationBySlug(slug: string): Promise<DestinationContent | null>;
   listDestinations(): Promise<DestinationContent[]>;
   listPublishedPackages(): Promise<Package[]>;
+  listTestimonials(): Promise<TestimonialContent[]>;
+  listIncludedServices(): Promise<ServiceContent[]>;
+  listSafetyProcedures(): Promise<SafetyProcedureContent[]>;
+  listVisitedLocations(): Promise<VisitedLocationContent[]>;
 }

@@ -4,20 +4,32 @@ import React, { useState } from 'react';
 import { Card, Button } from '@/components/ui';
 
 interface Testimonial {
-  id: number;
   name: string;
-  age: number;
-  city: string;
-  package: string; // Dynamic package name
+  age?: number;
+  city?: string;
+  package?: string;
   rating: number;
   comment: string;
-  date: string;
+  date?: string;
   experience: 'first-time' | 'beginner' | 'intermediate' | 'advanced';
 }
 
-const testimonials: Testimonial[] = [
+interface TestimonialsSectionProps {
+  cmsData?: {
+    title?: string;
+    description?: string;
+    testimonials?: Array<{
+      name: string;
+      text: string;
+      date?: string;
+      experience?: string;
+      rating?: number;
+    }>;
+  };
+}
+
+const defaultTestimonials: Testimonial[] = [
   {
-    id: 1,
     name: 'Ana Carolina',
     age: 28,
     city: 'São Paulo, SP',
@@ -28,7 +40,6 @@ const testimonials: Testimonial[] = [
     experience: 'first-time'
   },
   {
-    id: 2,
     name: 'Roberto Silva',
     age: 35,
     city: 'Campinas, SP',
@@ -39,7 +50,6 @@ const testimonials: Testimonial[] = [
     experience: 'intermediate'
   },
   {
-    id: 3,
     name: 'Mariana Costa',
     age: 24,
     city: 'Sorocaba, SP',
@@ -47,39 +57,6 @@ const testimonials: Testimonial[] = [
     rating: 5,
     comment: 'Perfeito para iniciantes! Me senti super acolhida e segura. O instrutor teve muita paciência para ensinar as técnicas. Vista incrível lá de cima!',
     date: '2024-01-08',
-    experience: 'first-time'
-  },
-  {
-    id: 4,
-    name: 'João Pedro',
-    age: 31,
-    city: 'São Paulo, SP',
-    package: 'Intermediário',
-    rating: 5,
-    comment: 'Já escalei em vários lugares, mas o Araçoiaba tem algo especial. A rocha é única e a vista da Mata Atlântica é espetacular. Recomendo muito!',
-    date: '2024-01-05',
-    experience: 'advanced'
-  },
-  {
-    id: 5,
-    name: 'Família Oliveira',
-    age: 42,
-    city: 'Jundiaí, SP',
-    package: 'Intermediário',
-    rating: 5,
-    comment: 'Trouxemos nossos filhos (14 e 16 anos) e foi perfeito! Atividade segura, educativa e divertida. Os meninos não param de falar da experiência.',
-    date: '2024-01-03',
-    experience: 'beginner'
-  },
-  {
-    id: 6,
-    name: 'Carla Mendes',
-    age: 29,
-    city: 'Bauru, SP',
-    package: 'Básico',
-    rating: 5,
-    comment: 'Superou todas as expectativas! Estava nervosa no início, mas a equipe me deixou super confortável. É viciante, já agendei a próxima!',
-    date: '2023-12-28',
     experience: 'first-time'
   }
 ];
@@ -91,13 +68,29 @@ const experienceLabels = {
   'advanced': 'Avançado'
 };
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ cmsData }: TestimonialsSectionProps) {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [filter, setFilter] = useState<'all' | 'first-time' | 'beginner' | 'intermediate' | 'advanced'>('all');
 
+  const title = cmsData?.title || "O Que Nossos Aventureiros Dizem";
+  const description = cmsData?.description || "Mais de 500 pessoas já viveram essa experiência única. Confira alguns dos depoimentos dos nossos escaladores!";
+
+  // Map CMS testimonials to match our UI state schema
+  const testimonialsToRender: Testimonial[] = cmsData?.testimonials
+    ? cmsData.testimonials.map((t, _idx) => ({
+        name: t.name,
+        rating: t.rating || 5,
+        comment: t.text,
+        date: t.date || '2026-01-01',
+        experience: (t.experience as any) || 'first-time',
+        city: 'São Paulo, SP',
+        package: 'Especial'
+      }))
+    : defaultTestimonials;
+
   const filteredTestimonials = filter === 'all' 
-    ? testimonials 
-    : testimonials.filter(t => t.experience === filter);
+    ? testimonialsToRender
+    : testimonialsToRender.filter(t => t.experience === filter);
 
   const nextTestimonial = () => {
     setCurrentTestimonial((prev) => 
@@ -126,10 +119,10 @@ export function TestimonialsSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-climb-600 mb-6">
-            O Que Nossos Aventureiros Dizem
+            {title}
           </h2>
           <p className="text-xl text-neutral-700 max-w-3xl mx-auto">
-            Mais de 500 pessoas já viveram essa experiência única. Confira alguns dos depoimentos dos nossos escaladores!
+            {description}
           </p>
         </div>
 
@@ -182,7 +175,7 @@ export function TestimonialsSection() {
               <div className="text-6xl text-climb-500/20 mb-6 leading-none">&ldquo;</div>
               
               <div className="flex items-center justify-center space-x-1 mb-6">
-                {[...Array(5)].map((_, i) => (
+                {[...Array(currentTest.rating)].map((_, i) => (
                   <span key={i} className="text-lg text-yellow-400">⭐</span>
                 ))}
               </div>
@@ -198,20 +191,24 @@ export function TestimonialsSection() {
                   </div>
                   <div className="text-left">
                     <h4 className="text-lg font-bold text-climb-600">{currentTest.name}</h4>
-                    <p className="text-neutral-600">{currentTest.age} anos • {currentTest.city}</p>
+                    {currentTest.age && <p className="text-neutral-600">{currentTest.age} anos • {currentTest.city}</p>}
                   </div>
                 </div>
                 
                 <div className="flex flex-wrap items-center justify-center gap-3">
-                  <span className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-medium">
-                    Pacote {currentTest.package}
-                  </span>
+                  {currentTest.package && (
+                    <span className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-medium">
+                      Pacote {currentTest.package}
+                    </span>
+                  )}
                   <span className="px-3 py-1 bg-climb-100 text-climb-600 rounded-full text-sm font-medium">
                     {experienceLabels[currentTest.experience]}
                   </span>
-                  <span className="px-3 py-1 bg-neutral-100 text-neutral-600 rounded-full text-sm">
-                    {new Date(currentTest.date).toLocaleDateString('pt-BR')}
-                  </span>
+                  {currentTest.date && (
+                    <span className="px-3 py-1 bg-neutral-100 text-neutral-600 rounded-full text-sm">
+                      {new Date(currentTest.date).toLocaleDateString('pt-BR')}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -270,19 +267,6 @@ export function TestimonialsSection() {
           <div className="text-center bg-white rounded-2xl p-6 shadow-lg">
             <div className="text-3xl font-bold text-purple-500 mb-2">60%</div>
             <div className="text-sm text-neutral-600">Voltaram</div>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="text-center">
-          <div className="bg-climb-500 text-white p-8 rounded-2xl shadow-xl max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold mb-4">Seja o Próximo a Viver Essa Experiência!</h3>
-            <p className="mb-6 opacity-90">
-              Junte-se aos centenas de aventureiros que já descobriram a paixão pela escalada no Morro Araçoiaba.
-            </p>
-            <Button variant="secondary" size="lg">
-              Quero Escalar Também!
-            </Button>
           </div>
         </div>
       </div>

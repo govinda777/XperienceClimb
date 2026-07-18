@@ -1,6 +1,14 @@
-import { VisualTheme } from '@/themes/types';
 import { Package } from '@/core/entities/Package';
-import { ActiveSiteContent, DestinationContent, HomePageContent, IContentRepository } from '@/core/repositories/IContentRepository';
+import {
+  ActiveSiteContent,
+  DestinationContent,
+  HomePageContent,
+  IContentRepository,
+  TestimonialContent,
+  ServiceContent,
+  SafetyProcedureContent,
+  VisitedLocationContent
+} from '@/core/repositories/IContentRepository';
 
 // Mock data to be used when SANITY variables are not configured in sandbox
 const mockActiveDestination: DestinationContent = {
@@ -76,7 +84,7 @@ const mockActiveDestination: DestinationContent = {
     description: 'A escalada em rocha é uma atividade de risco controlado. Na Xperience Climb, mitigamos todos os risks possíveis seguindo padrões internacionais.',
     safetyItems: [
       { icon: '🪖', title: 'Uso de Capacete', description: 'Obrigatório durante todo o tempo na base das vias e durante a escalada.', details: ['Verificar ajuste', 'Manter jugular travada'] },
-      { icon: '繩', title: 'Redundância', description: 'Utilizamos sempre duas ancoragens independentes para garantir segurança total.', details: ['Ancoragens químicas', 'Equalização perfeita'] }
+      { icon: '🔗', title: 'Redundância', description: 'Utilizamos sempre duas ancoragens independentes para garantir segurança total.', details: ['Ancoragens químicas', 'Equalização perfeita'] }
     ],
     equipmentList: [
       { name: 'Cadeirinha (Arnes)', required: true, provided: true },
@@ -226,12 +234,12 @@ const mockHomePage: HomePageContent = {
     'testimonials'
   ],
   calendarSection: {
-    title: 'Próximas Aventuras',
-    description: 'Confira nosso calendário bimestral de escaladas guiadas.'
+    title: 'Próximas Fronteiras',
+    description: 'Nossos desafios acontecem no último mês de cada bimestre. Prepare-se para o desconhecido.'
   },
   packagesSection: {
-    title: 'Nossos Pacotes',
-    description: 'Escolha a experiência de escalada ideal para o seu nível.',
+    title: 'Nossos Pacotes de Escalada',
+    description: 'Escolha a experiência perfeita para o seu nível. Todos os pacotes incluem equipamentos de segurança e instrução profissional.',
     packageRefs: ['agarrao', 'crux', 'alma-vertical', 'xperience-anual']
   }
 };
@@ -276,6 +284,83 @@ const mockPackages: Package[] = [
     availability: { available: true, spotsLeft: 4, restrictions: [] },
     rules: { minAge: 16, maxParticipants: 10, requiresExperience: false, cancellationPolicy: 'Contrato anual.' },
     isActive: true
+  }
+];
+
+const mockTestimonials: TestimonialContent[] = [
+  {
+    name: 'Ana Carolina',
+    text: 'Experiência incrível! Foi minha primeira vez escalando e me senti super segura. Os instrutores são muito atenciosos e o local é deslumbrante. Já quero voltar!',
+    date: '2024-01-15',
+    experience: 'first-time',
+    rating: 5
+  },
+  {
+    name: 'Roberto Silva',
+    text: 'O pacote avançado valeu cada centavo. A hospedagem, as refeições e principalmente a experiência de escalada foram perfeitas. Equipe profissional e local único!',
+    date: '2024-01-10',
+    experience: 'intermediate',
+    rating: 5
+  },
+  {
+    name: 'Mariana Costa',
+    text: 'Perfeito para iniciantes! Me senti super acolhida e segura. O instrutor teve muita paciência para ensinar as técnicas. Vista incrível lá de cima!',
+    date: '2024-01-08',
+    experience: 'first-time',
+    rating: 5
+  }
+];
+
+const mockServices: ServiceContent[] = [
+  {
+    title: 'Condutores Certificados',
+    description: 'Nossa equipe é formada por guias de montanha credenciados e experientes.',
+    iconKey: '🎓',
+    condition: 'Incluso em todos os pacotes'
+  },
+  {
+    title: 'Equipamentos Premium',
+    description: 'Utilizamos apenas cordas e ferragens com certificação internacional UIAA/CE.',
+    iconKey: '🛡️',
+    condition: 'Incluso em todos os pacotes'
+  },
+  {
+    title: 'Seguro Aventura Completo',
+    description: 'Seguro de acidentes pessoais abrangente ativo durante toda a atividade.',
+    iconKey: '🚑',
+    condition: 'Incluso em todos os pacotes'
+  }
+];
+
+const mockSafetyProcedures: SafetyProcedureContent[] = [
+  {
+    title: 'Verificação Pré-Escalada',
+    description: 'Procedimento obrigatório de verificação de equipamentos e condições antes de iniciar qualquer escalada.',
+    details: [
+      'Inspecionar cadeirinha, capacete e sapatilhas pessoais',
+      'Verificar toda a extensão da corda',
+      'Testar sinais de comunicação de segurança'
+    ],
+    iconKey: '🪖'
+  }
+];
+
+const mockVisitedLocations: VisitedLocationContent[] = [
+  {
+    name: 'Pedra Bela Vista',
+    slug: 'pedra-bela',
+    region: 'Serra da Mantiqueira, SP',
+    image: '/images/destinations/pedra-bela-hero.jpg',
+    description: 'Oferece o maior rapel do estado de São Paulo com 98 metros de descida emocionante.',
+    status: 'active'
+  },
+  {
+    name: 'Fazenda Ipanema / FLONA',
+    slug: 'fazenda-ipanema',
+    region: 'Iperó, SP',
+    image: '/images/destinations/ipanema-hero.jpg',
+    description: 'Falésias de calcário encrustadas na histórica Floresta Nacional de Ipanema.',
+    status: 'planned'
   }
 ];
 
@@ -567,6 +652,82 @@ export class SanityContentRepository implements IContentRepository {
     } catch (error) {
       console.error('Error listing packages from Sanity:', error);
       return mockPackages;
+    }
+  }
+
+  async listTestimonials(): Promise<TestimonialContent[]> {
+    if (this.isMockMode) {
+      return mockTestimonials;
+    }
+    try {
+      const query = `*[_type == "testimonial" && consent == true && !(_id in path('drafts.**'))] | order(order asc) {
+        name,
+        "photo": photo.asset->url,
+        text,
+        date,
+        experience,
+        rating
+      }`;
+      return await this.client.fetch(query);
+    } catch (error) {
+      console.error('Error listing testimonials from Sanity:', error);
+      return mockTestimonials;
+    }
+  }
+
+  async listIncludedServices(): Promise<ServiceContent[]> {
+    if (this.isMockMode) {
+      return mockServices;
+    }
+    try {
+      const query = `*[_type == "service" && !(_id in path('drafts.**'))] | order(order asc) {
+        title,
+        description,
+        iconKey,
+        condition
+      }`;
+      return await this.client.fetch(query);
+    } catch (error) {
+      console.error('Error listing services from Sanity:', error);
+      return mockServices;
+    }
+  }
+
+  async listSafetyProcedures(): Promise<SafetyProcedureContent[]> {
+    if (this.isMockMode) {
+      return mockSafetyProcedures;
+    }
+    try {
+      const query = `*[_type == "safetyProcedure" && !(_id in path('drafts.**'))] | order(order asc) {
+        title,
+        description,
+        details,
+        iconKey
+      }`;
+      return await this.client.fetch(query);
+    } catch (error) {
+      console.error('Error listing safetyProcedures from Sanity:', error);
+      return mockSafetyProcedures;
+    }
+  }
+
+  async listVisitedLocations(): Promise<VisitedLocationContent[]> {
+    if (this.isMockMode) {
+      return mockVisitedLocations;
+    }
+    try {
+      const query = `*[_type == "visitedLocation" && !(_id in path('drafts.**'))] {
+        name,
+        "slug": slug.current,
+        region,
+        "image": image.asset->url,
+        description,
+        status
+      }`;
+      return await this.client.fetch(query);
+    } catch (error) {
+      console.error('Error listing visitedLocations from Sanity:', error);
+      return mockVisitedLocations;
     }
   }
 

@@ -6,24 +6,38 @@ import { Button } from '@/components/ui';
 import { openWhatsApp } from '@/lib/utils';
 import { CONTACT_INFO } from '@/lib/constants';
 
-export function BeginnerSection() {
+interface BeginnerSectionProps {
+  cmsData?: {
+    title?: string;
+    description?: string;
+    highlights?: Array<{ icon: string; title: string; description: string }>;
+    finalMessage?: string;
+  };
+}
+
+export function BeginnerSection({ cmsData }: BeginnerSectionProps) {
   const { currentTheme } = useTheme();
   const { beginner } = currentTheme;
+
+  const title = cmsData?.title || beginner.title;
+  const description = cmsData?.description || beginner.description;
+  const highlights = cmsData?.highlights || beginner.highlights;
+  const finalMessage = cmsData?.finalMessage || beginner.finalMessage;
 
   return (
     <section id="iniciante" className="py-20 bg-neutral-50">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-climb-600 mb-6">
-            {beginner.title}
+            {title}
           </h2>
           <p className="text-xl text-neutral-700 leading-relaxed">
-            {beginner.description}
+            {description}
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {beginner.highlights.map((highlight, index) => (
+          {highlights.map((highlight, index) => (
             <div
               key={index}
               className="bg-white p-8 rounded-2xl shadow-sm border border-neutral-100 flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
@@ -40,9 +54,11 @@ export function BeginnerSection() {
         </div>
 
         <div className="text-center">
-          <div className="inline-block mb-8 px-6 py-3 bg-climb-600 text-white rounded-full font-bold text-lg animate-pulse-soft">
-            {beginner.finalMessage}
-          </div>
+          {finalMessage && (
+            <div className="inline-block mb-8 px-6 py-3 bg-climb-600 text-white rounded-full font-bold text-lg animate-pulse-soft">
+              {finalMessage}
+            </div>
+          )}
           <br />
           <Button
             size="xl"

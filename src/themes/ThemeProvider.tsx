@@ -1,7 +1,6 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, Suspense, useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { ThemeConfig, VisualTheme } from './types';
 import { useTours } from '@/hooks/useTours';
 
@@ -138,7 +137,7 @@ function ThemeProviderContent({
   const [isLoading, setIsLoading] = useState(true);
   const [activeDestinationId, setActiveDestinationId] = useState<string | null>(null);
 
-  const { tours, loading: toursLoading } = useTours();
+  const { loading: toursLoading } = useTours();
 
   const mapDestinationToTheme = useCallback((dest: any): ThemeConfig => {
     const mergedVisual = {

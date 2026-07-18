@@ -33,6 +33,13 @@ interface ApiPackage {
   disabled: boolean;
 }
 
+interface PackagesSectionProps {
+  cmsData?: {
+    title?: string;
+    description?: string;
+  };
+}
+
 // Helper function to get complete Tailwind classes
 const getColorClass = (color: string) => {
   const colorMap: Record<string, string> = {
@@ -44,11 +51,14 @@ const getColorClass = (color: string) => {
   return colorMap[color] || 'bg-gray-500';
 };
 
-export function PackagesSection() {
+export function PackagesSection({ cmsData }: PackagesSectionProps) {
   const { addItem, openCart } = useCartStore();
   const [apiPackages, setApiPackages] = React.useState<ApiPackage[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [waitlistPackage, setWaitlistPackage] = React.useState<string | null>(null);
+
+  const title = cmsData?.title || "Pacotes de Escalada";
+  const description = cmsData?.description || "Escolha a experiência perfeita para o seu nível. Todos os pacotes incluem equipamentos de segurança e instrução profissional.";
 
   // Fetch API data with styling information
   React.useEffect(() => {
@@ -73,7 +83,6 @@ export function PackagesSection() {
         }
       } catch (error) {
         console.error('💥 Erro no fetch:', error);
-        // Let the error be visible - no masking with fallbacks
       } finally {
         console.log('🏁 Finalizando loading');
         setLoading(false);
@@ -84,7 +93,9 @@ export function PackagesSection() {
   }, []);
 
   const handleAddToCart = (packageId: string) => {
+    console.log('Button clicked for package:', packageId);
     console.log('Adding to cart:', packageId);
+
     const apiPkg = apiPackages.find(p => p.id === packageId);
     console.log('Found package:', apiPkg);
 
@@ -94,10 +105,9 @@ export function PackagesSection() {
         packageName: apiPkg.name,
         price: apiPkg.price, // API already returns price in reais
         quantity: 1,
-        participantName: 'Participante', // This will be updated in checkout
+        participantName: 'Participante',
       });
       console.log('Item added, opening cart...');
-      // Open cart modal automatically after adding item
       openCart();
     }
   };
@@ -107,11 +117,10 @@ export function PackagesSection() {
       <div className="container mx-auto px-4">
         <div className="mb-16 text-center">
           <h2 className="mb-6 text-4xl font-bold text-climb-600 md:text-5xl">
-            Pacotes de Escalada
+            {title}
           </h2>
           <p className="mx-auto max-w-3xl text-xl text-neutral-700">
-            Escolha a experiência perfeita para o seu nível. Todos os pacotes incluem equipamentos
-            de segurança e instrução profissional.
+            {description}
           </p>
           <div className="mt-8 flex justify-center">
             <div className="inline-flex items-center gap-3 rounded-full border border-orange-200 bg-orange-50/80 px-6 py-2.5 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:bg-orange-100/90 md:px-8 md:py-3">
@@ -198,7 +207,6 @@ export function PackagesSection() {
                       </div>
                       <div className="mt-1 text-sm text-neutral-600">
                         {pkg.duration}
-                        {/* • {pkg.maxParticipants} pessoas máx. */}
                       </div>
                     </div>
 
@@ -235,7 +243,6 @@ export function PackagesSection() {
                         if (pkg.disabled) {
                           setWaitlistPackage(pkg.name);
                         } else {
-                          console.log('Button clicked for package:', pkg.id);
                           handleAddToCart(pkg.id);
                         }
                       }}

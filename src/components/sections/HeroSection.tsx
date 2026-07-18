@@ -6,7 +6,16 @@ import { openWhatsApp } from '@/lib/utils';
 import { CONTACT_INFO } from '@/lib/constants';
 import { useTheme } from '@/themes/ThemeProvider';
 
-export function HeroSection() {
+interface HeroSectionProps {
+  cmsData?: {
+    title?: string;
+    subtitle?: string;
+    description?: string;
+    backgroundImage?: string;
+  };
+}
+
+export function HeroSection({ cmsData }: HeroSectionProps) {
   const { currentTheme } = useTheme();
   
   const handleScrollToPackages = () => {
@@ -15,6 +24,9 @@ export function HeroSection() {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const title = cmsData?.title || currentTheme.content.hero.title;
+  const subtitle = cmsData?.subtitle || currentTheme.content.hero.subtitle;
 
   return (
     <section
@@ -41,10 +53,10 @@ export function HeroSection() {
           {/* Logo */}
           <div className="mb-8 animate-slide-up">
             <h1 className="text-6xl font-bold leading-none md:text-8xl">
-              {currentTheme.content.hero.title.split(' ')[0]}
+              {title.split(' ')[0]}
               <br />
               <span className="text-5xl text-orange-400 md:text-7xl">
-                {currentTheme.content.hero.title.split(' ')[1]}
+                {title.split(' ').slice(1).join(' ')}
               </span>
             </h1>
           </div>
@@ -52,7 +64,7 @@ export function HeroSection() {
           {/* Hero Text */}
           <div className="mb-12 animate-slide-up" style={{ animationDelay: '0.2s' }}>
             <h2 className="mb-8 text-2xl font-semibold text-climb-100 md:text-3xl">
-              {currentTheme.content.hero.subtitle}
+              {subtitle}
             </h2>
 
             <div className="flex flex-col items-center justify-center space-y-4 text-lg md:flex-row md:space-x-8 md:space-y-0">
@@ -91,7 +103,7 @@ export function HeroSection() {
               onClick={() =>
                 openWhatsApp(
                   CONTACT_INFO.phone,
-                  'Olá! Gostaria de saber mais sobre a XperienceClimb e os pacotes de escalada 🏔️'
+                  'Olá! Gostaria de saber mais sobre a XperienceClimb and os pacotes de escalada 🏔️'
                 )
               }
             >
