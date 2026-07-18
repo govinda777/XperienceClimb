@@ -7,11 +7,12 @@ export async function GET(_request: Request) {
     const publishedPackages = await repository.listPublishedPackages();
 
     const mappedPackages = publishedPackages.map((pkg: any) => {
-      const priceAmount = typeof pkg.price === 'number' ? pkg.price : (pkg.price?.amount || 0);
+      const priceAmount = typeof pkg.price === 'number' ? pkg.price : pkg.price?.amount || 0;
       return {
         id: pkg.id,
         name: pkg.name,
         price: priceAmount / 100, // Convert cents to reais
+        originalPrice: pkg.originalPrice ? pkg.originalPrice / 100 : undefined,
         description: pkg.description,
         features: pkg.features || [],
         shape: pkg.shape || 'hexagon',

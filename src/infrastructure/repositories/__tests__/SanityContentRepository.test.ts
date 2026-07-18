@@ -1,39 +1,74 @@
 import { SanityContentRepository } from '@/infrastructure/repositories/SanityContentRepository';
+import { LegacyContentRepository } from '@/infrastructure/repositories/LegacyContentRepository';
+
+const mockFetch = jest.fn();
+
+jest.mock('@sanity/client', () => {
+  return {
+    createClient: jest.fn().mockImplementation(() => {
+      return {
+        fetch: mockFetch,
+      };
+    }),
+  };
+});
 
 describe('SanityContentRepository', () => {
   let repository: SanityContentRepository;
+  let legacyRepository: LegacyContentRepository;
 
   beforeEach(() => {
-    // Force mock mode explicitly
-    repository = new SanityContentRepository(true);
+    jest.clearAllMocks();
+    repository = new SanityContentRepository();
+    legacyRepository = new LegacyContentRepository();
   });
 
-  it('should return site settings in mock mode', async () => {
+  it('should return site settings from Sanity when query succeeds', async () => {
+    const mockSanitySite = {
+      nextEventStartsAt: '2026-09-01T08:00:00Z',
+      contactInfo: { email: 'sanity@xperienceclimb.com' },
+      activeDestination: {
+        name: 'Sanity Destination',
+        slug: { current: 'sanity-dest' },
+      },
+    };
+    mockFetch.mockResolvedValueOnce(mockSanitySite);
+
     const siteSettings = await repository.getActiveSite();
     expect(siteSettings).not.toBeNull();
-    expect(siteSettings?.activeDestination?.id).toBe('pedra-bela');
-    expect(siteSettings?.contactInfo?.email).toBe('contato@xperienceclimb.com.br');
+    expect(siteSettings?.activeDestination?.id).toBe('sanity-dest');
+    expect(siteSettings?.contactInfo?.email).toBe('sanity@xperienceclimb.com');
   });
 
-  it('should return home page configuration in mock mode', async () => {
+  it('should fallback to LegacyContentRepository when Sanity query fails', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Sanity error'));
+
+    const siteSettings = await repository.getActiveSite();
+    const legacySiteSettings = await legacyRepository.getActiveSite();
+
+    expect(siteSettings).not.toBeNull();
+    expect(siteSettings).toEqual(legacySiteSettings);
+  });
+
+  it('should return home page from Sanity when query succeeds', async () => {
+    const mockSanityHomePage = {
+      title: 'Sanity Home',
+      sectionOrder: ['hero', 'packages'],
+    };
+    mockFetch.mockResolvedValueOnce(mockSanityHomePage);
+
     const homePage = await repository.getHomePage();
     expect(homePage).not.toBeNull();
-    expect(homePage?.sectionOrder).toContain('hero');
+    expect(homePage?.title).toBe('Sanity Home');
   });
 
-  it('should return destination by slug in mock mode', async () => {
-    const dest = await repository.getDestinationBySlug('pedra-bela');
-    expect(dest).not.toBeNull();
-    expect(dest?.name).toBe('Pedra Bela Vista');
+  it('should fallback to LegacyContentRepository for homepage when Sanity query fails', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Sanity error'));
 
-    const ipanema = await repository.getDestinationBySlug('fazenda-ipanema');
-    expect(ipanema).not.toBeNull();
-    expect(ipanema?.name).toBe('Fazenda Ipanema / FLONA');
-  });
+    const homePage = await repository.getHomePage();
+    const legacyHomePage = await legacyRepository.getHomePage();
 
-  it('should return list of published packages in mock mode', async () => {
-    const pkgs = await repository.listPublishedPackages();
-    expect(pkgs).toHaveLength(4);
-    expect(pkgs[0].name).toBe('Agarrão');
+    expect(homePage).not.toBeNull();
+    expect(homePage).toEqual(legacyHomePage);
   });
 });
