@@ -51,7 +51,7 @@ const mockActiveDestination: DestinationContent = {
       title: 'Pedra Bela Vista',
       subtitle: 'Aventura vertical e pôr do sol inesquecível em Socorro/SP.',
       description: 'Prepare-se para o maior rapel do estado de São Paulo, cercado pela natureza exuberante da Serra da Mantiqueira.',
-      backgroundImage: '/images/themes/pedra-bela/paisagem-1.jpg',
+      backgroundImage: '/images/destinations/pedra-bela-hero.jpg',
       ctaLabel: 'Ver Pacotes',
       ctaHref: '#packages'
     },
@@ -67,7 +67,7 @@ const mockActiveDestination: DestinationContent = {
         title: 'Curiosidade Regional',
         content: 'O local abriga uma flora riquíssima típica de Mata Atlântica de altitude, com diversas espécies de orquídeas e bromélias silvestres.'
       },
-      image: '/images/themes/pedra-bela/escalada-1.jpg'
+      image: '/images/destinations/pedra-bela-about.jpg'
     }
   },
   beginnerSection: {
@@ -100,8 +100,8 @@ const mockActiveDestination: DestinationContent = {
       { key: 'landscape', value: 'Paisagem' }
     ],
     images: [
-      { src: '/images/themes/pedra-bela/escalada-1.jpg', alt: 'Rapel na Pedra Bela Vista', title: 'Rapel de 98m', category: 'climb' },
-      { src: '/images/themes/pedra-bela/paisagem-2.jpg', alt: 'Pôr do sol maravilhoso', title: 'Pôr do Sol no Ponto de Encontro', category: 'landscape' }
+      { src: '/images/destinations/pedra-bela-1.jpg', alt: 'Rapel na Pedra Bela Vista', title: 'Rapel de 98m', category: 'climb' },
+      { src: '/images/destinations/pedra-bela-2.jpg', alt: 'Pôr do sol maravilhoso', title: 'Pôr do Sol no Ponto de Encontro', category: 'landscape' }
     ]
   },
   timeline: [
@@ -184,7 +184,7 @@ const mockIpanemaDestination: DestinationContent = {
       title: 'Fazenda Ipanema',
       subtitle: 'História, ecologia e escalada tradicional no berço da siderurgia nacional.',
       description: 'Explore as falésias de calcário encrustadas na Floresta Nacional de Ipanema.',
-      backgroundImage: '/images/themes/fazenda-ipanema/flona.jpg',
+      backgroundImage: '/images/destinations/ipanema-hero.jpg',
       ctaLabel: 'Ver Detalhes',
       ctaHref: '#about'
     },
@@ -368,7 +368,7 @@ const mockVisitedLocations: VisitedLocationContent[] = [
     name: 'Pedra Bela Vista',
     slug: 'pedra-bela',
     region: 'Serra da Mantiqueira, SP',
-    image: '/images/themes/pedra-bela/paisagem-1.jpg',
+    image: '/images/destinations/pedra-bela-hero.jpg',
     description: 'Oferece o maior rapel do estado de São Paulo com 98 metros de descida emocionante.',
     status: 'active'
   },
@@ -376,7 +376,7 @@ const mockVisitedLocations: VisitedLocationContent[] = [
     name: 'Fazenda Ipanema / FLONA',
     slug: 'fazenda-ipanema',
     region: 'Iperó, SP',
-    image: '/images/themes/fazenda-ipanema/flona.jpg',
+    image: '/images/destinations/ipanema-hero.jpg',
     description: 'Falésias de calcário encrustadas na histórica Floresta Nacional de Ipanema.',
     status: 'planned'
   }
