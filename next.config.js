@@ -55,6 +55,13 @@ const nextConfig = {
       },
     ];
   },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@stripe/crypto': false,
+    };
+    return config;
+  },
 };
 
 module.exports = nextConfig;
