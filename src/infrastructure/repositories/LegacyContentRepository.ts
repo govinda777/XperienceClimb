@@ -49,7 +49,7 @@ const mockActiveDestination: DestinationContent = {
       title: 'Pedra Bela Vista',
       subtitle: 'Aventura vertical e pôr do sol inesquecível em Socorro/SP.',
       description: 'Prepare-se para o maior rapel do estado de São Paulo, cercado pela natureza exuberante da Serra da Mantiqueira.',
-      backgroundImage: '/images/destinations/pedra-bela-hero.jpg',
+      backgroundImage: '/images/themes/pedra-bela/paisagem-1.jpg',
       ctaLabel: 'Ver Pacotes',
       ctaHref: '#packages'
     },
@@ -65,7 +65,7 @@ const mockActiveDestination: DestinationContent = {
         title: 'Curiosidade Regional',
         content: 'O local abriga uma flora riquíssima típica de Mata Atlântica de altitude, com diversas espécies de orquídeas e bromélias silvestres.'
       },
-      image: '/images/destinations/pedra-bela-about.jpg'
+      image: '/images/themes/pedra-bela/escalada-1.jpg'
     }
   },
   beginnerSection: {
@@ -98,8 +98,8 @@ const mockActiveDestination: DestinationContent = {
       { key: 'landscape', value: 'Paisagem' }
     ],
     images: [
-      { src: '/images/destinations/pedra-bela-1.jpg', alt: 'Rapel na Pedra Bela Vista', title: 'Rapel de 98m', category: 'climb' },
-      { src: '/images/destinations/pedra-bela-2.jpg', alt: 'Pôr do sol maravilhoso', title: 'Pôr do Sol no Ponto de Encontro', category: 'landscape' }
+      { src: '/images/themes/pedra-bela/escalada-1.jpg', alt: 'Rapel na Pedra Bela Vista', title: 'Rapel de 98m', category: 'climb' },
+      { src: '/images/themes/pedra-bela/paisagem-2.jpg', alt: 'Pôr do sol maravilhoso', title: 'Pôr do Sol no Ponto de Encontro', category: 'landscape' }
     ]
   },
   timeline: [
@@ -182,7 +182,7 @@ const mockIpanemaDestination: DestinationContent = {
       title: 'Fazenda Ipanema',
       subtitle: 'História, ecologia e escalada tradicional no berço da siderurgia nacional.',
       description: 'Explore as falésias de calcário encrustadas na Floresta Nacional de Ipanema.',
-      backgroundImage: '/images/destinations/ipanema-hero.jpg',
+      backgroundImage: '/images/themes/fazenda-ipanema/flona.jpg',
       ctaLabel: 'Ver Detalhes',
       ctaHref: '#about'
     },
