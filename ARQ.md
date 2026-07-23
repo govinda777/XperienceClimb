@@ -632,9 +632,9 @@ graph TD
     end
 
     subgraph Core_Domain [Core e Domínio]
-        SANITY ..|> IREPO["src/core/repositories/IContentRepository.ts"]
-        LEGACY ..|> IREPO
-        IREPO -->|Entidades| ENTITY[src/core/entities/*]
+        SANITY -.-> IREPO["src/core/repositories/IContentRepository.ts"]
+        LEGACY -.-> IREPO
+        IREPO -->|Entidades| ENTITY["src/core/entities/*"]
     end
 
     %% Relações entre Apresentação e Temas
