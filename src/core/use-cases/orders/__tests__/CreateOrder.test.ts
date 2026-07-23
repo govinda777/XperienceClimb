@@ -4,10 +4,11 @@ import { Order } from '@/core/entities/Order';
 
 const mockOrderRepository: jest.Mocked<IOrderRepository> = {
   save: jest.fn(),
-  create: jest.fn(),
+  update: jest.fn(),
+  updateStatus: jest.fn(),
   findById: jest.fn(),
   findByUserId: jest.fn(),
-  createWhatsAppOrder: jest.fn().mockResolvedValue(true)
+  createWhatsAppOrder: jest.fn().mockResolvedValue(true),
 };
 
 describe('CreateOrder UseCase', () => {
@@ -33,20 +34,20 @@ describe('CreateOrder UseCase', () => {
           quantity: 1,
           participantName: 'Alice',
           addedAt: new Date(),
-          commerceProductId: 'cms-prod-id-999'
-        }
+          commerceProductId: 'cms-prod-id-999',
+        },
       ],
       participantDetails: {
         'cart-item-1': {
           name: 'Alice Cooper',
           age: 25,
           experienceLevel: 'beginner' as const,
-          healthDeclaration: true
-        }
+          healthDeclaration: true,
+        },
       },
       climbingDetails: {
-        selectedDate: futureDate
-      }
+        selectedDate: futureDate,
+      },
     };
 
     const result = await createOrder.execute(request);
@@ -75,20 +76,20 @@ describe('CreateOrder UseCase', () => {
           price: 150,
           quantity: 1,
           participantName: 'Alice',
-          addedAt: new Date()
-        }
+          addedAt: new Date(),
+        },
       ],
       participantDetails: {
         'cart-item-1': {
           name: 'Alice Cooper',
           age: 25,
           experienceLevel: 'beginner' as const,
-          healthDeclaration: true
-        }
+          healthDeclaration: true,
+        },
       },
       climbingDetails: {
-        selectedDate: futureDate
-      }
+        selectedDate: futureDate,
+      },
     };
 
     const result = await createOrder.execute(request);
