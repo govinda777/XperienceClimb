@@ -54,10 +54,16 @@ test.describe('Jornada de Checkout', () => {
     ).toBeVisible();
     await expect(page.getByText('João da Silva', { exact: true })).toBeVisible();
 
-    // Click final button - this should trigger WhatsApp redirect
+    // Handle popup when clicking the final button
+    const popupPromise = context.waitForEvent('page');
+
+    // Click final button
     await page.getByRole('button', { name: 'Enviar para WhatsApp e Finalizar' }).click();
 
-    // Wait a moment for the redirect to be triggered
-    await page.waitForTimeout(2000);
+    // Await popup and verify URL
+    const popup = await popupPromise;
+
+    // Validate that it redirected to WhatsApp
+    await expect(popup).toHaveURL(/api\.whatsapp\.com/);
   });
 });

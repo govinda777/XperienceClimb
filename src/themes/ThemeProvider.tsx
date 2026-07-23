@@ -1,13 +1,6 @@
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  Suspense,
-  useCallback,
-} from 'react';
+import React, { createContext, useContext, useEffect, useState, Suspense, useCallback } from 'react';
 import { ThemeConfig, VisualTheme } from './types';
 import { useTours } from '@/hooks/useTours';
 
@@ -24,131 +17,66 @@ const defaultVisualTheme: VisualTheme = {
   gradientFrom: '#521f10',
   gradientTo: '#e04a1d',
   heroOverlay: 'rgba(10, 5, 3, 0.7)',
-  cardBackground: '#1d120e',
+  cardBackground: '#1d120e'
 };
 
 const defaultThemeConfig: ThemeConfig = {
-  id: 'pedra-bela',
+  id: 'default',
   name: 'Xperience Climb',
   location: {
-    name: 'Pedra Bela',
-    address: 'Pedra Bela, São Paulo - SP',
-    city: 'Socorro',
-    state: 'São Paulo',
-    distance: '119 km',
-    coordinates: { lat: -22.5901, lng: -46.5123 },
-    mapsUrl: 'https://maps.google.com/?q=-22.5901,-46.5123',
-    directions: [
-      {
-        step: 1,
-        title: 'Passo 1',
-        description: 'Siga pela Rodovia Fernão Dias até Bragança Paulista.',
-      },
-      {
-        step: 2,
-        title: 'Passo 2',
-        description: 'Pegue a Rodovia Capitão Bardoíno sentido Socorro.',
-      },
-      {
-        step: 3,
-        title: 'Passo 3',
-        description: 'Em Socorro, siga as placas para o Parque Pedra Bela Vista.',
-      },
-    ],
+    name: '',
+    address: '',
+    city: '',
+    state: '',
+    distance: '',
+    coordinates: { lat: 0, lng: 0 },
+    mapsUrl: '',
+    directions: []
   },
   content: {
     hero: {
-      title: 'Xperience Climb | Escalada Pedra Bela',
-      subtitle:
-        'Viva uma experiência única de escalada e superação ao ar livre. Condições exclusivas, instrutores certificados e equipamentos premium 100% inclusos.',
-      description:
-        'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura em Pedra Bela.',
+      title: '',
+      subtitle: '',
+      description: ''
     },
     about: {
-      title: 'Sobre Pedra Bela Vista',
-      description:
-        'O Parque Pedra Bela Vista é o maior portal de turismo de aventura de Socorro. Localizado no topo de uma montanha, oferece uma das vistas mais espetaculares da região.',
-      highlights: [
-        { icon: '⛰️', title: 'Altitude', description: '1.250 metros acima do nível do mar' },
-        { icon: '🧗', title: 'Rapel', description: '98 metros de descida emocionante' },
-        {
-          icon: '🌅',
-          title: 'Pôr do Sol',
-          description: 'Eleito o mais bonito do interior paulista',
-        },
-      ],
-      infoBox: {
-        title: 'Curiosidade Regional',
-        content:
-          'O local abriga uma flora riquíssima típica de Mata Atlântica de altitude, com diversas espécies de orquídeas e bromélias silvestres.',
-      },
-      image: '/images/destinations/pedra-bela-about.jpg',
-    },
+      title: '',
+      description: '',
+      highlights: [],
+      infoBox: { title: '', content: '' },
+      image: ''
+    }
   },
   gallery: {
-    categories: {
-      climb: 'Escalada',
-      landscape: 'Paisagem',
-    },
-    images: [
-      {
-        src: '/images/destinations/pedra-bela-1.jpg',
-        alt: 'Rapel na Pedra Bela Vista',
-        title: 'Rapel de 98m',
-        category: 'climb',
-      },
-      {
-        src: '/images/destinations/pedra-bela-2.jpg',
-        alt: 'Pôr do sol maravilhoso',
-        title: 'Pôr do Sol',
-        category: 'landscape',
-      },
-    ],
+    categories: {},
+    images: []
   },
   activities: [],
   logistics: {
-    schedule: {
-      openTime: '08:00',
-      closeTime: '18:00',
-      notes: 'Restaurante do Parque Pedra Bela Vista',
-    },
-    meetingPoint: 'Restaurante do Parque Pedra Bela Vista',
-    importantNotes: ['Chegue com 15 minutos de antecedência.', 'Leve repelente e protetor solar.'],
-    tips: [
-      'Vá de roupas leves e calçado fechado (tênis ou bota).',
-      'Leve uma garrafa de água de pelo menos 1.5L.',
-    ],
+    schedule: { openTime: '08:00', closeTime: '18:00', notes: '' },
+    meetingPoint: '',
+    importantNotes: [],
+    tips: []
   },
   community: {
     localPartners: [],
     localInstructors: [],
-    specificSafetyProcedures: [],
+    specificSafetyProcedures: []
   },
   seo: {
-    title: 'Xperience Climb | Escalada Pedra Bela',
-    description:
-      'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura em Pedra Bela.',
-    keywords: ['escalada', 'climbing', 'aventura', 'são paulo', 'pedra bela', 'escalada em rocha'],
-    ogImage: '/images/site-og.jpg',
+    title: 'Xperience Climb',
+    description: '',
+    keywords: [],
+    ogImage: ''
   },
   beginner: {
-    title: 'Nunca Escalou?',
-    description:
-      'Não se preocupe! Pedra Bela Vista é o local perfeito para o seu batismo na escalada.',
-    highlights: [
-      {
-        icon: '🛡️',
-        title: 'Segurança Absoluta',
-        description: 'Equipamentos certificados e redundância.',
-      },
-    ],
-    finalMessage: 'A sua única preocupação será apreciar a vista lá de cima!',
+    title: '',
+    description: '',
+    highlights: [],
+    finalMessage: ''
   },
-  timeline: [
-    { time: '08:00', activity: 'Encontro no Parque Pedra Bela Vista' },
-    { time: '08:30', activity: 'Briefing de segurança' },
-  ],
-  visual: defaultVisualTheme,
+  timeline: [],
+  visual: defaultVisualTheme
 };
 
 interface ThemeContextType {
@@ -166,7 +94,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 function ThemeProviderContent({
   children,
   initialCmsEnabled = false,
-  initialActiveSite = null,
+  initialActiveSite = null
 }: {
   children: React.ReactNode;
   initialCmsEnabled?: boolean;
@@ -182,14 +110,14 @@ function ThemeProviderContent({
   const mapDestinationToTheme = useCallback((dest: any): ThemeConfig => {
     const mergedVisual = {
       ...defaultVisualTheme,
-      ...dest.visualConfig,
+      ...dest.visualConfig
     };
 
     return {
-      id: dest.id || 'pedra-bela',
-      name: dest.name,
+      id: dest.id || 'default',
+      name: dest.name || '',
       location: {
-        name: dest.locationDetails?.displayName || dest.name,
+        name: dest.locationDetails?.displayName || dest.name || '',
         address: dest.locationDetails?.address || '',
         city: dest.locationDetails?.city || '',
         state: dest.locationDetails?.state || 'São Paulo',
@@ -199,22 +127,22 @@ function ThemeProviderContent({
         directions: (dest.locationDetails?.directions || []).map((d: any, idx: number) => ({
           step: idx + 1,
           title: d.title || '',
-          description: d.description || '',
-        })),
+          description: d.description || ''
+        }))
       },
       content: {
         hero: {
           title: dest.content?.hero?.title || '',
           subtitle: dest.content?.hero?.subtitle || '',
-          description: dest.content?.hero?.description || '',
+          description: dest.content?.hero?.description || ''
         },
         about: {
           title: dest.content?.about?.title || '',
           description: dest.content?.about?.description || '',
           highlights: dest.content?.about?.highlights || [],
           infoBox: dest.content?.about?.infoBox || { title: '', content: '' },
-          image: dest.content?.about?.image || '',
-        },
+          image: dest.content?.about?.image || ''
+        }
       },
       gallery: {
         categories: (dest.gallery?.categories || []).reduce((acc: any, c: any) => {
@@ -225,39 +153,39 @@ function ThemeProviderContent({
           src: img.src,
           alt: img.alt || '',
           title: img.title || '',
-          category: img.category || '',
-        })),
+          category: img.category || ''
+        }))
       },
       activities: [],
       logistics: {
         schedule: {
           openTime: '08:00',
           closeTime: '18:00',
-          notes: dest.logistics?.meetingPoint || '',
+          notes: dest.logistics?.meetingPoint || ''
         },
         meetingPoint: dest.logistics?.meetingPoint || '',
         importantNotes: dest.logistics?.importantNotes || [],
-        tips: dest.logistics?.tips ? [dest.logistics.tips] : [],
+        tips: dest.logistics?.tips ? [dest.logistics.tips] : []
       },
       community: {
         localPartners: [],
         localInstructors: [],
-        specificSafetyProcedures: [],
+        specificSafetyProcedures: []
       },
       seo: {
-        title: dest.seo?.title || dest.name,
+        title: dest.seo?.title || dest.name || '',
         description: dest.seo?.description || '',
         keywords: dest.seo?.keywords || [],
-        ogImage: dest.seo?.ogImage || '',
+        ogImage: dest.seo?.ogImage || ''
       },
       beginner: {
         title: dest.beginnerSection?.title || '',
         description: dest.beginnerSection?.description || '',
         highlights: dest.beginnerSection?.highlights || [],
-        finalMessage: dest.beginnerSection?.finalMessage || '',
+        finalMessage: dest.beginnerSection?.finalMessage || ''
       },
       timeline: dest.timeline || [],
-      visual: mergedVisual,
+      visual: mergedVisual
     };
   }, []);
 
@@ -308,7 +236,7 @@ function ThemeProviderContent({
         isLoading: isLoading || toursLoading,
         refreshThemes,
         cmsEnabled: initialCmsEnabled,
-        activeDestinationId,
+        activeDestinationId
       }}
     >
       {children}
@@ -319,7 +247,7 @@ function ThemeProviderContent({
 export function ThemeProvider({
   children,
   initialCmsEnabled = false,
-  initialActiveSite = null,
+  initialActiveSite = null
 }: {
   children: React.ReactNode;
   initialCmsEnabled?: boolean;
@@ -327,10 +255,7 @@ export function ThemeProvider({
 }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ThemeProviderContent
-        initialCmsEnabled={initialCmsEnabled}
-        initialActiveSite={initialActiveSite}
-      >
+      <ThemeProviderContent initialCmsEnabled={initialCmsEnabled} initialActiveSite={initialActiveSite}>
         {children}
       </ThemeProviderContent>
     </Suspense>

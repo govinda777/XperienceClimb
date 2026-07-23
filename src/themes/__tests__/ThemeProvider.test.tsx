@@ -25,7 +25,7 @@ describe('ThemeProvider', () => {
     });
 
     expect(screen.getByTestId('cms-enabled').textContent).toBe('false');
-    expect(screen.getByTestId('destination-id').textContent).toBe('pedra-bela');
+    expect(screen.getByTestId('destination-id').textContent).toBe('default');
   });
 
   it('should load custom active destination details when cms is enabled', async () => {
