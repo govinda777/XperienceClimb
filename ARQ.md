@@ -610,29 +610,29 @@ O diagrama a seguir exibe como todos os principais arquivos e camadas do projeto
 graph TD
     %% Camadas do Sistema
     subgraph Presentation_Layer [Apresentação e Roteamento]
-        LAYOUT[src/app/layout.tsx] -->|Importa e Envolve| THEME_PROV[src/themes/ThemeProvider.tsx]
-        LAYOUT -->|Importa e Injeta| STYLE_PROV[src/themes/components/ThemeStyleProvider.tsx]
-        PAGE[src/app/page.tsx] -->|Renderiza| TEMP[src/components/templates/DestinationTemplate.tsx]
+        LAYOUT["src/app/layout.tsx"] -->|Importa e Envolve| THEME_PROV["src/themes/ThemeProvider.tsx"]
+        LAYOUT -->|Importa e Injeta| STYLE_PROV["src/themes/components/ThemeStyleProvider.tsx"]
+        PAGE["src/app/page.tsx"] -->|Renderiza| TEMP["src/components/templates/DestinationTemplate.tsx"]
     end
 
     subgraph Theme_Layer [Gerenciamento de Temas e Estilos]
-        THEME_PROV -->|Mapeia dados para| THEME_TYPE[src/themes/types.ts]
-        STYLE_PROV -->|Consome useTheme e gera| CSS_VARS[CSS Custom Properties / Globals]
+        THEME_PROV -->|Mapeia dados para| THEME_TYPE["src/themes/types.ts"]
+        STYLE_PROV -->|Consome useTheme e gera| CSS_VARS["CSS Custom Properties / Globals"]
     end
 
     subgraph Repositories_Infrastructure [Infraestrutura e Dados]
-        TEMP -->|Busca dados usando| FACTORY[src/infrastructure/repositories/ContentRepositoryFactory.ts]
+        TEMP -->|Busca dados usando| FACTORY["src/infrastructure/repositories/ContentRepositoryFactory.ts"]
         PAGE -->|Busca activeSite usando| FACTORY
 
-        FACTORY -->|Consulta Config| CONFIG[src/infrastructure/services/ConfigService.ts]
-        FACTORY -->|Retorna| SANITY[src/infrastructure/repositories/SanityContentRepository.ts]
-        FACTORY -->|Retorna| LEGACY[src/infrastructure/repositories/LegacyContentRepository.ts]
+        FACTORY -->|Consulta Config| CONFIG["src/infrastructure/services/ConfigService.ts"]
+        FACTORY -->|Retorna| SANITY["src/infrastructure/repositories/SanityContentRepository.ts"]
+        FACTORY -->|Retorna| LEGACY["src/infrastructure/repositories/LegacyContentRepository.ts"]
 
         SANITY -->|Query GROQ| SANITY_API[Sanity CMS Cloud]
     end
 
     subgraph Core_Domain [Core e Domínio]
-        SANITY ..|> IREPO[src/core/repositories/IContentRepository.ts]
+        SANITY ..|> IREPO["src/core/repositories/IContentRepository.ts"]
         LEGACY ..|> IREPO
         IREPO -->|Entidades| ENTITY[src/core/entities/*]
     end
