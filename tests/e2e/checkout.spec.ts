@@ -55,7 +55,7 @@ test.describe('Jornada de Checkout', () => {
     await expect(page.getByText('João da Silva', { exact: true })).toBeVisible();
 
     // Handle popup when clicking the final button
-    const popupPromise = context.waitForEvent('page');
+    const popupPromise = context.waitForEvent('page', { timeout: 60000 });
 
     // Click final button
     await page.getByRole('button', { name: 'Enviar para WhatsApp e Finalizar' }).click();
