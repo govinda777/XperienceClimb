@@ -19,7 +19,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ cmsData }: HeroSectionProps) {
   const { currentTheme } = useTheme();
-  
+
   const handleScrollToPackages = () => {
     const element = document.getElementById('pacotes');
     if (element) {
@@ -30,8 +30,8 @@ export function HeroSection({ cmsData }: HeroSectionProps) {
   const title = cmsData?.title ?? currentTheme.content.hero.title;
   const subtitle = cmsData?.subtitle ?? currentTheme.content.hero.subtitle;
   const backgroundImage = cmsData?.backgroundImage ?? currentTheme.seo.ogImage;
-  const address = cmsData?.address ?? "Parque Pedra Bela Vista";
-  const distance = cmsData?.distance ?? "135 km";
+  const address = cmsData?.address ?? currentTheme.location.name;
+  const distance = cmsData?.distance ?? currentTheme.location.distance;
 
   return (
     <section
@@ -40,7 +40,7 @@ export function HeroSection({ cmsData }: HeroSectionProps) {
       style={{
         backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
         backgroundSize: 'cover',
-        backgroundPosition: 'center'
+        backgroundPosition: 'center',
       }}
     >
       {/* Dark overlay to ensure text readability */}
@@ -58,9 +58,7 @@ export function HeroSection({ cmsData }: HeroSectionProps) {
 
           {/* Hero Text */}
           <div className="mb-12 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <h2 className="mb-8 text-2xl font-semibold text-climb-100 md:text-3xl">
-              {subtitle}
-            </h2>
+            <h2 className="mb-8 text-2xl font-semibold text-climb-100 md:text-3xl">{subtitle}</h2>
 
             <div className="flex flex-col items-center justify-center space-y-4 text-lg md:flex-row md:space-x-8 md:space-y-0">
               <div className="flex items-center space-x-2">

@@ -1,6 +1,13 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, Suspense, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  Suspense,
+  useCallback,
+} from 'react';
 import { ThemeConfig, VisualTheme } from './types';
 import { useTours } from '@/hooks/useTours';
 
@@ -17,98 +24,131 @@ const defaultVisualTheme: VisualTheme = {
   gradientFrom: '#521f10',
   gradientTo: '#e04a1d',
   heroOverlay: 'rgba(10, 5, 3, 0.7)',
-  cardBackground: '#1d120e'
+  cardBackground: '#1d120e',
 };
 
 const defaultThemeConfig: ThemeConfig = {
   id: 'pedra-bela',
-  name: 'Pedra Bela Vista',
+  name: 'Xperience Climb',
   location: {
-    name: 'Parque Pedra Bela Vista',
-    address: 'Estrada Municipal da Pedra Bela Vista, s/n',
+    name: 'Pedra Bela',
+    address: 'Pedra Bela, São Paulo - SP',
     city: 'Socorro',
     state: 'São Paulo',
-    distance: '135 km',
+    distance: '119 km',
     coordinates: { lat: -22.5901, lng: -46.5123 },
     mapsUrl: 'https://maps.google.com/?q=-22.5901,-46.5123',
     directions: [
-      { step: 1, title: 'Passo 1', description: 'Siga pela Rodovia Fernão Dias até Bragança Paulista.' },
-      { step: 2, title: 'Passo 2', description: 'Pegue a Rodovia Capitão Bardoíno sentido Socorro.' },
-      { step: 3, title: 'Passo 3', description: 'Em Socorro, siga as placas para o Parque Pedra Bela Vista.' }
-    ]
+      {
+        step: 1,
+        title: 'Passo 1',
+        description: 'Siga pela Rodovia Fernão Dias até Bragança Paulista.',
+      },
+      {
+        step: 2,
+        title: 'Passo 2',
+        description: 'Pegue a Rodovia Capitão Bardoíno sentido Socorro.',
+      },
+      {
+        step: 3,
+        title: 'Passo 3',
+        description: 'Em Socorro, siga as placas para o Parque Pedra Bela Vista.',
+      },
+    ],
   },
   content: {
     hero: {
-      title: 'Pedra Bela Vista',
-      subtitle: 'Aventura vertical e pôr do sol inesquecível em Socorro/SP.',
-      description: 'Prepare-se para o maior rapel do estado de São Paulo, cercado pela natureza exuberante da Serra da Mantiqueira.'
+      title: 'Xperience Climb | Escalada Pedra Bela',
+      subtitle:
+        'Viva uma experiência única de escalada e superação ao ar livre. Condições exclusivas, instrutores certificados e equipamentos premium 100% inclusos.',
+      description:
+        'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura em Pedra Bela.',
     },
     about: {
       title: 'Sobre Pedra Bela Vista',
-      description: 'O Parque Pedra Bela Vista é o maior portal de turismo de aventura de Socorro. Localizado no topo de uma montanha, oferece uma das vistas mais espetaculares da região.',
+      description:
+        'O Parque Pedra Bela Vista é o maior portal de turismo de aventura de Socorro. Localizado no topo de uma montanha, oferece uma das vistas mais espetaculares da região.',
       highlights: [
         { icon: '⛰️', title: 'Altitude', description: '1.250 metros acima do nível do mar' },
         { icon: '🧗', title: 'Rapel', description: '98 metros de descida emocionante' },
-        { icon: '🌅', title: 'Pôr do Sol', description: 'Eleito o mais bonito do interior paulista' }
+        {
+          icon: '🌅',
+          title: 'Pôr do Sol',
+          description: 'Eleito o mais bonito do interior paulista',
+        },
       ],
       infoBox: {
         title: 'Curiosidade Regional',
-        content: 'O local abriga uma flora riquíssima típica de Mata Atlântica de altitude, com diversas espécies de orquídeas e bromélias silvestres.'
+        content:
+          'O local abriga uma flora riquíssima típica de Mata Atlântica de altitude, com diversas espécies de orquídeas e bromélias silvestres.',
       },
-      image: '/images/destinations/pedra-bela-about.jpg'
-    }
+      image: '/images/destinations/pedra-bela-about.jpg',
+    },
   },
   gallery: {
     categories: {
       climb: 'Escalada',
-      landscape: 'Paisagem'
+      landscape: 'Paisagem',
     },
     images: [
-      { src: '/images/destinations/pedra-bela-1.jpg', alt: 'Rapel na Pedra Bela Vista', title: 'Rapel de 98m', category: 'climb' },
-      { src: '/images/destinations/pedra-bela-2.jpg', alt: 'Pôr do sol maravilhoso', title: 'Pôr do Sol', category: 'landscape' }
-    ]
+      {
+        src: '/images/destinations/pedra-bela-1.jpg',
+        alt: 'Rapel na Pedra Bela Vista',
+        title: 'Rapel de 98m',
+        category: 'climb',
+      },
+      {
+        src: '/images/destinations/pedra-bela-2.jpg',
+        alt: 'Pôr do sol maravilhoso',
+        title: 'Pôr do Sol',
+        category: 'landscape',
+      },
+    ],
   },
   activities: [],
   logistics: {
     schedule: {
       openTime: '08:00',
       closeTime: '18:00',
-      notes: 'Restaurante do Parque Pedra Bela Vista'
+      notes: 'Restaurante do Parque Pedra Bela Vista',
     },
     meetingPoint: 'Restaurante do Parque Pedra Bela Vista',
-    importantNotes: [
-      'Chegue com 15 minutos de antecedência.',
-      'Leve repelente e protetor solar.'
-    ],
+    importantNotes: ['Chegue com 15 minutos de antecedência.', 'Leve repelente e protetor solar.'],
     tips: [
       'Vá de roupas leves e calçado fechado (tênis ou bota).',
-      'Leve uma garrafa de água de pelo menos 1.5L.'
-    ]
+      'Leve uma garrafa de água de pelo menos 1.5L.',
+    ],
   },
   community: {
     localPartners: [],
     localInstructors: [],
-    specificSafetyProcedures: []
+    specificSafetyProcedures: [],
   },
   seo: {
-    title: 'Pedra Bela Vista',
-    description: 'Aventura vertical e pôr do sol inesquecível em Socorro/SP.',
-    keywords: ['escalada', 'rapel', 'socorro'],
-    ogImage: '/images/destinations/pedra-bela-hero.jpg'
+    title: 'Xperience Climb | Escalada Pedra Bela',
+    description:
+      'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura em Pedra Bela.',
+    keywords: ['escalada', 'climbing', 'aventura', 'são paulo', 'pedra bela', 'escalada em rocha'],
+    ogImage: '/images/site-og.jpg',
   },
   beginner: {
     title: 'Nunca Escalou?',
-    description: 'Não se preocupe! Pedra Bela Vista é o local perfeito para o seu batismo na escalada.',
+    description:
+      'Não se preocupe! Pedra Bela Vista é o local perfeito para o seu batismo na escalada.',
     highlights: [
-      { icon: '🛡️', title: 'Segurança Absoluta', description: 'Equipamentos certificados e redundância.' }
+      {
+        icon: '🛡️',
+        title: 'Segurança Absoluta',
+        description: 'Equipamentos certificados e redundância.',
+      },
     ],
-    finalMessage: 'A sua única preocupação será apreciar a vista lá de cima!'
+    finalMessage: 'A sua única preocupação será apreciar a vista lá de cima!',
   },
   timeline: [
     { time: '08:00', activity: 'Encontro no Parque Pedra Bela Vista' },
-    { time: '08:30', activity: 'Briefing de segurança' }
+    { time: '08:30', activity: 'Briefing de segurança' },
   ],
-  visual: defaultVisualTheme
+  visual: defaultVisualTheme,
 };
 
 interface ThemeContextType {
@@ -126,7 +166,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 function ThemeProviderContent({
   children,
   initialCmsEnabled = false,
-  initialActiveSite = null
+  initialActiveSite = null,
 }: {
   children: React.ReactNode;
   initialCmsEnabled?: boolean;
@@ -142,7 +182,7 @@ function ThemeProviderContent({
   const mapDestinationToTheme = useCallback((dest: any): ThemeConfig => {
     const mergedVisual = {
       ...defaultVisualTheme,
-      ...dest.visualConfig
+      ...dest.visualConfig,
     };
 
     return {
@@ -159,22 +199,22 @@ function ThemeProviderContent({
         directions: (dest.locationDetails?.directions || []).map((d: any, idx: number) => ({
           step: idx + 1,
           title: d.title || '',
-          description: d.description || ''
-        }))
+          description: d.description || '',
+        })),
       },
       content: {
         hero: {
           title: dest.content?.hero?.title || '',
           subtitle: dest.content?.hero?.subtitle || '',
-          description: dest.content?.hero?.description || ''
+          description: dest.content?.hero?.description || '',
         },
         about: {
           title: dest.content?.about?.title || '',
           description: dest.content?.about?.description || '',
           highlights: dest.content?.about?.highlights || [],
           infoBox: dest.content?.about?.infoBox || { title: '', content: '' },
-          image: dest.content?.about?.image || ''
-        }
+          image: dest.content?.about?.image || '',
+        },
       },
       gallery: {
         categories: (dest.gallery?.categories || []).reduce((acc: any, c: any) => {
@@ -185,39 +225,39 @@ function ThemeProviderContent({
           src: img.src,
           alt: img.alt || '',
           title: img.title || '',
-          category: img.category || ''
-        }))
+          category: img.category || '',
+        })),
       },
       activities: [],
       logistics: {
         schedule: {
           openTime: '08:00',
           closeTime: '18:00',
-          notes: dest.logistics?.meetingPoint || ''
+          notes: dest.logistics?.meetingPoint || '',
         },
         meetingPoint: dest.logistics?.meetingPoint || '',
         importantNotes: dest.logistics?.importantNotes || [],
-        tips: dest.logistics?.tips ? [dest.logistics.tips] : []
+        tips: dest.logistics?.tips ? [dest.logistics.tips] : [],
       },
       community: {
         localPartners: [],
         localInstructors: [],
-        specificSafetyProcedures: []
+        specificSafetyProcedures: [],
       },
       seo: {
         title: dest.seo?.title || dest.name,
         description: dest.seo?.description || '',
         keywords: dest.seo?.keywords || [],
-        ogImage: dest.seo?.ogImage || ''
+        ogImage: dest.seo?.ogImage || '',
       },
       beginner: {
         title: dest.beginnerSection?.title || '',
         description: dest.beginnerSection?.description || '',
         highlights: dest.beginnerSection?.highlights || [],
-        finalMessage: dest.beginnerSection?.finalMessage || ''
+        finalMessage: dest.beginnerSection?.finalMessage || '',
       },
       timeline: dest.timeline || [],
-      visual: mergedVisual
+      visual: mergedVisual,
     };
   }, []);
 
@@ -268,7 +308,7 @@ function ThemeProviderContent({
         isLoading: isLoading || toursLoading,
         refreshThemes,
         cmsEnabled: initialCmsEnabled,
-        activeDestinationId
+        activeDestinationId,
       }}
     >
       {children}
@@ -279,7 +319,7 @@ function ThemeProviderContent({
 export function ThemeProvider({
   children,
   initialCmsEnabled = false,
-  initialActiveSite = null
+  initialActiveSite = null,
 }: {
   children: React.ReactNode;
   initialCmsEnabled?: boolean;
@@ -287,7 +327,10 @@ export function ThemeProvider({
 }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ThemeProviderContent initialCmsEnabled={initialCmsEnabled} initialActiveSite={initialActiveSite}>
+      <ThemeProviderContent
+        initialCmsEnabled={initialCmsEnabled}
+        initialActiveSite={initialActiveSite}
+      >
         {children}
       </ThemeProviderContent>
     </Suspense>
