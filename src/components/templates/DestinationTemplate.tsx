@@ -69,6 +69,8 @@ export default async function DestinationTemplate({
     subtitle: destination.content.hero.subtitle,
     description: destination.content.hero.description,
     backgroundImage: destination.content.hero.backgroundImage,
+    address: destination.locationDetails?.displayName || destination.name,
+    distance: destination.locationDetails?.distance,
   } : undefined;
 
   const aboutCmsData = destination?.content?.about ? {
@@ -121,7 +123,7 @@ export default async function DestinationTemplate({
 
   const safetyCmsData = destination?.safetySection ? {
     title: homePage?.safetySection?.title || destination.safetySection.title,
-    description: homePage?.safetySection?.description || destination.safetySection.description,
+    description: destination.safetySection.description || destination.safetySection.description,
     safetyItems: destination.safetySection.safetyItems,
     equipmentList: destination.safetySection.equipmentList,
   } : undefined;

@@ -12,6 +12,8 @@ interface HeroSectionProps {
     subtitle?: string;
     description?: string;
     backgroundImage?: string;
+    address?: string;
+    distance?: string;
   };
 }
 
@@ -25,39 +27,32 @@ export function HeroSection({ cmsData }: HeroSectionProps) {
     }
   };
 
-  const title = cmsData?.title || currentTheme.content.hero.title;
-  const subtitle = cmsData?.subtitle || currentTheme.content.hero.subtitle;
+  const title = cmsData?.title ?? currentTheme.content.hero.title;
+  const subtitle = cmsData?.subtitle ?? currentTheme.content.hero.subtitle;
+  const backgroundImage = cmsData?.backgroundImage ?? currentTheme.seo.ogImage;
+  const address = cmsData?.address ?? "Parque Pedra Bela Vista";
+  const distance = cmsData?.distance ?? "135 km";
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen overflow-hidden bg-gradient-to-br from-climb-500 via-climb-600 to-climb-700"
+      className="relative min-h-screen overflow-hidden bg-neutral-900"
+      style={{
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : undefined,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
     >
-      {/* Floating Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="floating-elements">
-          <div className="absolute left-[10%] top-20 h-20 w-20 animate-float rounded-full bg-white/10"></div>
-          <div className="absolute right-[15%] top-40 h-16 w-16 animate-bounce-gentle bg-orange-400/20 clip-triangle"></div>
-          <div className="absolute bottom-40 left-[20%] h-24 w-24 animate-pulse-soft bg-white/5 clip-hexagon"></div>
-          <div className="absolute bottom-20 right-[10%] h-12 w-12 animate-float rounded-full bg-orange-400/30"></div>
-          <div className="absolute left-[5%] top-1/2 h-18 w-18 animate-rotate-slow bg-white/10 clip-diamond"></div>
-        </div>
-      </div>
-
-      {/* Organic Background Mask */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+      {/* Dark overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-black/60"></div>
 
       {/* Main Content */}
       <div className="relative z-10 flex min-h-screen items-center justify-center">
         <div className="container mx-auto px-4 text-center text-white">
           {/* Logo */}
           <div className="mb-8 animate-slide-up">
-            <h1 className="text-6xl font-bold leading-none md:text-8xl">
-              {title.split(' ')[0]}
-              <br />
-              <span className="text-5xl text-orange-400 md:text-7xl">
-                {title.split(' ').slice(1).join(' ')}
-              </span>
+            <h1 className="text-5xl font-bold md:text-7xl leading-tight text-white mb-4">
+              {title}
             </h1>
           </div>
 
@@ -70,11 +65,11 @@ export function HeroSection({ cmsData }: HeroSectionProps) {
             <div className="flex flex-col items-center justify-center space-y-4 text-lg md:flex-row md:space-x-8 md:space-y-0">
               <div className="flex items-center space-x-2">
                 <span className="text-2xl">📍</span>
-                <span>{currentTheme.location.address}</span>
+                <span>{address}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-2xl">🚗</span>
-                <span>{currentTheme.location.distance}</span>
+                <span>{distance}</span>
               </div>
               <div className="flex items-center space-x-2 rounded-full border border-orange-400/30 bg-orange-400/20 px-4 py-2">
                 <span className="text-2xl">⚠️</span>
@@ -93,7 +88,7 @@ export function HeroSection({ cmsData }: HeroSectionProps) {
               className="transform bg-orange-400 px-8 py-4 text-xl font-bold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-orange-500"
               onClick={handleScrollToPackages}
             >
-              🧗‍♂️ Quero Escalar!
+              Quero Escalar!
             </Button>
 
             <Button
@@ -103,7 +98,7 @@ export function HeroSection({ cmsData }: HeroSectionProps) {
               onClick={() =>
                 openWhatsApp(
                   CONTACT_INFO.phone,
-                  'Olá! Gostaria de saber mais sobre a XperienceClimb and os pacotes de escalada 🏔️'
+                  'Olá! Gostaria de saber mais sobre a XperienceClimb e os pacotes de escalada 🏔'
                 )
               }
             >
@@ -111,13 +106,6 @@ export function HeroSection({ cmsData }: HeroSectionProps) {
             </Button>
           </div>
         </div>
-      </div>
-
-      {/* Decorative Shapes */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-0 top-1/4 h-32 w-32 -rotate-12 transform bg-gradient-to-r from-orange-400/20 to-transparent clip-triangle"></div>
-        <div className="absolute bottom-1/4 right-0 h-40 w-40 rotate-45 transform bg-gradient-to-l from-white/10 to-transparent clip-hexagon"></div>
-        <div className="absolute right-1/4 top-1/2 h-20 w-20 rounded-full bg-orange-400/30"></div>
       </div>
 
       {/* Scroll Indicator */}

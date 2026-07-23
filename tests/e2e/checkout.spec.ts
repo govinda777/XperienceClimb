@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Jornada de Checkout', () => {
   test('Deve completar o fluxo de checkout com sucesso', async ({ page, context }) => {
-    test.setTimeout(60000);
     // Navigate to the test route where Auth is mocked and Cart Modal is opened
     await page.goto('/test-e2e/checkout');
 
@@ -55,17 +54,16 @@ test.describe('Jornada de Checkout', () => {
     ).toBeVisible();
     await expect(page.getByText('João da Silva', { exact: true })).toBeVisible();
 
-    // Click final button - WhatsApp redirect may open in new tab or same window
+    // Handle popup when clicking the final button
+    const popupPromise = context.waitForEvent('page');
+
+    // Click final button
     await page.getByRole('button', { name: 'Enviar para WhatsApp e Finalizar' }).click();
 
-    // Wait briefly for navigation (WhatsApp may open in new tab)
-    await page.waitForTimeout(2000);
+    // Await popup and verify URL
+    const popup = await popupPromise;
 
-    // Check if we're still on the same page (success) or redirected
-    const currentUrl = page.url();
-
-    // If redirected to WhatsApp, that's success
-    // If stayed on page with success message, that's also success
-    // We'll just verify the button click worked without timing out on popup
+    // Validate that it redirected to WhatsApp
+    await expect(popup).toHaveURL(/api\.whatsapp\.com/);
   });
 });
