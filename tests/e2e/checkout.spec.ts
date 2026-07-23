@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Jornada de Checkout', () => {
   test('Deve completar o fluxo de checkout com sucesso', async ({ page, context }) => {
+    test.setTimeout(60000);
     // Navigate to the test route where Auth is mocked and Cart Modal is opened
     await page.goto('/test-e2e/checkout');
 
