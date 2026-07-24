@@ -18,9 +18,9 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://climb.xperiencehubs.com'),
-  title: 'Xperience Climb | Escalada Pedra Bela',
+  title: 'Xperience Climb',
   description:
-    'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura em Pedra Bela.',
+    'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura.',
   keywords: 'escalada, climbing, aventura, são paulo, pedra bela, escalada em rocha',
   authors: [{ name: 'climb.xperiencehubs.com' }],
   openGraph: {
