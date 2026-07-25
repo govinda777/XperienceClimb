@@ -5,20 +5,39 @@ import Image from 'next/image';
 import { useTheme } from '@/themes/ThemeProvider';
 import { normalizeImageUrl } from '@/lib/image-utils';
 
-export function AboutSection() {
+interface AboutSectionProps {
+  cmsData?: {
+    title?: string;
+    description?: string;
+    highlights?: Array<{ icon: string; title: string; description: string }>;
+    image?: string;
+  };
+}
+
+export function AboutSection({ cmsData }: AboutSectionProps) {
   const { currentTheme } = useTheme();
 
-  // Encontra, pela ordem: imagem específica configurada, imagem de natureza ou primeira imagem da galeria
-  const natureImage = {
-    src:
-      currentTheme.content.about.image ||
-      currentTheme.gallery.images.find(img => img.category === 'nature')?.src ||
-      currentTheme.gallery.images[0]?.src,
-    alt: currentTheme.content.about.image
+  const title = cmsData?.title || currentTheme.content.about.title;
+  const description = cmsData?.description || currentTheme.content.about.description;
+  const highlights = cmsData?.highlights || currentTheme.content.about.highlights;
+
+  const imageSrc = cmsData?.image ||
+    currentTheme.content.about.image ||
+    currentTheme.gallery.images.find(img => img.category === 'nature')?.src ||
+    currentTheme.gallery.images[0]?.src;
+
+  const imageAlt = cmsData?.image
+    ? 'Destaque da localização'
+    : currentTheme.content.about.image
       ? 'Destaque da localização'
       : currentTheme.gallery.images.find(img => img.category === 'nature')?.alt ||
-        currentTheme.gallery.images[0]?.alt,
+        currentTheme.gallery.images[0]?.alt;
+
+  const natureImage = {
+    src: imageSrc,
+    alt: imageAlt,
     isExternal:
+      !cmsData?.image &&
       !currentTheme.content.about.image &&
       (currentTheme.gallery.images.find(img => img.category === 'nature')?.isExternal ||
         currentTheme.gallery.images[0]?.isExternal),
@@ -32,16 +51,16 @@ export function AboutSection() {
           <div>
             <div className="mb-8">
               <h2 className="text-4xl md:text-5xl font-bold text-climb-600 mb-6">
-                {currentTheme.content.about.title}
+                {title}
               </h2>
               <p className="text-xl text-neutral-700 leading-relaxed">
-                {currentTheme.content.about.description}
+                {description}
               </p>
             </div>
 
             {/* Highlights */}
             <div className="space-y-6 mb-8">
-              {currentTheme.content.about.highlights.map((highlight, index) => (
+              {highlights.map((highlight, index) => (
                 <div key={index} className="flex items-start space-x-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-climb-100 rounded-lg flex items-center justify-center">
                     <span className="text-2xl">{highlight.icon}</span>

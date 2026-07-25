@@ -37,7 +37,14 @@ export async function POST(request: Request) {
       }
     }
 
-    const { sessionId, mensagem } = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch (error) {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+
+    const { sessionId, mensagem } = body;
 
     if (!sessionId || !mensagem) {
       return NextResponse.json({ error: 'Missing sessionId or mensagem' }, { status: 400 });

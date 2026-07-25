@@ -1,22 +1,31 @@
 'use client';
 
 import React from 'react';
-import { Calendar, Lock, MapPin } from 'lucide-react';
+import { Calendar as CalendarIcon, Lock, MapPin } from 'lucide-react';
 import { NEXT_EVENTS, CONTACT_INFO } from '@/lib/constants';
 import { openWhatsApp } from '@/lib/utils';
-import { Card, CardContent } from '@/components/ui';
+import { Card } from '@/components/ui';
 
-export function CalendarSection() {
+interface CalendarSectionProps {
+  cmsData?: {
+    title?: string;
+    description?: string;
+  };
+}
+
+export function CalendarSection({ cmsData }: CalendarSectionProps) {
+  const title = cmsData?.title || "Próximas Fronteiras";
+  const description = cmsData?.description || "Nossos desafios acontecem no último mês de cada bimestre. Prepare-se para o desconhecido.";
+
   return (
     <section id="calendario" className="py-20 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-climb-600 mb-6">
-            Próximas Fronteiras
+            {title}
           </h2>
           <p className="text-xl text-neutral-700 max-w-2xl mx-auto">
-            Nossos desafios acontecem no último mês de cada bimestre.
-            Prepare-se para o desconhecido.
+            {description}
           </p>
         </div>
 
@@ -57,7 +66,7 @@ export function CalendarSection() {
 
               {/* Padlock corner icon */}
               <div className="absolute top-4 right-4 text-neutral-200 group-hover:text-climb-200 transition-colors duration-500">
-                <Calendar className="w-5 h-5" />
+                <CalendarIcon className="w-5 h-5" />
               </div>
             </Card>
           ))}

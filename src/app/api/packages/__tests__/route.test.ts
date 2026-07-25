@@ -1,27 +1,50 @@
 import { GET } from '../route';
-import { PACKAGES } from '@/lib/constants';
 
-describe('GET /api/packages', () => {
-  it('should return packages with prices in reais and filter out quotations', async () => {
-    const response = await GET(new Request('http://localhost/api/packages'));
-    const data = await response.json();
+jest.mock('@/infrastructure/repositories/SanityContentRepository', () => {
+  return {
+    SanityContentRepository: jest.fn().mockImplementation(() => {
+      return {
+        listPublishedPackages: jest.fn().mockResolvedValue([
+          {
+            id: 'agarrao-cms',
+            name: 'Agarrão CMS',
+            price: { amount: 15000, currency: 'BRL' },
+            description: 'CMS Package description',
+            features: ['CMS Feature 1'],
+            commerceProductId: 'agarrao-cms-prod'
+          }
+        ])
+      };
+    })
+  };
+});
 
-    const nonQuotationPackages = Object.values(PACKAGES).filter(p => !p.isQuotation);
+describe('Packages API Route', () => {
+  const originalEnv = process.env.NEXT_PUBLIC_CMS_ENABLED;
 
-    expect(response.status).toBe(200);
-    expect(data.success).toBe(true);
-    expect(data.data).toHaveLength(nonQuotationPackages.length);
+  afterEach(() => {
+    process.env.NEXT_PUBLIC_CMS_ENABLED = originalEnv;
+  });
 
-    // Check first package
-    const firstPackage = data.data[0];
-    const originalPackage = Object.values(PACKAGES).find(p => p.id === firstPackage.id);
+  it('should return static legacy packages when CMS is disabled', async () => {
+    process.env.NEXT_PUBLIC_CMS_ENABLED = 'false';
+    const request = new Request('http://localhost/api/packages');
+    const response = await GET(request);
+    const json = await response.json();
 
-    expect(originalPackage).toBeDefined();
-    if (originalPackage) {
-      expect(firstPackage.price).toBe(originalPackage.price / 100);
-      if (originalPackage.originalPrice) {
-        expect(firstPackage.originalPrice).toBe(originalPackage.originalPrice / 100);
-      }
-    }
+    expect(json.success).toBe(true);
+    expect(json.data.length).toBeGreaterThan(0);
+    expect(json.data[0].id).not.toBe('agarrao-cms');
+  });
+
+  it('should return CMS packages when CMS is enabled', async () => {
+    process.env.NEXT_PUBLIC_CMS_ENABLED = 'true';
+    const request = new Request('http://localhost/api/packages');
+    const response = await GET(request);
+    const json = await response.json();
+
+    expect(json.success).toBe(true);
+    expect(json.data[0].id).toBe('agarrao-cms');
+    expect(json.data[0].name).toBe('Agarrão CMS');
   });
 });

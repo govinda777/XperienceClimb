@@ -1,20 +1,17 @@
 import { NextResponse } from 'next/server';
-import { PACKAGES } from '@/lib/constants';
+import { getContentRepository } from '@/infrastructure/repositories/ContentRepositoryFactory';
 
 export async function GET(_request: Request) {
   try {
-    // Filter out packages that are quotations as they are handled in separate sections
-    const packages = Object.values(PACKAGES).filter(pkg => !pkg.isQuotation);
+    const repository = getContentRepository();
+    const publishedPackages = await repository.listPublishedPackages();
 
-    if (!packages || !Array.isArray(packages)) {
-      throw new Error('Invalid packages data');
-    }
-
-    const mappedPackages = packages.map((pkg: any) => {
-      const mapped: any = {
+    const mappedPackages = publishedPackages.map((pkg: any) => {
+      const priceAmount = typeof pkg.price === 'number' ? pkg.price : (pkg.price?.amount || 0);
+      return {
         id: pkg.id,
         name: pkg.name,
-        price: pkg.price / 100, // Convert cents to reais
+        price: priceAmount / 100, // Convert cents to reais
         description: pkg.description,
         features: pkg.features || [],
         shape: pkg.shape || 'hexagon',
@@ -27,16 +24,6 @@ export async function GET(_request: Request) {
         minAge: pkg.minAge || 12,
         cancellationPolicy: pkg.cancellationPolicy || '',
       };
-
-      if (pkg.originalPrice !== undefined) {
-        mapped.originalPrice = pkg.originalPrice / 100; // Convert cents to reais
-      }
-
-      if (pkg.bonus !== undefined) {
-        mapped.bonus = pkg.bonus;
-      }
-
-      return mapped;
     });
 
     return NextResponse.json({
