@@ -77,12 +77,12 @@ export interface SkillDefinition<TInput = any, TOutput = any> {
 ```
 
 #### C. `SkillGerenciadorPedidos`
-- **Finalidade:** Registar reservas, validar regras de negócio e invocar o `PaymentService` para gerar o payload de pagamento via PIX / Mercado Pago.
+- **Finalidade:** Registar reservas, validar regras de negócio e obter o link correspondente ao pacote no Mercado Livre para encaminhar o utilizador para finalização.
 - **Schema JSON:**
 ```json
 {
   "name": "SkillGerenciadorPedidos",
-  "description": "Cria a reserva do pacote selecionado e gera o QrCode/Copia-e-Cola PIX para pagamento.",
+  "description": "Cria a reserva do pacote selecionado e obtém o link do Mercado Livre correspondente ao pacote para encaminhar o utilizador para o pagamento.",
   "parameters": {
     "type": "object",
     "properties": {
@@ -223,5 +223,5 @@ export async function POST(req: Request) {
 ### 5.1. Acoplamento de Serviços Core
 
 - **`SkillCatalogoProdutos`**: Instanciará diretamente o `SanityContentRepository` (via `ContentRepositoryFactory`) para consultar os pacotes dinâmicos e destinos ativos de forma a obter o catálogo mais atualizado sem passar pelo n8n.
-- **`SkillGerenciadorPedidos`**: Utilizará o caso de uso `CreateOrder` e o `PaymentService` (Mercado Pago/PIX) para gerar preferências e o Pix Copia-e-Cola de forma síncrona diretamente no handler.
+- **`SkillGerenciadorPedidos`**: Utilizará o repositório de pacotes para obter as informações do produto e retornar o link de checkout do Mercado Livre associado, encaminhando o utilizador diretamente para a finalização externa de forma simples e segura.
 - **Redução de Custo e Latência**: Ao invés de dependermos de transições lentas de nós no n8n que demoram vários segundos, a orquestração baseada em LLM executa as chamadas em paralelo e retorna ao usuário em uma única rodada conversacional.
