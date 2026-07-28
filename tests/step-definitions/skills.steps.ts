@@ -1,22 +1,25 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import assert from 'assert';
-import { mockMercadoLivreLinks } from '../mocks/mercado-livre.mock.ts';
+import { mockMercadoLivreLinks } from '../mocks/mercado-livre.mock';
 
 // Estados locais para Coleta de Lead
 let leadData: { nome: string; perfil: string };
 
-Given('que um utilizador se apresenta com o nome {string} e diz {string}', (nome: string, fala: string) => {
-  leadData = { nome, perfil: "" };
+Given(
+  'que um utilizador se apresenta com o nome {string} e diz {string}',
+  (nome: string, fala: string) => {
+    leadData = { nome, perfil: '' };
 
-  // Classifica dinamicamente de acordo com a fala na especificação
-  if (fala.includes('nunca escalei')) {
-    leadData.perfil = "INICIANTE";
-  } else if (fala.includes('já escalo há anos')) {
-    leadData.perfil = "ATLETA_AUTONOMO";
-  } else if (fala.includes('team building')) {
-    leadData.perfil = "CORPORATIVO";
+    // Classifica dinamicamente de acordo com a fala na especificação
+    if (fala.includes('nunca escalei')) {
+      leadData.perfil = 'INICIANTE';
+    } else if (fala.includes('já escalo há anos')) {
+      leadData.perfil = 'ATLETA_AUTONOMO';
+    } else if (fala.includes('team building')) {
+      leadData.perfil = 'CORPORATIVO';
+    }
   }
-});
+);
 
 When('a SkillColetaLead é executada com estes dados', () => {
   // Simula a execução da SkillColetaLead
@@ -30,17 +33,19 @@ Then('a ficha do lead deve conter o nome {string}', (nomeEsperado: string) => {
   assert.strictEqual(leadData.nome, nomeEsperado);
 });
 
-
 // Estados locais para Encaminhamento para Vendas
 let orderData: { pacoteId: string; quantidade: number };
 let checkoutUrl: string;
 
-Given('que a reserva é válida para o {string} com {string} pessoas', (pacoteId: string, quantidade: string) => {
-  orderData = {
-    pacoteId,
-    quantidade: parseInt(quantidade, 10)
-  };
-});
+Given(
+  'que a reserva é válida para o {string} com {string} pessoas',
+  (pacoteId: string, quantidade: string) => {
+    orderData = {
+      pacoteId,
+      quantidade: parseInt(quantidade, 10),
+    };
+  }
+);
 
 When('a SkillGerenciadorPedidos é executada para gerar o encaminhamento', () => {
   // Simula o mapeamento do link correspondente

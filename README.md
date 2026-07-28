@@ -67,6 +67,7 @@ src/
 ```
 
 **Principais Tecnologias:**
+
 - **Next.js 15** - Framework React com App Router
 - **TypeScript** - Tipagem estática
 - **Tailwind CSS** - Estilização utilitária
@@ -79,51 +80,28 @@ src/
 Suporte completo a múltiplos métodos de pagamento:
 
 ### Métodos Disponíveis
+
+-> Link loja mercado livre @climb.xperiencehub.com
+
 - **💳 Cartão de Crédito** - Via Mercado Pago
 - **📱 PIX** - Pagamento instantâneo brasileiro
 - **₿ Bitcoin** - Pagamentos em criptomoeda
 - **💎 USDT** - Stablecoin na rede Ethereum
-- **🐙 GitHub Sponsors** - Patrocínio via GitHub
+
 - **📞 WhatsApp** - Fallback para finalização manual
-
-### Características
-- **Processamento Seguro** - Integração com APIs confiáveis
-- **Webhooks** - Confirmação automática de pagamentos
-- **Conversão de Moeda** - Suporte a BRL, USD e criptomoedas
-- **Fallback Inteligente** - WhatsApp como backup
-
-## 🎫 Sistema de Cupons
-
-Sistema avançado de descontos com regras de negócio:
-
-### Tipos de Desconto
-- **Percentual** - Ex: 10% de desconto
-- **Valor Fixo** - Ex: R$ 50 de desconto
-- **Método Específico** - Descontos por forma de pagamento
-
-### Cupons de Teste
-| Código | Tipo | Valor | Restrições |
-|--------|------|-------|------------|
-| `WELCOME10` | Percentual | 10% | Mín. R$ 50, Todos os métodos |
-| `CLIMB50` | Fixo | R$ 50 | Mín. R$ 100, Cartão/PIX |
-| `CRYPTO15` | Percentual | 15% | Mín. R$ 30, Apenas crypto |
-
-### Regras de Negócio
-- **Validação em Tempo Real** - Verificação instantânea
-- **Limites de Uso** - Controle de quantidade e usuário
-- **Compatibilidade** - Restrições por método de pagamento
-- **Expiração** - Datas de validade configuráveis
 
 ## 🧪 Testes
 
 Suite completa de testes com alta cobertura:
 
 ### Tipos de Teste
+
 - **Unit Tests** - Componentes e funções isoladas
 - **Integration Tests** - Fluxos completos de API
 - **BDD Tests** - Cenários de comportamento do usuário
 
 ### Executar Testes
+
 ```bash
 # Todos os testes
 npm test
@@ -139,27 +117,31 @@ npm run test:pre-commit
 ```
 
 ### Cobertura Atual
+
 - **80+ testes** implementados
 - **5 suites** de teste
 - **Cobertura > 90%** nas funcionalidades críticas
 
-## 🎨 Sistema de Temas
+## 🎨 Sistema de Destinos
 
 Suporte para múltiplos destinos de escalada com sistema de imagens externas:
 
-### Características dos Temas
+### Características dos Destinos
+
 - **🎨 Temas Personalizáveis** - Cores, conteúdo e imagens específicas
 - **🌐 Imagens Externas** - URLs de serviços como Unsplash, Picsum e outros
 - **💾 Economia de Armazenamento** - Não precisa hospedar imagens localmente
 - **🚀 Performance Otimizada** - CDNs especializadas em imagens
 - **🔄 Flexibilidade** - Fácil troca de imagens sem reupload
 
-### Temas Disponíveis
+### Destinos Disponíveis
+
 - **🏔️ Fazenda Ipanema** - Escalada na Floresta Nacional de Ipanema
 - **🏞️ Pedra Bela** - Aventura completa com tirolesa e cachoeiras
 - **🌐 Exemplo Externo** - Demonstração do sistema de imagens externas
 
-### Criar Novos Temas
+### Criar Novos Destinos
+
 ```bash
 # Script interativo para criar temas
 npm run create-theme
@@ -168,10 +150,11 @@ npm run create-theme
 ```
 
 ### Sistema de Imagens Externas
+
 O projeto suporta URLs externas de serviços confiáveis:
 
 - **Unsplash** - Fotos gratuitas de alta qualidade
-- **Picsum** - Imagens placeholder aleatórias  
+- **Picsum** - Imagens placeholder aleatórias
 - **Placeholder.com** - Placeholders simples
 - **URLs Customizadas** - Qualquer CDN confiável
 
@@ -196,13 +179,14 @@ O projeto suporta URLs externas de serviços confiáveis:
 - **Git**
 - Conta na [Vercel](https://vercel.com) (recomendado)
 - Conta no [Privy](https://dashboard.privy.io/) para autenticação
-- Conta no [MercadoPago](https://developers.mercadopago.com/) para pagamentos
+- Conta no [MercadoLivre](encaminhamento para a lojinha no mercado livre) para pagamentos
 
 ## 🚀 Deploy (Vercel)
 
 ### Método 1: Deploy via Git (Recomendado)
 
 1. **Faça push do código para GitHub:**
+
    ```bash
    git add .
    git commit -m "Preparar para deploy"
@@ -219,11 +203,12 @@ O projeto suporta URLs externas de serviços confiáveis:
 ### Método 2: Deploy via CLI
 
 1. **Instale Vercel CLI:**
+
    ```bash
    # Execute o script fornecido (Mac/Linux)
    chmod +x INSTALL_VERCEL.sh
    ./INSTALL_VERCEL.sh
-   
+
    # Ou instale manualmente
    npm install -g vercel
    ```
@@ -241,13 +226,10 @@ O projeto suporta URLs externas de serviços confiáveis:
 O arquivo `ENV_VARIABLES.txt` contém todas as variáveis necessárias. Configure-as na **Vercel Dashboard > Settings > Environment Variables**:
 
 #### 🔑 Variáveis Obrigatórias
+
 ```env
 # Privy (Autenticação)
 NEXT_PUBLIC_PRIVY_APP_ID=seu_privy_app_id
-
-# MercadoPago (Pagamentos)
-NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY=sua_public_key
-MERCADOPAGO_ACCESS_TOKEN=seu_access_token
 
 # URLs da Aplicação (atualize após primeiro deploy)
 NEXT_PUBLIC_APP_URL=https://sua-app.vercel.app
@@ -290,21 +272,71 @@ Após o primeiro deploy:
 2. **Crie uma aplicação:**
    - Nome: XperienceClimb
    - Callback URLs: `https://sua-app.vercel.app`
-3. **Configure login methods:** Email, Google, Apple
+3. **Configure login methods:** Email
 4. **Copie o App ID** e atualize `NEXT_PUBLIC_PRIVY_APP_ID`
 
-### 💳 MercadoPago (Pagamentos)
+### 💳 MercadoLivre (Lojinha)
 
-1. **Acesse:** [developers.mercadopago.com](https://developers.mercadopago.com/)
-2. **Crie uma aplicação:**
-   - Nome: XperienceClimb
-   - Tipo: Checkout Pro
-3. **Configure webhooks:**
-   - URL: `https://sua-app.vercel.app/api/mercadopago/webhook`
-   - Eventos: `payment`, `merchant_order`
-4. **Copie as credenciais:**
-   - Public Key → `NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY`
-   - Access Token → `MERCADOPAGO_ACCESS_TOKEN`
+Entendido! Quando o foco são **pacotes de escalada** (sejam diárias/passaportes para ginásio de boulder/via, cursos de iniciação ou saídas e viagens outdoor), a dinâmica de compra exige atenção redobrada a **datas, horários, local/destino e formato de entrega** (já que geralmente se trata de um serviço ou voucher, e não de um produto físico tradicional).
+
+Abaixo está o passo a passo adaptado especificamente para a compra de pacotes de escalada:
+
+---
+
+#### Passo 1: Acessar a Loja / Anúncio do Pacote
+
+- Acesse a loja do Mercado Livre/Mercado Shops através do link direto enviado pelo organizador/ginásio ou buscando o nome da loja na plataforma.
+- Localize a seção correspondente ao tipo de experiência desejada (ex: _Diárias & Passaportes_, _Cursos & Aulas_, _Trips & Saídas Outdoor_).
+
+---
+
+#### Passo 2: Selecionar o Pacote Correto
+
+Clique no produto desejado e verifique o que está incluso no pacote. Por exemplo:
+
+- **Diária/Passaporte:** Inclui entrada + aluguel de sapatilha e magnésio?
+- **Curso/Aulas:** Qual o nível (iniciante, intermediário, segurança/top-rope)?
+- **Saída Outdoor:** Inclui guia, equipamentos de segurança (cadeirinha, capacete, cordas) e seguro de vida/acidentes?
+
+---
+
+#### Passo 3: Conferir e Selecionar Data, Horário e Destino (Variações)
+
+Esta é a etapa mais importante. Antes de colocar no carrinho:
+
+1. **Destino / Local:**
+
+- Se for **em ginásio (indoor)**: confirme em qual unidade/endereço o pacote será utilizado.
+- Se for **outdoor**: confira a descrição para ver qual é o **setor/rocha de destino** (ex: _Pedra da Bela Vista, Serra do Cipo, Falésia X_).
+
+2. **Data da Atividade:**
+
+- Escolha a data exata no menu de **Variações** do anúncio (ou verifique na descrição se o voucher tem validade flexível, ex: _válido por 30 dias a partir da compra_).
+
+3. **Horário / Turma:**
+
+- Para cursos e saídas guiadas, atente-se ao **horário de encontro ou início da turma** (ex: _Turma Sábado às 09h00_).
+
+---
+
+#### Passo 4: Atenção ao Formato de Entrega (Frete / Voucher)
+
+Como pacotes de escalada são serviços/experiências:
+
+- **Se for Voucher Digital / Serviço Presencial:** Selecione a opção **"Retirar no endereço do vendedor"** ou **"Combinar com o vendedor"**. Isso evita que o Mercado Livre cobre taxa de frete desnecessária.
+- **Se o pacote incluir kit físico (ex: Camiseta + Passaporte impresso):** Confirme o seu CEP de destino para o envio do material.
+
+---
+
+#### Passo 5: Finalizar e Enviar Dados no Chat Pós-Compra
+
+1. Clique em **"Comprar agora"** e conclua o pagamento.
+2. Assim que a compra for aprovada, vá em **Minhas Compras > Enviar Mensagem ao Vendedor**.
+3. Envie as informações necessárias para a atividade, como:
+
+- **Nome completo e CPF** dos participantes (para seguro ou cadastro na recepção).
+- **Tamanho do calçado/sapatilha** (caso o pacote inclua aluguel de equipamento).
+- Confirmação da data e horário agendados.
 
 ### 🔄 Atualizar Configurações
 
@@ -321,11 +353,13 @@ Após configurar as APIs:
 ### Netlify
 
 1. **Instale Netlify CLI:**
+
    ```bash
    npm install -g netlify-cli
    ```
 
 2. **Build e deploy:**
+
    ```bash
    npm run build
    netlify deploy --prod --dir=.next
@@ -336,6 +370,7 @@ Após configurar as APIs:
 ### Docker
 
 1. **Crie Dockerfile:**
+
    ```dockerfile
    FROM node:18-alpine
    WORKDIR /app
@@ -356,39 +391,47 @@ Após configurar as APIs:
 ## ❌ Resolução de Problemas
 
 ### Erro: "Privy App ID not found"
+
 - ✅ Verifique se `NEXT_PUBLIC_PRIVY_APP_ID` está configurado
 - ✅ Confirme que o App ID está correto no Privy Dashboard
 
 ### Erro: "MercadoPago public key invalid"
+
 - ✅ Use a **Public Key**, não o Access Token
 - ✅ Verifique se está usando credenciais de produção
 
 ### Erro: "Function Runtimes must have a valid version"
+
 - ✅ Arquivo `vercel.json` simplificado para Next.js 14
 - ✅ Next.js App Router gerencia functions automaticamente
 - ✅ Remova configurações desnecessárias de `functions` e `buildCommand`
 
 ### Erro de CORS no webhook
+
 - ✅ Configure o webhook URL exatamente como: `https://sua-app.vercel.app/api/mercadopago/webhook`
 - ✅ Headers CORS já estão configurados no `vercel.json`
 
 ### Erro TypeScript: "Property 'name' does not exist on type 'Apple'"
+
 - ✅ Privy Apple login não fornece propriedade `name`
-- ✅ Use apenas `user.google?.name` e `user.email?.address`  
+- ✅ Use apenas `user.google?.name` e `user.email?.address`
 - ✅ Corrija também `user.google?.pictureUrl` → `user.google?.picture`
 - ✅ Arquivos `LoginButton.tsx` e `useAuth.ts` já corrigidos
 
 ### Erro: "Module has already exported a member named 'Money'"
+
 - ✅ Remova exportação duplicada de `Money` do arquivo `Order.ts`
 - ✅ Importe `Money` de `Package.ts` no `Order.ts`
 - ✅ Mantenha `Money` apenas em um arquivo para evitar conflitos
 
 ### Erro: "This expression is not callable" (PackageRepository)
+
 - ✅ `PACKAGES` é um `Record<string, PackageType>`, não array
 - ✅ Use `PACKAGES[id]` ao invés de `PACKAGES.find()`
 - ✅ Use `Object.values(PACKAGES)` ao invés de `PACKAGES.map()`
 
 ### Build falha por lint
+
 ```bash
 # Corrigir problemas de lint
 npm run lint:fix
@@ -398,6 +441,7 @@ npm run build -- --no-lint
 ```
 
 ### Problemas de imagens
+
 - ✅ Imagens devem estar em `public/images/`
 - ✅ Referencie como `/images/nome.jpg`
 - ✅ Adicione domínios externos no `next.config.js`
@@ -405,6 +449,7 @@ npm run build -- --no-lint
 ## 📚 Comandos Úteis
 
 ### Desenvolvimento
+
 ```bash
 npm run dev          # Servidor de desenvolvimento
 npm run build        # Build de produção
@@ -414,6 +459,7 @@ npm run type-check   # Verificar TypeScript
 ```
 
 ### Deploy
+
 ```bash
 vercel               # Deploy preview
 vercel --prod        # Deploy produção
@@ -423,6 +469,7 @@ vercel env           # Gerenciar variáveis
 ```
 
 ### Debugging
+
 ```bash
 vercel logs          # Ver logs da aplicação
 vercel inspect       # Inspecionar deploy
@@ -464,6 +511,7 @@ Se encontrar problemas:
 **URL de Produção:** https://xperience-climb-1fk4unbis-govinda777s-projects.vercel.app
 
 **Próximos passos:**
+
 1. Configure as variáveis de ambiente com valores reais
 2. Configurar Privy App ID
 3. Configurar credenciais do MercadoPago
@@ -474,6 +522,7 @@ Se encontrar problemas:
 ## 🎯 Status do Projeto
 
 ### ✅ Funcionalidades Implementadas
+
 - **Sistema de Autenticação** - Privy com Web3 e social login
 - **Carrinho de Compras** - Gerenciamento completo com Zustand
 - **Múltiplos Pagamentos** - 5 métodos diferentes implementados
@@ -484,12 +533,14 @@ Se encontrar problemas:
 - **Sistema de Temas** - Preparado para múltiplos destinos
 
 ### 🔄 Em Desenvolvimento
+
 - **Campo WhatsApp** - Adicionar campo obrigatório no formulário
 - **Melhorias de Interface** - Ajustes no menu, footer e galeria
 - **Seção Cronograma** - Cronograma detalhado da experiência
 - **Seção Parceiros** - Parceiros e colaboradores
 
 ### 📈 Métricas do Projeto
+
 - **Arquivos de Código**: 100+ arquivos TypeScript/React
 - **Linhas de Código**: 10,000+ linhas
 - **Componentes**: 30+ componentes reutilizáveis
@@ -509,13 +560,6 @@ Para contribuir com o projeto:
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 📞 Suporte
-
-Para suporte e dúvidas:
-- **Email**: contato@xperiencehubs.com
-- **WhatsApp**: +55 11 99999-9999
-- **GitHub Issues**: Para bugs e melhorias
 
 ---
 
