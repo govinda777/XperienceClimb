@@ -1,7 +1,7 @@
 export default {
-  import: ['tests/step-definitions/**/*.ts'],
+  require: ['tests/step-definitions/**/*.ts'],
   paths: ['features/**/*.feature'],
   requireModule: ['ts-node/register'],
   format: ['summary', 'progress'],
-  parallel: 1
+  parallel: 1,
 };

@@ -10,7 +10,7 @@ test:
 
 # Executa os testes automatizados BDD (Cucumber)
 test-bdd:
-	npx cucumber-js --config tests/cucumber.config.ts
+	TS_NODE_COMPILER_OPTIONS='{"module":"commonjs"}' npx cucumber-js --config tests/cucumber.config.js
 
 # Executa todos os testes (unidade, integração e BDD)
 test-all: test test-bdd

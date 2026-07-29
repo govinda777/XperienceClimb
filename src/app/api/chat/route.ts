@@ -1,7 +1,26 @@
 import { NextResponse } from 'next/server';
 import { BotService } from '@/infrastructure/services/BotService';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
-// Sistema simples de Rate Limiting em memória.
+// Sistema de Rate Limiting persistente (Vercel KV / Upstash Redis)
+let redisRatelimit: Ratelimit | null = null;
+const isRedisConfigured = !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+
+if (isRedisConfigured) {
+  const redis = new Redis({
+    url: process.env.KV_REST_API_URL!,
+    token: process.env.KV_REST_API_TOKEN!,
+  });
+  redisRatelimit = new Ratelimit({
+    redis,
+    limiter: Ratelimit.slidingWindow(5, '60 s'),
+    analytics: true,
+    prefix: '@upstash/ratelimit/chat',
+  });
+}
+
+// Sistema de fallback em memória para ambiente local/desenvolvimento
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minuto
 const MAX_REQUESTS_PER_WINDOW = 5;
 
@@ -11,36 +30,55 @@ interface RateLimitData {
 }
 const rateLimitMap = new Map<string, RateLimitData>();
 
+async function checkRateLimit(ip: string): Promise<boolean> {
+  if (redisRatelimit) {
+    try {
+      const { success } = await redisRatelimit.limit(ip);
+      return success;
+    } catch (err) {
+      console.warn(
+        'Falha ao consultar rate limit no Redis/KV. Revertendo para fallback em memória:',
+        err
+      );
+    }
+  }
+
+  // Fallback em memória
+  const now = Date.now();
+  let rateData = rateLimitMap.get(ip);
+
+  if (!rateData) {
+    rateData = { count: 1, startTime: now };
+    rateLimitMap.set(ip, rateData);
+    return true;
+  }
+
+  if (now - rateData.startTime > RATE_LIMIT_WINDOW_MS) {
+    rateData.count = 1;
+    rateData.startTime = now;
+    return true;
+  }
+
+  rateData.count++;
+  return rateData.count <= MAX_REQUESTS_PER_WINDOW;
+}
+
 export async function POST(request: Request) {
   try {
-    // Rate Limit Simplificado (Em Memória)
     const ip = request.headers.get('x-forwarded-for') || 'unknown-ip';
-    const now = Date.now();
-    let rateData = rateLimitMap.get(ip);
+    const isAllowed = await checkRateLimit(ip);
 
-    if (!rateData) {
-      rateData = { count: 1, startTime: now };
-      rateLimitMap.set(ip, rateData);
-    } else {
-      if (now - rateData.startTime > RATE_LIMIT_WINDOW_MS) {
-        // Passou o tempo, reseta
-        rateData.count = 1;
-        rateData.startTime = now;
-      } else {
-        rateData.count++;
-        if (rateData.count > MAX_REQUESTS_PER_WINDOW) {
-          return NextResponse.json(
-            { error: 'Limite de requisições excedido. Aguarde 1 minuto.' },
-            { status: 429 }
-          );
-        }
-      }
+    if (!isAllowed) {
+      return NextResponse.json(
+        { error: 'Limite de requisições excedido. Aguarde 1 minuto.' },
+        { status: 429 }
+      );
     }
 
     let body;
     try {
       body = await request.json();
-    } catch (error) {
+    } catch (_error) {
       return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
     }
 
@@ -57,7 +95,7 @@ export async function POST(request: Request) {
     });
 
     if (!result.ok) {
-      console.error('N8N error response:', result.responseText);
+      console.error('Gemini error response:', result.responseText);
       return NextResponse.json(
         { error: 'Erro ao se comunicar com o agente de IA' },
         { status: result.status }

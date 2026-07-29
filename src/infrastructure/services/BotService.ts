@@ -1,15 +1,15 @@
+import 'server-only';
+
 import type { IBotService, BotRequest, BotResponse } from '@/core/services/IBotService';
 import { chatConfig } from '@/config/chat';
 
 export class BotService implements IBotService {
   private readonly timeoutMs: number;
-  private readonly webhookUrl: string;
   private readonly apiKey: string | undefined;
 
   constructor() {
     this.timeoutMs = parseInt(process.env.HEALTH_CHECK_TIMEOUT_MS ?? '10000', 10);
-    this.webhookUrl = chatConfig.webhookUrl;
-    this.apiKey = process.env.N8N_API_KEY;
+    this.apiKey = chatConfig.geminiApiKey;
   }
 
   async sendMessage(payload: BotRequest): Promise<BotResponse> {
@@ -17,14 +17,34 @@ export class BotService implements IBotService {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeoutMs);
 
+    if (!this.apiKey) {
+      clearTimeout(timeoutId);
+      return {
+        ok: false,
+        status: 400,
+        error: 'Gemini API key is not configured.',
+        latencyMs: Date.now() - startTime,
+      };
+    }
+
     try {
-      const response = await fetch(this.webhookUrl, {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.apiKey}`;
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(this.apiKey ? { 'X-API-KEY': this.apiKey } : {}),
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: payload.mensagem,
+                },
+              ],
+            },
+          ],
+        }),
         signal: controller.signal,
       });
 
@@ -32,14 +52,15 @@ export class BotService implements IBotService {
       const responseText = await response.text();
 
       let data: any;
-      try {
-        const contentType = response.headers.get('content-type') ?? '';
-        if (contentType.includes('application/json')) {
-          data = JSON.parse(responseText);
-        } else {
-          data = responseText;
+      if (response.ok) {
+        try {
+          const parsed = JSON.parse(responseText);
+          const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          data = { response: text };
+        } catch {
+          data = { response: responseText };
         }
-      } catch {
+      } else {
         data = responseText;
       }
 
@@ -67,15 +88,10 @@ export class BotService implements IBotService {
   }
 
   getWebhookUrl(): string {
-    return this.webhookUrl;
+    return 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash';
   }
 
   maskUrl(url: string): string {
-    try {
-      const parsed = new URL(url);
-      return `${parsed.protocol}//${parsed.host}${parsed.pathname}`;
-    } catch {
-      return url;
-    }
+    return url.split('?')[0];
   }
 }
