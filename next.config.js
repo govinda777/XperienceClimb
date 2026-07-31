@@ -14,6 +14,22 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        has: [
+          {
+            type: 'query',
+            key: 'theme',
+            value: '(?<slug>.+)',
+          },
+        ],
+        destination: '/destinations/:slug',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
@@ -38,6 +54,13 @@ const nextConfig = {
         ],
       },
     ];
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@stripe/crypto': false,
+    };
+    return config;
   },
 };
 

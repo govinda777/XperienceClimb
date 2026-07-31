@@ -1,45 +1,19 @@
-import { Navigation } from '@/components/layout';
-import {
-  HeroSection,
-  AboutSection,
-  BeginnerSection,
-  CalendarSection,
-  PackagesSection,
-  AnnualPackageSection,
-  ScheduleSection,
-  TimelineSection,
-  GallerySection,
-  SafetySection,
-  CommunitySection,
-  LocationSection,
-  Footer,
-} from '@/components/sections';
-import { CartButton, CartModal } from '@/components/cart';
+import { getContentRepository } from '@/infrastructure/repositories/ContentRepositoryFactory';
+import { ConfigService } from '@/infrastructure/services/ConfigService';
+import DestinationTemplate from '@/components/templates/DestinationTemplate';
 
-export default function Home() {
+export const revalidate = 3600; // 1 hour cached statically
+
+export default async function Home() {
+  const cmsEnabled = ConfigService.getCmsEnabled();
+  const repository = getContentRepository();
+  const activeSite = await repository.getActiveSite();
+
   return (
-    <main className="min-h-screen">
-      <Navigation />
-      <HeroSection />
-      <AboutSection />
-      <BeginnerSection />
-      <CalendarSection />
-      <PackagesSection />
-      <AnnualPackageSection />
-      <ScheduleSection />
-      <TimelineSection />
-      <GallerySection />
-      <SafetySection />
-      <CommunitySection />
-      <LocationSection />
-      {/* <TestimonialsSection /> */}
-      <Footer />
-
-      {/* Floating Cart Button */}
-      <CartButton />
-
-      {/* Cart Modal */}
-      <CartModal />
-    </main>
+    <DestinationTemplate
+      destination={activeSite?.activeDestination}
+      cmsEnabled={cmsEnabled}
+      activeSiteFallback={activeSite}
+    />
   );
 }

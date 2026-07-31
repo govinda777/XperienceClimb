@@ -36,6 +36,7 @@ export interface CartItem {
   participantName: string;
   experience?: string;
   addedAt: Date;
+  commerceProductId?: string; // Mapped product identifier from CMS
 }
 
 export interface Order {

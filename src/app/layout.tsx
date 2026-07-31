@@ -11,13 +11,16 @@ import CookieBanner from '@/components/analytics/CookieBanner';
 import GoogleScripts from '@/components/analytics/GoogleScripts';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 
+import { getContentRepository } from '@/infrastructure/repositories/ContentRepositoryFactory';
+import { ConfigService } from '@/infrastructure/services/ConfigService';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://climb.xperiencehubs.com'),
-  title: 'Xperience Climb | Escalada Pedra Bela',
+  title: 'Xperience Climb',
   description:
-    'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura em Pedra Bela.',
+    'Descubra a liberdade de escalar em rocha natural. Experiências guiadas exclusivas de escalada e aventura.',
   keywords: 'escalada, climbing, aventura, são paulo, pedra bela, escalada em rocha',
   authors: [{ name: 'climb.xperiencehubs.com' }],
   openGraph: {
@@ -49,13 +52,17 @@ export const viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cmsEnabled = ConfigService.getCmsEnabled();
+  const repository = getContentRepository();
+  const activeSite = await repository.getActiveSite();
+
   return (
     <html lang="pt-BR">
       <body className={`${inter.className} bg-white`}>
         <ConsoleFilter />
         <GoogleScripts />
-        <ThemeProvider>
+        <ThemeProvider initialCmsEnabled={cmsEnabled} initialActiveSite={activeSite}>
           <ThemeStyleProvider>
             <PrivyProvider>
               <AppAuthProvider>{children}</AppAuthProvider>
