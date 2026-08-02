@@ -6,10 +6,10 @@ This document explains how to configure and use the GitHub Sponsors payment inte
 
 ## Features
 
-✅ **GitHub Sponsors Integration**: Accept payments through GitHub Sponsors  
-✅ **Automatic Currency Conversion**: BRL to USD conversion  
-✅ **Webhook Support**: Automatic payment confirmation  
-✅ **Order Tracking**: Full integration with existing order system  
+✅ **GitHub Sponsors Integration**: Accept payments through GitHub Sponsors
+✅ **Automatic Currency Conversion**: BRL to USD conversion
+✅ **Webhook Support**: Automatic payment confirmation
+✅ **Order Tracking**: Full integration with existing order system
 
 ## Configuration
 

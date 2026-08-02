@@ -86,6 +86,7 @@ export class CreateOrder {
           },
           quantity: cartItem.quantity,
           participantDetails: participantDetail,
+          commerceProductId: cartItem.commerceProductId || cartItem.packageId, // Map from CMS or fallback safely to packageId
         };
       });
 
@@ -248,6 +249,9 @@ export class CreateOrder {
       message += `   • Idade: ${participant.age} anos\n`;
       message += `   • Nível: ${this.translateExperience(participant.experienceLevel)}\n`;
       message += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
+      if (item.commerceProductId && item.commerceProductId !== item.packageId) {
+        message += `   • ID Produto: ${item.commerceProductId}\n`;
+      }
     });
 
     message += `\n💰 *Pagamento:* ${this.getPaymentStatusMessage(order.payment.method)}`;

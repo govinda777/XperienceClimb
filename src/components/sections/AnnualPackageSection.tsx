@@ -6,10 +6,22 @@ import { PACKAGES, CONTACT_INFO } from '@/lib/constants';
 import { openWhatsApp } from '@/lib/utils';
 import { Button } from '@/components/ui';
 
-export function AnnualPackageSection() {
+interface AnnualPackageSectionProps {
+  cmsData?: {
+    name?: string;
+    description?: string;
+    features?: string[];
+  };
+}
+
+export function AnnualPackageSection({ cmsData }: AnnualPackageSectionProps) {
   const annualPkg = PACKAGES.anual;
 
-  if (!annualPkg) return null;
+  const name = cmsData?.name || annualPkg?.name || "Xperience Anual";
+  const description = cmsData?.description || annualPkg?.description || "Assinatura anual premium com acesso garantido a todas as saídas bimestrais do ano.";
+  const features = cmsData?.features || annualPkg?.features || [];
+
+  if (!annualPkg && !cmsData) return null;
 
   return (
     <section id="anual" className="py-24 bg-neutral-900 text-white overflow-hidden relative">
@@ -28,11 +40,11 @@ export function AnnualPackageSection() {
               </div>
 
               <h2 className="text-5xl font-bold mb-6 leading-tight">
-                {annualPkg.name}
+                {name}
               </h2>
 
               <p className="text-xl text-neutral-400 mb-8 leading-relaxed">
-                {annualPkg.description} Uma jornada de um ano inteiro explorando o que há de melhor no montanhismo, com todo o conforto e logística resolvidos.
+                {description}
               </p>
 
               <div className="grid grid-cols-2 gap-6 mb-10">
@@ -82,7 +94,7 @@ export function AnnualPackageSection() {
               </h3>
 
               <ul className="space-y-5">
-                {annualPkg.features.map((feature, index) => (
+                {features.map((feature, index) => (
                   <li key={index} className="flex items-start space-x-3 group">
                     <div className="mt-1 w-5 h-5 rounded-full bg-climb-500/10 flex items-center justify-center text-climb-500 group-hover:bg-climb-500 group-hover:text-white transition-colors">
                       <span className="text-[10px]">✓</span>
