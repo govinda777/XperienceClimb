@@ -65,7 +65,7 @@ export default function FloatingChatButton() {
         { id: Date.now().toString(), sender: 'agent', text: data.response || 'Mensagem recebida.' },
       ]);
     } catch (error: any) {
-      console.error(error);
+      console.warn('Chat error:', error.message);
       setMessages(prev => [
         ...prev,
         {
