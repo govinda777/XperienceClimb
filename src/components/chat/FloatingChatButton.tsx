@@ -47,7 +47,16 @@ export default function FloatingChatButton() {
         throw new Error('Você enviou muitas mensagens rápido demais. Por favor, aguarde 1 minuto.');
       }
 
-      if (!response.ok) throw new Error('Erro ao enviar mensagem');
+      if (!response.ok) {
+        let errorMessage = 'Erro ao enviar mensagem';
+        try {
+          const errorJson = await response.json();
+          if (errorJson && errorJson.error) {
+            errorMessage = errorJson.error;
+          }
+        } catch (_) {}
+        throw new Error(errorMessage);
+      }
 
       const data = await response.json();
 
