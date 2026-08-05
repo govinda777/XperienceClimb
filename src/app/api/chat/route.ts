@@ -5,7 +5,12 @@ import { Redis } from '@upstash/redis';
 
 // Sistema de Rate Limiting persistente (Vercel KV / Upstash Redis)
 let redisRatelimit: Ratelimit | null = null;
-const isRedisConfigured = !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+const isRedisConfigured = !!(
+  process.env.KV_REST_API_URL &&
+  process.env.KV_REST_API_URL.startsWith('https://') &&
+  process.env.KV_REST_API_TOKEN &&
+  !process.env.KV_REST_API_TOKEN.startsWith('seu_token')
+);
 
 if (isRedisConfigured) {
   const redis = new Redis({
