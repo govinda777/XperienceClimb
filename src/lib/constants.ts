@@ -177,12 +177,17 @@ export const AVAILABLE_DATES = {
 // Proximas datas para o calendário
 export const NEXT_EVENTS = [
   {
-    date: 'Setembro 2026',
+    date: 'Novembro 2026',
     location: 'Pedra Bela',
     isSecret: true,
   },
   {
-    date: 'Novembro 2026',
+    date: 'Janeiro 2027',
+    location: 'A definir',
+    isSecret: true,
+  },
+  {
+    date: 'Março 2027',
     location: 'A definir',
     isSecret: true,
   },
