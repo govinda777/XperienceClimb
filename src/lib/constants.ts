@@ -142,7 +142,7 @@ export const PACKAGES: Record<string, PackageType> = {
 };
 
 // Base date from which all formats are derived - modify ONLY this one!
-const BASE_TRIP_DATE = '2026-07-11'; // Format: YYYY-MM-DD
+const BASE_TRIP_DATE = '2026-09-26'; // Format: YYYY-MM-DD
 
 const [yearStr, monthStr, dayStr] = BASE_TRIP_DATE.split('-');
 const year = parseInt(yearStr, 10);
@@ -177,17 +177,12 @@ export const AVAILABLE_DATES = {
 // Proximas datas para o calendário
 export const NEXT_EVENTS = [
   {
-    date: 'Agosto 2026',
+    date: 'Setembro 2026',
     location: 'Pedra Bela',
     isSecret: true,
   },
   {
-    date: 'Outubro 2026',
-    location: 'Pedra Bela',
-    isSecret: true,
-  },
-  {
-    date: 'Dezembro 2026',
+    date: 'Novembro 2026',
     location: 'A definir',
     isSecret: true,
   },
