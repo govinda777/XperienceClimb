@@ -128,5 +128,5 @@
 
 ---
 
-**Última atualização**: Dezembro 2024  
+**Última atualização**: Dezembro 2024
 **Próxima revisão**: Após implementação das prioridades críticas

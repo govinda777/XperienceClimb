@@ -512,6 +512,7 @@ src/
 ### **Tipos de Teste Implementados**
 
 #### **1. Unit Tests (Jest + React Testing Library)**
+
 - **Componentes**: Renderização, interações, props
 - **Hooks**: Lógica de estado e efeitos
 - **Services**: Lógica de negócio isolada
@@ -519,12 +520,14 @@ src/
 - **Utilities**: Funções auxiliares
 
 #### **2. Integration Tests**
+
 - **API Routes**: Endpoints completos
 - **Payment Flow**: Fluxo completo de pagamento
 - **Authentication**: Integração com Privy
 - **Database**: Operações de persistência
 
 #### **3. BDD Tests (Cucumber)**
+
 - **User Journeys**: Jornadas completas do usuário
 - **Business Scenarios**: Cenários de negócio
 - **Cross-browser**: Compatibilidade entre navegadores
@@ -533,6 +536,7 @@ src/
 ### **Cobertura de Testes**
 
 #### **Funcionalidades Testadas**
+
 - ✅ **Autenticação**: Login, logout, proteção de rotas
 - ✅ **Carrinho**: Adicionar, remover, calcular totais
 - ✅ **Checkout**: Processo multi-step completo
@@ -543,6 +547,7 @@ src/
 - ✅ **UI**: Componentes e interações
 
 #### **Métricas Atuais**
+
 - **Total de Testes**: 80+ testes
 - **Suites**: 5 suites principais
 - **Cobertura**: >90% nas funcionalidades críticas
@@ -619,6 +624,178 @@ NEXT_PUBLIC_FAILURE_URL=
 - **Input Validation**: Validação de formulários
 - **XSS Prevention**: Sanitização de inputs
 - **CSRF Protection**: Tokens CSRF implícitos
+
+---
+
+## Arquitetura de Conteúdo e Migração para o CMS
+
+Para permitir o gerenciamento de conteúdo de forma 100% dinâmica pelo Marcos (gestor), o projeto está migrando para o **Sanity CMS**.
+
+### 🗺️ Mapa Global de Arquivos e Relações
+
+O diagrama a seguir exibe como todos os principais arquivos e camadas do projeto se relacionam para carregar a aplicação, as regras de negócio e a identidade visual dinâmica:
+
+```mermaid
+graph TD
+    %% Camadas do Sistema
+    subgraph Presentation_Layer [Apresentação e Roteamento]
+        LAYOUT["src/app/layout.tsx"] -->|Importa e Envolve| THEME_PROV["src/themes/ThemeProvider.tsx"]
+        LAYOUT -->|Importa e Injeta| STYLE_PROV["src/themes/components/ThemeStyleProvider.tsx"]
+        PAGE["src/app/page.tsx"] -->|Renderiza| TEMP["src/components/templates/DestinationTemplate.tsx"]
+    end
+
+    subgraph Theme_Layer [Gerenciamento de Temas e Estilos]
+        THEME_PROV -->|Mapeia dados para| THEME_TYPE["src/themes/types.ts"]
+        STYLE_PROV -->|Consome useTheme e gera| CSS_VARS["CSS Custom Properties / Globals"]
+    end
+
+    subgraph Repositories_Infrastructure [Infraestrutura e Dados]
+        TEMP -->|Busca dados usando| FACTORY["src/infrastructure/repositories/ContentRepositoryFactory.ts"]
+        PAGE -->|Busca activeSite usando| FACTORY
+
+        FACTORY -->|Consulta Config| CONFIG["src/infrastructure/services/ConfigService.ts"]
+        FACTORY -->|Retorna| SANITY["src/infrastructure/repositories/SanityContentRepository.ts"]
+        FACTORY -->|Retorna| LEGACY["src/infrastructure/repositories/LegacyContentRepository.ts"]
+
+        SANITY -->|Query GROQ| SANITY_API[Sanity CMS Cloud]
+    end
+
+    subgraph Core_Domain [Core e Domínio]
+        SANITY -.-> IREPO["src/core/repositories/IContentRepository.ts"]
+        LEGACY -.-> IREPO
+        IREPO -->|Entidades| ENTITY["src/core/entities/*"]
+    end
+
+    %% Relações entre Apresentação e Temas
+    TEMP -->|Instancia| THEME_PROV
+    TEMP -.->|Injeta dados de activeSite e cmsEnabled| THEME_PROV
+    THEME_PROV -.->|Fornece dados e cores via context useTheme| NAV["src/components/layout/Navigation.tsx"]
+    THEME_PROV -.->|Fornece dados e cores via context useTheme| SECTIONS["src/components/sections/*"]
+```
+
+### 🎨 Relação entre `ThemeProvider.tsx` e Repositórios
+
+O `ThemeProvider` do projeto não se conecta diretamente aos repositórios. A arquitetura segue o princípio de **Inversão de Dependência e Separação de Conceitos (Clean Architecture)**:
+
+1. **Servidor (Server-Side - SSR)**:
+   - O layout raiz `layout.tsx`, a página principal `page.tsx` e o template `DestinationTemplate.tsx` rodam no servidor.
+   - Eles chamam o `getContentRepository()` para carregar as informações do destino ativo (`activeSite`) e a flag `cmsEnabled`.
+   - Essa chamada inicial resolve os dados dinamicamente no `SanityContentRepository` ou busca o mock estático local no `LegacyContentRepository`.
+
+2. **Injeção de Propriedades (Props Injection)**:
+   - Os dados obtidos no servidor são repassados ao componente `<ThemeProvider>` na árvore do React através das propriedades `initialCmsEnabled` e `initialActiveSite`:
+     ```typescript
+     <ThemeProvider initialCmsEnabled={cmsEnabled} initialActiveSite={activeSite}>
+     ```
+
+3. **Mapeamento de Identidade Visual (`mapDestinationToTheme`)**:
+   - O `ThemeProvider` recebe esses dados crus de infraestrutura e utiliza a função interna `mapDestinationToTheme` para mapear campos do CMS e cores customizadas em uma estrutura de dados de tema unificada (`ThemeConfig`).
+   - As cores e textos (como `primaryColor`, `accentColor`, `heroOverlay`) ficam salvas no estado de contexto do React (`ThemeContext`).
+
+4. **Consumo de Estilos e Conteúdo**:
+   - O componente `ThemeStyleProvider.tsx` consome o hook `useTheme()` e injeta essas cores dinâmicas no elemento `<body>` como variáveis de CSS customizadas (ex: `--primary-color: HEX`), aplicando-as instantaneamente nos estilos Tailwind das seções e componentes da tela.
+
+### 📊 Diagrama de Classes Detalhado
+
+```mermaid
+classDiagram
+    class DestinationTemplate {
+        +cmsEnabled: boolean
+        +activeSiteFallback: ActiveSiteContent
+        +render()
+    }
+    class ThemeProvider {
+        +initialCmsEnabled: boolean
+        +initialActiveSite: ActiveSiteContent
+        -currentTheme: ThemeConfig
+        -mapDestinationToTheme(dest) ThemeConfig
+    }
+    class ThemeStyleProvider {
+        +render()
+    }
+    class ContentRepositoryFactory {
+        +getContentRepository() IContentRepository
+    }
+    class IContentRepository {
+        <<interface>>
+        +getActiveSite() Promise~ActiveSiteContent~
+        +getHomePage() Promise~HomePageContent~
+    }
+    class SanityContentRepository {
+        -client: SanityClient
+        -isMockMode: boolean
+        +getActiveSite() Promise~ActiveSiteContent~
+    }
+    class LegacyContentRepository {
+        -mockActiveDestination: DestinationContent
+        +getActiveSite() Promise~ActiveSiteContent~
+    }
+
+    DestinationTemplate --> ThemeProvider : " instancia e repassa dados "
+    ThemeProvider --> ThemeStyleProvider : " fornece contexto useTheme "
+    DestinationTemplate ..> ContentRepositoryFactory : " solicita repositório "
+    SanityContentRepository ..|> IContentRepository : " implementa "
+    LegacyContentRepository ..|> IContentRepository : " implementa "
+```
+
+### 🔄 Diagrama de Sequência (Ciclo de Vida da Requisição)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Usuário / Cliente
+    participant Page as Next.js Server (Page/Template/Layout)
+    participant Factory as ContentRepositoryFactory
+    participant Config as ConfigService
+    participant SanityRepo as SanityContentRepository
+    participant SanityCloud as Sanity CMS (API Cloud)
+    participant LegacyRepo as LegacyContentRepository
+    participant ThemeProv as Client ThemeProvider (React Context)
+    participant StyleProv as Client ThemeStyleProvider
+
+    User->>Page: Acessa a página inicial "/"
+    Page->>Factory: getContentRepository()
+    Factory->>Config: getCmsEnabled()
+    Config-->>Factory: true/false
+
+    alt CMS Ativo (true)
+        Factory->>SanityRepo: Novo repositório
+        Factory-->>Page: Retorna instância do SanityContentRepository
+        Page->>SanityRepo: getActiveSite()
+
+        alt Conexão bem sucedida
+            SanityRepo->>SanityCloud: Query GROQ para siteSettings
+            SanityCloud-->>SanityRepo: Retorna dados dinâmicos do CMS
+            SanityRepo-->>Page: Retorna ActiveSiteContent mapeado
+        else Falha na API (Timeout / Erro 500)
+            SanityRepo->>SanityRepo: Ativa fallback interno para dados locais
+            SanityRepo-->>Page: Retorna mockSiteSettings local
+        end
+
+    else CMS Inativo (false)
+        Factory->>LegacyRepo: Novo repositório
+        Factory-->>Page: Retorna instância do LegacyContentRepository
+        Page->>LegacyRepo: getActiveSite()
+        LegacyRepo-->>Page: Retorna mockActiveDestination em memória imediatamente
+    end
+
+    Page->>ThemeProv: Instancia <ThemeProvider initialActiveSite={activeSite} />
+    Note over ThemeProv: Mapeia dados para paleta de cores (ThemeConfig)
+
+    ThemeProv->>StyleProv: Disponibiliza o tema via hook useTheme()
+    Note over StyleProv: Injeta variáveis de CSS no DOM (ex: --primary-color: HEX)
+
+    Page-->>User: Renderiza HTML final com os dados obtidos e estilos aplicados
+```
+
+### Pontos Pendentes de Migração (Hardcoded)
+
+Para consolidar as duas fontes de conteúdo como únicas e eliminar conteúdo solto no código, as seguintes dependências de `src/lib/constants.ts` precisam ser migradas para ler do repositório ativo:
+
+- **Contatos e Redes Sociais (`CONTACT_INFO`)**: Devem ser obtidos de `getActiveSite().contactInfo`. Usado em: `Navigation`, `AnnualPackageSection`, `BeginnerSection`, `CalendarSection`, `Footer`, `HeroSection`, `PackagesSection`, `ScheduleSection`, `WaitlistModal`, `CreateOrder` e `WhatsAppService`.
+- **Navegação (`NAVIGATION_ITEMS`)**: Deve ser gerado dinamicamente a partir do `sectionOrder` retornado por `getHomePage()`. Usado em: `Navigation`.
+- **Pacotes (`PACKAGES`)**: Devem ser obtidos via `listPublishedPackages()`. Usado em: `AnnualPackageSection` e `PackageRepository`.
+- **Datas Disponíveis (`AVAILABLE_DATES` e `NEXT_EVENTS`)**: Devem ser obtidas dinamicamente do destino ativo/calendário retornado pelo repositório. Usado em: `Footer`, `PackagesSection` e `CalendarSection`.
 
 ---
 

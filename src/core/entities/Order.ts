@@ -29,6 +29,7 @@ export interface OrderItem {
   price: Money;
   quantity: number;
   participantDetails: ParticipantDetails;
+  commerceProductId?: string; // Optional commerceProductId mapped from CMS
 }
 
 export interface ParticipantDetails {
