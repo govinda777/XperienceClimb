@@ -47,7 +47,7 @@ export function AboutSection() {
                     <span className="text-2xl">{highlight.icon}</span>
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-climb-600 mb-2">{highlight.title}</h4>
+                    <h3 className="text-lg font-semibold text-climb-600 mb-2">{highlight.title}</h3>
                     <p className="text-neutral-700">{highlight.description}</p>
                   </div>
                 </div>
@@ -57,9 +57,9 @@ export function AboutSection() {
             <div className="rounded-lg border border-orange-200 bg-orange-50 p-6">
               <div className="mb-3 flex items-center space-x-3">
                 <span className="text-2xl">📋</span>
-                <h4 className="text-lg font-semibold text-climb-600">
+                <h3 className="text-lg font-semibold text-climb-600">
                   {currentTheme.content.about.infoBox.title}
-                </h4>
+                </h3>
               </div>
               <p className="text-neutral-700">{currentTheme.content.about.infoBox.content}</p>
             </div>

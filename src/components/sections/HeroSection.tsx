@@ -8,7 +8,7 @@ import { useTheme } from '@/themes/ThemeProvider';
 
 export function HeroSection() {
   const { currentTheme } = useTheme();
-  
+
   const handleScrollToPackages = () => {
     const element = document.getElementById('pacotes');
     if (element) {
@@ -51,9 +51,9 @@ export function HeroSection() {
 
           {/* Hero Text */}
           <div className="mb-12 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-            <h2 className="mb-8 text-2xl font-semibold text-climb-100 md:text-3xl">
+            <p className="mb-8 text-2xl font-semibold text-climb-100 md:text-3xl">
               {currentTheme.content.hero.subtitle}
-            </h2>
+            </p>
 
             <div className="flex flex-col items-center justify-center space-y-4 text-lg md:flex-row md:space-x-8 md:space-y-0">
               <div className="flex items-center space-x-2">

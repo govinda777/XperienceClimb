@@ -24,10 +24,8 @@ export function ScheduleSection() {
                   📍
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold text-climb-600 mb-2">Meeting Point</h4>
-                  <p className="text-neutral-700 leading-relaxed mb-4">
-                    {logistics.meetingPoint}
-                  </p>
+                  <h3 className="text-xl font-bold text-climb-600 mb-2">Meeting Point</h3>
+                  <p className="text-neutral-700 leading-relaxed mb-4">{logistics.meetingPoint}</p>
                   <Button
                     variant="outline"
                     size="sm"
@@ -44,7 +42,7 @@ export function ScheduleSection() {
                   ⏰
                 </div>
                 <div>
-                  <h4 className="text-xl font-bold text-climb-600 mb-2">Horários</h4>
+                  <h3 className="text-xl font-bold text-climb-600 mb-2">Horários</h3>
                   <p className="text-neutral-700 leading-relaxed">
                     <strong>Início:</strong> {logistics.schedule.openTime}
                     <br />
@@ -59,9 +57,9 @@ export function ScheduleSection() {
               </div>
 
               <div className="bg-climb-50 p-6 rounded-2xl border border-climb-100">
-                <h4 className="font-bold text-climb-600 mb-4 flex items-center">
+                <h3 className="font-bold text-climb-600 mb-4 flex items-center text-xl">
                   <span className="mr-2">🎒</span> O que considerar
-                </h4>
+                </h3>
                 <ul className="space-y-2">
                   {logistics.importantNotes.map((note, index) => (
                     <li key={index} className="flex items-start text-neutral-700">
@@ -79,7 +77,8 @@ export function ScheduleSection() {
             <div className="bg-gradient-to-br from-climb-500 to-climb-700 p-8 rounded-3xl text-white shadow-xl">
               <h3 className="text-2xl font-bold mb-4">Experiência Corporativa</h3>
               <p className="text-climb-50 mb-8 leading-relaxed">
-                Leve seu time para as alturas. Desenvolvemos programas sob medida para team building e liderança.
+                Leve seu time para as alturas. Desenvolvemos programas sob medida para team building
+                e liderança.
               </p>
               <Button
                 size="lg"
@@ -98,7 +97,8 @@ export function ScheduleSection() {
             <div className="bg-neutral-900 p-8 rounded-3xl text-white shadow-xl">
               <h3 className="text-2xl font-bold mb-4">Dúvidas Técnicas?</h3>
               <p className="text-neutral-400 mb-8 leading-relaxed">
-                Fale diretamente com quem entende. Nossos guias certificados estão prontos para tirar todas as suas dúvidas.
+                Fale diretamente com quem entende. Nossos guias certificados estão prontos para
+                tirar todas as suas dúvidas.
               </p>
               <Button
                 size="lg"
