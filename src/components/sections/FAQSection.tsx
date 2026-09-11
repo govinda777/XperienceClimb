@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronDown, HelpCircle, MessageCircle } from 'lucide-react';
+import { ChevronDown, HelpCircle, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { openWhatsApp } from '@/lib/utils';
 import { CONTACT_INFO } from '@/lib/constants';
@@ -94,7 +94,7 @@ export function FAQSection() {
             }
             className="inline-flex items-center gap-2 rounded-full bg-orange-500 px-8 py-3 font-semibold text-white shadow-md transition-all hover:bg-orange-600 hover:shadow-lg"
           >
-            <MessageCircle className="h-5 w-5" />
+            <MessageSquare className="h-5 w-5" />
             Falar Diretamente com a Equipe
           </Button>
         </div>
