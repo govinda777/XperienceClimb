@@ -3,7 +3,6 @@ import '@testing-library/jest-dom';
 // Polyfill fetch for Jest
 global.fetch = jest.fn();
 
-// Mock Next.js server components
 global.Request = class Request {
   constructor(input, init) {
     Object.defineProperty(this, 'url', {
@@ -13,8 +12,25 @@ global.Request = class Request {
       configurable: true,
     });
     this.method = init?.method || 'GET';
-    this.headers = new Map(Object.entries(init?.headers || {}));
+    const headersMap = new Map(
+      Object.entries(init?.headers || {}).map(([k, v]) => [k.toLowerCase(), v])
+    );
+    headersMap.get = function (key) {
+      return Map.prototype.get.call(this, key.toLowerCase()) || null;
+    };
+    this.headers = headersMap;
     this.body = init?.body;
+  }
+
+  async json() {
+    if (!this.body) {
+      throw new SyntaxError('Unexpected end of JSON input');
+    }
+    return typeof this.body === 'string' ? JSON.parse(this.body) : this.body;
+  }
+
+  async text() {
+    return typeof this.body === 'string' ? this.body : JSON.stringify(this.body || '');
   }
 };
 
