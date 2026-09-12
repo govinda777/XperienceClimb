@@ -14,4 +14,3 @@ export * from './TimelineSection';
 export * from './CalendarSection';
 export * from './AnnualPackageSection';
 export * from './WaitlistModal';
-export * from './FAQSection';
