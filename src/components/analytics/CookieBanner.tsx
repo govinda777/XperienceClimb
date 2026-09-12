@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,8 +31,14 @@ export default function CookieBanner() {
       <div className="text-sm text-gray-700 flex-1">
         <p>
           Utilizamos cookies para melhorar a sua experiência, analisar o tráfego do site e oferecer
-          anúncios personalizados. Ao clicar em &quot;Aceitar Todos&quot;, você concorda com o uso
-          de cookies.
+          serviços personalizados. Saiba mais em nossa{' '}
+          <Link
+            href="/politica-de-privacidade"
+            className="text-climb-600 underline hover:text-climb-700"
+          >
+            Política de Privacidade
+          </Link>
+          . Ao clicar em &quot;Aceitar Todos&quot;, você concorda com o uso de cookies.
         </p>
       </div>
       <div className="flex gap-3">

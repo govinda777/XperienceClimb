@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Button } from '@/components/ui';
 import { CONTACT_INFO, AVAILABLE_DATES } from '@/lib/constants';
 import { openWhatsApp } from '@/lib/utils';
@@ -22,8 +23,7 @@ export function Footer() {
 
   const sendEmail = () => {
     const subject = 'Informações sobre Escalada - XperienceClimb';
-    const body =
-      'Olá! Gostaria de mais informações sobre os pacotes de escalada no Morro Araçoiaba.';
+    const body = 'Olá! Gostaria de mais informações sobre os pacotes de escalada em Pedra Bela.';
     const mailtoUrl = `mailto:${CONTACT_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUrl;
   };
@@ -43,10 +43,10 @@ export function Footer() {
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="mb-6">
-              <h3 className="mb-2 text-2xl font-bold">
+              <p className="mb-2 text-2xl font-bold">
                 XPERIENCE
                 <span className="text-orange-400"> CLIMB</span>
-              </h3>
+              </p>
               <p className="text-sm leading-relaxed text-climb-200">
                 Viva a experiência definitiva de escalada no coração da Mata Atlântica. Segurança,
                 aventura e natureza em perfeita harmonia.
@@ -68,7 +68,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="mb-6 text-lg font-semibold text-white">Navegação</h4>
+            <p className="mb-6 text-lg font-semibold text-white">Navegação</p>
             <ul className="space-y-3">
               <li>
                 <button
@@ -123,7 +123,7 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="mb-6 text-lg font-semibold text-white">Contato</h4>
+            <p className="mb-6 text-lg font-semibold text-white">Contato</p>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
                 <span className="text-lg text-orange-400">📍</span>
@@ -131,7 +131,7 @@ export function Footer() {
                   <p className="text-sm leading-relaxed text-climb-200">
                     {CONTACT_INFO.address}
                     <br />
-                    Iperó, São Paulo
+                    Pedra Bela, São Paulo - CEP 12990-000
                   </p>
                 </div>
               </div>
@@ -165,7 +165,7 @@ export function Footer() {
 
           {/* Contact Actions */}
           <div>
-            <h4 className="mb-6 text-lg font-semibold text-white">Fale Conosco</h4>
+            <p className="mb-6 text-lg font-semibold text-white">Fale Conosco</p>
             <div className="space-y-3">
               <Button
                 variant="secondary"
@@ -202,10 +202,10 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 py-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h3 className="mb-4 text-xl font-bold">Receba Dicas e Novidades</h3>
+            <p className="mb-4 text-xl font-bold">Receba Dicas e Novidades</p>
             <p className="mb-6 text-sm text-climb-200">
-              Cadastre-se para receber dicas de escalada, promoções exclusivas e novidades sobre o
-              Morro Araçoiaba.
+              Cadastre-se para receber dicas de escalada, promoções exclusivas e novidades sobre as
+              próximas saídas em Pedra Bela.
             </p>
             <div
               className="mx-auto flex max-w-md flex-col gap-3 sm:flex-row"
@@ -234,12 +234,12 @@ export function Footer() {
             </div>
 
             <div className="flex items-center space-x-6 text-xs text-climb-200">
-              <a href="#" className="transition-colors hover:text-white">
+              <Link href="/politica-de-privacidade" className="transition-colors hover:text-white">
                 Política de Privacidade
-              </a>
-              <a href="#" className="transition-colors hover:text-white">
+              </Link>
+              <Link href="/termos-de-uso" className="transition-colors hover:text-white">
                 Termos de Uso
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { PackageType } from '@/types';
 
 // Contact information
 export const CONTACT_INFO = {
-  address: 'Pedra Bela Vista, São Paulo - SP',
+  address: 'Padaria São João, Rua Bernardino de Lima Paes, 07 - Centro',
   distance: '119km de São Paulo',
   phone: '(11) 99541-3539',
   email: 'marcosishino@gmail.com',

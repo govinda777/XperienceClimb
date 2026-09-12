@@ -4,7 +4,7 @@ import React from 'react';
 import { Calendar, Lock, MapPin } from 'lucide-react';
 import { NEXT_EVENTS, CONTACT_INFO } from '@/lib/constants';
 import { openWhatsApp } from '@/lib/utils';
-import { Card, CardContent } from '@/components/ui';
+import { Card } from '@/components/ui';
 
 export function CalendarSection() {
   return (
@@ -15,8 +15,8 @@ export function CalendarSection() {
             Próximas Fronteiras
           </h2>
           <p className="text-xl text-neutral-700 max-w-2xl mx-auto">
-            Nossos desafios acontecem no último mês de cada bimestre.
-            Prepare-se para o desconhecido.
+            Nossos desafios acontecem no último mês de cada bimestre. Prepare-se para o
+            desconhecido.
           </p>
         </div>
 
@@ -25,10 +25,12 @@ export function CalendarSection() {
             <Card
               key={index}
               interactive={true}
-              onClick={() => openWhatsApp(
-                CONTACT_INFO.phone,
-                `Olá! Vi a data de ${event.date} no calendário e gostaria de saber mais sobre esse destino misterioso 🏔️✨`
-              )}
+              onClick={() =>
+                openWhatsApp(
+                  CONTACT_INFO.phone,
+                  `Olá! Vi a data de ${event.date} no calendário e gostaria de saber mais sobre esse destino misterioso 🏔️✨`
+                )
+              }
               className="group relative h-64 flex flex-col justify-center items-center text-center p-8 border-2 border-dashed border-neutral-200 hover:border-climb-400 hover:bg-climb-50/30 transition-all duration-500"
             >
               {/* Secret Overlay Effect */}

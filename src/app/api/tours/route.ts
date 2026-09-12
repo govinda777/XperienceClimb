@@ -18,50 +18,43 @@ export async function GET(request: NextRequest) {
     const result = await getAllToursUseCase.execute(activeOnly);
 
     if (!result.success) {
-      return NextResponse.json(
-        { error: result.error },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: result.error }, { status: 500 });
     }
 
     return NextResponse.json({
       tours: result.tours,
-      count: result.tours.length
+      count: result.tours.length,
     });
   } catch (error) {
     console.error('Error fetching tours:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    let body: any;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Corpo da requisição inválido ou vazio' }, { status: 400 });
+    }
 
     const result = await createTourUseCase.execute(body);
 
     if (!result.success) {
       return NextResponse.json(
-        { 
+        {
           error: result.error,
-          validationErrors: result.validationErrors 
+          validationErrors: result.validationErrors,
         },
         { status: 400 }
       );
     }
 
-    return NextResponse.json(
-      { tour: result.tour },
-      { status: 201 }
-    );
+    return NextResponse.json({ tour: result.tour }, { status: 201 });
   } catch (error) {
     console.error('Error creating tour:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

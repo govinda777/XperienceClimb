@@ -6,12 +6,7 @@ import { AVAILABLE_DATES } from '@/lib/constants';
 // Mock UI components
 jest.mock('@/components/ui', () => ({
   Button: ({ children, onClick, disabled, variant, size }: any) => (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      data-variant={variant}
-      data-size={size}
-    >
+    <button onClick={onClick} disabled={disabled} data-variant={variant} data-size={size}>
       {children}
     </button>
   ),
@@ -64,9 +59,22 @@ describe('Footer Component', () => {
 
     const expectedMessage = `Olá! Gostaria de mais informações sobre os pacotes de escalada para o dia ${AVAILABLE_DATES.singleDate}`;
 
-    expect(openWhatsApp).toHaveBeenCalledWith(
-      '(11) 99999-9999',
-      expectedMessage
-    );
+    expect(openWhatsApp).toHaveBeenCalledWith('(11) 99999-9999', expectedMessage);
+  });
+
+  it('should render links to Privacy Policy and Terms of Use', () => {
+    render(<Footer />);
+
+    const privacyLink = screen.getByRole('link', { name: /Política de Privacidade/i });
+    expect(privacyLink).toHaveAttribute('href', '/politica-de-privacidade');
+
+    const termsLink = screen.getByRole('link', { name: /Termos de Uso/i });
+    expect(termsLink).toHaveAttribute('href', '/termos-de-uso');
+  });
+
+  it('should display Pedra Bela in address', () => {
+    render(<Footer />);
+
+    expect(screen.getByText(/Pedra Bela, São Paulo/i)).toBeInTheDocument();
   });
 });

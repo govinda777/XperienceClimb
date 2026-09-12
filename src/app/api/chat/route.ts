@@ -37,10 +37,26 @@ export async function POST(request: Request) {
       }
     }
 
-    const { sessionId, mensagem } = await request.json();
+    let body: any;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Corpo da requisição inválido ou vazio' }, { status: 400 });
+    }
 
-    if (!sessionId || !mensagem) {
-      return NextResponse.json({ error: 'Missing sessionId or mensagem' }, { status: 400 });
+    const { sessionId, mensagem } = body || {};
+
+    if (
+      !sessionId ||
+      !mensagem ||
+      typeof sessionId !== 'string' ||
+      typeof mensagem !== 'string' ||
+      !mensagem.trim()
+    ) {
+      return NextResponse.json(
+        { error: 'Os campos sessionId e mensagem são obrigatórios e devem ser válidos' },
+        { status: 400 }
+      );
     }
 
     const botService = new BotService();

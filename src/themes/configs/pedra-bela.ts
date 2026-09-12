@@ -80,43 +80,43 @@ export class PedraBellaTheme extends BaseTheme {
     images: this.processGalleryImages([
       {
         src: pedraBela1,
-        alt: 'Pedra Bela',
-        title: 'Pedra Bela',
+        alt: 'Instrutor técnico orientando aluno no batismo de escalada em rocha na Pedra do Santuário em Pedra Bela SP',
+        title: 'Batismo de Escalada em Rocha',
         category: 'adventure',
         isExternal: false,
       },
       {
         src: pedraBela2,
-        alt: 'Pedra Bela',
-        title: 'Pedra Bela',
+        alt: 'Aventureiros equipados com capacetes e baudriers na base das vias de escalada em Pedra Bela',
+        title: 'Equipamentos e Preparação',
         category: 'adventure',
         isExternal: false,
       },
       {
         src: pedraBela3,
-        alt: 'Pedra Bela',
-        title: 'Pedra Bela',
+        alt: 'Vista panorâmica da Pedra do Santuário e da natureza montanhosa em Pedra Bela SP',
+        title: 'Natureza em Pedra Bela',
         category: 'adventure',
         isExternal: false,
       },
       {
         src: pedraBela5,
-        alt: 'Pedra Bela',
-        title: 'Pedra Bela',
+        alt: 'Escalador superando via escola na rocha natural com acompanhamento e segurança total',
+        title: 'Superação na Rocha',
         category: 'adventure',
         isExternal: false,
       },
       {
         src: 'https://static.wixstatic.com/media/c08e80_87a6d58aa4be4e6191d3361aa7998f8a~mv2.jpg/v1/fill/w_980,h_1307,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/c08e80_87a6d58aa4be4e6191d3361aa7998f8a~mv2.jpg',
-        alt: 'Tirolesa de 2km em Pedra Bela',
-        title: 'Tirolesa Gigante',
+        alt: 'Tirolesa de 2km em Pedra Bela - a maior da América Latina',
+        title: 'Tirolesa Gigante de Pedra Bela',
         category: 'adventure',
         isExternal: true,
       },
       {
         src: pedraBela6,
-        alt: 'Pedra Bela',
-        title: 'Pedra Bela',
+        alt: 'Aventureiros celebrando a conquista do cume e contemplando o pôr do sol no mirante',
+        title: 'Pôr do Sol no Mirante',
         category: 'adventure',
         isExternal: false,
       },
@@ -195,13 +195,13 @@ export class PedraBellaTheme extends BaseTheme {
 
   logistics = this.createLogisticsInfo(
     {
-      openTime: '08:45h',
-      closeTime: '17:00h',
-      notes: 'Término na rocha às 17:00h (sujeito à meteorologia)',
+      openTime: '09:00h',
+      closeTime: '18:00h',
+      notes: '',
     },
     'Padaria São João de Pedra Bela. Rua Bernardino de Lima Paes, n.º 07 - Centro, Pedra Bela - SP, 12990-000',
     [
-      'Meeting Point às 08:45h na Padaria São João',
+      'Meeting Point às 08:30h na Padaria São João',
       'Tirolesa funciona apenas nos finais de semana e feriados',
       'Atividades sujeitas às condições climáticas',
     ],
@@ -220,26 +220,28 @@ export class PedraBellaTheme extends BaseTheme {
       {
         icon: '🧗',
         title: 'Campo Escola',
-        description: 'Utilizamos o "Setor dos Fundos", nosso Campo Escola com vias de nível fácil ideais para o primeiro contato.'
+        description:
+          'Utilizamos o "Setor dos Fundos", nosso Campo Escola com vias de nível fácil ideais para o primeiro contato.',
       },
       {
         icon: '🚶',
         title: 'Acesso Fácil',
-        description: 'Trilho de apenas 3 minutos até a base das vias, sem caminhadas extenuantes.'
+        description: 'Trilho de apenas 3 minutos até a base das vias, sem caminhadas extenuantes.',
       },
       {
         icon: '🛡️',
         title: 'Segurança Total',
-        description: 'Equipamentos certificados e guias especializados acompanhando cada movimento.'
-      }
+        description:
+          'Equipamentos certificados e guias especializados acompanhando cada movimento.',
+      },
     ],
     ''
   );
 
   timeline = [
-    this.createTimelineEvent('09:00 - 16:30', 'Escalada na rocha'),
-    this.createTimelineEvent('17:00 - 18:00', 'Jantar'),
-    this.createTimelineEvent('18:00', 'Passeio ao pôr do sol')
+    this.createTimelineEvent('09:00 - 15:30', 'Escalada na rocha'),
+    this.createTimelineEvent('16:00 - 17:00', 'Saboroso almoço'),
+    this.createTimelineEvent('18:00', 'Curtindo o Pôr do Sol'),
   ];
 
   community = this.createCommunityInfo(
@@ -250,16 +252,17 @@ export class PedraBellaTheme extends BaseTheme {
   );
 
   seo = this.createSEOInfo(
-    'XperienceClimb - Aventura Completa em Pedra Bela',
-    'Viva uma experiência única com escalada, tirolesa de 2km e cachoeiras em Pedra Bela. Aventura completa na natureza paulista.',
+    'Xperience Climb | Batismo e Escalada em Rocha em Pedra Bela - SP',
+    'Viva o batismo de escalada em rocha natural em Pedra Bela - SP. Instrutores certificados, equipamentos homologados UIAA/CE, seguro aventura e almoço incluso.',
     [
-      'pedra bela',
-      'tirolesa',
-      'escalada',
-      'cachoeiras',
-      'aventura',
+      'escalada em pedra bela',
+      'batismo de escalada sp',
+      'escalada em rocha sp',
+      'tirolesa pedra bela',
       'pedra do santuário',
-      'pedra maria antônia',
+      'turismo de aventura sp',
+      'ecoturismo pedra bela',
+      'campo escola de escalada',
     ],
     '/images/themes/pedra-bela/og-image.jpg'
   );
