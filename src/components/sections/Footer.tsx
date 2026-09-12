@@ -23,7 +23,7 @@ export function Footer() {
   const sendEmail = () => {
     const subject = 'Informações sobre Escalada - XperienceClimb';
     const body =
-      'Olá! Gostaria de mais informações sobre os pacotes de escalada em Pedra Bela.';
+      'Olá! Gostaria de mais informações sobre os pacotes de escalada no Morro Araçoiaba.';
     const mailtoUrl = `mailto:${CONTACT_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     window.location.href = mailtoUrl;
   };
@@ -130,6 +130,8 @@ export function Footer() {
                 <div>
                   <p className="text-sm leading-relaxed text-climb-200">
                     {CONTACT_INFO.address}
+                    <br />
+                    Iperó, São Paulo
                   </p>
                 </div>
               </div>
@@ -202,7 +204,8 @@ export function Footer() {
           <div className="mx-auto max-w-2xl text-center">
             <h3 className="mb-4 text-xl font-bold">Receba Dicas e Novidades</h3>
             <p className="mb-6 text-sm text-climb-200">
-              Cadastre-se para receber dicas de escalada, promoções exclusivas e novidades sobre Pedra Bela.
+              Cadastre-se para receber dicas de escalada, promoções exclusivas e novidades sobre o
+              Morro Araçoiaba.
             </p>
             <div
               className="mx-auto flex max-w-md flex-col gap-3 sm:flex-row"
@@ -231,10 +234,10 @@ export function Footer() {
             </div>
 
             <div className="flex items-center space-x-6 text-xs text-climb-200">
-              <a href="/politica-privacidade" className="transition-colors hover:text-white">
+              <a href="#" className="transition-colors hover:text-white">
                 Política de Privacidade
               </a>
-              <a href="/termos-uso" className="transition-colors hover:text-white">
+              <a href="#" className="transition-colors hover:text-white">
                 Termos de Uso
               </a>
             </div>

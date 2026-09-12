@@ -12,7 +12,6 @@ import {
   SafetySection,
   CommunitySection,
   LocationSection,
-  FAQSection,
   Footer,
 } from '@/components/sections';
 import { CartButton, CartModal } from '@/components/cart';
@@ -33,7 +32,6 @@ export default function Home() {
       <SafetySection />
       <CommunitySection />
       <LocationSection />
-      <FAQSection />
       {/* <TestimonialsSection /> */}
       <Footer />
 

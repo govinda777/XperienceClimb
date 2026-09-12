@@ -9,7 +9,6 @@ import '../styles/globals.css';
 
 import CookieBanner from '@/components/analytics/CookieBanner';
 import GoogleScripts from '@/components/analytics/GoogleScripts';
-import { SchemaMarkup } from '@/components/analytics/SchemaMarkup';
 import FloatingChatButton from '@/components/chat/FloatingChatButton';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -56,7 +55,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.className} bg-white`}>
         <ConsoleFilter />
         <GoogleScripts />
-        <SchemaMarkup />
         <ThemeProvider>
           <ThemeStyleProvider>
             <PrivyProvider>
