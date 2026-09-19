@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Chat Functionality', () => {
-  test('O usuário consegue abrir o chat, digitar uma mensagem e enviá-la', async ({ page }) => {
+  // Teste pulado temporariamente enquanto o FloatingChatButton está oculto no layout
+  test.skip('O usuário consegue abrir o chat, digitar uma mensagem e enviá-la', async ({
+    page,
+  }) => {
     // 1. Navegar até a página inicial
     await page.goto('/');
 

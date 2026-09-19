@@ -8,16 +8,66 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      borderRadius: {
+        lg: 'var(--radius, 0.75rem)',
+        md: 'calc(var(--radius, 0.75rem) - 2px)',
+        sm: 'calc(var(--radius, 0.75rem) - 4px)',
+      },
       colors: {
-        // Cores principais do XperienceClimb
+        // Shadcn tokens
+        background: 'hsl(var(--background, 0 0% 100%))',
+        foreground: 'hsl(var(--foreground, 0 0% 7.1%))',
+        card: {
+          DEFAULT: 'hsl(var(--card, 0 0% 100%))',
+          foreground: 'hsl(var(--card-foreground, 0 0% 7.1%))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover, 0 0% 100%))',
+          foreground: 'hsl(var(--popover-foreground, 0 0% 7.1%))',
+        },
+        primary: {
+          DEFAULT: 'hsl(var(--primary, 207 77% 54%))',
+          foreground: 'hsl(var(--primary-foreground, 0 0% 100%))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary, 0 0% 20%))',
+          foreground: 'hsl(var(--secondary-foreground, 0 0% 100%))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted, 0 0% 96.1%))',
+          foreground: 'hsl(var(--muted-foreground, 0 0% 45.1%))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent, 51 100% 50%))',
+          foreground: 'hsl(var(--accent-foreground, 0 0% 7.1%))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive, 0 84.2% 60.2%))',
+          foreground: 'hsl(var(--destructive-foreground, 0 0% 98%))',
+        },
+        border: 'hsl(var(--border, 0 0% 89.8%))',
+        input: 'hsl(var(--input, 0 0% 89.8%))',
+        ring: 'hsl(var(--ring, 207 77% 54%))',
+
+        // Cores de Aventura & Boulder
+        boulder: {
+          blue: '#1E88E5',
+          dark: '#080A0E',
+          ink: '#0F1116',
+          paper: '#FAFAF7',
+          gold: '#FFD700',
+          magma: '#FF4D2B',
+          gray: '#333333',
+        },
+
+        // Cores originais do XperienceClimb preservadas
         climb: {
-          // Verdes (tons principais)
           50: '#f0f9fa',
           100: '#d9f2f4',
           200: '#b6e5ea',
           300: '#86d1db',
           400: '#4fb3c4',
-          500: '#21808d', // Primary
+          500: '#21808d',
           600: '#1d7480',
           700: '#1a6873',
           800: '#175861',
@@ -25,12 +75,11 @@ module.exports = {
           950: '#0a2d33',
         },
         orange: {
-          // Laranjas (acentos)
           50: '#fef6f0',
           100: '#fdead9',
           200: '#fad1b3',
           300: '#f6b082',
-          400: '#f4a261', // Accent
+          400: '#f4a261',
           500: '#e76f51',
           600: '#d85b3f',
           700: '#b5442f',
@@ -38,17 +87,18 @@ module.exports = {
           900: '#773127',
         },
         neutral: {
-          // Neutros (backgrounds e textos)
-          50: '#fcfcf9', // Background light
-          100: '#fffffe', // Surface light
-          900: '#13343b', // Text primary
-          700: '#626c71', // Text secondary
-          600: '#5e5240', // Border
-        }
+          50: '#fcfcf9',
+          100: '#fffffe',
+          900: '#13343b',
+          700: '#626c71',
+          600: '#5e5240',
+        },
       },
       fontFamily: {
+        display: ['"Big Shoulders Display"', '"Archivo Black"', 'sans-serif'],
+        'serif-it': ['Fraunces', 'serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
         sans: ['FKGroteskNeue', 'Geist', 'Inter', 'system-ui', 'sans-serif'],
-        mono: ['Berkeley Mono', 'ui-monospace', 'SFMono-Regular', 'Monaco', 'Consolas', 'monospace'],
       },
       fontSize: {
         xs: ['11px', { lineHeight: '16px' }],
@@ -61,15 +111,16 @@ module.exports = {
         '4xl': ['30px', { lineHeight: '38px' }],
         '5xl': ['36px', { lineHeight: '44px' }],
         '6xl': ['48px', { lineHeight: '56px' }],
+        '7xl': ['64px', { lineHeight: '72px' }],
+        '8xl': ['80px', { lineHeight: '88px' }],
       },
       spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '128': '32rem',
+        18: '4.5rem',
+        88: '22rem',
+        128: '32rem',
       },
       animation: {
-        // Custom animations
-        'float': 'float 6s ease-in-out infinite',
+        float: 'float 6s ease-in-out infinite',
         'slide-up': 'slideUp 0.5s ease-out forwards',
         'slide-down': 'slideDown 0.5s ease-out forwards',
         'scale-in': 'scaleIn 0.3s ease-out forwards',
@@ -77,8 +128,23 @@ module.exports = {
         'bounce-gentle': 'bounceGentle 2s infinite',
         'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
         'rotate-slow': 'rotateSlow 20s linear infinite',
+        drift: 'drift-y 9s ease-in-out infinite',
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
       },
       keyframes: {
+        'drift-y': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-12px)' },
+        },
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-20px)' },
@@ -116,7 +182,6 @@ module.exports = {
         xs: '2px',
       },
       clipPath: {
-        // For custom geometric shapes
         hexagon: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
         triangle: 'polygon(50% 0%, 0% 100%, 100% 100%)',
         diamond: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
@@ -124,10 +189,10 @@ module.exports = {
     },
   },
   plugins: [
+    require('tailwindcss-animate'),
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    // Custom plugin for clip-path
-    function({ addUtilities }) {
+    function ({ addUtilities }) {
       const newUtilities = {
         '.clip-hexagon': {
           clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
@@ -138,8 +203,8 @@ module.exports = {
         '.clip-diamond': {
           clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
         },
-      }
-      addUtilities(newUtilities, ['responsive', 'hover'])
-    }
+      };
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    },
   ],
-} 
+};

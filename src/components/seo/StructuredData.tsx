@@ -16,7 +16,7 @@ export default function StructuredData() {
     telephone: '+55-11-99541-3539',
     email: CONTACT_INFO.email,
     priceRange: '$$',
-    image: `${baseUrl}/images/site.png`,
+    image: `${baseUrl}/images/site-og.jpg`,
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Rua Bernardino de Lima Paes, 07 - Centro (Padaria São João)',
@@ -56,7 +56,7 @@ export default function StructuredData() {
       '@id': `${baseUrl}/#product-${pkg.id}`,
       name: `${pkg.name} - Escalada em Pedra Bela`,
       description: `${pkg.description} Inclui: ${pkg.features.join(', ')}.`,
-      image: `${baseUrl}/images/site.png`,
+      image: `${baseUrl}/images/site-og.jpg`,
       brand: {
         '@type': 'Brand',
         name: 'Xperience Climb',
@@ -85,7 +85,7 @@ export default function StructuredData() {
     endDate: `${AVAILABLE_DATES.singleDateISO}T17:00:00-03:00`,
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     eventStatus: 'https://schema.org/EventScheduled',
-    image: `${baseUrl}/images/site.png`,
+    image: `${baseUrl}/images/site-og.jpg`,
     location: {
       '@type': 'Place',
       name: 'Padaria São João (Ponto de Encontro) / Pedra do Santuário',
