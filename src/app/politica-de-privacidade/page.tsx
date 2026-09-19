@@ -4,7 +4,7 @@ import { ArrowLeft, ShieldCheck, Lock, Eye, FileText, Mail, Phone } from 'lucide
 import { CONTACT_INFO } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'Política de Privacidade | Xperience Climb',
+  title: 'Política de Privacidade',
   description:
     'Política de Privacidade e Proteção de Dados da Xperience Climb, em total conformidade com a LGPD (Lei nº 13.709/2018). Saiba como tratamos seus dados.',
   alternates: {

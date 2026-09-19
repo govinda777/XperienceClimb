@@ -9,13 +9,15 @@ export function ConsoleFilter() {
       console.error = (...args: any[]) => {
         const errorMsg = args.join(' ');
 
-        // Silence browser-extension injected errors/warnings to prevent Next.js dev overlay crashes
+        // Silence browser-extension injected errors/warnings and aborted dev fetches
         if (
           errorMsg.includes('delayedExecution') ||
           errorMsg.includes('data-protonpass-form') ||
           errorMsg.includes('TrustedHTML') ||
           errorMsg.includes('TrustedScript') ||
-          errorMsg.includes('lit-html')
+          errorMsg.includes('lit-html') ||
+          errorMsg.includes('AbortError') ||
+          errorMsg.includes('signal is aborted')
         ) {
           return;
         }

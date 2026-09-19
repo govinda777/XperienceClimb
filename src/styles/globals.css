@@ -1,5 +1,5 @@
 /* Custom font imports */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Fraunces:ital,opsz,wght@1,144,300;1,144,400;1,144,600&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,14 +8,69 @@
 /* Import theme-specific styles */
 @import './themes.css';
 
-/* Global variables */
+/* Global variables & Tokens */
 :root {
+  --radius: 0.75rem;
+
+  /* Shadcn UI tokens - Alinhados com a identidade rústica do XperienceClimb */
+  --background: 48 33% 98%; /* #fcfcf9 - Papel linho rústico */
+  --foreground: 191 51% 15%; /* #13343b - Ardósia/Verde profundo */
+  --card: 0 0% 100%;
+  --card-foreground: 191 51% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 191 51% 15%;
+  --primary: 187 62% 34%; /* #21808d - Verde Petróleo Aventura */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 27 87% 67%; /* #f4a261 - Terracota / Argila */
+  --secondary-foreground: 191 51% 15%;
+  --muted: 48 20% 94%; /* #f5f2ea - Areia clara */
+  --muted-foreground: 198 8% 41%; /* #626c71 - Cinza pedra */
+  --accent: 27 87% 67%; /* #f4a261 - Terracota */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 45 15% 88%; /* #e5e0d5 - Linha terrosa sutil */
+  --input: 45 15% 88%;
+  --ring: 187 62% 34%;
+
+  /* Adventure & Rustic Tokens */
+  --ink: #13343b; /* Verde profundo / Ardósia */
+  --paper: #fcfcf9; /* Papel artesanal quente */
+  --climb-verde: #21808d; /* Verde Petróleo */
+  --terracota: #f4a261; /* Terracota acolhedor */
+  --magma: #e76f51; /* Barro queimado */
+  --argila: #b5442f; /* Argila montanha */
+  --chalk: #f7f5ed; /* Giz de magnésio natural */
+
+  /* Climb brand variables */
   --climb-green: #21808d;
   --climb-orange: #f4a261;
   --neutral-bg: #fcfcf9;
   --neutral-surface: #fffffe;
   --text-primary: #13343b;
   --text-secondary: #626c71;
+}
+
+.dark {
+  --background: 191 51% 10%; /* #0e272c - Rocha escura profunda */
+  --foreground: 48 33% 98%; /* #fcfcf9 */
+  --card: 191 51% 13%;
+  --card-foreground: 48 33% 98%;
+  --popover: 191 51% 13%;
+  --popover-foreground: 48 33% 98%;
+  --primary: 187 62% 40%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 27 87% 67%;
+  --secondary-foreground: 191 51% 10%;
+  --muted: 191 30% 18%;
+  --muted-foreground: 48 10% 70%;
+  --accent: 27 87% 67%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 191 30% 22%;
+  --input: 191 30% 22%;
+  --ring: 187 62% 40%;
 }
 
 /* Base styles */
@@ -125,4 +180,68 @@ html {
 .btn-whatsapp:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-} 
+}
+
+/* ==========================================================================
+   Design System Utilities (UI Designer / Academia Boulder Inspired)
+   ========================================================================== */
+
+/* Grain texturing (Ruído Analógico SVG) */
+.grain {
+  position: relative;
+}
+
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+.grain-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: screen;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+/* Stroke text styles (Texto vazado) */
+.stroke-text-light {
+  -webkit-text-stroke: 1.5px rgba(250, 250, 247, 0.85);
+  color: transparent;
+}
+
+.stroke-text-azul {
+  -webkit-text-stroke: 1.5px #1e88e5;
+  color: transparent;
+}
+
+.stroke-text-dark {
+  -webkit-text-stroke: 1.5px #080a0e;
+  color: transparent;
+}
+
+/* Tipografia editorial */
+.font-display {
+  font-family: 'Big Shoulders Display', 'Archivo Black', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-serif-it {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-variation-settings: 'opsz' 144;
+}
+
+.font-mono-tech {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.15em;
+}

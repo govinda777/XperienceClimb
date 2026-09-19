@@ -92,7 +92,7 @@ export const CERTIFIED_INSTRUCTORS: CertifiedInstructor[] = [
   {
     id: 'celso-ossamu',
     name: 'Celso Ossamu',
-    photo: 'https://www.instagram.com/celsoossamu/',
+    photo: '/images/themes/pedra-bela/escalada-1.jpg',
     bio: 'Instrutor principal da XperienceClimb com mais de 15 anos de experiência em escalada. Especialista em escalada esportiva e tradicional, com foco em segurança e desenvolvimento técnico.',
     certifications: [
       {
@@ -253,7 +253,6 @@ export const SAFETY_PROCEDURES: SafetyProcedure[] = [
     version: '2.1',
     isActive: true,
   },
-
 ];
 export const VISITED_LOCATIONS: VisitedLocation[] = [
   {

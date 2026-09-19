@@ -13,9 +13,9 @@ import {
 import { CONTACT_INFO } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'Termos de Uso e Condições de Participação | Xperience Climb',
+  title: 'Termos de Uso e Condições',
   description:
-    'Termos de Uso, regras de segurança, políticas de cancelamento e condições gerais de participação nas atividades de escalada e aventura da Xperience Climb em Pedra Bela - SP.',
+    'Termos de uso, regras de segurança, políticas de cancelamento e condições para as atividades de escalada e aventura da Xperience Climb em Pedra Bela - SP.',
   alternates: {
     canonical: 'https://climb.xperiencehubs.com/termos-de-uso',
   },

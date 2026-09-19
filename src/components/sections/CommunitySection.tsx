@@ -141,11 +141,16 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
     via_ferrata: 'Via Ferrata',
   };
 
+  const photoSrc =
+    instructor.photo && !instructor.photo.includes('instagram.com')
+      ? instructor.photo
+      : '/images/themes/pedra-bela/escalada-1.jpg';
+
   return (
     <div className="bg-gray-50 rounded-xl p-6">
       <div className="flex items-start space-x-4 mb-4">
         <Image
-          src={instructor.photo}
+          src={photoSrc}
           alt={instructor.name}
           width={80}
           height={80}
