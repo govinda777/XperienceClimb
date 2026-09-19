@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useTheme } from '@/themes/ThemeProvider';
 import { normalizeImageUrl } from '@/lib/image-utils';
+import { MapPin } from 'lucide-react';
 
 export function AboutSection() {
   const { currentTheme } = useTheme();
@@ -23,6 +24,17 @@ export function AboutSection() {
       (currentTheme.gallery.images.find(img => img.category === 'nature')?.isExternal ||
         currentTheme.gallery.images[0]?.isExternal),
   };
+
+  const stats =
+    currentTheme.id === 'fazenda-ipanema'
+      ? {
+          stat1: { value: '960m', label: 'Morro Araçoiaba' },
+          stat2: { value: '120km', label: 'de São Paulo (~1h30)' },
+        }
+      : {
+          stat1: { value: '1.120m', label: 'Altitude no Cume' },
+          stat2: { value: '120km', label: 'de São Paulo (~1h45)' },
+        };
 
   return (
     <section id="sobre" className="py-20 bg-white">
@@ -75,25 +87,35 @@ export function AboutSection() {
                 className="object-cover"
                 unoptimized={natureImage?.isExternal}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 text-white z-10">
-                <p className="text-sm font-medium">📍 {currentTheme.location.address}</p>
-                <p className="text-xs opacity-90">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+
+              {/* Tag de Localização no topo (evita colisão com o card inferior) */}
+              <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/60 px-3.5 py-1.5 shadow-md backdrop-blur-md">
+                <MapPin className="h-3.5 w-3.5 text-orange-400" />
+                <span className="font-mono text-xs font-semibold text-white">
                   {currentTheme.location.city}, {currentTheme.location.state}
-                </p>
+                </span>
               </div>
             </div>
 
             {/* Floating Stats */}
-            <div className="absolute -bottom-6 -left-6 rounded-2xl border border-neutral-200 bg-white p-6 shadow-lg">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-climb-600">120km</div>
-                  <div className="text-sm text-neutral-600">de São Paulo</div>
+            <div className="absolute -bottom-6 -left-6 z-20 rounded-2xl border border-neutral-200/80 bg-white/95 p-5 shadow-xl backdrop-blur-sm sm:-bottom-8 sm:-left-8 sm:p-6">
+              <div className="grid grid-cols-2 gap-6 divide-x divide-neutral-200">
+                <div className="text-center pr-3">
+                  <div className="font-display text-2xl font-bold tracking-tight text-climb-600 sm:text-3xl">
+                    {stats.stat1.value}
+                  </div>
+                  <div className="mt-0.5 text-xs font-medium text-neutral-600 sm:text-sm">
+                    {stats.stat1.label}
+                  </div>
                 </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-climb-600">600M</div>
-                  <div className="text-sm text-neutral-600">anos de história</div>
+                <div className="text-center pl-3">
+                  <div className="font-display text-2xl font-bold tracking-tight text-orange-600 sm:text-3xl">
+                    {stats.stat2.value}
+                  </div>
+                  <div className="mt-0.5 text-xs font-medium text-neutral-600 sm:text-sm">
+                    {stats.stat2.label}
+                  </div>
                 </div>
               </div>
             </div>
