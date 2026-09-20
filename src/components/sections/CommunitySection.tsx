@@ -207,15 +207,23 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
             Faixa de preço: R$ {(instructor.availability.priceRange.min / 100).toFixed(0)} - R${' '}
             {(instructor.availability.priceRange.max / 100).toFixed(0)}
           </div>
-          <div className="flex space-x-2">
+          <div className="flex items-center gap-2">
             {instructor.contact.whatsapp && (
-              <button className="text-green-600 hover:text-green-700">
-                <span className="text-lg">💬</span>
+              <button
+                type="button"
+                aria-label={`Contato via WhatsApp com ${instructor.name}`}
+                className="min-w-[44px] min-h-[44px] p-2.5 flex items-center justify-center rounded-lg text-green-600 hover:text-green-700 hover:bg-green-50 transition-colors"
+              >
+                <span className="text-xl leading-none">💬</span>
               </button>
             )}
             {instructor.contact.instagram && (
-              <button className="text-pink-600 hover:text-pink-700">
-                <span className="text-lg">📱</span>
+              <button
+                type="button"
+                aria-label={`Perfil do Instagram de ${instructor.name}`}
+                className="min-w-[44px] min-h-[44px] p-2.5 flex items-center justify-center rounded-lg text-pink-600 hover:text-pink-700 hover:bg-pink-50 transition-colors"
+              >
+                <span className="text-xl leading-none">📱</span>
               </button>
             )}
           </div>

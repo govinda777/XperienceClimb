@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
 import { PrivyProvider } from '@/components/providers/PrivyProvider';
 import { ThemeProvider } from '@/themes/ThemeProvider';
 import { ThemeStyleProvider } from '@/themes/components/ThemeStyleProvider';
@@ -12,7 +11,35 @@ import GoogleScripts from '@/components/analytics/GoogleScripts';
 // import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import StructuredData from '@/components/seo/StructuredData';
 
-const inter = Inter({ subsets: ['latin'] });
+import { Inter, Big_Shoulders_Display, Fraunces, JetBrains_Mono } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const bigShoulders = Big_Shoulders_Display({
+  subsets: ['latin'],
+  weight: ['700', '800', '900'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  style: ['italic', 'normal'],
+  weight: ['300', '400', '600'],
+  variable: '--font-serif-it',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-mono',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://climb.xperiencehubs.com'),
@@ -82,7 +109,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <StructuredData />
       </head>
-      <body className={`${inter.className} bg-white`}>
+      <body
+        className={`${inter.className} ${bigShoulders.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${inter.variable} bg-white`}
+      >
         <ConsoleFilter />
         <GoogleScripts />
         <ThemeProvider>

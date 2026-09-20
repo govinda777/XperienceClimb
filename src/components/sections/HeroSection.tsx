@@ -49,13 +49,24 @@ export function HeroSection() {
         style={tBg}
         aria-hidden="true"
       >
+        {/* Background visual para Mobile: evita download forçado de 3.8MB no 4G */}
+        <div
+          className="absolute inset-0 h-full w-full bg-cover bg-center md:hidden"
+          style={{
+            backgroundImage: `url(${posterUrl})`,
+            filter: 'contrast(1.05) brightness(0.55) saturate(1.1)',
+          }}
+        />
+
+        {/* Vídeo para Telas Médias e Desktop */}
         <video
           autoPlay
           loop
           muted
           playsInline
+          preload="metadata"
           poster={posterUrl}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="hidden md:block absolute inset-0 h-full w-full object-cover"
           style={{
             filter: 'contrast(1.05) brightness(0.55) saturate(1.1)',
           }}

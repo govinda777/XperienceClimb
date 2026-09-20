@@ -75,6 +75,7 @@ export function GallerySection() {
                       <video
                         src={typeof image.src === 'string' ? image.src : ''}
                         className="w-full h-full object-cover"
+                        preload="none"
                         muted
                         loop
                         playsInline

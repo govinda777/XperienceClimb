@@ -14,12 +14,8 @@ export function BeginnerSection() {
     <section id="iniciante" className="py-20 bg-neutral-50">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-climb-600 mb-6">
-            {beginner.title}
-          </h2>
-          <p className="text-xl text-neutral-700 leading-relaxed">
-            {beginner.description}
-          </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-climb-600 mb-6">{beginner.title}</h2>
+          <p className="text-xl text-neutral-700 leading-relaxed">{beginner.description}</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
@@ -32,9 +28,7 @@ export function BeginnerSection() {
                 {highlight.icon}
               </div>
               <h3 className="text-xl font-bold text-climb-600 mb-4">{highlight.title}</h3>
-              <p className="text-neutral-600 leading-relaxed">
-                {highlight.description}
-              </p>
+              <p className="text-neutral-600 leading-relaxed">{highlight.description}</p>
             </div>
           ))}
         </div>
@@ -46,7 +40,7 @@ export function BeginnerSection() {
           <br />
           <Button
             size="xl"
-            className="bg-orange-400 hover:bg-orange-500 text-white font-bold px-8 py-4 rounded-full shadow-lg transition-all duration-300 hover:scale-105"
+            className="bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 rounded-full shadow-lg transition-all duration-300 hover:scale-105"
             onClick={() =>
               openWhatsApp(
                 CONTACT_INFO.phone,

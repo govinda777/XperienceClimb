@@ -274,18 +274,18 @@ export class PedraBellaTheme extends BaseTheme {
   );
 
   visual = this.createVisualTheme(
-    '#d84315', // Deep orange-red for adventure
-    '#bf360c',
+    '#bf360c', // Deep orange-red for adventure (WCAG AA compliant > 5.5:1 contrast)
     '#a52714',
+    '#871b0c',
     '#ff7043', // Bright orange accent
     '#fff8f5', // Warm light background
     '#ffffff',
     '#3e2723', // Dark brown text
     '#6d4c41',
     '#ffccbc',
-    '#d84315',
+    '#bf360c',
     '#ff5722',
-    'rgba(216, 67, 21, 0.7)', // Orange overlay
+    'rgba(191, 54, 12, 0.7)', // Orange overlay
     '#ffffff'
   );
 }

@@ -199,7 +199,8 @@ export function Navigation() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-climb-500 text-white hover:bg-climb-600 transition-colors"
+              aria-label="Alternar menu de navegação"
+              className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-neutral-900 text-white hover:bg-neutral-800 transition-colors"
             >
               <span className="text-sm font-medium">Menu</span>
               <span

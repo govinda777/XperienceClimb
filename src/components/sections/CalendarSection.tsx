@@ -41,7 +41,7 @@ export function CalendarSection() {
                   <Lock className="w-8 h-8" />
                 </div>
 
-                <h3 className="text-2xl font-bold text-neutral-400 group-hover:text-climb-600 mb-2 transition-colors duration-500">
+                <h3 className="text-2xl font-bold text-neutral-700 group-hover:text-climb-700 mb-2 transition-colors duration-500">
                   {event.date}
                 </h3>
 

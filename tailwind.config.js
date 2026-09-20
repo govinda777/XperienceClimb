@@ -95,10 +95,15 @@ module.exports = {
         },
       },
       fontFamily: {
-        display: ['"Big Shoulders Display"', '"Archivo Black"', 'sans-serif'],
-        'serif-it': ['Fraunces', 'serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
-        sans: ['FKGroteskNeue', 'Geist', 'Inter', 'system-ui', 'sans-serif'],
+        display: [
+          'var(--font-display)',
+          '"Big Shoulders Display"',
+          '"Archivo Black"',
+          'sans-serif',
+        ],
+        'serif-it': ['var(--font-serif-it)', 'Fraunces', 'serif'],
+        mono: ['var(--font-mono)', '"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        sans: ['var(--font-sans)', 'FKGroteskNeue', 'Geist', 'Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         xs: ['11px', { lineHeight: '16px' }],
