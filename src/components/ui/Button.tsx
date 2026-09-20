@@ -54,10 +54,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
-      sm: 'h-8 px-3.5 text-xs rounded-lg',
-      md: 'h-11 px-5 text-sm rounded-xl',
-      lg: 'h-13 px-7 text-base rounded-2xl',
-      xl: 'h-15 px-9 text-lg rounded-2xl font-bold',
+      sm: 'min-h-[36px] h-9 px-3.5 py-2 text-xs rounded-xl',
+      md: 'min-h-[44px] h-11 px-5 py-2.5 text-sm rounded-xl',
+      lg: 'min-h-[56px] h-14 px-7 py-3.5 text-base rounded-2xl font-semibold',
+      xl: 'min-h-[64px] h-16 px-9 py-4 text-lg rounded-2xl font-bold',
     };
 
     const shapes = {
