@@ -11,8 +11,8 @@ export class PedraBellaTheme extends BaseTheme {
   name = 'Pedra Bela';
 
   location = this.createLocationInfo(
-    'Pedra Bela',
-    'Pedra Bela',
+    'Xperience Climb',
+    'Pedra do Santuário (Campo Escola)',
     'Pedra Bela',
     'São Paulo',
     '119km de São Paulo',
@@ -34,7 +34,13 @@ export class PedraBellaTheme extends BaseTheme {
         title: 'Chegada',
         description: 'Siga pela Rodovia José Bueno de Miranda até Pedra Bela',
       },
-    ]
+    ],
+    {
+      name: 'Padaria São João',
+      address: 'Rua Bernardino de Lima Paes, 07 - Centro',
+      mapsUrl: 'https://maps.app.goo.gl/gpa6CQXj9JNVKGLe9',
+      notes: 'Ponto de encontro às 08:30h para café da manhã, recepção e briefing inicial.',
+    }
   );
 
   content = this.createContentInfo(

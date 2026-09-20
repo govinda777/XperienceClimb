@@ -1,4 +1,16 @@
-import { ThemeConfig, LocationInfo, ContentInfo, GalleryInfo, ActivityInfo, LogisticsInfo, CommunityInfo, SEOInfo, VisualTheme, BeginnerInfo, TimelineEvent } from '../types';
+import {
+  ThemeConfig,
+  LocationInfo,
+  ContentInfo,
+  GalleryInfo,
+  ActivityInfo,
+  LogisticsInfo,
+  CommunityInfo,
+  SEOInfo,
+  VisualTheme,
+  BeginnerInfo,
+  TimelineEvent,
+} from '../types';
 import { processThemeImages } from '@/lib/image-utils';
 
 export abstract class BaseTheme implements ThemeConfig {
@@ -29,7 +41,13 @@ export abstract class BaseTheme implements ThemeConfig {
     distance: string,
     coordinates: { lat: number; lng: number },
     mapsUrl: string,
-    directions: any[]
+    directions: any[],
+    meetingPointInfo?: {
+      name?: string;
+      address?: string;
+      mapsUrl?: string;
+      notes?: string;
+    }
   ): LocationInfo {
     return {
       name,
@@ -39,17 +57,27 @@ export abstract class BaseTheme implements ThemeConfig {
       distance,
       coordinates,
       mapsUrl,
-      directions
+      meetingPointName: meetingPointInfo?.name,
+      meetingPointAddress: meetingPointInfo?.address,
+      meetingPointMapsUrl: meetingPointInfo?.mapsUrl,
+      meetingPointNotes: meetingPointInfo?.notes,
+      directions,
     };
   }
 
   protected createContentInfo(
     hero: { title: string; subtitle: string; description: string },
-    about: { title: string; description: string; highlights: any[]; infoBox: { title: string; content: string }; image?: any }
+    about: {
+      title: string;
+      description: string;
+      highlights: any[];
+      infoBox: { title: string; content: string };
+      image?: any;
+    }
   ): ContentInfo {
     return {
       hero,
-      about
+      about,
     };
   }
 
@@ -63,7 +91,7 @@ export abstract class BaseTheme implements ThemeConfig {
       schedule,
       meetingPoint,
       importantNotes,
-      tips
+      tips,
     };
   }
 
@@ -77,7 +105,7 @@ export abstract class BaseTheme implements ThemeConfig {
       localPartners,
       localInstructors,
       specificSafetyProcedures,
-      visitedLocationId
+      visitedLocationId,
     };
   }
 
@@ -91,7 +119,7 @@ export abstract class BaseTheme implements ThemeConfig {
       title,
       description,
       keywords,
-      ogImage
+      ogImage,
     };
   }
 
@@ -123,7 +151,7 @@ export abstract class BaseTheme implements ThemeConfig {
       gradientFrom,
       gradientTo,
       heroOverlay,
-      cardBackground
+      cardBackground,
     };
   }
 
@@ -137,7 +165,7 @@ export abstract class BaseTheme implements ThemeConfig {
       title,
       description,
       highlights,
-      finalMessage
+      finalMessage,
     };
   }
 
@@ -159,7 +187,7 @@ export abstract class BaseTheme implements ThemeConfig {
       seo: this.seo,
       beginner: this.beginner,
       timeline: this.timeline,
-      visual: this.visual
+      visual: this.visual,
     };
   }
 }

@@ -29,10 +29,12 @@ export function ScheduleSection() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => window.open(location.mapsUrl, '_blank')}
+                    onClick={() =>
+                      window.open(location.meetingPointMapsUrl || location.mapsUrl, '_blank')
+                    }
                     className="text-orange-500 border-orange-500 hover:bg-orange-50"
                   >
-                    🗺️ Ver no Google Maps
+                    ☕ Ver Ponto de Encontro no Google Maps
                   </Button>
                 </div>
               </div>

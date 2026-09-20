@@ -33,6 +33,10 @@ export interface LocationInfo {
     lng: number;
   };
   mapsUrl: string;
+  meetingPointName?: string;
+  meetingPointAddress?: string;
+  meetingPointMapsUrl?: string;
+  meetingPointNotes?: string;
   directions: DirectionStep[];
 }
 
