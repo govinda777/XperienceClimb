@@ -23,6 +23,7 @@ export default function StructuredData() {
     sameAs: [
       `https://instagram.com/${CONTACT_INFO.instagram.replace('@', '')}`,
       'https://xperiencehubs.com',
+      'https://maps.app.goo.gl/suSVQHwMHzgYfNsN8',
       'https://share.google/zp0YIEB9AOuKJ3OW0',
     ],
   };
@@ -52,8 +53,8 @@ export default function StructuredData() {
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: -22.78544,
-      longitude: -46.45512,
+      latitude: -22.7849482,
+      longitude: -46.4549474,
     },
     openingHoursSpecification: [
       {
@@ -73,6 +74,7 @@ export default function StructuredData() {
     sameAs: [
       `https://instagram.com/${CONTACT_INFO.instagram.replace('@', '')}`,
       'https://xperiencehubs.com',
+      'https://maps.app.goo.gl/suSVQHwMHzgYfNsN8',
       'https://share.google/zp0YIEB9AOuKJ3OW0',
     ],
   };
@@ -128,8 +130,8 @@ export default function StructuredData() {
       },
       geo: {
         '@type': 'GeoCoordinates',
-        latitude: -22.78544,
-        longitude: -46.45512,
+        latitude: -22.7849482,
+        longitude: -46.4549474,
       },
     },
     organizer: {

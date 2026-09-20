@@ -6,7 +6,7 @@ export const CONTACT_INFO = {
   distance: '119km de São Paulo',
   phone: '(11) 99541-3539',
   email: 'marcosishino@gmail.com',
-  instagram: '@xperiencehubs',
+  instagram: '@climb.xperiencehubs',
 };
 
 // Navigation items for the site menu - grouped for better organization
