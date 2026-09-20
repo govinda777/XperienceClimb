@@ -5,7 +5,28 @@ import { FAQ_DATA } from '@/lib/faq-data';
 export default function StructuredData() {
   const baseUrl = 'https://climb.xperiencehubs.com';
 
-  // 1. LocalBusiness / TouristAttraction / SportsActivityLocation
+  // 1. Organization & Brand Schema (Knowledge Graph & Entidade de Marca)
+  const organizationSchema = {
+    '@type': 'Organization',
+    '@id': `${baseUrl}/#organization`,
+    name: 'Xperience Climb',
+    alternateName: ['XperienceClimb', 'Xperience Climb SP', 'Xperience Climb Batismo'],
+    url: baseUrl,
+    logo: `${baseUrl}/images/site-og.jpg`,
+    description:
+      'Vivências de escalada em rocha natural e ecoturismo de aventura no interior de SP. Batismo de escalada, guias certificados e equipamentos homologados UIAA/CE.',
+    parentOrganization: {
+      '@type': 'Organization',
+      name: 'Xperience Hubs',
+      url: 'https://xperiencehubs.com',
+    },
+    sameAs: [
+      `https://instagram.com/${CONTACT_INFO.instagram.replace('@', '')}`,
+      'https://xperiencehubs.com',
+    ],
+  };
+
+  // 2. LocalBusiness / TouristAttraction / SportsActivityLocation
   const localBusinessSchema = {
     '@type': ['TouristAttraction', 'SportsActivityLocation', 'LocalBusiness'],
     '@id': `${baseUrl}/#localbusiness`,
@@ -17,6 +38,9 @@ export default function StructuredData() {
     email: CONTACT_INFO.email,
     priceRange: '$$',
     image: `${baseUrl}/images/site-og.jpg`,
+    parentOrganization: {
+      '@id': `${baseUrl}/#organization`,
+    },
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Rua Bernardino de Lima Paes, 07 - Centro (Padaria São João)',
@@ -45,7 +69,10 @@ export default function StructuredData() {
       { '@type': 'City', name: 'Campinas' },
       { '@type': 'City', name: 'Atibaia' },
     ],
-    sameAs: [`https://instagram.com/${CONTACT_INFO.instagram.replace('@', '')}`],
+    sameAs: [
+      `https://instagram.com/${CONTACT_INFO.instagram.replace('@', '')}`,
+      'https://xperiencehubs.com',
+    ],
   };
 
   // 2. Products / Offers
@@ -130,15 +157,62 @@ export default function StructuredData() {
     })),
   };
 
+  // 5. SiteNavigationElement (para gerar Sitelinks orgânicos na SERP do Google)
+  const siteNavigationSchema = {
+    '@type': 'ItemList',
+    '@id': `${baseUrl}/#site-navigation`,
+    name: 'Navegação Xperience Climb',
+    itemListElement: [
+      {
+        '@type': 'SiteNavigationElement',
+        position: 1,
+        name: 'A Experiência',
+        url: `${baseUrl}/#sobre`,
+      },
+      {
+        '@type': 'SiteNavigationElement',
+        position: 2,
+        name: 'Para Iniciantes',
+        url: `${baseUrl}/#iniciantes`,
+      },
+      {
+        '@type': 'SiteNavigationElement',
+        position: 3,
+        name: 'Pacotes e Preços',
+        url: `${baseUrl}/#pacotes`,
+      },
+      {
+        '@type': 'SiteNavigationElement',
+        position: 4,
+        name: 'Segurança & Equipamentos',
+        url: `${baseUrl}/#seguranca`,
+      },
+      {
+        '@type': 'SiteNavigationElement',
+        position: 5,
+        name: 'Como Chegar',
+        url: `${baseUrl}/#localizacao`,
+      },
+      {
+        '@type': 'SiteNavigationElement',
+        position: 6,
+        name: 'Dúvidas Frequentes',
+        url: `${baseUrl}/#faq`,
+      },
+    ],
+  };
+
   // Unified Graph
   const eventIsUpcoming = new Date(`${AVAILABLE_DATES.singleDateISO}T23:59:59-03:00`) >= new Date();
   const structuredDataGraph = {
     '@context': 'https://schema.org',
     '@graph': [
+      organizationSchema,
       localBusinessSchema,
       ...productSchemas,
       ...(eventIsUpcoming ? [eventSchema] : []),
       faqSchema,
+      siteNavigationSchema,
     ],
   };
 
