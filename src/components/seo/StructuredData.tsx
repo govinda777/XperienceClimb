@@ -23,6 +23,7 @@ export default function StructuredData() {
     sameAs: [
       `https://instagram.com/${CONTACT_INFO.instagram.replace('@', '')}`,
       'https://xperiencehubs.com',
+      'https://share.google/zp0YIEB9AOuKJ3OW0',
     ],
   };
 
@@ -72,6 +73,7 @@ export default function StructuredData() {
     sameAs: [
       `https://instagram.com/${CONTACT_INFO.instagram.replace('@', '')}`,
       'https://xperiencehubs.com',
+      'https://share.google/zp0YIEB9AOuKJ3OW0',
     ],
   };
 
