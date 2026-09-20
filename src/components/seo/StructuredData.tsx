@@ -50,7 +50,7 @@ export default function StructuredData() {
 
   // 2. Products / Offers
   const productSchemas = [PACKAGES.basico, PACKAGES.intermediario, PACKAGES.avancado]
-    .filter(Boolean)
+    .filter(pkg => pkg && !pkg.disabled)
     .map(pkg => ({
       '@type': 'Product',
       '@id': `${baseUrl}/#product-${pkg.id}`,
@@ -131,9 +131,15 @@ export default function StructuredData() {
   };
 
   // Unified Graph
+  const eventIsUpcoming = new Date(`${AVAILABLE_DATES.singleDateISO}T23:59:59-03:00`) >= new Date();
   const structuredDataGraph = {
     '@context': 'https://schema.org',
-    '@graph': [localBusinessSchema, ...productSchemas, eventSchema, faqSchema],
+    '@graph': [
+      localBusinessSchema,
+      ...productSchemas,
+      ...(eventIsUpcoming ? [eventSchema] : []),
+      faqSchema,
+    ],
   };
 
   return (

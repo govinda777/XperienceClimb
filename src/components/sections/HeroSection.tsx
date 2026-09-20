@@ -184,7 +184,7 @@ export function HeroSection() {
 
           {/* TÍTULO EDITORIAL COM TRÍADE TIPOGRÁFICA EM HARMONIA COM O SITE */}
           <h1 className="font-display max-w-5xl text-5xl font-black leading-[0.92] tracking-tight text-white uppercase sm:text-7xl md:text-8xl lg:text-[102px]">
-            <span className="block drop-shadow-sm">VIVA A ROCHA</span>
+            <span className="block drop-shadow-sm">VIVÊNCIA DE ESCALADA</span>
             <span className="block text-4xl sm:text-6xl md:text-7xl lg:text-[88px]">
               em conexão com a{' '}
               <span className="font-serif-it font-light normal-case text-orange-400 drop-shadow-[0_0_30px_rgba(244,162,97,0.4)]">
