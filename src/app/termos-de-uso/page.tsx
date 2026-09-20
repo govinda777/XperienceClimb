@@ -213,13 +213,30 @@ export default function TermosDeUsoPage() {
             </section>
           </div>
 
-          <div className="mt-12 border-t border-neutral-200 pt-8 text-center">
+          <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-neutral-200 pt-8">
             <Link
               href="/"
               className="inline-flex items-center justify-center rounded-xl bg-orange-500 px-6 py-3 font-semibold text-white transition-all hover:bg-orange-600 hover:shadow-md"
             >
               Voltar para a Página Inicial
             </Link>
+            <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-600">
+              <Link
+                href="/politica-de-privacidade"
+                className="font-medium text-climb-600 hover:text-climb-700 underline"
+              >
+                Política de Privacidade
+              </Link>
+              <span>•</span>
+              <a
+                href={`https://wa.me/55${CONTACT_INFO.phone.replace(/\D/g, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-neutral-900"
+              >
+                WhatsApp Suporte
+              </a>
+            </div>
           </div>
         </div>
       </main>

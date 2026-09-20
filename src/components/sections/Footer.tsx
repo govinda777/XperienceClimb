@@ -55,14 +55,18 @@ export function Footer() {
 
             {/* Logo */}
             <div className="mb-6">
-              <div className="relative h-20 w-20 rounded-lg bg-white/10 p-2">
+              <Link
+                href="/"
+                aria-label="Xperience Climb Início"
+                className="inline-block relative h-20 w-20 rounded-lg bg-white/10 p-2 transition-transform hover:scale-105"
+              >
                 <Image
                   src="/images/logo.png"
                   alt="XperienceClimb Logo"
                   fill
                   className="object-contain"
                 />
-              </div>
+              </Link>
             </div>
           </div>
 
@@ -71,52 +75,88 @@ export function Footer() {
             <p className="mb-6 text-lg font-semibold text-white">Navegação</p>
             <ul className="space-y-3">
               <li>
-                <button
-                  onClick={() => scrollToSection('hero')}
+                <a
+                  href="#hero"
+                  onClick={e => {
+                    e.preventDefault();
+                    scrollToSection('hero');
+                  }}
                   className="text-sm text-climb-200 transition-colors hover:text-white"
                 >
                   Início
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection('sobre')}
+                <a
+                  href="#sobre"
+                  onClick={e => {
+                    e.preventDefault();
+                    scrollToSection('sobre');
+                  }}
                   className="text-sm text-climb-200 transition-colors hover:text-white"
                 >
                   Sobre
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection('pacotes')}
+                <a
+                  href="#iniciante"
+                  onClick={e => {
+                    e.preventDefault();
+                    scrollToSection('iniciante');
+                  }}
                   className="text-sm text-climb-200 transition-colors hover:text-white"
                 >
-                  Pacotes
-                </button>
+                  Para Iniciantes
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection('galeria')}
+                <a
+                  href="#pacotes"
+                  onClick={e => {
+                    e.preventDefault();
+                    scrollToSection('pacotes');
+                  }}
                   className="text-sm text-climb-200 transition-colors hover:text-white"
                 >
-                  Galeria
-                </button>
+                  Pacotes e Preços
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection('seguranca')}
+                <a
+                  href="#seguranca"
+                  onClick={e => {
+                    e.preventDefault();
+                    scrollToSection('seguranca');
+                  }}
                   className="text-sm text-climb-200 transition-colors hover:text-white"
                 >
                   Segurança
-                </button>
+                </a>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection('localizacao')}
+                <a
+                  href="#localizacao"
+                  onClick={e => {
+                    e.preventDefault();
+                    scrollToSection('localizacao');
+                  }}
                   className="text-sm text-climb-200 transition-colors hover:text-white"
                 >
                   Localização
-                </button>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#faq"
+                  onClick={e => {
+                    e.preventDefault();
+                    scrollToSection('faq');
+                  }}
+                  className="text-sm text-climb-200 transition-colors hover:text-white"
+                >
+                  Dúvidas Frequentes (FAQ)
+                </a>
               </li>
             </ul>
           </div>
