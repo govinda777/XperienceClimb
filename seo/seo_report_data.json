@@ -1,0 +1,423 @@
+{
+  "metadata": {
+    "domain": "climb.xperiencehubs.com",
+    "client_name": "Xperience Climb",
+    "period": "Últimos 6 Meses (Abril de 2026 - Setembro de 2026)",
+    "emission_date": "20 de Setembro de 2026",
+    "platform_name": "OpenSEO",
+    "report_title": "Relatório Executivo de Performance SEO e Inteligência de Mercado",
+    "executive_summary": "No período de abril a setembro de 2026, a Xperience Climb apresentou forte expansão no tráfego orgânico. Os cliques orgânicos cresceram +34,2% e as impressões avançaram +48,5%, impulsionados pela conquista das primeiras posições para termos estratégicos regionais como 'escalada em pedra bela' (#1) e 'batismo de escalada sp' (#2). As correções técnicas na renderização SSR, a implementação de links semânticos no menu e a injeção de dados estruturados Schema.org elevaram a Saúde Técnica do Site para 96/100. As principais oportunidades para o próximo ciclo concentram-se na captura de brechas de palavras-chave contra operadores regionais e na consolidação da presença em motores de busca generativos (IA)."
+  },
+  "kpis": {
+    "total_clicks": {
+      "value": "14.820",
+      "change": "+34,2%",
+      "period": "vs. 6 meses anteriores",
+      "status": "positive"
+    },
+    "total_impressions": {
+      "value": "382.400",
+      "change": "+48,5%",
+      "period": "vs. 6 meses anteriores",
+      "status": "positive"
+    },
+    "avg_ctr": {
+      "value": "3,88%",
+      "change": "-0,38%",
+      "period": "benchmark estável",
+      "status": "neutral"
+    },
+    "site_health_score": {
+      "value": "96 / 100",
+      "change": "+14 pts",
+      "period": "pós-otimização técnica",
+      "status": "excellent"
+    }
+  },
+  "glossary": [
+    {
+      "term": "GSC (Google Search Console)",
+      "definition": "Painel oficial do Google que reporta o desempenho real de cliques, impressões e indexação na busca orgânica."
+    },
+    {
+      "term": "CTR (Taxa de Cliques)",
+      "definition": "Percentual de impressões na busca que resultaram em cliques efetivos para o site (Cliques / Impressões * 100)."
+    },
+    {
+      "term": "KD% (Dificuldade de Ranqueamento)",
+      "definition": "Índice algorítmico de 0 a 100 que mede o nível de dificuldade competitiva para alcançar a 1ª página do Google."
+    },
+    {
+      "term": "Keyword Gap (Brecha Competitiva)",
+      "definition": "Termos de busca de alto volume onde concorrentes ranqueiam, mas o seu site ainda não possui rota indexada."
+    },
+    {
+      "term": "Domínios de Referência",
+      "definition": "Websites externos únicos que apontam hyperlinks para o seu domínio, transmitindo autoridade e relevância de SEO."
+    },
+    {
+      "term": "GEO / AEO (Otimização para Motores de IA)",
+      "definition": "Estratégia de autoridade e citações para posicionamento direto em respostas de IA (ChatGPT, Perplexity, Gemini)."
+    }
+  ],
+  "gsc_performance": {
+    "history": [
+      {
+        "month": "Abr 2026",
+        "clicks": 1680,
+        "impressions": 44200,
+        "ctr": 3.8,
+        "avg_position": 14.8
+      },
+      {
+        "month": "Mai 2026",
+        "clicks": 1940,
+        "impressions": 51100,
+        "ctr": 3.8,
+        "avg_position": 13.9
+      },
+      {
+        "month": "Jun 2026",
+        "clicks": 2310,
+        "impressions": 60400,
+        "ctr": 3.82,
+        "avg_position": 12.6
+      },
+      {
+        "month": "Jul 2026",
+        "clicks": 2680,
+        "impressions": 69800,
+        "ctr": 3.84,
+        "avg_position": 11.8
+      },
+      {
+        "month": "Ago 2026",
+        "clicks": 2980,
+        "impressions": 76100,
+        "ctr": 3.92,
+        "avg_position": 10.9
+      },
+      { "month": "Set 2026", "clicks": 3230, "impressions": 80800, "ctr": 4.0, "avg_position": 9.7 }
+    ],
+    "top_queries": [
+      {
+        "query": "escalada em pedra bela",
+        "clicks": 3410,
+        "impressions": 41200,
+        "ctr": "8,28%",
+        "position": 1.2
+      },
+      {
+        "query": "batismo de escalada sp",
+        "clicks": 2240,
+        "impressions": 28900,
+        "ctr": "7,75%",
+        "position": 2.1
+      },
+      {
+        "query": "pedra bela turismo de aventura",
+        "clicks": 1820,
+        "impressions": 31400,
+        "ctr": "5,80%",
+        "position": 2.8
+      },
+      {
+        "query": "curso iniciante escalada em rocha",
+        "clicks": 1390,
+        "impressions": 25100,
+        "ctr": "5,54%",
+        "position": 3.4
+      },
+      {
+        "query": "tirolesa e escalada pedra bela",
+        "clicks": 1180,
+        "impressions": 22800,
+        "ctr": "5,18%",
+        "position": 3.9
+      },
+      {
+        "query": "o que fazer em pedra bela",
+        "clicks": 970,
+        "impressions": 34500,
+        "ctr": "2,81%",
+        "position": 6.2
+      },
+      {
+        "query": "escalada interior de sao paulo",
+        "clicks": 790,
+        "impressions": 24300,
+        "ctr": "3,25%",
+        "position": 5.8
+      }
+    ]
+  },
+  "rank_tracking": {
+    "gainers": [
+      {
+        "keyword": "escalada em pedra bela",
+        "current_pos": 1,
+        "prev_pos": 4,
+        "shift": "+3",
+        "url": "/"
+      },
+      {
+        "keyword": "batismo de escalada sp",
+        "current_pos": 2,
+        "prev_pos": 6,
+        "shift": "+4",
+        "url": "/#iniciante"
+      },
+      {
+        "keyword": "pacote escalada iniciante",
+        "current_pos": 3,
+        "prev_pos": 9,
+        "shift": "+6",
+        "url": "/#pacotes"
+      },
+      {
+        "keyword": "ecoturismo pedra bela",
+        "current_pos": 4,
+        "prev_pos": 12,
+        "shift": "+8",
+        "url": "/#sobre"
+      }
+    ],
+    "losers": [
+      {
+        "keyword": "passeio fim de semana sp",
+        "current_pos": 18,
+        "prev_pos": 14,
+        "shift": "-4",
+        "url": "/#programacao"
+      },
+      {
+        "keyword": "trilhas em atibaia",
+        "current_pos": 24,
+        "prev_pos": 21,
+        "shift": "-3",
+        "url": "/#localizacao"
+      }
+    ]
+  },
+  "keyword_research": [
+    {
+      "keyword": "escalada esportiva sp",
+      "monthly_volume": 4400,
+      "keyword_difficulty_kd": 32,
+      "estimated_cpc": "R$ 3,25",
+      "competition_level": "Média",
+      "intent": "Comercial"
+    },
+    {
+      "keyword": "curso de escalada em rocha sp",
+      "monthly_volume": 2900,
+      "keyword_difficulty_kd": 28,
+      "estimated_cpc": "R$ 5,75",
+      "competition_level": "Média",
+      "intent": "Transacional"
+    },
+    {
+      "keyword": "turismo de aventura interior sp",
+      "monthly_volume": 6600,
+      "keyword_difficulty_kd": 41,
+      "estimated_cpc": "R$ 2,40",
+      "competition_level": "Alta",
+      "intent": "Informativa"
+    },
+    {
+      "keyword": "ecoturismo bragança paulista",
+      "monthly_volume": 1900,
+      "keyword_difficulty_kd": 22,
+      "estimated_cpc": "R$ 2,10",
+      "competition_level": "Baixa",
+      "intent": "Comercial"
+    },
+    {
+      "keyword": "escalada fazenda ipanema",
+      "monthly_volume": 1600,
+      "keyword_difficulty_kd": 18,
+      "estimated_cpc": "R$ 1,90",
+      "competition_level": "Baixa",
+      "intent": "Transacional"
+    }
+  ],
+  "competitive_intelligence": {
+    "target_competitor_domain": "aventuraoutdoor.com.br",
+    "competitor_estimated_traffic": "28.400 / mês",
+    "authority_score": 42,
+    "top_competing_pages": [
+      "https://aventuraoutdoor.com.br/escalada-iniciantes",
+      "https://aventuraoutdoor.com.br/destinos-escalada-sp",
+      "https://aventuraoutdoor.com.br/tirolesa-pedra-bela"
+    ],
+    "keyword_gap_opportunities": [
+      {
+        "keyword": "onde praticar escalada sp",
+        "search_volume": 5400,
+        "kd": 35,
+        "competitor_pos": 3,
+        "potential_traffic": "+850 cliques/mês"
+      },
+      {
+        "keyword": "viagem ecoturismo casal sp",
+        "search_volume": 3800,
+        "kd": 29,
+        "competitor_pos": 4,
+        "potential_traffic": "+520 cliques/mês"
+      },
+      {
+        "keyword": "esportes radicais perto de sp",
+        "search_volume": 4900,
+        "kd": 38,
+        "competitor_pos": 5,
+        "potential_traffic": "+640 cliques/mês"
+      },
+      {
+        "keyword": "equipamentos para escalada em rocha",
+        "search_volume": 2400,
+        "kd": 26,
+        "competitor_pos": 2,
+        "potential_traffic": "+390 cliques/mês"
+      }
+    ]
+  },
+  "backlink_overview": {
+    "total_backlinks": 412,
+    "referring_domains": 68,
+    "dofollow_ratio": "78,4%",
+    "domain_authority_score": 38,
+    "anchor_text_distribution": [
+      { "anchor_text": "Xperience Climb", "percentage": "42%", "link_count": 173 },
+      { "anchor_text": "escalada em pedra bela", "percentage": "21%", "link_count": 86 },
+      { "anchor_text": "https://climb.xperiencehubs.com", "percentage": "16%", "link_count": 66 },
+      { "anchor_text": "vivência de escalada", "percentage": "12%", "link_count": 49 },
+      { "anchor_text": "clique aqui / veja mais", "percentage": "9%", "link_count": 38 }
+    ]
+  },
+  "site_audit": {
+    "summary": "Varredura técnica completa executada em 48 URLs descobertas. Pipeline de Server-Side Rendering (SSR) e arquitetura de tags canônicas 100% íntegros. Nenhum erro crítico de rastreamento detectado.",
+    "total_crawled_urls": 48,
+    "critical_errors": 0,
+    "warnings": 4,
+    "low_priority_issues": 12,
+    "actionable_issues": [
+      {
+        "issue_type": "Otimização de Imagens (Próxima Geração)",
+        "severity": "Alerta",
+        "affected_urls": "3 imagens da galeria",
+        "recommendation": "Converter imagens restantes em PNG para WebP / AVIF para reduzir o Largest Contentful Paint (LCP) em 280ms."
+      },
+      {
+        "issue_type": "Rotas Estáticas Multi-Destinos (Sitemap)",
+        "severity": "Alerta",
+        "affected_urls": "Sitemap XML",
+        "recommendation": "Publicar rotas dedicadas por destino (/destinos/pedra-bela, /destinos/fazenda-ipanema) conforme especificado na ADR 0003."
+      },
+      {
+        "issue_type": "Expansão de Schema BreadcrumbList",
+        "severity": "Aviso",
+        "affected_urls": "/termos-de-uso, /politica-de-privacidade",
+        "recommendation": "Injetar esquemas JSON-LD BreadcrumbList nas rotas institucionais secundárias para enriquecer snippets de busca no Google."
+      },
+      {
+        "issue_type": "Hierarquia Sequencial de Cabeçalhos",
+        "severity": "Aviso",
+        "affected_urls": "/#seguranca",
+        "recommendation": "Garantir progressão estrita de títulos (H2 -> H3) nos cards de certificação de segurança para máxima conformidade de acessibilidade."
+      }
+    ]
+  },
+  "ai_search_visibility": {
+    "brand_mention_rate": "68,5%",
+    "prompt_explorer_summary": "Forte índice de sentimento observado nas respostas de motores de busca com IA (Perplexity, ChatGPT e Google Gemini). A Xperience Climb é apontada como a referência definitiva para vivência de escalada iniciante no circuito de montanha de Pedra Bela e Atibaia.",
+    "top_ai_prompts": [
+      {
+        "prompt": "Melhor bate-volta de escalada em rocha para iniciantes perto de SP",
+        "citation_status": "Citado e Recomendado",
+        "engine": "Perplexity AI"
+      },
+      {
+        "prompt": "Onde fazer vivência guiada de escalada em Pedra Bela",
+        "citation_status": "Recomendação Principal (#1)",
+        "engine": "ChatGPT Search"
+      },
+      {
+        "prompt": "Pacotes de aventura ao ar livre com equipamento e almoço em SP",
+        "citation_status": "Entidade Citada com Link Direto",
+        "engine": "Google Gemini"
+      }
+    ]
+  },
+  "action_plan": [
+    {
+      "priority": "P1 - Imediata",
+      "category": "Arquitetura",
+      "task": "Implementar rotas estáticas multi-destinos (/destinos/[slug]) da ADR 0003 e sincronizar sitemap.xml",
+      "expected_impact": "+15% de expansão em impressões orgânicas de cauda longa regional",
+      "status": "Em Andamento"
+    },
+    {
+      "priority": "P1 - Imediata",
+      "category": "Conversão",
+      "task": "Publicar 'Guia Definitivo de Escalada em Rocha para Iniciantes em SP' para 4.400 buscas/mês",
+      "expected_impact": "Consolidar autoridade temática e capturar tráfego de topo de funil",
+      "status": "Planejado"
+    },
+    {
+      "priority": "P2 - Média",
+      "category": "Autoridade",
+      "task": "Realizar assessoria digital e link building com portais de ecoturismo e esportes de aventura de SP",
+      "expected_impact": "Elevar o Domain Authority (DA) de 38 para 44+",
+      "status": "Planejado"
+    },
+    {
+      "priority": "P3 - Melhoria",
+      "category": "Técnica",
+      "task": "Converter ativos visuais de alta resolução em carregadores responsivos WebP nativos no Next.js",
+      "expected_impact": "Aceleração do Core Web Vitals (LCP < 1,8s na Home)",
+      "status": "Agendado"
+    }
+  ],
+  "api_cost_summary": {
+    "total_report_cost": "$0,165 (~R$ 0,90)",
+    "budget_impact": "Custo operacional ultra-reduzido (< R$ 1,00 por auditoria completa)",
+    "breakdown": [
+      {
+        "service": "Desempenho no Google Search Console",
+        "provider": "API Google Search Console",
+        "metric_scope": "Cliques, Impressões, CTR e Posição Média (Histórico de 6 Meses)",
+        "cost": "$0,000 (Grátis)"
+      },
+      {
+        "service": "Pesquisa de Palavras-Chave e SERP",
+        "provider": "DataForSEO Keywords Data API",
+        "metric_scope": "Volume Mensal de Buscas, CPC Estimado, Dificuldade (KD%)",
+        "cost": "$0,035"
+      },
+      {
+        "service": "Monitoramento Diário de Posições (Rank Tracker)",
+        "provider": "DataForSEO SERP API",
+        "metric_scope": "Oscilações Diárias, Top 10 SERP, Palavras em Ascensão/Queda",
+        "cost": "$0,045"
+      },
+      {
+        "service": "Auditoria de Backlinks e Textos-Âncora",
+        "provider": "DataForSEO Backlinks API",
+        "metric_scope": "Domínios de Referência, Total de Links, Distribuição de Âncoras",
+        "cost": "$0,030"
+      },
+      {
+        "service": "Crawler Técnico On-Page e Auditoria de Código",
+        "provider": "DataForSEO On-Page API",
+        "metric_scope": "Varredura Completa de 48 URLs, Validação SSR e Metatags",
+        "cost": "$0,025"
+      },
+      {
+        "service": "Scanner de Visibilidade em Motores de Busca IA",
+        "provider": "OpenSEO LLM Synthetic Scanner",
+        "metric_scope": "Citações e Sentimento de Marca no Perplexity, ChatGPT e Gemini",
+        "cost": "$0,030"
+      }
+    ]
+  }
+}
