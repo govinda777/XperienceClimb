@@ -2,11 +2,11 @@
   "metadata": {
     "domain": "climb.xperiencehubs.com",
     "client_name": "Xperience Climb",
-    "period": "Últimos 6 Meses (Abril de 2026 - Setembro de 2026)",
-    "emission_date": "20 de Setembro de 2026",
+    "period": "Ciclo de Setembro de 2026 (Auditoria Técnica & Ingestão GSC)",
+    "emission_date": "21 de Setembro de 2026",
     "platform_name": "OpenSEO",
     "report_title": "Relatório Executivo de Performance SEO e Inteligência de Mercado",
-    "executive_summary": "No período de abril a setembro de 2026, a Xperience Climb apresentou forte expansão no tráfego orgânico. Os cliques orgânicos cresceram +34,2% e as impressões avançaram +48,5%, impulsionados pela conquista das primeiras posições para termos estratégicos regionais como 'escalada em pedra bela' (#1) e 'batismo de escalada sp' (#2). As correções técnicas na renderização SSR, a implementação de links semânticos no menu e a injeção de dados estruturados Schema.org elevaram a Saúde Técnica do Site para 96/100. As principais oportunidades para o próximo ciclo concentram-se na captura de brechas de palavras-chave contra operadores regionais e na consolidação da presença em motores de busca generativos (IA)."
+    "executive_summary": "No ciclo de setembro de 2026, a Xperience Climb consolidou sua presença nos motores de busca com a ativação e indexação da propriedade oficial no Google Search Console e a obtenção de nota máxima (100/100) na auditoria técnica do OpenSEO. As primeiras consultas reais já começaram a registrar impressões com posicionamento privilegiado (#1.0 para 'rock climbing' e #2.3 para 'pedra bela escalada'). O diagnóstico avançado do Farol (Lighthouse) eliminou o timeout de execução através do isolamento de iframes de autenticação para bots e posterização sob demanda do vídeo do Hero, alcançando networkidle em 1,7s a 2,9s. O plano tático prioriza agora a captura de tráfego de topo e meio de funil para vivências de escalada no interior de SP."
   },
   "kpis": {
     "total_clicks": {
@@ -28,8 +28,8 @@
       "status": "neutral"
     },
     "site_health_score": {
-      "value": "98 / 100",
-      "change": "+16 pts",
+      "value": "100 / 100",
+      "change": "+18 pts",
       "period": "pós-otimização técnica",
       "status": "excellent"
     }
@@ -343,6 +343,12 @@
         "issue_type": "Atributos Alt em Imagens (A11y/SEO)",
         "historical_scope": "3 URLs (preload oculto Privy)",
         "current_validation": "100% das imagens com alt descritivo; preload sanado",
+        "status": "Conforme"
+      },
+      {
+        "issue_type": "Execução Farol / Lighthouse (Timeout)",
+        "historical_scope": "4 testes 'fracassou' (Lighthouse abort)",
+        "current_validation": "Proteção Turnstile p/ bots + streaming Hero sob demanda; idle em 1.7s",
         "status": "Conforme"
       }
     ],
