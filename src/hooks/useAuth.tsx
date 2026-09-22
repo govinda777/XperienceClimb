@@ -99,15 +99,37 @@ function usePrivyAuthImpl(): AuthContextType {
   };
 }
 
-export function AppAuthProvider({ children }: { children: React.ReactNode }) {
+export const defaultGuestAuthContext: AuthContextType = {
+  ready: true,
+  authenticated: false,
+  user: null,
+  login: () => {
+    console.warn('Authentication is not active in this environment.');
+  },
+  logout: () => {},
+  updateUserPreferences: async () => {},
+  isLoading: false,
+  isGuest: true,
+  isLoggedIn: false,
+};
+
+export function PrivyConnectedAuthProvider({ children }: { children: React.ReactNode }) {
   const auth = usePrivyAuthImpl();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+}
+
+export function AppAuthProvider({ children }: { children: React.ReactNode }) {
+  const existingContext = useContext(AuthContext);
+  if (existingContext) {
+    return <>{children}</>;
+  }
+  return <PrivyConnectedAuthProvider>{children}</PrivyConnectedAuthProvider>;
 }
 
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AppAuthProvider');
+    return defaultGuestAuthContext;
   }
   return context;
 }

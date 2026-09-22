@@ -22,6 +22,18 @@ jest.mock('@privy-io/react-auth', () => ({
   useLogout: () => ({ logout: mockLogout }),
 }));
 
+jest.mock('@/hooks/useAuth', () => ({
+  useAuth: () => ({
+    ready: mockPrivyHook.ready,
+    authenticated: mockPrivyHook.authenticated,
+    user: mockPrivyHook.user,
+    userEmail: mockPrivyHook.user?.email?.address,
+    userName: mockPrivyHook.user?.email?.address?.split('@')[0],
+    login: mockLogin,
+    logout: mockLogout,
+  }),
+}));
+
 // Mock UI components and icons
 jest.mock('@/components/ui', () => ({
   Button: ({ children, onClick, variant, size, disabled, leftIcon, ...props }: any) => (

@@ -13,6 +13,14 @@ jest.mock('@privy-io/react-auth', () => ({
   usePrivy: () => mockPrivyHook,
 }));
 
+jest.mock('@/hooks/useAuth', () => ({
+  useAuth: () => ({
+    ready: mockPrivyHook.ready,
+    authenticated: mockPrivyHook.authenticated,
+    login: mockPrivyHook.login,
+  }),
+}));
+
 // Mock UI components
 jest.mock('@/components/ui', () => ({
   Button: ({ children, onClick, ...props }: any) => (
@@ -123,7 +131,11 @@ describe('AuthGuard Component', () => {
         );
 
         expect(screen.getByText('🧗‍♂️')).toBeInTheDocument();
-        expect(screen.getByText('Faça login para acessar essa funcionalidade e continuar sua jornada de escalada.')).toBeInTheDocument();
+        expect(
+          screen.getByText(
+            'Faça login para acessar essa funcionalidade e continuar sua jornada de escalada.'
+          )
+        ).toBeInTheDocument();
       });
     });
 

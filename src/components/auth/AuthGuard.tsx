@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { usePrivy } from '@privy-io/react-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui';
 
 interface AuthGuardProps {
@@ -10,12 +10,8 @@ interface AuthGuardProps {
   requireAuth?: boolean;
 }
 
-export function AuthGuard({ 
-  children, 
-  fallback,
-  requireAuth = true 
-}: AuthGuardProps) {
-  const { ready, authenticated, login } = usePrivy();
+export function AuthGuard({ children, fallback, requireAuth = true }: AuthGuardProps) {
+  const { ready, authenticated, login } = useAuth();
 
   // Show loading state while Privy is initializing
   if (!ready) {
@@ -47,9 +43,7 @@ export function AuthGuard({
             <div className="w-16 h-16 bg-climb-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
               🧗‍♂️
             </div>
-            <h2 className="text-2xl font-bold text-climb-600 mb-2">
-              Login Necessário
-            </h2>
+            <h2 className="text-2xl font-bold text-climb-600 mb-2">Login Necessário</h2>
             <p className="text-neutral-600">
               Faça login para acessar essa funcionalidade e continuar sua jornada de escalada.
             </p>
@@ -64,4 +58,4 @@ export function AuthGuard({
 
   // User is authenticated, show protected content
   return <>{children}</>;
-} 
+}

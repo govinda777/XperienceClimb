@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { useLogin, useLogout, usePrivy } from '@privy-io/react-auth';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui';
-import { User, LogOut } from 'lucide-react';
+import { User as UserIcon, LogOut } from 'lucide-react';
 
 interface LoginButtonProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -11,11 +11,9 @@ interface LoginButtonProps {
 }
 
 export function LoginButton({ variant = 'primary', size = 'md' }: LoginButtonProps) {
-  const { ready, authenticated, user } = usePrivy();
-  const { login } = useLogin();
-  const { logout } = useLogout();
+  const { ready, authenticated, user, userEmail, userName, login, logout } = useAuth();
 
-  // Show loading state while Privy is initializing
+  // Show loading state while auth is initializing
   if (!ready) {
     return (
       <Button variant={variant} size={size} disabled>
@@ -26,11 +24,15 @@ export function LoginButton({ variant = 'primary', size = 'md' }: LoginButtonPro
 
   // Show logout button if authenticated
   if (authenticated && user) {
+    const displayIdentifier =
+      userEmail ||
+      (typeof user.email === 'string' ? user.email : (user.email as any)?.address) ||
+      userName ||
+      'Usuário';
+
     return (
       <div className="flex items-center space-x-3">
-        <div className="hidden sm:block text-sm text-neutral-700">
-          Olá, {user.email?.address || 'Usuário'}
-        </div>
+        <div className="hidden sm:block text-sm text-neutral-700">Olá, {displayIdentifier}</div>
         <Button
           variant="ghost"
           size={size}
@@ -49,9 +51,9 @@ export function LoginButton({ variant = 'primary', size = 'md' }: LoginButtonPro
       variant={variant}
       size={size}
       onClick={login}
-      leftIcon={<User className="w-4 h-4" />}
+      leftIcon={<UserIcon className="w-4 h-4" />}
     >
       Entrar
     </Button>
   );
-} 
+}

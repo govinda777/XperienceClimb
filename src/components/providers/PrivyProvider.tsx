@@ -1,14 +1,25 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PrivyProvider as BasePrivyProvider } from '@privy-io/react-auth';
 import { privyConfig } from '@/lib/privy';
+import { isBotOrAuditor } from '@/lib/bot-detection';
+import { AuthContext, PrivyConnectedAuthProvider, defaultGuestAuthContext } from '@/hooks/useAuth';
 
 interface PrivyProviderProps {
   children: React.ReactNode;
 }
 
 export function PrivyProvider({ children }: PrivyProviderProps) {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    // Only initialize Privy for real human users; prevent Turnstile hanging in Lighthouse/bots
+    if (!isBotOrAuditor()) {
+      setEnabled(true);
+    }
+  }, []);
+
   let appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
   // Fallback for development or environments with missing/invalid ID
@@ -37,9 +48,13 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
     return () => observer.disconnect();
   }, []);
 
+  if (!enabled) {
+    return <AuthContext.Provider value={defaultGuestAuthContext}>{children}</AuthContext.Provider>;
+  }
+
   return (
     <BasePrivyProvider appId={appId} config={privyConfig}>
-      {children}
+      <PrivyConnectedAuthProvider>{children}</PrivyConnectedAuthProvider>
     </BasePrivyProvider>
   );
 }

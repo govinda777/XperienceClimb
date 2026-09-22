@@ -5,6 +5,7 @@ import { Button, GripBlob, useParallax } from '@/components/ui';
 import { openWhatsApp } from '@/lib/utils';
 import { CONTACT_INFO } from '@/lib/constants';
 import { useTheme } from '@/themes/ThemeProvider';
+import { isBotOrAuditor } from '@/lib/bot-detection';
 import { MapPin, ShieldCheck, ArrowUpRight, MessageCircle, Compass } from 'lucide-react';
 
 export function HeroSection() {
@@ -38,6 +39,21 @@ export function HeroSection() {
   const videoUrl = '/images/themes/pedra-bela/XperienceClimb-03.mp4';
   const posterUrl = '/images/themes/pedra-bela/pedra-santuario-1.jpg';
 
+  // Carrega vídeo de fundo apenas para usuários reais em desktop após renderização inicial
+  const [canLoadVideo, setCanLoadVideo] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isMobile = window.innerWidth < 768;
+    if (isMobile || isBotOrAuditor()) return;
+
+    const timer = setTimeout(() => {
+      setCanLoadVideo(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section
       id="hero"
@@ -58,21 +74,31 @@ export function HeroSection() {
           }}
         />
 
-        {/* Vídeo para Telas Médias e Desktop */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          poster={posterUrl}
-          className="hidden md:block absolute inset-0 h-full w-full object-cover"
-          style={{
-            filter: 'contrast(1.05) brightness(0.55) saturate(1.1)',
-          }}
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </video>
+        {/* Vídeo para Telas Médias e Desktop (apenas carregado se canLoadVideo for true) */}
+        {canLoadVideo ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            poster={posterUrl}
+            className="hidden md:block absolute inset-0 h-full w-full object-cover"
+            style={{
+              filter: 'contrast(1.05) brightness(0.55) saturate(1.1)',
+            }}
+          >
+            <source src={videoUrl} type="video/mp4" />
+          </video>
+        ) : (
+          <div
+            className="hidden md:block absolute inset-0 h-full w-full bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${posterUrl})`,
+              filter: 'contrast(1.05) brightness(0.55) saturate(1.1)',
+            }}
+          />
+        )}
 
         {/* Gradiente orgânico e acolhedor (Verde Petróleo Florestal + Tom de Pôr do Sol Terroso) */}
         <div
