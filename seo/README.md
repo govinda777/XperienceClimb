@@ -10,10 +10,12 @@ O relatório segue padrão editorial de alta qualidade (estilo _outdoor technica
 
 ```text
 seo/
-├── README.md                  # Este guia operacional e documentação
-├── generate_seo_report.py     # Script Python compilador do PDF (ReportLab + Matplotlib)
-├── seo_report_data.json       # Base de dados estruturada das métricas de SEO
-└── seo_performance_report.pdf # Relatório executivo compilado pronto para apresentação
+├── README.md                   # Este guia operacional e documentação
+├── generate_seo_report.py      # Script Python compilador do PDF (ReportLab + Matplotlib)
+├── generate_html_report.py     # Script Python compilador do HTML Editorial idêntico ao PDF
+├── seo_report_data.json        # Base de dados estruturada das métricas de SEO
+├── seo_performance_report.pdf  # Relatório executivo compilado (PDF para impressão/apresentação)
+└── seo_performance_report.html # Relatório editorial completo (para navegador e painel OpenSEO)
 ```
 
 ---
@@ -67,6 +69,20 @@ python3 seo/generate_seo_report.py \
 | `--output` | `-o`  | Caminho de destino do PDF compilado            | `seo/seo_performance_report.pdf` |
 
 O processo de compilação leva aproximadamente **2 a 3 segundos** e imprime logs detalhados do progresso no terminal.
+
+### 4. Geração do Relatório HTML Editorial (Navegador & Painel OpenSEO)
+
+Para gerar o relatório em HTML autocontido com a **mesma identidade visual e layout de 4 páginas do PDF**:
+
+```bash
+python3 seo/generate_html_report.py
+```
+
+O arquivo compilado será gerado em:
+
+- [`seo/seo_performance_report.html`](file:///Users/govinda/projetos/XperienceClimb/seo/seo_performance_report.html)
+
+Ele pode ser aberto diretamente em qualquer navegador com duplo clique ou sincronizado com o painel OpenSEO via MCP (`save_report`).
 
 ---
 

@@ -123,9 +123,9 @@ class NumberedCanvas(canvas.Canvas):
 
             self.setFont("Helvetica", 8)
             self.setFillColor(COLOR_TEXT_MUTED)
-            self.drawString(MARGIN_PT + 42, PAGE_HEIGHT - 26, f"|  Performance e Inteligência de Mercado — {domain}")
+            self.drawString(MARGIN_PT + 42, PAGE_HEIGHT - 26, f"|  Performance SEO — {domain}")
 
-            self.drawRightString(PAGE_WIDTH - MARGIN_PT, PAGE_HEIGHT - 26, period)
+            self.drawRightString(PAGE_WIDTH - MARGIN_PT, PAGE_HEIGHT - 26, "Setembro 2026")
 
         # ----------------------------------------------------------------------
         # Rodapé Corrido Inferior (Todas as Páginas)
