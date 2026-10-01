@@ -266,7 +266,7 @@ export const VISITED_LOCATIONS: VisitedLocation[] = [
       lng: -47.6919,
     },
     description:
-      'Principal local de escalada da XperienceClimb, localizado na Floresta Nacional de Ipanema. Oferece vias de escalada esportiva em rocha granítica com diferentes níveis de dificuldade.',
+      'Localizado na Floresta Nacional de Ipanema, uma Unidade de Conservação Federal. Oferece vias de escalada esportiva em rocha granítica com diferentes níveis de dificuldade.',
     images: [
       {
         url: '/images/themes/fazenda-ipanema/climb.jpg',
@@ -379,7 +379,7 @@ export const VISITED_LOCATIONS: VisitedLocation[] = [
       lng: -46.4567,
     },
     description:
-      'Destino de escalada em formações rochosas únicas, com paisagens deslumbrantes e vias desafiadoras para todos os níveis.',
+      'Destino de escalada em formação rochosa única, com um mirante de 360 graus da paisagem e vias de nível fácil a intermediario.',
     images: [
       {
         url: '/images/themes/pedra-bela/escalada-1.jpg',

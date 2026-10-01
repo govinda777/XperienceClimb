@@ -232,7 +232,7 @@ export class PedraBellaTheme extends BaseTheme {
       {
         icon: '🚶',
         title: 'Acesso Fácil',
-        description: 'Trilho de apenas 3 minutos até a base das vias, sem caminhadas extenuantes.',
+        description: 'Estacionamento de veículos proxímo à base das vias de escalada.',
       },
       {
         icon: '🛡️',

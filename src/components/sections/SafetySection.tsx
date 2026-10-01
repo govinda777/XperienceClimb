@@ -68,7 +68,7 @@ const equipmentList = [
   { name: 'Protetor solar', required: false, provided: false },
   { name: 'Água (1,5L mínimo)', required: false, provided: false },
   { name: 'Chapéu e boné', required: false, provided: false },
-  { name: 'Sleck beliscos', required: false, provided: false },
+  { name: 'Snacks e beliscos', required: false, provided: false },
 ];
 
 export function SafetySection() {
@@ -114,12 +114,10 @@ export function SafetySection() {
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
           {/* Equipamentos Obrigatórios */}
           <div>
-            <h3 className="mb-8 text-3xl font-bold text-climb-600">
-              equipamentos para a sua aventura
-            </h3>
-            <p className="mb-6 text-neutral-600">
-              Itens que você deve trazer para participar da atividade
-            </p>
+            <h2 className="mb-8 text-3xl font-bold text-climb-600">
+              Equipamentos e itens para a sua aventura
+            </h2>
+            <h3 className="mb-8 text-3xl font-bold text-climb-600">Itens fornecidos</h3>
 
             <div className="space-y-4">
               {equipmentList
@@ -163,8 +161,7 @@ export function SafetySection() {
 
           {/* Equipamentos Opcionais */}
           <div>
-            <h3 className="mb-8 text-3xl font-bold text-climb-600">itens recomendados</h3>
-            <p className="mb-6 text-neutral-600">Itens recomendados para maior conforto</p>
+            <h3 className="mb-8 text-3xl font-bold text-climb-600">Itens recomendados</h3>
 
             <div className="space-y-4">
               {equipmentList
