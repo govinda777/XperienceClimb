@@ -6,7 +6,7 @@ export const CONTACT_INFO = {
   distance: '119km de São Paulo',
   phone: '(11) 99541-3539',
   email: 'marcosishino@gmail.com',
-  instagram: '@climb.xperiencehubs',
+  instagram: '@xperiencehubs',
 };
 
 // Navigation items for the site menu - grouped for better organization
@@ -124,7 +124,7 @@ export const PACKAGES: Record<string, PackageType> = {
     description: 'A jornada definitiva: uma saída a cada 2 meses para lugares surpreendentes.',
     features: [
       '🧗 6 Saídas exclusivas por ano',
-      '🚐 Transporte ida e volta incluso',
+      '🚐 Transporte ida e volta incluso (a partir de São Paulo capital)',
       '🍽️ Almoço completo em cada destino',
       '🏔️ Roteiros variados e inéditos',
       '🛡️ Todo equipamento e instrução inclusos',
@@ -142,7 +142,7 @@ export const PACKAGES: Record<string, PackageType> = {
 };
 
 // Base date from which all formats are derived - modify ONLY this one!
-const BASE_TRIP_DATE = '2026-09-26'; // Format: YYYY-MM-DD
+const BASE_TRIP_DATE = '2026-11-28'; // Format: YYYY-MM-DD
 
 const [yearStr, monthStr, dayStr] = BASE_TRIP_DATE.split('-');
 const year = parseInt(yearStr, 10);
@@ -177,17 +177,17 @@ export const AVAILABLE_DATES = {
 // Proximas datas para o calendário
 export const NEXT_EVENTS = [
   {
-    date: 'Novembro 2026',
-    location: 'Pedra Bela',
-    isSecret: true,
-  },
-  {
     date: 'Janeiro 2027',
     location: 'A definir',
     isSecret: true,
   },
   {
     date: 'Março 2027',
+    location: 'A definir',
+    isSecret: true,
+  },
+  {
+    date: 'Maio 2027',
     location: 'A definir',
     isSecret: true,
   },
