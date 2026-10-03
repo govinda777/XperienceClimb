@@ -45,9 +45,9 @@ O sistema cria um formulário separado para cada item no carrinho, mesmo que sej
    - Validação: Mínimo 12 anos, máximo 99 anos
    - Observação: Idade mínima varia conforme o pacote selecionado
 
-3. **Número do Tenis** \*
+3. **Número do Tênis** \*
    - Tipo: Texto
-   - Descrição: Número do tenis do participante
+   - Descrição: Número do tênis do participante
    - Validação: Campo obrigatório
 
 4. **Nível de Experiência** \*
@@ -143,9 +143,9 @@ O sistema cria um formulário separado para cada item no carrinho, mesmo que sej
 
 ---
 
-## Formulario WhatsApp
+## Formulário WhatsApp
 
-> Todos os campos que o usuario preenche no formulario do carrinho devem ser enviados para o whatsapp +
+> Todos os campos que o usuário preenche no formulário do carrinho devem ser enviados para o WhatsApp +
 
 **IMPORTANTE**: Para cada participante (cada pacote), os seguintes dados devem ser enviados:
 
@@ -173,7 +173,7 @@ O sistema cria um formulário separado para cada item no carrinho, mesmo que sej
 - Estado:?
 - CEP:?
 
-**Observação**: Se houver múltiplos participantes, os dados devem ser organizados por pessoa, identificando claramente qual participante cada informação pertence.
+**Observação**: Se houver múltiplos participantes, os dados devem ser organizados por pessoa, identificando claramente a qual participante cada informação pertence.
 
 ### Métodos de Pagamento:
 

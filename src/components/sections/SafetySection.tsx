@@ -52,7 +52,7 @@ const safetyItems: SafetyItem[] = [
     details: [
       'Cobertura em Caso de Acidentes',
       'Válida em todo o território nacional.',
-      'Reembolso com despesas médico, hospitalares e odontológicas',
+      'Reembolso com despesas médico-hospitalares e odontológicas',
     ],
   },
 ];
