@@ -50,13 +50,13 @@ export class PedraBellaTheme extends BaseTheme {
       description: 'Tirolesa gigante, escalada, cachoeiras e muito mais!',
     },
     {
-      title: 'Bem vindo a Pedra Bela!',
+      title: 'Bem-vindo a Pedra Bela!',
       description:
         'Pedra Bela oferece uma experiência única combinando escalada, tirolesa e contato com a natureza exuberante das montanhas paulistas. Um destino perfeito para quem busca aventura e tranquilidade.',
       highlights: [
         {
           icon: '🚁',
-          title: 'Tirolesa Record Mundial',
+          title: 'Tirolesa Recorde Mundial',
           description:
             'A maior tirolesa da América Latina com 1.950m de extensão e velocidade de até 80km/h - uma experiência inesquecível de voo!',
         },
@@ -64,7 +64,7 @@ export class PedraBellaTheme extends BaseTheme {
           icon: '🏍️',
           title: 'Múltiplas Aventuras',
           description:
-            'Quadriciclo, escalada, cachoeiras e trilhas - um verdadeiro parque de aventuras com atividades para toda família.',
+            'Quadriciclo, escalada, cachoeiras e trilhas - um verdadeiro parque de aventuras com atividades para toda a família.',
         },
         {
           icon: '🏔️',
@@ -232,7 +232,7 @@ export class PedraBellaTheme extends BaseTheme {
       {
         icon: '🚶',
         title: 'Acesso Fácil',
-        description: 'Estacionamento de veículos proxímo à base das vias de escalada.',
+        description: 'Estacionamento de veículos próximo à base das vias de escalada.',
       },
       {
         icon: '🛡️',

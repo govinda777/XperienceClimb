@@ -459,7 +459,7 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
           <ul className="ml-4 list-disc space-y-0.5">
             <li>Restrições alimentares ou alergias</li>
             <li>Limitações físicas temporárias</li>
-            <li>Preferências sobre nivel de dificuldade</li>
+            <li>Preferências sobre nível de dificuldade</li>
             <li>Outras informações importantes</li>
           </ul>
         </div>
@@ -510,7 +510,7 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
         preview += `   • Pacote: ${item.packageName}\n`;
         preview += `   • Idade: ${participant.age || 'Não informado'} anos\n`;
         preview += `   • Nível: ${participant.experienceLevel || 'Não informado'}\n`;
-        preview += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
+        preview += `   • Declaração de saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
       }
     });
 
@@ -526,13 +526,13 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
             O que acontece quando finalizar?
           </p>
           <ul className="space-y-1 text-sm text-purple-700">
-            <li>•⁠ ⁠Seu pedido será direcionado ao nosso WhatsApp automaticamente.</li>
-            <li>•⁠ ⁠Nossa equipe receberá todas as informações de sua reserva.</li>
+            <li>• Seu pedido será direcionado ao nosso WhatsApp automaticamente.</li>
+            <li>• Nossa equipe receberá todas as informações de sua reserva.</li>
             <li>
-              •⁠ ⁠Confirmaremos contigo os detalhes de sua reserva. Nesse momento você poderá
+              • Confirmaremos com você os detalhes da sua reserva. Nesse momento você poderá
               esclarecer dúvidas e poderemos nos conhecer melhor!
             </li>
-            <li>•⁠ ⁠Assim que tudo estiver ok, enviaremos um link de pagamento.</li>
+            <li>• Assim que tudo estiver confirmado, enviaremos um link de pagamento.</li>
           </ul>
         </div>
       </div>

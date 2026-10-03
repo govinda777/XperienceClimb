@@ -174,7 +174,7 @@ export const AVAILABLE_DATES = {
   singleDateDisplay: `${day} de ${MONTHS_PT[monthIndex]} de ${year}`,
 } as const;
 
-// Proximas datas para o calendário
+// Próximas datas para o calendário
 export const NEXT_EVENTS = [
   {
     date: 'Janeiro 2027',

@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   description:
     'Vivências de escalada em rocha e ecoturismo de aventura no interior de SP. Guias certificados, equipamentos homologados UIAA/CE, seguro e almoço incluso.',
   keywords:
-    'escalada em pedra bela, vivencia de escalada sp, curso de escalada em rocha sp, turismo de aventura sp, pedra bela tirolesa e escalada, ecoturismo pedra bela, escalada esportiva são paulo, escalada fazenda ipanema',
+    'escalada em pedra bela, vivência de escalada sp, curso de escalada em rocha sp, turismo de aventura sp, pedra bela tirolesa e escalada, ecoturismo pedra bela, escalada esportiva são paulo, escalada fazenda ipanema',
   authors: [{ name: 'Xperience Climb', url: 'https://climb.xperiencehubs.com' }],
   creator: 'Xperience Climb',
   publisher: 'Xperience Climb',

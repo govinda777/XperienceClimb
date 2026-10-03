@@ -379,7 +379,7 @@ export const VISITED_LOCATIONS: VisitedLocation[] = [
       lng: -46.4567,
     },
     description:
-      'Destino de escalada em formação rochosa única, com um mirante de 360 graus da paisagem e vias de nível fácil a intermediario.',
+      'Destino de escalada em formação rochosa única, com um mirante de 360 graus da paisagem e vias de nível fácil a intermediário.',
     images: [
       {
         url: '/images/themes/pedra-bela/escalada-1.jpg',

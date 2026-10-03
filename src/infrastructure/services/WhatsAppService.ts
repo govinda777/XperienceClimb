@@ -84,7 +84,7 @@ export class WhatsAppService {
       message += `   • Pacote: ${item.packageName}\n`;
       message += `   • Idade: ${participant.age} anos\n`;
       message += `   • Nível: ${this.translateExperience(participant.experienceLevel)}\n`;
-      message += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
+      message += `   • Declaração de saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
     });
 
     message += `\n🚨 *INFORMAÇÕES NECESSÁRIAS PARA COMPLETAR A RESERVA:*\n`;
