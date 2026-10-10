@@ -175,7 +175,7 @@ describe('PackagesSection Component', () => {
     });
 
     it('should display bonus items', () => {
-      expect(screen.getAllByText('🎁 BÔNUS EXCLUSIVOS:')).toHaveLength(3);
+      expect(screen.getAllByText('BÔNUS EXCLUSIVOS:')).toHaveLength(3);
       expect(screen.getByText('Lanche')).toBeInTheDocument();
       expect(screen.getByText('Fotos')).toBeInTheDocument();
       expect(screen.getByText('Almoço')).toBeInTheDocument();
@@ -196,9 +196,9 @@ describe('PackagesSection Component', () => {
     });
 
     it('should apply special styling to popular packages', () => {
-      const popularCard = screen.getByText('Mais Popular').closest('div');
-      const parentCard = popularCard?.parentElement;
-      expect(parentCard).toHaveClass('scale-105', 'ring-2', 'ring-orange-400');
+      const popularBadge = screen.getByText('Mais Popular');
+      const parentCard = popularBadge.closest('.relative.flex.flex-col');
+      expect(parentCard).toHaveClass('border-orange-500');
     });
   });
 
@@ -215,9 +215,9 @@ describe('PackagesSection Component', () => {
     });
 
     it('should apply disabled styling', () => {
-      const disabledCard = screen.getByText('Indisponível').closest('div');
-      const parentCard = disabledCard?.parentElement;
-      expect(parentCard).toHaveClass('opacity-90', 'grayscale-[0.3]');
+      const disabledBadge = screen.getByText('Indisponível');
+      const parentCard = disabledBadge.closest('.relative.flex.flex-col');
+      expect(parentCard).toHaveClass('opacity-65', 'grayscale-[30%]');
     });
 
     it('should show disabled button text', () => {
@@ -284,24 +284,9 @@ describe('PackagesSection Component', () => {
       });
     });
 
-    it('should render different shapes for packages', () => {
-      // Circle shape (👑)
-      expect(screen.getByText('👑')).toBeInTheDocument();
-      // Hexagon shape (🏔️)
-      expect(screen.getByText('🏔️')).toBeInTheDocument();
-      // Triangle shape (⭐)
-      expect(screen.getByText('⭐')).toBeInTheDocument();
-    });
-
-    it('should apply correct shape classes', () => {
-      const circleIcon = screen.getByText('👑').closest('div');
-      expect(circleIcon).toHaveClass('rounded-full');
-
-      const hexagonIcon = screen.getByText('🏔️').closest('div');
-      expect(hexagonIcon).toHaveClass('clip-hexagon');
-
-      const triangleIcon = screen.getByText('⭐').closest('div');
-      expect(triangleIcon).toHaveClass('clip-triangle');
+    it('should render technical badges for packages', () => {
+      expect(screen.getByText('CUME · AVANÇADO')).toBeInTheDocument();
+      expect(screen.getByText('CRUX · INTERMEDIÁRIO')).toBeInTheDocument();
     });
   });
 
@@ -370,13 +355,13 @@ describe('PackagesSection Component', () => {
 
     it('should show contact section', () => {
       expect(screen.getByText('Dúvidas sobre qual pacote escolher?')).toBeInTheDocument();
-      expect(screen.getByText('📞 Fale Conosco')).toBeInTheDocument();
+      expect(screen.getByText('Fale Conosco')).toBeInTheDocument();
     });
 
     it('should open WhatsApp when contact button is clicked', () => {
       const { openWhatsApp } = require('@/lib/utils');
 
-      const contactButton = screen.getByText('📞 Fale Conosco');
+      const contactButton = screen.getByText('Fale Conosco');
       fireEvent.click(contactButton);
 
       expect(openWhatsApp).toHaveBeenCalledWith(

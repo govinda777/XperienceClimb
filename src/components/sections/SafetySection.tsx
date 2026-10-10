@@ -1,10 +1,25 @@
 'use client';
 
 import React from 'react';
-// import { Button } from '@/components/ui';
+import {
+  ShieldCheck,
+  Award,
+  ClipboardCheck,
+  HeartPulse,
+  HardHat,
+  Shield,
+  Activity,
+  Lock,
+  Footprints,
+  Sun,
+  Droplets,
+  Shirt,
+  Sparkles,
+  Check,
+} from 'lucide-react';
 
 interface SafetyItem {
-  icon: string;
+  iconType: 'shield' | 'award' | 'protocol' | 'insurance';
   title: string;
   description: string;
   details: string[];
@@ -12,97 +27,158 @@ interface SafetyItem {
 
 const safetyItems: SafetyItem[] = [
   {
-    icon: '🛡️',
+    iconType: 'shield',
     title: 'Equipamentos Certificados',
-    description: 'Todos os equipamentos seguem normas internacionais de segurança',
+    description: 'Todos os equipamentos seguem normas internacionais UIAA e CE',
     details: [
-      'Cordas dinâmicas CE/UIAA',
-      'Capacetes homologados',
-      'Cadeirinhas certificadas',
-      'Mosquetões de segurança',
-      'Freios automáticos',
+      'Cordas dinâmicas homologadas',
+      'Capacetes de escalada certificados',
+      'Baudriers e cadeirinhas testadas',
+      'Mosquetões de segurança com trava',
+      'Freios assistidos de última geração',
     ],
   },
   {
-    icon: '👨‍🏫',
+    iconType: 'award',
     title: 'Instrutores Qualificados',
-    description: 'Equipe com certificação nacional e internacional',
+    description: 'Equipe com certificação e vasta experiência de montanha',
     details: [
-      'Curso de Primeiros Socorros',
-      'Treinamento em Resgate',
-      'Experiência comprovada',
-      'Atualização constante',
+      'Certificação em Primeiros Socorros para Áreas Remotas',
+      'Treinamento em Auto-resgate na Rocha',
+      'Anos de vivência e condução técnica',
+      'Reciclagem e treinamento contínuo',
     ],
   },
   {
-    icon: '📋',
+    iconType: 'protocol',
     title: 'Protocolos Rigorosos',
-    description: 'Procedimentos padronizados para máxima segurança',
+    description: 'Procedimentos padronizados para mitigar riscos',
     details: [
-      'Check duplo de equipamentos',
-      'Briefing obrigatório',
-      'Avaliação das condições climáticas',
-      'Plano de emergência ativo',
+      'Double-check obrigatório de nós e baudriers',
+      'Briefing técnico antes de tocar a rocha',
+      'Monitoramento meteorológico em tempo real',
+      'Plano de emergência e evacuação mapeado',
     ],
   },
   {
-    icon: '🏥',
+    iconType: 'insurance',
     title: 'Seguro Aventura',
-    description: 'Você, protegido em suas aventuras',
+    description: 'Cobertura integral individual para todos os participantes',
     details: [
-      'Cobertura em Caso de Acidentes',
-      'Válida em todo o território nacional.',
-      'Reembolso com despesas médico, hospitalares e odontológicas',
+      'Cobertura ativa durante toda a vivência',
+      'Válida em território nacional',
+      'Despesas médico-hospitalares e odontológicas',
     ],
   },
 ];
 
-const equipmentList = [
-  { name: 'Capacete', required: true, provided: true },
-  { name: 'Cadeirinha', required: true, provided: true },
-  { name: 'Corda dinâmica', required: true, provided: true },
-  { name: 'Mosquetões', required: true, provided: true },
-  { name: 'Freio', required: true, provided: true },
-  { name: 'Sapatilha de escalada', required: true, provided: true },
-  { name: 'Roupa esportiva', required: false, provided: false },
-  { name: 'Protetor solar', required: false, provided: false },
-  { name: 'Água (1,5L mínimo)', required: false, provided: false },
-  { name: 'Chapéu e boné', required: false, provided: false },
-  { name: 'Sleck beliscos', required: false, provided: false },
+const renderSafetyIcon = (type: SafetyItem['iconType']) => {
+  switch (type) {
+    case 'shield':
+      return <ShieldCheck className="h-6 w-6 text-climb-600" strokeWidth={1.5} />;
+    case 'award':
+      return <Award className="h-6 w-6 text-orange-600" strokeWidth={1.5} />;
+    case 'protocol':
+      return <ClipboardCheck className="h-6 w-6 text-climb-700" strokeWidth={1.5} />;
+    case 'insurance':
+      return <HeartPulse className="h-6 w-6 text-emerald-600" strokeWidth={1.5} />;
+  }
+};
+
+interface Equipment {
+  name: string;
+  required: boolean;
+  provided: boolean;
+  iconName: string;
+}
+
+const equipmentList: Equipment[] = [
+  { name: 'Capacete homologado', required: true, provided: true, iconName: 'helmet' },
+  { name: 'Cadeirinha / Baudrier', required: true, provided: true, iconName: 'harness' },
+  { name: 'Corda dinâmica certificada', required: true, provided: true, iconName: 'rope' },
+  { name: 'Mosquetões e Freios', required: true, provided: true, iconName: 'carabiner' },
+  { name: 'Sapatilha de escalada', required: true, provided: true, iconName: 'shoes' },
+  { name: 'Roupa esportiva confortável', required: true, provided: false, iconName: 'clothes' },
+  { name: 'Protetor solar e repelente', required: false, provided: false, iconName: 'sun' },
+  { name: 'Água (mínimo 1,5L por pessoa)', required: false, provided: false, iconName: 'water' },
+  { name: 'Boné ou chapéu', required: false, provided: false, iconName: 'cap' },
+  { name: 'Lanches leves e barras', required: false, provided: false, iconName: 'snack' },
 ];
+
+const renderEquipmentIcon = (iconName: string) => {
+  switch (iconName) {
+    case 'helmet':
+      return <HardHat className="h-4 w-4" strokeWidth={1.5} />;
+    case 'harness':
+      return <Shield className="h-4 w-4" strokeWidth={1.5} />;
+    case 'rope':
+      return <Activity className="h-4 w-4" strokeWidth={1.5} />;
+    case 'carabiner':
+      return <Lock className="h-4 w-4" strokeWidth={1.5} />;
+    case 'shoes':
+      return <Footprints className="h-4 w-4" strokeWidth={1.5} />;
+    case 'clothes':
+      return <Shirt className="h-4 w-4" strokeWidth={1.5} />;
+    case 'sun':
+      return <Sun className="h-4 w-4" strokeWidth={1.5} />;
+    case 'water':
+      return <Droplets className="h-4 w-4" strokeWidth={1.5} />;
+    default:
+      return <Sparkles className="h-4 w-4" strokeWidth={1.5} />;
+  }
+};
 
 export function SafetySection() {
+  const mandatoryEquipment = equipmentList.filter(item => item.required);
+  const optionalEquipment = equipmentList.filter(item => !item.required);
+
   return (
-    <section id="seguranca" className="bg-white py-20">
+    <section id="seguranca" className="bg-stone-50 py-24 text-stone-900">
       <div className="container mx-auto px-4">
+        {/* Section Header */}
         <div className="mb-16 text-center">
-          <h2 className="mb-6 text-4xl font-bold text-climb-600 md:text-5xl">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-stone-300 bg-stone-200/60 px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-stone-700">
+            <ShieldCheck className="h-3.5 w-3.5 text-stone-600" strokeWidth={1.5} />
+            <span>NORMAS & SEGURANÇA</span>
+          </div>
+
+          <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-stone-900 md:text-5xl">
             Segurança em Primeiro Lugar
           </h2>
-          <p className="mx-auto max-w-3xl text-xl text-neutral-700">
-            Nossa prioridade máxima é garantir que você tenha uma experiência segura e inesquecível.
-            Conheça nossos protocolos e equipamentos.
+          <p className="mx-auto max-w-2xl text-lg text-stone-600">
+            A escalada em rocha é uma prática estruturada sobre redundância de ancoragens,
+            equipamentos homologados e conduta técnica rigorosa.
           </p>
         </div>
 
-        {/* Safety Features */}
-        <div className="mb-20 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        {/* Safety Pillars (4 Cards) */}
+        <div className="mb-20 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {safetyItems.map((item, index) => (
             <div
               key={index}
-              className="group rounded-2xl bg-neutral-50 p-6 transition-all duration-300 hover:bg-climb-50 hover:shadow-lg"
+              className="group flex flex-col justify-between rounded-3xl border border-stone-200/80 bg-white p-7 shadow-sm transition-all duration-300 hover:border-stone-300 hover:shadow-xl hover:-translate-y-1"
             >
-              <div className="mb-4 text-center">
-                <div className="mb-3 text-4xl">{item.icon}</div>
-                <h3 className="mb-2 text-xl font-bold text-climb-600">{item.title}</h3>
-                <p className="text-sm text-neutral-700">{item.description}</p>
+              <div>
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-stone-200 bg-stone-50 shadow-inner">
+                  {renderSafetyIcon(item.iconType)}
+                </div>
+                <h3 className="mb-2 text-xl font-bold tracking-tight text-stone-900">
+                  {item.title}
+                </h3>
+                <p className="mb-5 text-xs text-stone-500 leading-relaxed">{item.description}</p>
               </div>
 
-              <ul className="space-y-2">
+              <ul className="space-y-2 border-t border-stone-100 pt-4">
                 {item.details.map((detail, detailIndex) => (
-                  <li key={detailIndex} className="flex items-start space-x-2 text-sm">
-                    <span className="mt-1 text-green-500">✓</span>
-                    <span className="text-neutral-600">{detail}</span>
+                  <li
+                    key={detailIndex}
+                    className="flex items-start gap-2 text-xs text-stone-700 leading-snug"
+                  >
+                    <Check
+                      className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600"
+                      strokeWidth={2}
+                    />
+                    <span>{detail}</span>
                   </li>
                 ))}
               </ul>
@@ -110,147 +186,93 @@ export function SafetySection() {
           ))}
         </div>
 
-        {/* Equipment Checklist */}
-        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
-          {/* Equipamentos Obrigatórios */}
-          <div>
-            <h3 className="mb-8 text-3xl font-bold text-climb-600">
-              equipamentos para a sua aventura
-            </h3>
-            <p className="mb-6 text-neutral-600">
-              Itens que você deve trazer para participar da atividade
-            </p>
+        {/* Equipment Checklist (Mandatory vs Recommended) */}
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2">
+          {/* Equipamentos da Vivência */}
+          <div className="rounded-3xl border border-stone-200/80 bg-white p-7 md:p-8 shadow-sm">
+            <div className="mb-6">
+              <span className="font-mono text-xs font-bold uppercase tracking-widest text-emerald-700">
+                CHECKLIST OBRIGATÓRIO
+              </span>
+              <h3 className="mt-1 text-2xl font-bold tracking-tight text-stone-900">
+                Equipamentos para a Vivência
+              </h3>
+              <p className="mt-1 text-xs text-stone-500">
+                Todo o material de segurança é homologado e fornecido pela equipe técnica.
+              </p>
+            </div>
 
-            <div className="space-y-4">
-              {equipmentList
-                .filter(item => item.required)
-                .map((item, index) => (
-                  <div
-                    key={index}
-                    className={`flex items-center justify-between rounded-lg border-2 p-4 ${
+            <div className="space-y-3">
+              {mandatoryEquipment.map((item, index) => (
+                <div
+                  key={index}
+                  className={`flex items-center justify-between rounded-2xl border p-4 transition-colors ${
+                    item.provided
+                      ? 'border-emerald-200/70 bg-emerald-50/40'
+                      : 'border-orange-200/70 bg-orange-50/40'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`flex h-9 w-9 items-center justify-center rounded-xl border ${
+                        item.provided
+                          ? 'border-emerald-200 bg-white text-emerald-700'
+                          : 'border-orange-200 bg-white text-orange-700'
+                      }`}
+                    >
+                      {renderEquipmentIcon(item.iconName)}
+                    </div>
+                    <span className="text-sm font-semibold text-stone-900">{item.name}</span>
+                  </div>
+
+                  <span
+                    className={`rounded-full px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-wider ${
                       item.provided
-                        ? 'border-green-200 bg-green-50'
-                        : 'border-orange-200 bg-orange-50'
+                        ? 'bg-emerald-600 text-white shadow-sm'
+                        : 'bg-orange-600 text-white shadow-sm'
                     }`}
                   >
-                    <div className="flex items-center space-x-3">
-                      <span
-                        className={`text-lg ${
-                          item.provided ? 'text-green-500' : 'text-orange-500'
-                        }`}
-                      >
-                        {item.provided ? '✅' : '📋'}
-                      </span>
-                      <span className="font-medium text-neutral-800">{item.name}</span>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      {item.provided && (
-                        <span className="rounded-full bg-green-500 px-2 py-1 text-xs text-white">
-                          Fornecido
-                        </span>
-                      )}
-                      {!item.provided && (
-                        <span className="rounded-full bg-orange-500 px-2 py-1 text-xs text-white">
-                          Você traz
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                    {item.provided ? 'Fornecido' : 'Trazer'}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Equipamentos Opcionais */}
-          <div>
-            <h3 className="mb-8 text-3xl font-bold text-climb-600">itens recomendados</h3>
-            <p className="mb-6 text-neutral-600">Itens recomendados para maior conforto</p>
+          {/* Itens Pessoais Recomendados */}
+          <div className="rounded-3xl border border-stone-200/80 bg-white p-7 md:p-8 shadow-sm">
+            <div className="mb-6">
+              <span className="font-mono text-xs font-bold uppercase tracking-widest text-stone-500">
+                CONFORTO & PREVENÇÃO
+              </span>
+              <h3 className="mt-1 text-2xl font-bold tracking-tight text-stone-900">
+                Itens Recomendados
+              </h3>
+              <p className="mt-1 text-xs text-stone-500">
+                Itens recomendados para o seu maior conforto durante a permanência no setor.
+              </p>
+            </div>
 
-            <div className="space-y-4">
-              {equipmentList
-                .filter(item => !item.required)
-                .map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between rounded-lg border-2 border-neutral-200 bg-neutral-50 p-4"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <span className="text-lg text-neutral-500">💡</span>
-                      <span className="font-medium text-neutral-800">{item.name}</span>
+            <div className="space-y-3">
+              {optionalEquipment.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between rounded-2xl border border-stone-200/70 bg-stone-50/50 p-4 transition-colors hover:bg-stone-50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-stone-200 bg-white text-stone-600">
+                      {renderEquipmentIcon(item.iconName)}
                     </div>
-
-                    <div className="flex items-center space-x-2">
-                      <span className="rounded-full bg-neutral-400 px-2 py-1 text-xs text-white">
-                        Opcional
-                      </span>
-                    </div>
+                    <span className="text-sm font-medium text-stone-800">{item.name}</span>
                   </div>
-                ))}
+
+                  <span className="rounded-full border border-stone-200 bg-stone-100 px-3 py-1 font-mono text-[11px] font-medium uppercase tracking-wider text-stone-500">
+                    Opcional
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
-
-          {/* Safety Certifications */}
-          {/* <div>
-            <h3 className="text-3xl font-bold text-climb-600 mb-8">
-              Certificações e Seguros
-            </h3>
-
-            <div className="space-y-6">
-              <div className="bg-climb-500 text-white p-6 rounded-2xl">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">🏛️</span>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold">Autorização ICMBio</h4>
-                    <p className="text-climb-100 text-sm">Operação turística autorizada</p>
-                  </div>
-                </div>
-                <p className="text-climb-100">
-                  Empresa credenciada pelo Instituto Chico Mendes para operação 
-                  turística na Floresta Nacional de Ipanema.
-                </p>
-              </div>
-
-              <div className="bg-orange-400 text-white p-6 rounded-2xl">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">🛡️</span>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold">ABETA</h4>
-                    <p className="text-orange-100 text-sm">Associação Brasileira de Ecoturismo</p>
-                  </div>
-                </div>
-                <p className="text-orange-100">
-                  Certificação em turismo de aventura e práticas sustentáveis 
-                  de operação em ambientes naturais.
-                </p>
-              </div>
-
-              <div className="bg-green-500 text-white p-6 rounded-2xl">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">📋</span>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-bold">Seguro de Acidentes</h4>
-                    <p className="text-green-100 text-sm">Cobertura total incluída</p>
-                  </div>
-                </div>
-                <p className="text-green-100">
-                  Todos os participantes são automaticamente cobertos por 
-                  seguro de acidentes pessoais durante a atividade.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center">
-              <Button variant="outline" size="lg" className="border-climb-500 text-climb-600">
-                📄 Ver Certificados Completos
-              </Button>
-            </div>
-          </div> */}
         </div>
       </div>
     </section>
