@@ -65,9 +65,9 @@ const safetyItems: SafetyItem[] = [
     title: 'Seguro Aventura',
     description: 'Cobertura integral individual para todos os participantes',
     details: [
-      'Cobertura ativa durante toda a vivência',
-      'Válida em território nacional',
-      'Despesas médico-hospitalares e odontológicas',
+      'Cobertura em Caso de Acidentes',
+      'Válida em todo o território nacional',
+      'Reembolso com despesas médico-hospitalares e odontológicas',
     ],
   },
 ];
@@ -102,7 +102,7 @@ const equipmentList: Equipment[] = [
   { name: 'Protetor solar e repelente', required: false, provided: false, iconName: 'sun' },
   { name: 'Água (mínimo 1,5L por pessoa)', required: false, provided: false, iconName: 'water' },
   { name: 'Boné ou chapéu', required: false, provided: false, iconName: 'cap' },
-  { name: 'Lanches leves e barras', required: false, provided: false, iconName: 'snack' },
+  { name: 'Snacks e beliscos', required: false, provided: false, iconName: 'snack' },
 ];
 
 const renderEquipmentIcon = (iconName: string) => {

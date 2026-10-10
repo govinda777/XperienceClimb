@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { COMMUNITY_DATA } from '@/lib/community-data';
-import { CertifiedInstructor, SafetyProcedure, VisitedLocation } from '@/core/entities/Community';
+import { CertifiedInstructor, VisitedLocation } from '@/core/entities/Community';
 
-type CommunityTab = 'instructors' | 'safety' | 'locations';
+type CommunityTab = 'instructors' | 'locations';
 
 interface CommunityTabConfig {
   id: CommunityTab;
@@ -21,12 +21,6 @@ const COMMUNITY_TABS: CommunityTabConfig[] = [
     label: 'Instrutores',
     icon: '👨‍🏫',
     description: 'Profissionais certificados e experientes',
-  },
-  {
-    id: 'safety',
-    label: 'Segurança',
-    icon: '🛡️',
-    description: 'Procedimentos e protocolos de segurança',
   },
   {
     id: 'locations',
@@ -48,24 +42,18 @@ export function CommunitySection() {
             Nossa <span className="text-climb-600">Comunidade</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Conheça os instrutores, procedimentos de segurança e locais que fazem parte da família
-            XperienceClimb. Juntos, construímos experiências seguras e inesquecíveis.
+            Conheça os instrutores e locais que fazem parte da família XperienceClimb. Juntos,
+            construímos experiências seguras e inesquecíveis.
           </p>
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12 max-w-2xl mx-auto">
           <div className="text-center p-6 bg-white rounded-xl shadow-sm">
             <div className="text-3xl font-bold text-climb-600 mb-2">
               {COMMUNITY_DATA.statistics.totalInstructors}
             </div>
             <div className="text-gray-600">Instrutores</div>
-          </div>
-          <div className="text-center p-6 bg-white rounded-xl shadow-sm">
-            <div className="text-3xl font-bold text-climb-600 mb-2">
-              {COMMUNITY_DATA.statistics.totalProcedures}
-            </div>
-            <div className="text-gray-600">Procedimentos</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl shadow-sm">
             <div className="text-3xl font-bold text-climb-600 mb-2">
@@ -101,7 +89,6 @@ export function CommunitySection() {
         {/* Tab Content */}
         <div className="bg-white rounded-2xl shadow-lg p-8">
           {activeTab === 'instructors' && <InstructorsContent />}
-          {activeTab === 'safety' && <SafetyContent />}
           {activeTab === 'locations' && <LocationsContent />}
         </div>
       </div>
@@ -229,131 +216,6 @@ function InstructorCard({ instructor }: { instructor: CertifiedInstructor }) {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// Safety Content Component
-function SafetyContent() {
-  return (
-    <div>
-      <h3 className="text-2xl font-bold text-gray-900 mb-6">🛡️ Procedimentos de Segurança</h3>
-      <p className="text-gray-600 mb-8">
-        A segurança é nossa prioridade máxima. Seguimos protocolos rigorosos e atualizados para
-        garantir experiências seguras para todos os participantes.
-      </p>
-
-      <div className="space-y-6">
-        {COMMUNITY_DATA.safetyProcedures.map(procedure => (
-          <SafetyProcedureCard key={procedure.id} procedure={procedure} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function SafetyProcedureCard({ procedure }: { procedure: SafetyProcedure }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const priorityColors = {
-    critical: 'bg-red-100 text-red-800',
-    high: 'bg-orange-100 text-orange-800',
-    medium: 'bg-yellow-100 text-yellow-800',
-    low: 'bg-green-100 text-green-800',
-  };
-
-  const priorityLabels = {
-    critical: 'Crítico',
-    high: 'Alto',
-    medium: 'Médio',
-    low: 'Baixo',
-  };
-
-  return (
-    <div className="bg-gray-50 rounded-xl p-6">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1">
-          <h4 className="font-semibold text-gray-900 text-lg mb-2">{procedure.title}</h4>
-          <div className="flex items-center space-x-3 mb-2">
-            <span
-              className={cn('px-2 py-1 text-xs rounded-full', priorityColors[procedure.priority])}
-            >
-              {priorityLabels[procedure.priority]}
-            </span>
-            <span className="text-xs text-gray-500">
-              Versão {procedure.version} • Atualizado em{' '}
-              {procedure.lastUpdated.toLocaleDateString('pt-BR')}
-            </span>
-          </div>
-        </div>
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-climb-600 hover:text-climb-700 ml-4"
-        >
-          <span
-            className={cn('transform transition-transform text-xl', isExpanded ? 'rotate-180' : '')}
-          >
-            ▼
-          </span>
-        </button>
-      </div>
-
-      <p className="text-gray-600 text-sm mb-4">{procedure.description}</p>
-
-      {isExpanded && (
-        <div className="space-y-4 pt-4 border-t border-gray-200">
-          <div>
-            <h5 className="font-medium text-gray-900 mb-2">Passos do Procedimento:</h5>
-            <div className="space-y-2">
-              {procedure.steps.map(step => (
-                <div key={step.order} className="flex items-start space-x-3">
-                  <span className="flex-shrink-0 w-6 h-6 bg-climb-500 text-white text-xs rounded-full flex items-center justify-center">
-                    {step.order}
-                  </span>
-                  <div className="flex-1">
-                    <div className="font-medium text-sm text-gray-900">{step.title}</div>
-                    <div className="text-xs text-gray-600">{step.description}</div>
-                    {step.timeRequired && (
-                      <div className="text-xs text-gray-500 mt-1">
-                        ⏱️ {step.timeRequired} minutos
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {procedure.warnings.length > 0 && (
-            <div>
-              <h5 className="font-medium text-gray-900 mb-2">⚠️ Avisos Importantes:</h5>
-              <ul className="space-y-1">
-                {procedure.warnings.map((warning, index) => (
-                  <li key={index} className="text-sm text-red-600">
-                    • {warning}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div>
-            <h5 className="font-medium text-gray-900 mb-2">📞 Contatos de Emergência:</h5>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {procedure.emergencyContacts.map((contact, index) => (
-                <div key={index} className="text-sm bg-white p-2 rounded">
-                  <div className="font-medium">{contact.name}</div>
-                  <div className="text-gray-600">{contact.role}</div>
-                  <div className="text-climb-600">{contact.phone}</div>
-                  {contact.isAvailable24h && (
-                    <div className="text-xs text-green-600">24h disponível</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

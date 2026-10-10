@@ -16,23 +16,23 @@ export class FazendaIpanemaTheme extends BaseTheme {
       {
         step: 1,
         title: 'Saída de São Paulo',
-        description: 'Siga pela Rodovia Raposo Tavares (SP-270) sentido interior'
+        description: 'Siga pela Rodovia Raposo Tavares (SP-270) sentido interior',
       },
       {
         step: 2,
         title: 'Saída Iperó',
-        description: 'Pegue a saída 109 - Iperó/Boituva (aproximadamente 90km)'
+        description: 'Pegue a saída 109 - Iperó/Boituva (aproximadamente 90km)',
       },
       {
         step: 3,
         title: 'Entrada da Floresta',
-        description: 'Siga as placas para "Floresta Nacional de Ipanema" (8km)'
+        description: 'Siga as placas para "Floresta Nacional de Ipanema" (8km)',
       },
       {
         step: 4,
         title: 'Chegada',
-        description: 'Estacionamento gratuito, proximo ao acesso ao setor de escalada'
-      }
+        description: 'Estacionamento gratuito, próximo ao acesso ao setor de escalada',
+      },
     ]
   );
 
@@ -40,32 +40,37 @@ export class FazendaIpanemaTheme extends BaseTheme {
     {
       title: 'XPERIENCE CLIMB FLONA',
       subtitle: 'Escalada Sustentável na Mata Atlântica',
-      description: 'Conservação, educação e aventura em harmonia'
+      description: 'Conservação, educação e aventura em harmonia',
     },
     {
       title: 'Escalada no Coração da Mata Atlântica',
-      description: 'O Morro Araçoiaba, localizado na Floresta Nacional de Ipanema (FLONA), oferece uma das experiências de escalada mais autênticas e seguras do interior de São Paulo.',
+      description:
+        'O Morro Araçoiaba, localizado na Floresta Nacional de Ipanema (FLONA), oferece uma das experiências de escalada mais autênticas e seguras do interior de São Paulo.',
       highlights: [
         {
           icon: '🌳',
           title: 'Unidade de Conservação Federal',
-          description: 'Escalada responsável em área protegida pelo ICMBio, contribuindo para a conservação da Mata Atlântica e educação ambiental.'
+          description:
+            'Escalada responsável em área protegida pelo ICMBio, contribuindo para a conservação da Mata Atlântica e educação ambiental.',
         },
         {
           icon: '🔬',
           title: 'Geologia Milenar',
-          description: 'Formações rochosas de quartzito com mais de 600 milhões de anos, um verdadeiro laboratório natural de geologia.'
+          description:
+            'Formações rochosas de quartzito com mais de 600 milhões de anos, um verdadeiro laboratório natural de geologia.',
         },
         {
           icon: '🦋',
           title: 'Biodiversidade Preservada',
-          description: 'Experiência única de escalada em meio à fauna e flora nativas, com possibilidade de avistamento de espécies endêmicas.'
-        }
+          description:
+            'Experiência única de escalada em meio à fauna e flora nativas, com possibilidade de avistamento de espécies endêmicas.',
+        },
       ],
       infoBox: {
         title: 'Sobre a Floresta Nacional de Ipanema (Flona)',
-        content: 'A Floresta Nacional de Ipanema, antes conhecida como "Fazenda Ipanema" é uma unidade de Conservação da natureza, administrada pelo Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio), localizada a 120 km da cidade de São Paulo e abrangendo parte dos municípios de Iperó, Araçoiaba da Serra e Capela do Alto. A missão da Flona de Ipanema é proteger, conservar e restaurar os remanescentes de vegetação nativa do domínio de Mata Atlântica, especialmente o Morro Araçoiaba, e seus ambientes associados, seus atributos naturais, históricos e culturais, promover o manejo florestal, o uso público e ser referência em integração socioambiental, pesquisa e disseminação de conhecimentos.'
-      }
+        content:
+          'A Floresta Nacional de Ipanema, antes conhecida como "Fazenda Ipanema", é uma unidade de conservação da natureza, administrada pelo Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio), localizada a 120 km da cidade de São Paulo e abrangendo parte dos municípios de Iperó, Araçoiaba da Serra e Capela do Alto. A missão da Flona de Ipanema é proteger, conservar e restaurar os remanescentes de vegetação nativa do domínio de Mata Atlântica, especialmente o Morro Araçoiaba, e seus ambientes associados, seus atributos naturais, históricos e culturais, promover o manejo florestal, o uso público e ser referência em integração socioambiental, pesquisa e disseminação de conhecimentos.',
+      },
     }
   );
 
@@ -76,43 +81,43 @@ export class FazendaIpanemaTheme extends BaseTheme {
         alt: 'Escalador nas rochas do Morro Araçoiaba',
         title: 'Escalada Técnica',
         category: 'climb',
-        isExternal: true
+        isExternal: true,
       },
       {
         src: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?w=800&h=600&fit=crop',
         alt: 'Vista panorâmica durante a escalada',
         title: 'Vista Panorâmica',
         category: 'climb',
-        isExternal: true
+        isExternal: true,
       },
       {
         src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop',
         alt: 'Floresta Nacional de Ipanema',
         title: 'Mata Atlântica Preservada',
         category: 'nature',
-        isExternal: true
+        isExternal: true,
       },
       {
         src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop',
         alt: 'Trilhas da Floresta Nacional',
         title: 'Trilhas Ecológicas',
         category: 'nature',
-        isExternal: true
+        isExternal: true,
       },
       {
         src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
         alt: 'Mapa dos setores de escalada',
         title: 'Setores de Escalada',
         category: 'equipment',
-        isExternal: true
-      }
+        isExternal: true,
+      },
     ]),
     categories: {
       all: 'Todas',
       climb: 'Escalada',
       nature: 'Natureza',
-      equipment: 'Equipamentos'
-    }
+      equipment: 'Equipamentos',
+    },
   };
 
   activities = [
@@ -121,27 +126,27 @@ export class FazendaIpanemaTheme extends BaseTheme {
       name: 'Escalada em Rocha',
       description: 'Escalada técnica em formações de quartzito com mais de 600 milhões de anos',
       icon: '🧗',
-      difficulty: 'medium' as const
-    }
+      difficulty: 'medium' as const,
+    },
   ];
 
   logistics = this.createLogisticsInfo(
     {
       openTime: '8h',
       closeTime: '17h',
-      notes: 'Horário de funcionamento do parque'
+      notes: 'Horário de funcionamento do parque',
     },
     'Centro de Visitantes da FLONA',
     [
       'Horário de funcionamento do parque: 8h às 17h',
       'Estacionamento gratuito disponível',
-      'Enviaremos o cronograma detalhado, no final da compra, para você conferir'
+      'Enviaremos o cronograma detalhado, no final da compra, para você conferir',
     ],
     [
       'Chegue com antecedência',
       'Traga protetor solar',
       'Use roupas adequadas para escalada',
-      'Leve água e lanche extra'
+      'Leve água e lanche extra',
     ]
   );
 
@@ -152,13 +157,13 @@ export class FazendaIpanemaTheme extends BaseTheme {
       {
         icon: '🌳',
         title: 'Ambiente Seguro',
-        description: 'Setores com sombra e acesso controlado em uma unidade de conservação.'
+        description: 'Setores com sombra e acesso controlado em uma unidade de conservação.',
       },
       {
         icon: '🧗',
         title: 'Vias Escola',
-        description: 'Vias de escalada preparadas especialmente para instrução e iniciantes.'
-      }
+        description: 'Vias de escalada preparadas especialmente para instrução e iniciantes.',
+      },
     ],
     'A natureza espera por você!'
   );
@@ -166,7 +171,7 @@ export class FazendaIpanemaTheme extends BaseTheme {
   timeline = [
     this.createTimelineEvent('08:00', 'Encontro no Centro de Visitantes'),
     this.createTimelineEvent('09:00 - 13:00', 'Escalada e Instrução'),
-    this.createTimelineEvent('14:00', 'Trilha Histórica (Opcional)')
+    this.createTimelineEvent('14:00', 'Trilha Histórica (Opcional)'),
   ];
 
   community = this.createCommunityInfo(
@@ -179,7 +184,14 @@ export class FazendaIpanemaTheme extends BaseTheme {
   seo = this.createSEOInfo(
     'XperienceClimb - Escalada na Fazenda Ipanema',
     'Viva a experiência definitiva de escalada no Morro Araçoiaba, localizado na Floresta Nacional de Ipanema. Escalada segura com instrutores certificados.',
-    ['escalada', 'fazenda ipanema', 'morro araçoiaba', 'flona', 'mata atlântica', 'escalada em rocha'],
+    [
+      'escalada',
+      'fazenda ipanema',
+      'morro araçoiaba',
+      'flona',
+      'mata atlântica',
+      'escalada em rocha',
+    ],
     '/images/themes/fazenda-ipanema/og-image.jpg'
   );
 

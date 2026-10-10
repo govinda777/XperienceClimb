@@ -247,7 +247,7 @@ export class CreateOrder {
       message += `   • Pacote: ${item.packageName}\n`;
       message += `   • Idade: ${participant.age} anos\n`;
       message += `   • Nível: ${this.translateExperience(participant.experienceLevel)}\n`;
-      message += `   • Declaração saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
+      message += `   • Declaração de saúde: ${participant.healthDeclaration ? '✅ Sim' : '❌ Não'}\n`;
     });
 
     message += `\n💰 *Pagamento:* ${this.getPaymentStatusMessage(order.payment.method)}`;
