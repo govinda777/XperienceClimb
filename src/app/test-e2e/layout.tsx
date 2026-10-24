@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Ambiente de teste | Xperience Climb',
+  title: 'Ambiente de teste',
   robots: {
     index: false,
     follow: false,

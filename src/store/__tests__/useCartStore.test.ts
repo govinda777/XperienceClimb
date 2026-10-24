@@ -31,7 +31,7 @@ describe('useCartStore', () => {
   describe('initial state', () => {
     it('should have empty initial state', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       expect(result.current.items).toEqual([]);
       expect(result.current.isOpen).toBe(false);
       expect(result.current.getTotalPrice()).toBe(0);
@@ -42,7 +42,7 @@ describe('useCartStore', () => {
   describe('addItem', () => {
     it('should add new item to cart', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const newItem = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -63,7 +63,7 @@ describe('useCartStore', () => {
 
     it('should update quantity when adding existing item with same package and participant', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -83,7 +83,7 @@ describe('useCartStore', () => {
 
     it('should add separate items for different participants', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item1 = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -112,7 +112,7 @@ describe('useCartStore', () => {
 
     it('should add separate items for different packages', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item1 = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -141,7 +141,7 @@ describe('useCartStore', () => {
 
     it('should handle adding multiple quantities at once', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -161,7 +161,7 @@ describe('useCartStore', () => {
   describe('removeItem', () => {
     it('should remove item by id', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -185,7 +185,7 @@ describe('useCartStore', () => {
 
     it('should not affect other items when removing one', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item1 = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -219,7 +219,7 @@ describe('useCartStore', () => {
 
     it('should handle removing non-existent item gracefully', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       act(() => {
         result.current.removeItem('non-existent-id');
       });
@@ -231,7 +231,7 @@ describe('useCartStore', () => {
   describe('updateQuantity', () => {
     it('should update item quantity', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -255,7 +255,7 @@ describe('useCartStore', () => {
 
     it('should remove item when quantity is set to 0', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -279,7 +279,7 @@ describe('useCartStore', () => {
 
     it('should remove item when quantity is negative', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -303,7 +303,7 @@ describe('useCartStore', () => {
 
     it('should not affect other items when updating one', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item1 = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -339,7 +339,7 @@ describe('useCartStore', () => {
   describe('clearCart', () => {
     it('should remove all items from cart', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item1 = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -372,7 +372,7 @@ describe('useCartStore', () => {
 
     it('should handle clearing empty cart', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       act(() => {
         result.current.clearCart();
       });
@@ -384,7 +384,7 @@ describe('useCartStore', () => {
   describe('modal state management', () => {
     it('should toggle cart modal state', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       expect(result.current.isOpen).toBe(false);
 
       act(() => {
@@ -402,7 +402,7 @@ describe('useCartStore', () => {
 
     it('should open cart modal', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       expect(result.current.isOpen).toBe(false);
 
       act(() => {
@@ -414,7 +414,7 @@ describe('useCartStore', () => {
 
     it('should close cart modal', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       act(() => {
         result.current.openCart();
       });
@@ -426,13 +426,44 @@ describe('useCartStore', () => {
       });
 
       expect(result.current.isOpen).toBe(false);
+      expect(result.current.isCheckoutOpen).toBe(false);
+    });
+
+    it('should open checkout directly', () => {
+      const { result } = renderHook(() => useCartStore());
+
+      expect(result.current.isOpen).toBe(false);
+      expect(result.current.isCheckoutOpen).toBe(false);
+
+      act(() => {
+        result.current.openCheckout();
+      });
+
+      expect(result.current.isOpen).toBe(true);
+      expect(result.current.isCheckoutOpen).toBe(true);
+    });
+
+    it('should toggle and set checkout state', () => {
+      const { result } = renderHook(() => useCartStore());
+
+      act(() => {
+        result.current.setCheckoutOpen(true);
+      });
+
+      expect(result.current.isCheckoutOpen).toBe(true);
+
+      act(() => {
+        result.current.setCheckoutOpen(false);
+      });
+
+      expect(result.current.isCheckoutOpen).toBe(false);
     });
   });
 
   describe('computed values', () => {
     beforeEach(() => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item1 = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -457,21 +488,21 @@ describe('useCartStore', () => {
 
     it('should calculate total price correctly', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       // (150 * 2) + (250 * 1) = 300 + 250 = 550
       expect(result.current.getTotalPrice()).toBe(550);
     });
 
     it('should calculate total items correctly', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       // 2 + 1 = 3
       expect(result.current.getTotalItems()).toBe(3);
     });
 
     it('should get item count for specific package', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       expect(result.current.getItemCount('pkg-1')).toBe(2);
       expect(result.current.getItemCount('pkg-2')).toBe(1);
       expect(result.current.getItemCount('pkg-3')).toBe(0);
@@ -481,7 +512,7 @@ describe('useCartStore', () => {
   describe('edge cases and error handling', () => {
     it('should handle items with zero price', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const freeItem = {
         packageId: 'pkg-free',
         packageName: 'Escalada Gratuita',
@@ -500,7 +531,7 @@ describe('useCartStore', () => {
 
     it('should handle items with decimal prices', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const decimalItem = {
         packageId: 'pkg-decimal',
         packageName: 'Escalada com Desconto',
@@ -518,7 +549,7 @@ describe('useCartStore', () => {
 
     it('should handle large quantities', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const largeQuantityItem = {
         packageId: 'pkg-large',
         packageName: 'Escalada em Grupo',
@@ -537,7 +568,7 @@ describe('useCartStore', () => {
 
     it('should handle empty strings in participant names', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const emptyNameItem = {
         packageId: 'pkg-empty',
         packageName: 'Escalada Anônima',
@@ -555,7 +586,7 @@ describe('useCartStore', () => {
 
     it('should handle special characters in names', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const specialCharItem = {
         packageId: 'pkg-special',
         packageName: 'Escalada Ação & Aventura™',
@@ -576,7 +607,7 @@ describe('useCartStore', () => {
   describe('persistence behavior', () => {
     it('should only persist items, not modal state', () => {
       const { result } = renderHook(() => useCartStore());
-      
+
       const item = {
         packageId: 'pkg-1',
         packageName: 'Escalada Iniciante',
@@ -592,7 +623,7 @@ describe('useCartStore', () => {
 
       // Simulate store rehydration
       const persistedState = { items: result.current.items };
-      
+
       expect(persistedState.items).toHaveLength(1);
       expect(persistedState).not.toHaveProperty('isOpen');
     });

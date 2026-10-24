@@ -13,7 +13,7 @@ export const PARTNERS: Partner[] = [
     name: 'Floresta Nacional de Ipanema',
     description:
       'Unidade de conservação federal que abriga o Morro Araçoiaba, nosso principal local de escalada.',
-    logo: '/images/logo-flona-ipanema-climp.jpg',
+    logo: '/images/themes/fazenda-ipanema/flona.jpg',
     website: 'https://www.icmbio.gov.br/flonadeipanema',
     category: 'other',
     location: {
@@ -92,7 +92,7 @@ export const CERTIFIED_INSTRUCTORS: CertifiedInstructor[] = [
   {
     id: 'celso-ossamu',
     name: 'Celso Ossamu',
-    photo: '/images/themes/pedra-bela/escalada-1.jpg',
+    photo: '/images/themes/pedra-bela/escalada-1.png',
     bio: 'Instrutor principal da XperienceClimb com mais de 15 anos de experiência em escalada. Especialista em escalada esportiva e tradicional, com foco em segurança e desenvolvimento técnico.',
     certifications: [
       {
@@ -175,7 +175,7 @@ export const SAFETY_PROCEDURES: SafetyProcedure[] = [
         description: 'Inspecionar cadeirinha, capacete, sapatilhas e equipamentos pessoais',
         timeRequired: 5,
         isOptional: false,
-        visualAid: '/images/safety/equipment-check.jpg',
+        visualAid: '/assets/icons/icon-capacete.svg',
       },
       {
         order: 2,
@@ -183,7 +183,7 @@ export const SAFETY_PROCEDURES: SafetyProcedure[] = [
         description: 'Verificar toda a extensão da corda em busca de cortes, desgastes ou danos',
         timeRequired: 3,
         isOptional: false,
-        visualAid: '/images/safety/rope-inspection.jpg',
+        visualAid: '/assets/icons/icon-corda.svg',
       },
       {
         order: 3,
@@ -269,21 +269,21 @@ export const VISITED_LOCATIONS: VisitedLocation[] = [
       'Localizado na Floresta Nacional de Ipanema, uma Unidade de Conservação Federal. Oferece vias de escalada esportiva em rocha granítica com diferentes níveis de dificuldade.',
     images: [
       {
-        url: '/images/themes/fazenda-ipanema/climb.jpg',
+        url: '/images/themes/fazenda-ipanema/escalada-1.jpg',
         caption: 'Vista geral do Morro Araçoiaba',
         category: 'landscape',
         photographer: 'Marcos Ishino',
         takenAt: new Date('2024-08-15'),
       },
       {
-        url: '/images/themes/fazenda-ipanema/climb-2.jpg',
+        url: '/images/themes/fazenda-ipanema/escalada-2.jpg',
         caption: 'Escalador em ação na face principal',
         category: 'route',
         photographer: 'Ana Silva',
         takenAt: new Date('2024-09-10'),
       },
       {
-        url: '/images/themes/fazenda-ipanema/setor-map.jpg',
+        url: '/images/themes/fazenda-ipanema/mapa-1.jpg',
         caption: 'Mapa dos setores de escalada',
         category: 'route',
         takenAt: new Date('2024-07-01'),
@@ -382,7 +382,7 @@ export const VISITED_LOCATIONS: VisitedLocation[] = [
       'Destino de escalada em formação rochosa única, com um mirante de 360 graus da paisagem e vias de nível fácil a intermediário.',
     images: [
       {
-        url: '/images/themes/pedra-bela/escalada-1.jpg',
+        url: '/images/themes/pedra-bela/escalada-1.png',
         caption: 'Escalada na formação principal',
         category: 'route',
         photographer: 'Ana Silva',
@@ -395,7 +395,7 @@ export const VISITED_LOCATIONS: VisitedLocation[] = [
         takenAt: new Date('2024-10-15'),
       },
       {
-        url: '/images/themes/pedra-bela/pedra-santuario-1.jpg',
+        url: '/images/themes/pedra-bela/hero.jpg',
         caption: 'Pedra do Santuário',
         category: 'landscape',
         takenAt: new Date('2024-10-16'),

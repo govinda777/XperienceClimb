@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <!-- Casco do capacete em Terracota -->
+  <path d="M14 44 C14 22, 66 22, 66 44 L14 44 Z" fill="#C85A32" stroke="#1B4332" stroke-width="3.5" stroke-linejoin="round" />
+  <!-- Fendas de ventilação superiores -->
+  <path d="M26 34 L32 34 M48 34 L54 34 M36 30 L44 30" stroke="#FFF" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Queixeira e fitas de ajuste -->
+  <path d="M20 44 L28 62 L40 66 L52 62 L60 44" stroke="#1B4332" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Fivela de engate rápido -->
+  <circle cx="40" cy="66" r="3.5" fill="#E09F3E" stroke="#1B4332" stroke-width="2" />
+</svg>

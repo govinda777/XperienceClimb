@@ -275,12 +275,13 @@ describe('CheckoutForm', () => {
   });
 
   describe('form submission', () => {
-    it('should show alert when user is not authenticated', async () => {
+    it('should trigger login when user is not authenticated on submission', async () => {
       // Mock useAuth to return not logged in
+      const mockLogin = jest.fn();
       mockUseAuth.mockReturnValue({
         user: null,
         isLoggedIn: false,
-        login: jest.fn(),
+        login: mockLogin,
         logout: jest.fn(),
       });
 
@@ -303,7 +304,7 @@ describe('CheckoutForm', () => {
 
       await user.click(screen.getByText('📱 Enviar para WhatsApp e Finalizar'));
 
-      expect(global.alert).toHaveBeenCalledWith('Usuário não autenticado');
+      expect(mockLogin).toHaveBeenCalledTimes(1);
     });
 
     it('should disable submit button while submitting', async () => {

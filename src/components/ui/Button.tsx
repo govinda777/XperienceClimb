@@ -39,13 +39,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary:
-        'bg-climb-500 hover:bg-climb-600 active:bg-climb-700 text-white shadow-lg shadow-climb-900/20 hover:shadow-climb-900/35 hover:-translate-y-0.5 focus:ring-climb-400',
+        'bg-forest-700 hover:bg-forest-800 active:bg-forest-900 text-white shadow-lg shadow-forest-900/20 hover:shadow-forest-900/35 hover:-translate-y-0.5 focus:ring-forest-500',
       accent:
-        'bg-orange-400 hover:bg-orange-500 text-white font-bold shadow-lg shadow-orange-500/25 hover:-translate-y-0.5 focus:ring-orange-400',
-      glow: 'bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-bold shadow-xl shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5 focus:ring-orange-400',
+        'bg-terracotta-500 hover:bg-terracotta-600 text-white font-bold shadow-lg shadow-terracotta-500/25 hover:-translate-y-0.5 focus:ring-terracotta-400',
+      glow: 'bg-gradient-to-r from-terracotta-500 to-terracotta-600 hover:from-terracotta-600 hover:to-terracotta-700 text-white font-bold shadow-xl shadow-terracotta-500/25 hover:shadow-terracotta-500/40 hover:-translate-y-0.5 focus:ring-terracotta-400',
       boulder:
-        'bg-climb-700 hover:bg-climb-800 text-white font-mono uppercase tracking-widest text-xs shadow-xl hover:-translate-y-0.5 focus:ring-climb-400',
-      dark: 'bg-neutral-900 hover:bg-climb-950 text-white border border-white/15 hover:border-white/25 shadow-md hover:-translate-y-0.5 focus:ring-climb-400',
+        'bg-forest-800 hover:bg-forest-900 text-white font-mono uppercase tracking-widest text-xs shadow-xl hover:-translate-y-0.5 focus:ring-forest-500',
+      dark: 'bg-ink-900 hover:bg-black text-white border border-white/15 hover:border-white/25 shadow-md hover:-translate-y-0.5 focus:ring-forest-500',
       secondary:
         'bg-white/15 backdrop-blur-md hover:bg-white/25 text-white border border-white/20 hover:border-white/30 focus:ring-white/30',
       outline:

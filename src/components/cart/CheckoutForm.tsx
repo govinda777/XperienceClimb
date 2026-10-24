@@ -31,7 +31,7 @@ interface FormData {
 }
 
 export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps) {
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -118,7 +118,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
 
   const handleSubmit = async () => {
     if (!user) {
-      alert('Usuário não autenticado');
+      login();
       return;
     }
 
@@ -202,18 +202,18 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
               key={index}
               className={`flex items-center ${
                 index === currentStep
-                  ? 'font-medium text-climb-600'
+                  ? 'font-medium text-forest-800'
                   : index < currentStep
-                    ? 'text-climb-500'
+                    ? 'text-forest-700'
                     : 'text-neutral-400'
               }`}
             >
               <div
                 className={`mr-2 flex h-6 w-6 items-center justify-center rounded-full border-2 text-xs ${
                   index === currentStep
-                    ? 'border-climb-600 bg-climb-50'
+                    ? 'border-forest-800 bg-sand-100'
                     : index < currentStep
-                      ? 'border-climb-500 bg-climb-500 text-white'
+                      ? 'border-forest-700 bg-forest-700 text-white'
                       : 'border-neutral-300'
                 }`}
               >
@@ -238,7 +238,7 @@ export function CheckoutForm({ cartItems, onBack, onSuccess }: CheckoutFormProps
         {/* Progress Bar */}
         <div className="mt-2 h-2 w-full rounded-full bg-neutral-200">
           <div
-            className="h-2 rounded-full bg-climb-500 transition-all duration-300"
+            className="h-2 rounded-full bg-forest-700 transition-all duration-300"
             style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
           />
         </div>
@@ -318,7 +318,7 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
               <input
                 id={`name-${item.id}`}
                 type="text"
-                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-forest-600"
                 value={participantDetails[item.id]?.name || ''}
                 onChange={e => onChange(item.id, 'name', e.target.value)}
                 placeholder="Digite o nome completo"
@@ -337,7 +337,7 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
                 type="number"
                 min="12"
                 max="99"
-                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-forest-600"
                 value={participantDetails[item.id]?.age || ''}
                 onChange={e => onChange(item.id, 'age', parseInt(e.target.value))}
                 placeholder="Idade"
@@ -353,7 +353,7 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
               </label>
               <select
                 id={`experience-${item.id}`}
-                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-forest-600"
                 value={participantDetails[item.id]?.experienceLevel || ''}
                 onChange={e => onChange(item.id, 'experienceLevel', e.target.value)}
               >
@@ -375,7 +375,7 @@ function ParticipantDetailsStep({ cartItems, participantDetails, onChange }: any
             <input
               id={`whatsapp-${item.id}`}
               type="text"
-              className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
+              className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-forest-600"
               value={participantDetails[item.id]?.whatsapp || ''}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 onChange(item.id, 'whatsapp', formatWhatsApp(e.target.value))
@@ -445,7 +445,7 @@ function ClimbingDetailsStep({ climbingDetails, onChange }: any) {
       <div>
         <textarea
           rows={4}
-          className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-climb-500"
+          className="w-full rounded-md border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-forest-600"
           value={climbingDetails.specialRequests || ''}
           onChange={e => onChange('specialRequests', e.target.value)}
           placeholder="Descreva qualquer solicitação especial, restrição alimentar, preferência de horário, ou informação importante que nossa equipe deve saber..."
@@ -549,12 +549,12 @@ function ConfirmationStep({ cartItems, participantDetails, climbingDetails, tota
               <p className="font-medium">{item.packageName}</p>
               <p className="text-sm text-neutral-600">{participantDetails[item.id]?.name}</p>
             </div>
-            <p className="font-semibold text-climb-600">{formatPrice(item.price)}</p>
+            <p className="font-semibold text-forest-800">{formatPrice(item.price)}</p>
           </div>
         ))}
         <div className="flex items-center justify-between pt-3 text-lg font-semibold">
           <span>Total:</span>
-          <span className="text-climb-600">{formatPrice(totalPrice)}</span>
+          <span className="text-forest-800">{formatPrice(totalPrice)}</span>
         </div>
       </div>
 

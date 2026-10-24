@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Selo Carimbo Circular UIAA / CE Certified -->
+  <circle cx="60" cy="60" r="54" stroke="#C85A32" stroke-width="4" stroke-dasharray="8 3" fill="#F4F1EA" />
+  <circle cx="60" cy="60" r="46" stroke="#0F172A" stroke-width="2.5" fill="none" />
+  
+  <text x="60" y="44" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="1">HOMOLOGADO</text>
+  <text x="60" y="66" font-family="'Big Shoulders Display', sans-serif" font-size="22" font-weight="900" fill="#C85A32" text-anchor="middle" letter-spacing="1.5">UIAA / CE</text>
+  <text x="60" y="82" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="700" fill="#1B4332" text-anchor="middle" letter-spacing="1">CERTIFIED</text>
+  
+  <line x1="28" y1="48" x2="92" y2="48" stroke="#0F172A" stroke-width="1.2" />
+  <line x1="28" y1="72" x2="92" y2="72" stroke="#0F172A" stroke-width="1.2" />
+</svg>

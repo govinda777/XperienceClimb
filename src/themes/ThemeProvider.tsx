@@ -37,9 +37,18 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function ThemeProviderContent({ children }: { children: React.ReactNode }) {
-  // Initialize with pedraBellaTheme as default fallback
-  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(pedraBellaTheme);
+function ThemeProviderContent({
+  initialThemeId,
+  children,
+}: {
+  initialThemeId?: string;
+  children: React.ReactNode;
+}) {
+  const initialStaticTheme =
+    (initialThemeId && staticThemes[initialThemeId as keyof typeof staticThemes]) ||
+    pedraBellaTheme;
+  // Initialize with initialStaticTheme (or pedraBellaTheme as default fallback)
+  const [currentTheme, setCurrentTheme] = useState<ThemeConfig>(initialStaticTheme);
   // Keep all themes available for URL loading
   const [availableThemes, setAvailableThemes] = useState<ThemeConfig[]>(
     Object.values(staticThemes)
@@ -83,8 +92,28 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
       try {
         let selectedTheme: ThemeConfig | null = null;
 
-        // Check localStorage on client if previously stored
-        if (typeof window !== 'undefined') {
+        // Priority 0: Explicit initialThemeId from route (SSR/SSG) or URL pathname/query
+        if (initialThemeId) {
+          selectedTheme =
+            availableThemes.find(t => t.id === initialThemeId) ||
+            staticThemes[initialThemeId as keyof typeof staticThemes] ||
+            null;
+        }
+
+        if (!selectedTheme && typeof window !== 'undefined') {
+          const pathMatch = window.location.pathname.match(/^\/destinos\/([^/?#]+)/);
+          const slugFromPath = pathMatch?.[1];
+          const urlParams = new URLSearchParams(window.location.search);
+          const themeFromQuery = getThemeFromUrl(urlParams);
+          const urlThemeId = slugFromPath || themeFromQuery;
+
+          if (urlThemeId) {
+            selectedTheme = availableThemes.find(t => t.id === urlThemeId) || null;
+          }
+        }
+
+        // Priority 1: Check localStorage on client if previously stored
+        if (!selectedTheme && typeof window !== 'undefined') {
           const storedThemeId = localStorage.getItem('xperience-theme');
           if (storedThemeId) {
             selectedTheme = availableThemes.find(t => t.id === storedThemeId) || null;
@@ -114,7 +143,7 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
     if (!toursLoading) {
       loadTheme();
     }
-  }, [availableThemes, tours, toursLoading]);
+  }, [availableThemes, tours, toursLoading, initialThemeId]);
 
   const setTheme = useCallback(
     (themeId: string) => {
@@ -131,6 +160,8 @@ function ThemeProviderContent({ children }: { children: React.ReactNode }) {
 
       // Update document title if applicable
       if (typeof document !== 'undefined') {
+        document.title = theme.seo.title;
+
         const ogTitle = document.querySelector('meta[property="og:title"]');
         if (ogTitle) {
           ogTitle.setAttribute('content', theme.seo.title);
@@ -185,9 +216,15 @@ function ThemeUrlSync() {
   return null;
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({
+  initialThemeId,
+  children,
+}: {
+  initialThemeId?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <ThemeProviderContent>
+    <ThemeProviderContent initialThemeId={initialThemeId}>
       <Suspense fallback={null}>
         <ThemeUrlSync />
       </Suspense>
@@ -199,7 +236,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    return {
+      currentTheme: pedraBellaTheme,
+      availableThemes: [pedraBellaTheme, fazendaIpanemaTheme],
+      setTheme: () => {},
+      isLoading: false,
+      refreshThemes: async () => {},
+    };
   }
   return context;
 }

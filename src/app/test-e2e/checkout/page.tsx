@@ -1,10 +1,15 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { notFound } from 'next/navigation';
 import { AuthContext, AuthContextType } from '@/hooks/useAuth';
 import { CartModal } from '@/components/cart/CartModal';
 import { useCartStore } from '@/store/useCartStore';
 
 export default function TestE2ECheckoutPage() {
+  if (process.env.NODE_ENV === 'production') {
+    notFound();
+  }
+
   const toggleCart = useCartStore(state => state.toggleCart);
   const [mounted, setMounted] = useState(false);
 

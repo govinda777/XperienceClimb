@@ -49,6 +49,9 @@ jest.mock('lucide-react', () => ({
   Minus: () => <span data-testid="minus-icon">-</span>,
   ShoppingCart: () => <span data-testid="shopping-cart-icon">🛒</span>,
   CreditCard: () => <span data-testid="credit-card-icon">💳</span>,
+  ShieldCheck: () => <span data-testid="shield-check-icon">🛡️</span>,
+  LogIn: () => <span data-testid="login-icon">🔑</span>,
+  ArrowLeft: () => <span data-testid="arrow-left-icon">←</span>,
 }));
 
 // Mock utils

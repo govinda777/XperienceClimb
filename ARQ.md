@@ -1,656 +1,184 @@
-# Arquitetura do XperienceClimb
+# 🏛️ Arquitetura do XperienceClimb
 
-## Visão Geral
+## 1. Visão Geral do Sistema
 
-O **XperienceClimb** é uma aplicação web full-stack desenvolvida em **Next.js 15** que oferece experiências de escalada na Floresta Nacional de Ipanema. A aplicação utiliza uma arquitetura em camadas baseada em **Clean Architecture** e **Domain-Driven Design (DDD)**.
+O **XperienceClimb** é uma plataforma full-stack moderna de reservas e imersão para experiências de escalada em rocha natural, com foco no polo de **Pedra Bela (SP)** e suporte nativo a múltiplos destinos de montanhismo (como a Floresta Nacional de Ipanema).
 
-### Tecnologias Principais
+O projeto é construído sobre o **Next.js 15 (App Router)** e fundamentado nos princípios de **Clean Architecture** e **Domain-Driven Design (DDD)**, garantindo que as regras de negócio centrais permaneçam isoladas de detalhes de infraestrutura, SDKs externos e bibliotecas de apresentação.
 
-- **Framework**: Next.js 15 (App Router)
-- **Linguagem**: TypeScript
-- **Estilização**: Tailwind CSS
-- **Estado**: Zustand
-- **Autenticação**: Privy (Web3 + Social)
-- **Pagamentos**: Múltiplos (Mercado Pago, PIX, Bitcoin, USDT, GitHub Sponsors)
-- **Comunicação**: WhatsApp API
-- **Testes**: Jest + React Testing Library + Cucumber (BDD)
-- **Deployment**: Vercel
-- **Arquitetura**: Clean Architecture + DDD
+```mermaid
+flowchart TD
+    subgraph Client["Camada de Apresentação (UI & Next.js 15)"]
+        Landing["app/page.tsx (Landing Page Pedra Bela)"]
+        Destinations["app/destinos/[slug] (Rotas Multi-Destino)"]
+        Guides["app/guia-escalada-iniciantes-sp (Conteúdo Editorial / SEO)"]
+        Cart["components/cart (CartModal, CheckoutForm, AuthPromptScreen)"]
+        DesignTokens["Design System (Outdoor Editorial / Boulder Aesthetic)"]
+    end
+
+    subgraph AppState["Camada de Aplicação & Estado"]
+        ZustandStore["Zustand: useCartStore (Persistência localStorage)"]
+        AuthContext["Privy Context & useAuth (Web3 + Social Login)"]
+        ThemeEngine["ThemeProvider & Configs Dinâmicas"]
+    end
+
+    subgraph CoreDomain["Camada de Domínio (Core DDD)"]
+        Entities["Entidades: Order, OrderItem, ParticipantDetails, User"]
+        UseCases["Casos de Uso: CreateOrder, ValidateCoupon"]
+        RepoPorts["Interfaces (Ports): IOrderRepository, ICouponRepository"]
+    end
+
+    subgraph Infrastructure["Camada de Infraestrutura (Adapters)"]
+        OrderRepoImpl["OrderRepository"]
+        WhatsAppService["WhatsAppService (Geração de Mensagens Criptografadas)"]
+        PrivyAdapter["PrivyConnectedAuthProvider"]
+    end
+
+    Client --> AppState
+    AppState --> CoreDomain
+    CoreDomain --> Infrastructure
+    Infrastructure -.->|Implementa Ports| CoreDomain
+```
 
 ---
 
-## Estrutura de Diretórios
+## 2. Tecnologias Principais
+
+| Categoria                | Tecnologia        | Versão / Padrão               | Responsabilidade                                                       |
+| :----------------------- | :---------------- | :---------------------------- | :--------------------------------------------------------------------- |
+| **Framework Web**        | Next.js           | 15.x (App Router)             | Renderização híbrida (SSG + SSR), API routes e compilação otimizada    |
+| **Linguagem**            | TypeScript        | 5.x (Strict Mode)             | Tipagem estática rigorosa de ponta a ponta                             |
+| **Estilização**          | Tailwind CSS      | 3.4.x                         | Design tokens semânticos, micro-interações e responsividade            |
+| **Identidade Visual**    | Boulder Aesthetic | Arc'teryx & Outdoor Editorial | Contraste tipográfico (Mono técnico + Display preto + Itálico poético) |
+| **Estado Global**        | Zustand           | 5.x                           | Carrinho reativo com persistência automática em `localStorage`         |
+| **Autenticação**         | Privy SDK         | React Auth 3.x                | Login híbrido sem senhas (E-mail OTP, Google, Social e Web3)           |
+| **Checkout & Conversão** | WhatsApp API      | Direct Intent Integration     | Geração de payload detalhado para confirmação de apólice e pagamento   |
+| **Testes Automatizados** | Jest + RTL        | 24 Suítes / 269 Testes        | Testes unitários, de componentes, fluxos de checkout e integração      |
+| **Iconografia**          | Lucide React      | `strokeWidth={1.5}`           | Ícones técnicos padronizados com traço elegante                        |
+
+---
+
+## 3. Estrutura de Diretórios e Camadas
 
 ```
 XperienceClimb/
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── api/               # API Routes
-│   │   ├── checkout/          # Páginas de checkout
-│   │   ├── layout.tsx         # Layout raiz
-│   │   └── page.tsx           # Página inicial
-│   ├── components/            # Componentes React
-│   │   ├── auth/              # Autenticação (Privy)
-│   │   ├── cart/              # Carrinho de compras
-│   │   ├── checkout/          # Sistema de checkout multi-step
-│   │   ├── layout/            # Layout components
-│   │   ├── providers/         # Context providers
-│   │   ├── sections/          # Seções da página
-│   │   ├── theme/             # Sistema de temas
-│   │   └── ui/                # Componentes de UI
-│   ├── core/                  # Domain Layer (Clean Architecture)
-│   │   ├── entities/          # Entidades de domínio
-│   │   ├── repositories/      # Interfaces de repositórios
-│   │   ├── services/          # Interfaces de serviços
-│   │   └── use-cases/         # Casos de uso
-│   ├── hooks/                 # Custom hooks
-│   ├── infrastructure/        # Infrastructure Layer
-│   │   ├── repositories/      # Implementações de repositórios
-│   │   └── services/          # Implementações de serviços
-│   ├── lib/                   # Utilities e configurações
-│   ├── store/                 # Estado global (Zustand)
-│   ├── styles/                # Estilos globais
-│   ├── tests/                 # Testes BDD (Cucumber)
-│   ├── themes/                # Sistema de temas
-│   └── types/                 # Definições de tipos
-├── public/                    # Assets estáticos
-├── scripts/                   # Scripts utilitários
-├── __tests__/                 # Testes de unidade e integração
-├── jest.config.js             # Configuração Jest
-└── cucumber.config.js         # Configuração Cucumber (BDD)
+│   ├── app/                                 # Presentation Layer: Next.js App Router
+│   │   ├── api/                            # API Routes (/api/packages, /api/chat, /api/tours)
+│   │   ├── destinos/[slug]/                # Roteamento dinâmico multi-destino
+│   │   ├── guia-escalada-iniciantes-sp/    # Página editorial de SEO & autoridade
+│   │   ├── politica-de-privacidade/        # Conformidade legal LGPD
+│   │   ├── termos-de-uso/                  # Termos contratuais de aventura
+│   │   ├── layout.tsx                      # Layout raiz com Provedores globais
+│   │   └── page.tsx                        # Landing Page principal (Pedra Bela)
+│   ├── components/                         # Componentes React Reutilizáveis
+│   │   ├── auth/                           # Guardas de autenticação (AuthGuard)
+│   │   ├── cart/                           # Carrinho, AuthPromptScreen e CheckoutForm
+│   │   ├── layout/                         # Navegação fixa (Navigation)
+│   │   ├── providers/                      # PrivyProvider e PrivyConnectedAuthProvider
+│   │   ├── sections/                       # Seções da página (Hero, Packages, Gallery, About)
+│   │   └── ui/                             # Botões, Cards, Doodles e tokens base
+│   ├── core/                               # Domain Layer (Puro, sem dependências de UI)
+│   │   ├── entities/                       # Order, User, Coupon, Tour
+│   │   ├── repositories/                   # Interfaces (IOrderRepository, IUserRepository)
+│   │   ├── services/                       # Interfaces de serviços de domínio
+│   │   └── use-cases/                      # CreateOrder, ValidateCoupon, etc.
+│   ├── hooks/                              # Custom React Hooks (useAuth, etc.)
+│   ├── infrastructure/                     # Infrastructure Layer
+│   │   ├── repositories/                   # OrderRepository (persistência e mapeamento)
+│   │   └── services/                       # WhatsAppService, CouponService
+│   ├── lib/                                # Utilitários compartilhados, constantes e datas
+│   ├── store/                              # Gerenciamento de estado global (useCartStore)
+│   ├── styles/                             # globals.css e tokens do Tailwind
+│   └── themes/                             # Motor dinâmico de temas (pedra-bela.ts, etc.)
+├── docs/                                   # Documentação técnica e estratégica
+│   ├── FLUXOS_E_DIAGRAMAS.md               # Compêndio de diagramas Mermaid
+│   └── GLOSSARIO_TECNICO_SEGURANCA.md      # Glossário de termos técnicos de rocha
+├── public/                                 # Assets públicos (imagens de rocha, ícones SVG)
+├── CHANGELOG.md                            # Histórico semântico de versões
+└── Package_Form.md                         # Documentação do formulário de checkout
 ```
 
 ---
 
-## Arquitetura em Camadas
+## 4. Design System & Princípios de Interface (Boulder Aesthetic)
 
-### 1. **Presentation Layer** (Interface do Usuário)
+Inspirado na alta alfaiataria de montanha (marcas como Arc'teryx e Black Diamond), o sistema adota regras rigorosas documentadas em `.agents/rules/AGENTS.md`:
 
-#### **App Router (src/app/)**
-
-- **layout.tsx**: Layout raiz com providers e metadados
-- **page.tsx**: Página inicial com todas as seções
-- **api/**: Endpoints da API (packages, webhooks)
-- **checkout/**: Páginas de sucesso/erro do pagamento
-
-#### **Components (src/components/)**
-
-##### **Auth Components**
-
-- `AuthGuard`: Proteção de rotas autenticadas
-- `LoginButton`: Botão de login/logout
-
-##### **Cart Components**
-
-- `CartButton`: Botão flutuante do carrinho
-- `CartModal`: Modal com itens do carrinho
-- `CheckoutForm`: Formulário de finalização (legacy)
-
-##### **Checkout Components**
-
-- `CheckoutFormNew`: Sistema de checkout em 5 etapas
-- `PaymentMethodSelector`: Seleção de método de pagamento
-- `CouponInput`: Sistema de cupons de desconto
-- `GitHubPaymentModal`: Modal para pagamento via GitHub Sponsors
-
-##### **Layout Components**
-
-- `Navigation`: Barra de navegação principal
-
-##### **Section Components**
-
-- `HeroSection`: Seção principal com CTA
-- `AboutSection`: Sobre a experiência de escalada
-- `PackagesSection`: Pacotes disponíveis (dados da API)
-- `GallerySection`: Galeria de imagens com filtros
-- `SafetySection`: Informações de segurança
-- `LocationSection`: Localização e mapa
-- `TestimonialsSection`: Depoimentos dos clientes
-- `CommunitySection`: Comunidade e engajamento
-- `Footer`: Rodapé com informações de contato
-
-##### **Theme Components**
-
-- `ThemeSelector`: Seletor de temas/destinos
-- `ThemeProvider`: Provider do sistema de temas
-
-##### **UI Components**
-
-- `Button`: Componente de botão reutilizável
-- `Card`: Componente de card reutilizável
-
-##### **Providers**
-
-- `PrivyProvider`: Provider de autenticação
-
-### 2. **Application Layer** (Casos de Uso)
-
-#### **Use Cases (src/core/use-cases/)**
-
-##### **Auth**
-
-- `LoginUser`: Autenticação de usuário
-- `GetUserProfile`: Obter perfil do usuário
-
-##### **Packages**
-
-- `GetAllPackages`: Buscar todos os pacotes
-- `GetPackageAvailability`: Verificar disponibilidade
-
-##### **Orders**
-
-- `CreateOrder`: Criar pedido com múltiplos métodos de pagamento
-
-##### **Payments**
-
-- `ProcessPixPayment`: Processar pagamentos PIX
-- `ProcessCryptoPayment`: Processar pagamentos em criptomoeda
-- `ProcessGitHubPayment`: Processar pagamentos via GitHub Sponsors
-
-##### **Coupons**
-
-- `ValidateCoupon`: Validar cupons de desconto
-- `ApplyDiscount`: Aplicar descontos com regras de negócio
-
-##### **Tours**
-
-- `CreateTour`: Criar novos tours
-- `GetToursByTheme`: Buscar tours por tema
-- `ValidateTourData`: Validar dados de tour
-
-##### **Cart**
-
-- Gerenciado pelo Zustand store sem casos de uso específicos
-
-### 3. **Domain Layer** (Regras de Negócio)
-
-#### **Entities (src/core/entities/)**
-
-##### **User**
-
-```typescript
-interface User {
-  id: string;
-  email: string;
-  name?: string;
-  avatar?: string;
-  createdAt: Date;
-  isAdmin?: boolean;
-}
-```
-
-##### **Package**
-
-```typescript
-interface Package {
-  id: string;
-  name: string;
-  price: Money;
-  description: string;
-  features: string[];
-  availability: PackageAvailability;
-  rules: BookingRules;
-}
-```
-
-##### **Order**
-
-```typescript
-interface Order {
-  id: string;
-  userId: string;
-  items: CartItem[];
-  total: number;
-  discount?: DiscountInfo;
-  status: 'pending' | 'paid' | 'cancelled' | 'refunded';
-  paymentMethod: 'card' | 'pix' | 'bitcoin' | 'usdt' | 'github' | 'whatsapp';
-  paymentId?: string;
-  mercadoPagoId?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
-
-##### **Coupon**
-
-```typescript
-interface Coupon {
-  id: string;
-  code: string;
-  type: 'percentage' | 'fixed';
-  value: number;
-  minOrderValue?: number;
-  maxDiscount?: number;
-  validFrom: Date;
-  validUntil: Date;
-  usageLimit?: number;
-  usedCount: number;
-  allowedPaymentMethods?: PaymentMethod[];
-  isActive: boolean;
-}
-```
-
-##### **CryptoPayment**
-
-```typescript
-interface CryptoPayment {
-  id: string;
-  orderId: string;
-  currency: 'bitcoin' | 'usdt';
-  amount: number;
-  exchangeRate: number;
-  walletAddress: string;
-  transactionHash?: string;
-  status: 'pending' | 'confirmed' | 'failed';
-  createdAt: Date;
-}
-```
-
-##### **GitHubPayment**
-
-```typescript
-interface GitHubPayment {
-  id: string;
-  orderId: string;
-  amount: number;
-  currency: 'BRL';
-  convertedAmount: number;
-  convertedCurrency: 'USD';
-  sponsorshipUrl: string;
-  status: 'pending' | 'completed' | 'failed';
-  createdAt: Date;
-}
-```
-
-##### **Tour**
-
-```typescript
-interface Tour {
-  id: string;
-  name: string;
-  description: string;
-  theme: string;
-  location: string;
-  duration: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  maxParticipants: number;
-  price: number;
-  images: string[];
-  isActive: boolean;
-}
-```
-
-#### **Repository Interfaces (src/core/repositories/)**
-
-- `IUserRepository`: Interface para operações de usuário
-- `IPackageRepository`: Interface para operações de pacotes
-- `IOrderRepository`: Interface para operações de pedidos
-- `ITourRepository`: Interface para operações de tours
-
-#### **Service Interfaces (src/core/services/)**
-
-- `IAuthService`: Interface para autenticação
-- `IPaymentService`: Interface para pagamentos (Mercado Pago)
-- `ICouponService`: Interface para sistema de cupons
-- `ICryptoPaymentService`: Interface para pagamentos crypto
-- `IGitHubPaymentService`: Interface para GitHub Sponsors
-- `ITourService`: Interface para gerenciamento de tours
-
-### 4. **Infrastructure Layer** (Implementações)
-
-#### **Repositories (src/infrastructure/repositories/)**
-
-- `UserRepository`: Implementação com Privy
-- `PackageRepository`: Implementação com dados estáticos
-- `OrderRepository`: Implementação com webhook/API
-- `TourRepository`: Implementação para gerenciamento de tours
-
-#### **Services (src/infrastructure/services/)**
-
-- `AuthService`: Implementação com Privy (Web3 + Social)
-- `PaymentService`: Implementação com Mercado Pago (Cartão + PIX)
-- `CouponService`: Sistema de cupons com validação
-- `CryptoPaymentService`: Pagamentos Bitcoin e USDT
-- `GitHubPaymentService`: Integração GitHub Sponsors
-- `TourService`: Gerenciamento de tours e temas
-- `WhatsAppService`: Integração WhatsApp para finalização
+1. **Tipografia de Alto Contraste:**
+   - **Títulos:** `font-display` com peso ultra-bold (`font-black`), caixa alta e rastreamento justo (`tracking-tight`).
+   - **Acentos Poéticos:** `font-serifIt` em itálico serifado leve para criar contraste humano.
+   - **Metadados Técnicos:** `font-mono` em tamanho reduzido (`text-xs` / `text-[10px]`) e caixa alta com espaçamento ampliado (`tracking-widest`), remetendo a guias de campo e equipamentos de alta precisão (ex: `CAP · 01 / BATISMO`, `ALT 1.120M`, `GPS 22°42'S`).
+2. **Paleta de Cores da Rocha:**
+   - Fundo de papel claro: Sand (`#FAFAF7`, `bg-sand-50`).
+   - Escuro profundo de granito: Forest Ink (`#0F1116`, `#1B2421`, `bg-forest-900`).
+   - Realces de Aventura: Terracotta / Magma (`#E0533C`, `#FF4D2B`) e Dourado Solar (`#FFD700`, `text-sun-500`).
+3. **Micro-interações:**
+   - Elevação suave nos cards ao pairar (`hover:-translate-y-1.5 hover:shadow-hover transition-all duration-300 ease-out`).
+   - Ícones com traço técnico fino (`strokeWidth={1.5}`).
 
 ---
 
-## Estado da Aplicação
+## 5. Fluxo de Autenticação Prévia & Reserva Segura
 
-### **Zustand Store (src/store/)**
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Cliente as Usuário
+    participant PkgSec as PackagesSection
+    participant Cart as useCartStore
+    participant Modal as CartModal
+    participant Privy as Privy Auth
+    participant Form as CheckoutForm
 
-#### **CartStore (useCartStore)**
+    Cliente->>PkgSec: Clica em "Adicionar ao Carrinho"
+    PkgSec->>Cart: addItem({ packageId, name, price: 277 })
 
-```typescript
-interface CartStore {
-  items: CartItem[];
-  isOpen: boolean;
+    alt Usuário NÃO logado
+        PkgSec->>Cart: openCheckout() [isCheckoutOpen: true]
+        PkgSec->>Privy: login()
+        Cart-->>Modal: isAuthRequired = true
+        Modal-->>Cliente: Exibe AuthPromptScreen ("Área Segura · Etapa Prévia")
+        Cliente->>Privy: Efetua login sem senhas (OTP / Google)
+        Privy-->>Cart: isLoggedIn = true
+        Cart-->>Modal: isViewingCheckout = true (Transição Automática!)
+    else Usuário JÁ logado
+        PkgSec->>Cart: openCheckout()
+        Cart-->>Modal: isViewingCheckout = true
+    end
 
-  // Actions
-  addItem: (item: Omit<CartItem, 'id' | 'addedAt'>) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
-  clearCart: () => void;
-  toggleCart: () => void;
-  openCart: () => void;
-  closeCart: () => void;
-
-  // Computed
-  getTotalPrice: () => number;
-  getTotalItems: () => number;
-  getItemCount: (packageId: string) => number;
-}
-```
-
-**Características:**
-
-- **Persistência**: Local Storage via Zustand persist
-- **Hydration Safe**: Controle de renderização SSR/Client
-- **Thread Safe**: Operações atômicas para atualizações
-
----
-
-## Fluxo de Dados
-
-### **1. Visualização de Pacotes**
-
-```
-API Route (/api/packages)
-  → Constants (PACKAGES)
-  → PackagesSection
-  → UI Rendering
-```
-
-### **2. Adicionar ao Carrinho**
-
-```
-PackagesSection (Add Button)
-  → useCartStore.addItem()
-  → CartButton (Update Badge)
-  → Local Storage Persistence
-```
-
-### **3. Checkout Flow**
-
-```
-CartModal
-  → CheckoutForm (Multi-step)
-  → CreateOrder Use Case
-  → PaymentService (Mercado Pago)
-  → WhatsAppService (Backup)
-  → Success/Failure Pages
-```
-
-### **4. Webhook Processing**
-
-```
-Mercado Pago Webhook
-  → /api/mercadopago/webhook
-  → PaymentService.processWebhook()
-  → Order Status Update
+    Modal->>Form: Monta CheckoutForm
+    Cliente->>Form: Passo 1: Dados dos Participantes (com WhatsApp)
+    Cliente->>Form: Passo 2: Confirmação de Data (28/11/2026)
+    Cliente->>Form: Passo 3: Envio para WhatsApp com mensagem estruturada
 ```
 
 ---
 
-## Integrações Externas
+## 6. Convenção Monetária & Cálculo de Preços
 
-### **1. Privy (Autenticação)**
+Para evitar discrepâncias numéricas e arredondamentos indesejados, o sistema opera sob a seguinte regra:
 
-- **Configuração**: `src/lib/privy.ts`
-- **Provider**: `src/components/providers/PrivyProvider.tsx`
-- **Uso**: Wallet connection e autenticação social
-
-### **2. Mercado Pago (Pagamentos)**
-
-- **Service**: `src/infrastructure/services/PaymentService.ts`
-- **Webhook**: `src/app/api/mercadopago/webhook/route.ts`
-- **Features**: Preferências, checkout, webhooks
-
-### **3. WhatsApp API**
-
-- **Service**: `src/infrastructure/services/WhatsAppService.ts`
-- **Uso**: Finalização de pedidos como backup
-- **Integration**: Deep links para WhatsApp Business
+1. **Camada Visual e Carrinho (Zustand):**
+   - O preço é armazenado e trafegado em **Reais brutos** (`number`, ex: `277`).
+   - A exibição utiliza [`formatPrice(price)`](src/lib/utils.ts) com `Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })`, formatando `277` como **`R$ 277,00`**.
+2. **Camada de Domínio e Casos de Uso ([`CreateOrder.ts`](src/core/use-cases/orders/CreateOrder.ts)):**
+   - Ao processar pedidos, o caso de uso multiplica o valor por 100 (`item.price * item.quantity * 100`), convertendo Reais para **centavos inteiros** (`27700`).
+   - Garante compatibilidade com gateways e persistência financeira sem imprecisões de ponto flutuante.
 
 ---
 
-## Configuração e Constantes
+## 7. Garantia de Qualidade e Testes Automatizados
 
-### **Constants (src/lib/constants.ts)**
-
-- **PACKAGES**: Definição dinâmica de pacotes
-- **AVAILABLE_DATES**: Datas disponíveis para escalada
-- **CONTACT_INFO**: Informações de contato
-- **NAVIGATION_ITEMS**: Itens do menu
-
-### **Utils (src/lib/utils.ts)**
-
-- **formatPrice**: Formatação de preços em Real
-- **openWhatsApp**: Geração de links WhatsApp
-- **Tailwind utilities**: className merging
-
----
-
-## Padrões Arquiteturais
-
-### **1. Clean Architecture**
-
-- **Separation of Concerns**: Camadas bem definidas
-- **Dependency Inversion**: Interfaces abstraem implementações
-- **Independent of Frameworks**: Domain independente de Next.js
-
-### **2. Domain-Driven Design**
-
-- **Entities**: Modelagem rica do domínio
-- **Use Cases**: Orquestração de regras de negócio
-- **Repositories**: Abstração de persistência
-
-### **3. Component Composition**
-
-- **Compound Components**: Componentes que trabalham juntos
-- **Render Props**: Flexibilidade de renderização
-- **Custom Hooks**: Lógica reutilizável
-
-### **4. State Management**
-
-- **Local State**: useState para componentes
-- **Global State**: Zustand para carrinho
-- **Server State**: Next.js App Router para dados
-
----
-
-## Performance e Otimizações
-
-### **1. Next.js Optimizations**
-
-- **App Router**: Server Components por padrão
-- **Image Optimization**: next/image para imagens
-- **Font Optimization**: next/font para fontes
-- **Bundle Splitting**: Automático por rota
-
-### **2. Client-Side Optimizations**
-
-- **Lazy Loading**: Componentes sob demanda
-- **Memoization**: React.memo para componentes pesados
-- **Zustand**: Estado mínimo e otimizado
-
-### **3. SEO Optimizations**
-
-- **Metadata API**: Metadados dinâmicos
-- **Sitemap**: Geração automática
-- **Open Graph**: Imagens e metadados sociais
-
----
-
-## Arquitetura de Testes
-
-### **Estrutura Completa de Testes**
-
-```
-src/
-├── __tests__/
-│   ├── integration/           # Testes de integração
-│   │   ├── api-packages.test.ts
-│   │   └── payment-flow.test.ts
-│   ├── test-factories.ts      # Factories para dados de teste
-│   └── test-utils.tsx         # Utilities de teste
-├── components/
-│   ├── auth/__tests__/        # Testes de autenticação
-│   ├── cart/__tests__/        # Testes do carrinho
-│   └── sections/__tests__/    # Testes das seções
-├── core/use-cases/__tests__/  # Testes dos casos de uso
-├── hooks/__tests__/           # Testes dos hooks customizados
-├── lib/__tests__/             # Testes das utilities
-├── store/__tests__/           # Testes do estado global
-└── tests/bdd/                 # Testes BDD (Cucumber)
-    ├── features/              # Arquivos .feature
-    └── step-definitions/      # Implementações dos steps
-```
-
-### **Tipos de Teste Implementados**
-
-#### **1. Unit Tests (Jest + React Testing Library)**
-- **Componentes**: Renderização, interações, props
-- **Hooks**: Lógica de estado e efeitos
-- **Services**: Lógica de negócio isolada
-- **Use Cases**: Casos de uso do domínio
-- **Utilities**: Funções auxiliares
-
-#### **2. Integration Tests**
-- **API Routes**: Endpoints completos
-- **Payment Flow**: Fluxo completo de pagamento
-- **Authentication**: Integração com Privy
-- **Database**: Operações de persistência
-
-#### **3. BDD Tests (Cucumber)**
-- **User Journeys**: Jornadas completas do usuário
-- **Business Scenarios**: Cenários de negócio
-- **Cross-browser**: Compatibilidade entre navegadores
-- **E2E Workflows**: Fluxos ponta a ponta
-
-### **Cobertura de Testes**
-
-#### **Funcionalidades Testadas**
-- ✅ **Autenticação**: Login, logout, proteção de rotas
-- ✅ **Carrinho**: Adicionar, remover, calcular totais
-- ✅ **Checkout**: Processo multi-step completo
-- ✅ **Pagamentos**: Todos os 5 métodos implementados
-- ✅ **Cupons**: Validação e aplicação de descontos
-- ✅ **API**: Endpoints e webhooks
-- ✅ **Estado**: Gerenciamento com Zustand
-- ✅ **UI**: Componentes e interações
-
-#### **Métricas Atuais**
-- **Total de Testes**: 80+ testes
-- **Suites**: 5 suites principais
-- **Cobertura**: >90% nas funcionalidades críticas
-- **Tempo de Execução**: <30 segundos
-- **CI/CD**: Integração com pre-commit hooks
-
-### **Estratégias de Teste**
-
-- **Unit Tests**: Componentes isolados
-- **Integration Tests**: Fluxos completos
-- **Mocking**: Serviços externos e hooks
-- **Coverage**: Cobertura mínima de 80%
-
-### **Jest Configuration**
-
-- **next/jest**: Configuração automática Next.js
-- **jsdom**: Ambiente de teste para DOM
-- **setupFiles**: Mocks globais e utilities
-
----
-
-## Deployment e DevOps
-
-### **Vercel Configuration**
-
-- **Framework**: Next.js (detecção automática)
-- **Environment Variables**: Configuração via dashboard
-- **Build Command**: `npm run build`
-- **Install Command**: `npm install`
-
-### **Environment Variables**
+O repositório é protegido por verificações automáticas com hooks de pré-commit via **Husky**:
 
 ```bash
-# Authentication
-NEXT_PUBLIC_PRIVY_APP_ID=
-PRIVY_APP_SECRET=
+# 1. Checagem de Tipagem Estática
+npm run type-check   # tsc --noEmit (0 erros)
 
-# Payments
-MERCADOPAGO_ACCESS_TOKEN=
-NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY=
+# 2. Execução da Suíte Completa de Testes
+npm test             # 24/24 suítes aprovadas, 269/269 testes passando
 
-# App URLs
-NEXT_PUBLIC_APP_URL=
-NEXT_PUBLIC_SUCCESS_URL=
-NEXT_PUBLIC_FAILURE_URL=
+# 3. Build de Produção do Next.js
+npm run build        # Compilação estática de 19 rotas com sucesso
 ```
-
-### **Build Process**
-
-1. **Type Checking**: TypeScript compilation
-2. **Linting**: ESLint validation
-3. **Testing**: Jest test execution
-4. **Build**: Next.js production build
-5. **Deploy**: Vercel deployment
-
----
-
-## Considerações de Segurança
-
-### **1. Authentication**
-
-- **Privy**: Carteiras e autenticação social segura
-- **Session Management**: Tokens seguros
-- **Route Protection**: AuthGuard para rotas privadas
-
-### **2. Payment Security**
-
-- **Mercado Pago**: PCI compliance
-- **Webhook Validation**: Verificação de assinatura
-- **Environment Variables**: Chaves sensíveis protegidas
-
-### **3. Client-Side Security**
-
-- **Input Validation**: Validação de formulários
-- **XSS Prevention**: Sanitização de inputs
-- **CSRF Protection**: Tokens CSRF implícitos
-
----
-
-## Futuras Melhorias
-
-### **1. Features Planejadas**
-
-- **Sistema de Reviews**: Avaliações de experiências
-- **Calendário Dinâmico**: Datas flexíveis
-- **Notificações**: Push notifications
-- **Dashboard Admin**: Gestão de pedidos
-
-### **2. Optimizações Técnicas**
-
-- **Database Integration**: Persistência real
-- **Caching**: Redis para performance
-- **CDN**: Assets otimizados
-- **Monitoring**: Observabilidade completa
-
-### **3. Escalabilidade**
-
-- **Microservices**: Separação de domínios
-- **Event Sourcing**: Auditoria de eventos
-- **CQRS**: Separação Command/Query
-- **Container Deployment**: Docker + Kubernetes
-
----
-
-## Conclusão
-
-A arquitetura do XperienceClimb foi projetada para ser **modular**, **testável** e **escalável**. Utilizando princípios de Clean Architecture e DDD, o código é organizadamente estruturado em camadas bem definidas, facilitando manutenção e evolução.
-
-As tecnologias escolhidas (Next.js, TypeScript, Zustand) oferecem uma base sólida para desenvolvimento ágil, enquanto as integrações com Privy e Mercado Pago garantem funcionalidades robustas de autenticação e pagamento.
-
-O sistema de testes abrangente e a configuração de CI/CD com Vercel asseguram qualidade e deployments confiáveis, preparando a aplicação para crescimento e novas funcionalidades.

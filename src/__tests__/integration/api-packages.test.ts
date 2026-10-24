@@ -94,7 +94,7 @@ describe('Packages API Integration Tests', () => {
       expect(data.data[0]).not.toHaveProperty('bonus');
       // Should have defaults assigned by the route
       expect(data.data[0].shape).toBe('hexagon');
-      expect(data.data[0].color).toBe('climb-300');
+      expect(data.data[0].color).toBe('forest-500');
     });
 
     it('should handle invalid data gracefully', async () => {

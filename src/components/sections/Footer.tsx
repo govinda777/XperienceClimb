@@ -3,284 +3,158 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui';
-import { CONTACT_INFO, AVAILABLE_DATES } from '@/lib/constants';
-import { openWhatsApp } from '@/lib/utils';
+import { useTheme } from '@/themes/ThemeProvider';
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
+  const { currentTheme } = useTheme();
 
-  const handleWhatsAppClick = () => {
-    openWhatsApp(
-      CONTACT_INFO.phone,
-      `Olá! Gostaria de mais informações sobre os pacotes de escalada para o dia ${AVAILABLE_DATES.singleDate}`
-    );
-  };
-
-  const openInstagram = () => {
-    window.open(`https://instagram.com/${CONTACT_INFO.instagram.replace('@', '')}`, '_blank');
-  };
-
-  const sendEmail = () => {
-    const subject = 'Informações sobre Escalada - XperienceClimb';
-    const body = 'Olá! Gostaria de mais informações sobre os pacotes de escalada em Pedra Bela.';
-    const mailtoUrl = `mailto:${CONTACT_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoUrl;
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  // Consome footerSection de pedra-bela.ts com fallback
+  const footer = currentTheme?.footerSection || pedraBellaTheme.footerSection!;
 
   return (
-    <footer className="bg-climb-700 text-white">
-      {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <div className="mb-6">
-              <p className="mb-2 text-2xl font-bold">
-                XPERIENCE
-                <span className="text-orange-400"> CLIMB</span>
-              </p>
-              <p className="text-sm leading-relaxed text-climb-200">
-                Viva a experiência definitiva de escalada no coração da Mata Atlântica. Segurança,
-                aventura e natureza em perfeita harmonia.
-              </p>
-            </div>
-
-            {/* Logo */}
-            <div className="mb-6">
-              <Link
-                href="/"
-                aria-label="Xperience Climb Início"
-                className="inline-block relative h-20 w-20 rounded-lg bg-white/10 p-2 transition-transform hover:scale-105"
-              >
-                <Image
-                  src="/images/logo.png"
-                  alt="XperienceClimb Logo"
-                  fill
-                  className="object-contain"
-                />
-              </Link>
+    <footer
+      id="footer"
+      className="py-16 bg-sand-200/80 border-t border-sand-300 text-ink-600 font-mono text-xs"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Linha Superior do Footer: Logo, Links Rápidos e Atendimento */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-sand-300">
+          {/* COL 1: Marca & Descrição */}
+          <div className="md:col-span-1">
+            <Link href="#hero" className="inline-flex items-center gap-3 mb-4 group">
+              <Image
+                src={footer.brand.logo || '/assets/logo.svg'}
+                alt="Logo Xperience Climb"
+                width={48}
+                height={48}
+                className="w-12 h-12 shrink-0 drop-shadow-sm group-hover:scale-105 transition-transform duration-300 ease-out"
+              />
+              <div>
+                <div className="font-display font-black text-2xl tracking-wider text-ink-900 uppercase leading-none">
+                  {footer.brand.name}{' '}
+                  <span className="text-terracotta-500 font-serifIt italic font-light lowercase">
+                    {footer.brand.accent}
+                  </span>
+                </div>
+                <div className="text-[9px] uppercase tracking-widest text-forest-700 font-semibold mt-0.5">
+                  {footer.brand.tagline}
+                </div>
+              </div>
+            </Link>
+            <p className="text-xs text-ink-600 font-sans leading-relaxed mb-4">
+              {footer.brand.description}
+            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-100 text-forest-800 text-[10px] font-bold">
+              {footer.brand.seal}
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* COL 2: Navegação Rápida */}
           <div>
-            <p className="mb-6 text-lg font-semibold text-white">Navegação</p>
-            <ul className="space-y-3">
+            <h4 className="font-bold text-ink-900 uppercase tracking-wider text-xs mb-4">
+              Navegação
+            </h4>
+            <ul className="space-y-2.5">
+              {footer.navLinks.map((link, idx) => (
+                <li key={idx}>
+                  <a href={link.href} className="hover:text-terracotta-500 transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* COL 3: Experiência */}
+          <div>
+            <h4 className="font-bold text-ink-900 uppercase tracking-wider text-xs mb-4">
+              Experiência
+            </h4>
+            <ul className="space-y-2.5">
+              {footer.experienceLinks.map((link, idx) => (
+                <li key={idx}>
+                  <a href={link.href} className="hover:text-terracotta-500 transition-colors">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* COL 4: Contato Direto */}
+          <div>
+            <h4 className="font-bold text-ink-900 uppercase tracking-wider text-xs mb-4">
+              Contato Direto
+            </h4>
+            <ul className="space-y-2.5 text-xs">
               <li>
+                <span className="text-ink-400 block text-[10px]">WhatsApp:</span>
                 <a
-                  href="#hero"
-                  onClick={e => {
-                    e.preventDefault();
-                    scrollToSection('hero');
-                  }}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
+                  href={footer.contact.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-forest-700 hover:text-terracotta-500 transition-colors"
                 >
-                  Início
+                  {footer.contact.whatsappFormatted}
                 </a>
               </li>
               <li>
+                <span className="text-ink-400 block text-[10px]">Instagram:</span>
                 <a
-                  href="#sobre"
-                  onClick={e => {
-                    e.preventDefault();
-                    scrollToSection('sobre');
-                  }}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
+                  href={footer.contact.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-terracotta-500 transition-colors"
                 >
-                  Sobre
+                  {footer.contact.instagramHandle}
                 </a>
               </li>
               <li>
+                <span className="text-ink-400 block text-[10px]">E-mail:</span>
                 <a
-                  href="#iniciante"
-                  onClick={e => {
-                    e.preventDefault();
-                    scrollToSection('iniciante');
-                  }}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
+                  href={`mailto:${footer.contact.email}`}
+                  className="hover:text-terracotta-500 transition-colors"
                 >
-                  Para Iniciantes
+                  {footer.contact.email}
                 </a>
               </li>
-              <li>
+              <li className="pt-2">
                 <a
-                  href="#pacotes"
-                  onClick={e => {
-                    e.preventDefault();
-                    scrollToSection('pacotes');
-                  }}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
+                  href={footer.contact.ctaHref}
+                  className="inline-block px-4 py-2 rounded-xl bg-forest-700 hover:bg-forest-800 text-white font-bold transition-all shadow-sm"
                 >
-                  Pacotes e Preços
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#seguranca"
-                  onClick={e => {
-                    e.preventDefault();
-                    scrollToSection('seguranca');
-                  }}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
-                >
-                  Segurança
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#localizacao"
-                  onClick={e => {
-                    e.preventDefault();
-                    scrollToSection('localizacao');
-                  }}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
-                >
-                  Localização
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#faq"
-                  onClick={e => {
-                    e.preventDefault();
-                    scrollToSection('faq');
-                  }}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
-                >
-                  Dúvidas Frequentes (FAQ)
+                  {footer.contact.ctaText}
                 </a>
               </li>
             </ul>
           </div>
-
-          {/* Contact Info */}
-          <div>
-            <p className="mb-6 text-lg font-semibold text-white">Contato</p>
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <span className="text-lg text-orange-400">📍</span>
-                <div>
-                  <p className="text-sm leading-relaxed text-climb-200">
-                    {CONTACT_INFO.address}
-                    <br />
-                    Pedra Bela, São Paulo - CEP 12990-000
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <span className="text-lg text-orange-400">📞</span>
-                <a
-                  href={`tel:${CONTACT_INFO.phone}`}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
-                >
-                  {CONTACT_INFO.phone}
-                </a>
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <span className="text-lg text-orange-400">✉️</span>
-                <a
-                  href={`mailto:${CONTACT_INFO.email}`}
-                  className="text-sm text-climb-200 transition-colors hover:text-white"
-                >
-                  {CONTACT_INFO.email}
-                </a>
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <span className="text-lg text-orange-400">🚗</span>
-                <span className="text-sm text-climb-200">{CONTACT_INFO.distance}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Actions */}
-          <div>
-            <p className="mb-6 text-lg font-semibold text-white">Fale Conosco</p>
-            <div className="space-y-3">
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleWhatsAppClick}
-                className="w-full justify-start"
-              >
-                💬 WhatsApp
-              </Button>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={openInstagram}
-                className="w-full justify-start border-white/30 bg-transparent text-white hover:bg-white/10"
-              >
-                📸 Instagram
-              </Button>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={sendEmail}
-                className="w-full justify-start border-white/30 bg-transparent text-white hover:bg-white/10"
-              >
-                ✉️ E-mail
-              </Button>
-            </div>
-          </div>
         </div>
-      </div>
 
-      {/* Newsletter Section */}
-      <div className="border-t border-white/10">
-        <div className="container mx-auto px-4 py-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="mb-4 text-xl font-bold">Receba Dicas e Novidades</p>
-            <p className="mb-6 text-sm text-climb-200">
-              Cadastre-se para receber dicas de escalada, promoções exclusivas e novidades sobre as
-              próximas saídas em Pedra Bela.
-            </p>
-            <div
-              className="mx-auto flex max-w-md flex-col gap-3 sm:flex-row"
-              suppressHydrationWarning
+        {/* Linha Inferior do Footer: Direitos e Termos Legais */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-ink-500 text-[11px]">
+          <div>{footer.legal.copyright}</div>
+          <div className="flex items-center gap-4">
+            <Link
+              href={footer.legal.privacyHref}
+              className="hover:text-terracotta-500 underline transition-colors"
             >
-              <input
-                type="email"
-                placeholder="Seu melhor e-mail"
-                className="flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-white placeholder-white/60 focus:border-orange-400 focus:outline-none"
-                suppressHydrationWarning
-              />
-              <Button variant="secondary" size="md">
-                Cadastrar
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-white/10">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
-            <div className="text-sm text-climb-200">
-              © {currentYear} XperienceClimb. Todos os direitos reservados.
-            </div>
-
-            <div className="flex items-center space-x-6 text-xs text-climb-200">
-              <Link href="/politica-de-privacidade" className="transition-colors hover:text-white">
-                Política de Privacidade
-              </Link>
-              <Link href="/termos-de-uso" className="transition-colors hover:text-white">
-                Termos de Uso
-              </Link>
-            </div>
+              Política de Privacidade
+            </Link>
+            <span>·</span>
+            <Link
+              href={footer.legal.termsHref}
+              className="hover:text-terracotta-500 underline transition-colors"
+            >
+              Termos de Uso
+            </Link>
+            <span>·</span>
+            <a
+              href={footer.legal.backToTopHref}
+              className="hover:text-forest-700 transition-colors font-bold"
+            >
+              Voltar ao Topo ↑
+            </a>
           </div>
         </div>
       </div>

@@ -49,6 +49,42 @@ module.exports = {
         input: 'hsl(var(--input, 0 0% 89.8%))',
         ring: 'hsl(var(--ring, 207 77% 54%))',
 
+        // Cores oficiais do Design System (prototipo.html)
+        sand: {
+          50: '#FAF8F5',
+          100: '#F4F1EA',
+          200: '#E8E3D7',
+          300: '#D6CDBB',
+        },
+        forest: {
+          900: '#0E241B',
+          800: '#153628',
+          700: '#1B4332',
+          600: '#2D6A4F',
+          500: '#40916C',
+        },
+        terracotta: {
+          700: '#9E3E1F',
+          600: '#B84A28',
+          500: '#C85A32',
+          400: '#D9734E',
+          100: '#FBECE6',
+        },
+        sun: {
+          600: '#B8771B',
+          500: '#D48B28',
+          400: '#E09F3E',
+          300: '#F2BF68',
+          100: '#FDF3E3',
+        },
+        ink: {
+          900: '#1A202C',
+          800: '#2D3748',
+          600: '#4A5568',
+          400: '#A0AEC0',
+          200: '#E2E8F0',
+        },
+
         // Cores de Aventura & Boulder
         boulder: {
           blue: '#1E88E5',
@@ -59,40 +95,6 @@ module.exports = {
           magma: '#FF4D2B',
           gray: '#333333',
         },
-
-        // Cores originais do XperienceClimb preservadas
-        climb: {
-          50: '#f0f9fa',
-          100: '#d9f2f4',
-          200: '#b6e5ea',
-          300: '#86d1db',
-          400: '#4fb3c4',
-          500: '#21808d',
-          600: '#1d7480',
-          700: '#1a6873',
-          800: '#175861',
-          900: '#144a52',
-          950: '#0a2d33',
-        },
-        orange: {
-          50: '#fef6f0',
-          100: '#fdead9',
-          200: '#fad1b3',
-          300: '#f6b082',
-          400: '#f4a261',
-          500: '#e76f51',
-          600: '#d85b3f',
-          700: '#b5442f',
-          800: '#92392a',
-          900: '#773127',
-        },
-        neutral: {
-          50: '#fcfcf9',
-          100: '#fffffe',
-          900: '#13343b',
-          700: '#626c71',
-          600: '#5e5240',
-        },
       },
       fontFamily: {
         display: [
@@ -101,6 +103,7 @@ module.exports = {
           '"Archivo Black"',
           'sans-serif',
         ],
+        serifIt: ['var(--font-serif-it)', 'Fraunces', 'serif'],
         'serif-it': ['var(--font-serif-it)', 'Fraunces', 'serif'],
         mono: ['var(--font-mono)', '"JetBrains Mono"', 'ui-monospace', 'monospace'],
         sans: ['var(--font-sans)', 'FKGroteskNeue', 'Geist', 'Inter', 'system-ui', 'sans-serif'],

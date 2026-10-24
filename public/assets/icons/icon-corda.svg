@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100" fill="none">
+  <!-- Nó em oito duplo de escalada -->
+  <path d="M30 18 C18 30, 20 46, 34 52 C48 58, 66 64, 64 80 C62 94, 44 98, 32 90 C20 82, 24 68, 36 64 C50 58, 64 50, 62 34 C60 20, 44 14, 30 18 Z" stroke="#C85A32" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Ponta da corda que entra na cadeirinha -->
+  <path d="M32 90 L24 100" stroke="#C85A32" stroke-width="4.5" stroke-linecap="round" />
+  <!-- Filamentos de trançado dinâmico da corda em verde/dourado -->
+  <line x1="38" y1="24" x2="43" y2="28" stroke="#1B4332" stroke-width="2" stroke-linecap="round" />
+  <line x1="54" y1="32" x2="59" y2="36" stroke="#1B4332" stroke-width="2" stroke-linecap="round" />
+  <line x1="42" y1="60" x2="47" y2="64" stroke="#1B4332" stroke-width="2" stroke-linecap="round" />
+  <line x1="52" y1="80" x2="57" y2="84" stroke="#1B4332" stroke-width="2" stroke-linecap="round" />
+</svg>

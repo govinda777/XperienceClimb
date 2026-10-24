@@ -24,6 +24,7 @@ const bigShoulders = Big_Shoulders_Display({
   weight: ['700', '800', '900'],
   variable: '--font-display',
   display: 'swap',
+  adjustFontFallback: false,
 });
 
 const fraunces = Fraunces({
@@ -54,6 +55,11 @@ export const metadata: Metadata = {
   authors: [{ name: 'Xperience Climb', url: 'https://climb.xperiencehubs.com' }],
   creator: 'Xperience Climb',
   publisher: 'Xperience Climb',
+  icons: {
+    icon: '/assets/logo.svg',
+    shortcut: '/assets/logo.svg',
+    apple: '/assets/logo.svg',
+  },
   alternates: {
     canonical: 'https://climb.xperiencehubs.com',
   },
@@ -107,7 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <head>
-        <StructuredData />
+        <StructuredData mode="global" />
       </head>
       <body
         className={`${inter.className} ${bigShoulders.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${inter.variable} bg-white`}

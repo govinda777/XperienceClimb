@@ -1,357 +1,327 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { cn, openWhatsApp } from '@/lib/utils';
-import { NAVIGATION_ITEMS, CONTACT_INFO } from '@/lib/constants';
-import { LoginButton } from '@/components/auth';
+import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useTheme } from '@/themes/ThemeProvider';
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
+import { fazendaIpanemaTheme } from '@/themes/configs/fazenda-ipanema';
+import { Menu, X, MapPin, ChevronDown, Check } from 'lucide-react';
+
+const DESTINATION_METADATA: Record<
+  string,
+  {
+    label: string;
+    subtitle: string;
+    techTag: string;
+  }
+> = {
+  'pedra-bela': {
+    label: 'Pedra Bela',
+    subtitle: 'Pedra do Santuário · Mantiqueira',
+    techTag: 'ALT 1.120M · 119 KM DE SP',
+  },
+  'fazenda-ipanema': {
+    label: 'Fazenda Ipanema',
+    subtitle: 'Morro Araçoiaba · FLONA Iperó',
+    techTag: 'ALT 950M · 120 KM DE SP',
+  },
+};
 
 export function Navigation() {
-  const [activeSection, setActiveSection] = useState('hero');
-  const [isVisible, setIsVisible] = useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const { currentTheme, availableThemes, setTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [destinationsOpen, setDestinationsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = NAVIGATION_ITEMS.map(item => item.id);
-      const scrollPosition = window.scrollY + 100;
+  // Carrega configurações de marca do tema com fallback
+  const brand = currentTheme?.brand || pedraBellaTheme.brand!;
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const element = document.getElementById(sections[i]);
-        if (element && element.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i]);
-          break;
-        }
-      }
+  // Garante que Pedra Bela e Fazenda Ipanema estejam sempre presentes na lista de destinos
+  const destinations =
+    availableThemes && availableThemes.length >= 2
+      ? availableThemes
+      : [pedraBellaTheme, fazendaIpanemaTheme];
 
-      // Hide navigation when scrolling down, show when scrolling up
-      const currentScrollY = window.scrollY;
-      setIsVisible(currentScrollY < 100 || currentScrollY < lastScrollY);
-      lastScrollY = currentScrollY;
-    };
+  const activeDestinationMeta = DESTINATION_METADATA[currentTheme?.id] || {
+    label: currentTheme?.name || 'Pedra Bela',
+    subtitle: currentTheme?.location?.name || 'SP',
+    techTag: currentTheme?.location?.distance || 'SP',
+  };
 
-    let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (openDropdown && !(event.target as Element).closest('.dropdown-container')) {
-        setOpenDropdown(null);
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDestinationsOpen(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [openDropdown]);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setDestinationsOpen(false);
+      }
+    };
 
-  const handleNavClick = (targetId: string) => {
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
-      setOpenDropdown(null);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const handleSelectDestination = (themeId: string) => {
+    setTheme(themeId);
+    setDestinationsOpen(false);
+    setMobileMenuOpen(false);
+
+    if (pathname?.startsWith('/destinos/')) {
+      router.push(`/destinos/${themeId}`);
     }
   };
 
-  const getItemsByGroup = (groupKey: string) => {
-    return NAVIGATION_ITEMS.filter(item => item.group === groupKey);
-  };
-
-  const renderDropdownMenu = (groupKey: string, groupLabel: string) => {
-    const items = getItemsByGroup(groupKey);
-    const isOpen = openDropdown === groupKey;
-
-    return (
-      <div className="relative dropdown-container" key={groupKey}>
-        <button
-          onClick={() => setOpenDropdown(isOpen ? null : groupKey)}
-          className={cn(
-            'flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-200 font-medium',
-            'hover:bg-climb-500/10 hover:scale-105 active:scale-95',
-            isOpen ? 'bg-climb-500/10 text-climb-700' : 'text-climb-600 hover:text-climb-700'
-          )}
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-sand-50/95 backdrop-blur-md border-b border-sand-200 transition-all shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+        {/* Logo XPERIENCE climb oficial */}
+        <Link
+          href="#hero"
+          className="flex items-center gap-3 group"
+          aria-label="Xperience Climb - Início"
         >
-          <span className="text-sm">{groupLabel}</span>
-          <span
-            className={cn('text-xs transition-transform duration-200', isOpen ? 'rotate-180' : '')}
-          >
-            ▼
-          </span>
-        </button>
+          <Image
+            src={brand.icon.startsWith('/') ? brand.icon : '/assets/logo.svg'}
+            alt="Logo Xperience Climb"
+            width={48}
+            height={48}
+            className="w-12 h-12 shrink-0 drop-shadow-sm group-hover:scale-105 transition-transform duration-300 ease-out"
+          />
+          <div className="flex flex-col">
+            <span className="font-display font-black text-2xl tracking-wider text-ink-900 uppercase leading-none">
+              {brand.name}{' '}
+              <span className="text-terracotta-500 font-serifIt italic font-light lowercase text-xl">
+                {brand.accent}
+              </span>
+            </span>
+            <span className="font-mono text-[9px] uppercase tracking-widest text-forest-700 font-semibold">
+              {brand.tagline}
+            </span>
+          </div>
+        </Link>
 
-        {isOpen && (
-          <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-lg rounded-xl border border-white/30 shadow-xl py-2 min-w-[200px] z-50">
-            {items.map(item => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={e => {
-                  e.preventDefault();
-                  handleNavClick(item.id);
-                }}
-                className={cn(
-                  'flex items-center space-x-2 w-full px-4 py-2.5 text-left transition-all duration-200',
-                  'hover:bg-climb-500/10',
-                  activeSection === item.id
-                    ? 'bg-climb-500 text-white'
-                    : 'text-climb-600 hover:text-climb-700'
-                )}
+        {/* Menu de Navegação Desktop */}
+        <nav
+          aria-label="Navegação Principal"
+          className="hidden md:flex items-center gap-6 lg:gap-7 font-mono text-xs uppercase tracking-wider text-ink-700 font-medium"
+        >
+          {/* Seletor de Destinos no Menu Desktop */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              type="button"
+              onClick={() => setDestinationsOpen(prev => !prev)}
+              aria-expanded={destinationsOpen}
+              aria-haspopup="listbox"
+              aria-label={`Selecionar destino. Destino atual: ${activeDestinationMeta.label}`}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-sand-100/90 hover:bg-sand-200/80 border border-sand-300 text-ink-900 font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-out cursor-pointer"
+            >
+              <MapPin className="w-3.5 h-3.5 text-terracotta-500 shrink-0" strokeWidth={1.5} />
+              <span className="text-ink-500 font-medium">Destinos:</span>
+              <span className="text-forest-800">{activeDestinationMeta.label}</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 text-ink-500 transition-transform duration-300 ease-out ${
+                  destinationsOpen ? 'rotate-180 text-terracotta-500' : ''
+                }`}
+                strokeWidth={1.5}
+              />
+            </button>
+
+            {destinationsOpen && (
+              <div
+                role="listbox"
+                aria-label="Lista de destinos"
+                className="absolute left-0 mt-2.5 w-80 rounded-2xl bg-white/98 backdrop-blur-xl border border-sand-200 shadow-xl p-2 z-50 transition-all duration-300 ease-out"
               >
-                <span className="text-base">{item.icon}</span>
-                <span className="text-sm">{item.label}</span>
+                <div className="px-3 py-2 border-b border-sand-100 flex items-center justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-ink-400 font-bold">
+                    CAP · 00 / ESCOLHA O DESTINO
+                  </span>
+                  <span className="font-mono text-[9px] uppercase tracking-wider text-forest-700 font-bold">
+                    {destinations.length} PICOS SP
+                  </span>
+                </div>
+
+                <div className="mt-1 space-y-1">
+                  {destinations.map(dest => {
+                    const isSelected = dest.id === currentTheme?.id;
+                    const meta = DESTINATION_METADATA[dest.id] || {
+                      label: dest.name,
+                      subtitle: dest.location?.name || '',
+                      techTag: dest.location?.distance || '',
+                    };
+
+                    return (
+                      <button
+                        key={dest.id}
+                        type="button"
+                        role="option"
+                        aria-selected={isSelected}
+                        onClick={() => handleSelectDestination(dest.id)}
+                        className={`w-full text-left p-3 rounded-xl transition-all duration-300 ease-out flex items-start justify-between gap-3 cursor-pointer ${
+                          isSelected
+                            ? 'bg-forest-50/90 border border-forest-200/80 text-ink-900'
+                            : 'hover:bg-sand-100/80 border border-transparent text-ink-700 hover:-translate-y-0.5'
+                        }`}
+                      >
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-2">
+                            <span className="font-sans font-bold text-sm text-ink-900 normal-case">
+                              {meta.label}
+                            </span>
+                            {isSelected && (
+                              <span className="px-2 py-0.5 rounded-full bg-forest-700 text-white font-mono text-[9px] font-bold uppercase tracking-wider">
+                                Ativo
+                              </span>
+                            )}
+                          </div>
+                          <span className="font-sans text-xs text-ink-600 normal-case mt-0.5">
+                            {meta.subtitle}
+                          </span>
+                          <span className="font-mono text-[10px] text-terracotta-600 font-semibold uppercase tracking-widest mt-1">
+                            {meta.techTag}
+                          </span>
+                        </div>
+
+                        <div
+                          className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                            isSelected
+                              ? 'bg-forest-700 text-white'
+                              : 'bg-sand-100 text-transparent group-hover:text-ink-400'
+                          }`}
+                        >
+                          <Check className="w-3.5 h-3.5" strokeWidth={2} />
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {brand.navLinks.map(link => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="hover:text-terracotta-500 transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Botão Pill Verde Floresta: Agendar Ida & Toggle Mobile */}
+        <div className="flex items-center gap-3">
+          <a
+            href={brand.cta.href}
+            className="hidden sm:inline-flex items-center px-6 py-2.5 rounded-full bg-forest-700 hover:bg-forest-800 text-white font-mono text-xs font-bold uppercase tracking-wider shadow-sm hover:scale-105 active:scale-95 transition-all"
+          >
+            {brand.cta.label}
+          </a>
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-xl text-ink-700 hover:bg-sand-100 transition-colors"
+            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+          >
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6" strokeWidth={1.5} />
+            ) : (
+              <Menu className="w-6 h-6" strokeWidth={1.5} />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Menu Mobile Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-sand-50/98 border-b border-sand-200 px-6 py-6 transition-all shadow-lg">
+          <nav
+            aria-label="Navegação Mobile"
+            className="flex flex-col gap-4 font-mono text-xs uppercase tracking-wider text-ink-800 font-medium"
+          >
+            {/* Lista de Destinos no Mobile */}
+            <div className="pb-3 border-b border-sand-200">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-ink-400 font-bold mb-2.5 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-terracotta-500" strokeWidth={1.5} />
+                <span>Destinos de Escalada</span>
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                {destinations.map(dest => {
+                  const isSelected = dest.id === currentTheme?.id;
+                  const meta = DESTINATION_METADATA[dest.id] || {
+                    label: dest.name,
+                    subtitle: dest.location?.name || '',
+                    techTag: dest.location?.distance || '',
+                  };
+
+                  return (
+                    <button
+                      key={dest.id}
+                      type="button"
+                      onClick={() => handleSelectDestination(dest.id)}
+                      className={`w-full text-left p-3 rounded-2xl border transition-all duration-300 ease-out flex items-center justify-between ${
+                        isSelected
+                          ? 'bg-forest-50 border-forest-300 text-ink-900 shadow-xs'
+                          : 'bg-white border-sand-200 text-ink-700 hover:border-sand-300'
+                      }`}
+                    >
+                      <div>
+                        <div className="font-sans font-bold text-sm text-ink-900 normal-case flex items-center gap-2">
+                          <span>{meta.label}</span>
+                          {isSelected && (
+                            <span className="px-2 py-0.5 rounded-full bg-forest-700 text-white font-mono text-[9px] font-bold uppercase tracking-wider">
+                              Ativo
+                            </span>
+                          )}
+                        </div>
+                        <div className="font-sans text-[11px] text-ink-500 normal-case mt-0.5">
+                          {meta.subtitle}
+                        </div>
+                      </div>
+                      <Check
+                        className={`w-4 h-4 ${isSelected ? 'text-forest-700' : 'text-transparent'}`}
+                        strokeWidth={2}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {brand.navLinks.map(link => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 hover:text-terracotta-500 border-b border-sand-200/60 transition-colors"
+              >
+                {link.label}
               </a>
             ))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  return (
-    <>
-      {/* Desktop Navigation */}
-      <nav
-        className={cn(
-          'fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 hidden lg:block',
-          isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        )}
-      >
-        <div className="bg-white/95 backdrop-blur-lg rounded-2xl border border-white/30 shadow-xl px-6 py-3">
-          <div className="flex items-center space-x-1">
-            {/* Main Navigation Items (always visible) */}
-            <div className="flex items-center space-x-1">
-              {getItemsByGroup('main').map(item => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  onClick={e => {
-                    e.preventDefault();
-                    handleNavClick(item.id);
-                  }}
-                  className={cn(
-                    'flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-200 font-medium',
-                    'hover:bg-climb-500/10 hover:scale-105 active:scale-95',
-                    activeSection === item.id
-                      ? 'bg-climb-500 text-white shadow-lg scale-105'
-                      : 'text-climb-600 hover:text-climb-700'
-                  )}
-                >
-                  <span className="text-base">{item.icon}</span>
-                  <span className="text-sm">{item.label}</span>
-                </a>
-              ))}
-            </div>
-
-            {/* Separator */}
-            <div className="h-8 w-px bg-gradient-to-b from-transparent via-climb-300 to-transparent mx-3"></div>
-
-            {/* Grouped Navigation Items */}
-            <div className="flex items-center space-x-1">
-              {renderDropdownMenu('services', 'Serviços')}
-              {renderDropdownMenu('content', 'Conteúdo')}
-              {renderDropdownMenu('location', 'Local')}
-            </div>
-
-            {/* Separator */}
-            <div className="h-8 w-px bg-gradient-to-b from-transparent via-climb-300 to-transparent mx-3"></div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-2">
-              {/* WhatsApp Button */}
-              <button
-                onClick={() =>
-                  openWhatsApp(
-                    CONTACT_INFO.phone,
-                    'Olá! Gostaria de mais informações sobre a XperienceClimb 🏔️'
-                  )
-                }
-                className="flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-200 bg-green-500 hover:bg-green-600 text-white shadow-lg hover:scale-105 active:scale-95 font-medium"
-              >
-                <span className="text-base">💬</span>
-                <span className="text-sm">WhatsApp</span>
-              </button>
-
-              {/* Login Button */}
-              <LoginButton variant="outline" size="sm" />
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Navigation */}
-      <nav
-        className={cn(
-          'fixed top-4 left-4 right-4 z-50 transition-all duration-300 lg:hidden',
-          isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        )}
-      >
-        <div className="bg-white/95 backdrop-blur-lg rounded-2xl border border-white/30 shadow-xl px-4 py-3">
-          <div className="flex items-center justify-between">
-            {/* Logo/Brand */}
-            <div className="flex items-center space-x-2">
-              <span className="text-xl">🏔️</span>
-              <span className="font-bold text-climb-600">XperienceClimb</span>
-            </div>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Alternar menu de navegação"
-              className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-neutral-900 text-white hover:bg-neutral-800 transition-colors"
+            <a
+              href={brand.cta.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className="mt-2 text-center py-3 rounded-full bg-forest-700 text-white font-mono text-xs font-bold uppercase tracking-wider shadow-sm"
             >
-              <span className="text-sm font-medium">Menu</span>
-              <span
-                className={cn(
-                  'text-xs transition-transform duration-200',
-                  isMobileMenuOpen ? 'rotate-180' : ''
-                )}
-              >
-                ▼
-              </span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Items */}
-          {isMobileMenuOpen && (
-            <div className="mt-4 pt-4 border-t border-climb-200">
-              {/* Main sections */}
-              <div className="mb-4">
-                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">PRINCIPAL</h4>
-                <div className="grid grid-cols-3 gap-2">
-                  {getItemsByGroup('main').map(item => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={cn(
-                        'flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200',
-                        'hover:bg-climb-500/10 active:scale-95',
-                        activeSection === item.id
-                          ? 'bg-climb-500 text-white shadow-md'
-                          : 'text-climb-600 hover:text-climb-700'
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              {/* Services */}
-              <div className="mb-4">
-                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">SERVIÇOS</h4>
-                <div className="grid grid-cols-3 gap-2">
-                  {getItemsByGroup('services').map(item => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={cn(
-                        'flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200',
-                        'hover:bg-climb-500/10 active:scale-95',
-                        activeSection === item.id
-                          ? 'bg-climb-500 text-white shadow-md'
-                          : 'text-climb-600 hover:text-climb-700'
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              {/* Content and Location */}
-              <div className="mb-4">
-                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">CONTEÚDO & LOCAL</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {getItemsByGroup('content').map(item => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={cn(
-                        'flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200',
-                        'hover:bg-climb-500/10 active:scale-95',
-                        activeSection === item.id
-                          ? 'bg-climb-500 text-white shadow-md'
-                          : 'text-climb-600 hover:text-climb-700'
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </a>
-                  ))}
-                  {getItemsByGroup('location').map(item => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={cn(
-                        'flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200',
-                        'hover:bg-climb-500/10 active:scale-95',
-                        activeSection === item.id
-                          ? 'bg-climb-500 text-white shadow-md'
-                          : 'text-climb-600 hover:text-climb-700'
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mobile Action Buttons */}
-              <div className="flex flex-col space-y-2">
-                <button
-                  onClick={() => {
-                    openWhatsApp(
-                      CONTACT_INFO.phone,
-                      'Olá! Gostaria de mais informações sobre a XperienceClimb 🏔️'
-                    );
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="flex items-center justify-center space-x-2 w-full px-4 py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-medium transition-colors"
-                >
-                  <span>💬</span>
-                  <span>Falar no WhatsApp</span>
-                </button>
-
-                <div className="flex items-center space-x-2">
-                  <div className="flex-1">
-                    <LoginButton variant="outline" size="sm" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+              {brand.cta.label}
+            </a>
+          </nav>
         </div>
-      </nav>
-
-      {/* Mobile Menu Backdrop */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
       )}
-    </>
+    </header>
   );
 }

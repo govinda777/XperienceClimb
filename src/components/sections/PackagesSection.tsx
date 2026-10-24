@@ -1,342 +1,387 @@
 'use client';
 
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Button,
-} from '@/components/ui';
-import { formatPrice, openWhatsApp } from '@/lib/utils';
+import { useTheme } from '@/themes/ThemeProvider';
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
 import { useCartStore } from '@/store/useCartStore';
-import { CONTACT_INFO, AVAILABLE_DATES } from '@/lib/constants';
-import { WaitlistModal } from './WaitlistModal';
-import {
-  Calendar,
-  Mountain,
-  Compass,
-  Sparkles,
-  Check,
-  Clock,
-  MessageSquare,
-  Gift,
-} from 'lucide-react';
+import { Calendar, MessageCircle, Check, Sparkles, Clock } from 'lucide-react';
 
-// Interface for API package data (includes styling information)
-interface ApiPackage {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  description: string;
-  features: string[];
-  bonus: string[];
-  shape: 'hexagon' | 'triangle' | 'circle';
-  color: string;
-  duration: string;
-  maxParticipants: number;
-  popular: boolean;
-  disabled: boolean;
-}
-
-// Clean emoji prefixes from feature strings for clean outdoor typography
-const cleanItemText = (text: string) => {
-  return text.replace(/^[^\wÀ-ÿA-Za-z0-9]+/, '').trim();
-};
-
-// Topographic / Technical badge label
-const getTechnicalBadge = (pkg: ApiPackage) => {
-  if (pkg.shape === 'triangle' || pkg.id.includes('intermed') || pkg.id.includes('crux')) {
-    return 'CRUX · INTERMEDIÁRIO';
-  }
-  if (pkg.shape === 'circle' || pkg.id.includes('avan') || pkg.id.includes('alma')) {
-    return 'CUME · AVANÇADO';
-  }
-  return 'VIA · BATISMO';
-};
-
-// Minimalist technical icon replacing AI polygons
-const renderTechnicalIcon = (pkg: ApiPackage) => {
-  if (pkg.shape === 'triangle' || pkg.id.includes('intermed') || pkg.id.includes('crux')) {
-    return <Compass className="h-5 w-5 text-orange-600" strokeWidth={1.5} />;
-  }
-  if (pkg.shape === 'circle' || pkg.id.includes('avan') || pkg.id.includes('alma')) {
-    return <Sparkles className="h-5 w-5 text-amber-600" strokeWidth={1.5} />;
-  }
-  return <Mountain className="h-5 w-5 text-climb-600" strokeWidth={1.5} />;
-};
+import { useAuth } from '@/hooks/useAuth';
 
 export function PackagesSection() {
-  const { addItem, openCart } = useCartStore();
-  const [apiPackages, setApiPackages] = React.useState<ApiPackage[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [waitlistPackage, setWaitlistPackage] = React.useState<string | null>(null);
+  const { currentTheme } = useTheme();
+  const { addItem, openCheckout } = useCartStore();
+  const { isLoggedIn, login } = useAuth();
 
-  // Fetch API data with styling information
-  React.useEffect(() => {
-    console.log('🔍 useEffect executado - iniciando fetch dos pacotes');
+  // Consome packagesSection de pedra-bela.ts com fallback
+  const pkgSection = currentTheme?.packagesSection || pedraBellaTheme.packagesSection!;
 
-    const fetchApiData = async () => {
-      try {
-        console.log('📡 Iniciando fetch para /api/packages');
-        setLoading(true);
+  const handlePackageClick = (pkg: (typeof pkgSection.items)[0]) => {
+    if (pkg.disabled) return;
 
-        const response = await fetch('/api/packages');
-        console.log('📨 Response recebida:', response.status, response.statusText);
-
-        const result = await response.json();
-        console.log('📦 Dados recebidos:', result);
-
-        if (result.success) {
-          console.log('✅ Setando pacotes:', result.data.length, 'pacotes');
-          setApiPackages(result.data);
-        } else {
-          console.error('❌ API retornou success: false');
-        }
-      } catch (error) {
-        console.error('💥 Erro no fetch:', error);
-      } finally {
-        console.log('🏁 Finalizando loading');
-        setLoading(false);
-      }
-    };
-
-    fetchApiData();
-  }, []);
-
-  const handleAddToCart = (packageId: string) => {
-    console.log('Adding to cart:', packageId);
-    const apiPkg = apiPackages.find(p => p.id === packageId);
-    console.log('Found package:', apiPkg);
-
-    if (apiPkg && !apiPkg.disabled) {
+    if (pkg.price) {
       addItem({
-        packageId,
-        packageName: apiPkg.name,
-        price: apiPkg.price,
+        packageId: pkg.id,
+        packageName: `${pkg.prefix} ${pkg.name}`,
+        price: pkg.price, // Valor em Reais (ex: 277), formatPrice e CreateOrder cuidam do cálculo correto
         quantity: 1,
         participantName: 'Participante',
       });
-      console.log('Item added, opening cart...');
-      openCart();
+    }
+
+    if (!isLoggedIn) {
+      openCheckout();
+      login();
+    } else {
+      openCheckout();
     }
   };
 
   return (
-    <section id="pacotes" className="relative bg-stone-100/70 py-24 text-stone-900">
-      <div className="container mx-auto px-4">
-        {/* Section Header with Editorial Outdoor Style */}
-        <div className="mb-16 text-center">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-stone-300 bg-stone-200/60 px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-stone-700">
-            <span>EXPEDIÇÃO & VIVÊNCIA</span>
+    <section id="pacotes" className="py-24 relative bg-sand-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Cabeçalho */}
+        <div className="mb-8">
+          <div className="font-mono text-xs uppercase tracking-widest text-forest-700 font-bold mb-2">
+            {pkgSection.badge}
           </div>
-
-          <h2 className="mb-4 text-4xl font-extrabold tracking-tight text-stone-900 md:text-5xl">
-            Pacotes de Escalada
+          <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight text-ink-900">
+            {pkgSection.title}{' '}
+            <span className="font-serifIt italic font-light text-sun-500 normal-case">
+              {pkgSection.titleAccent}
+            </span>
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-stone-600">
-            Escolha o nível da sua vivência na rocha. Todos os pacotes incluem guia certificado,
-            equipamentos homologados e seguro aventura.
-          </p>
+        </div>
 
-          {/* Global Trip Date Banner */}
-          <div className="mt-8 flex justify-center">
-            <div className="inline-flex items-center gap-3 rounded-full border border-orange-200 bg-orange-50/90 px-6 py-2.5 shadow-sm transition-all duration-300 hover:scale-[1.01] hover:bg-orange-100/90">
-              <Calendar className="h-5 w-5 text-orange-600 animate-pulse-soft" strokeWidth={1.75} />
-              <span className="text-sm font-medium text-orange-900">
-                Próxima Saída Confirmada:{' '}
-                <strong className="font-bold underline decoration-orange-400 decoration-2 underline-offset-2">
-                  {AVAILABLE_DATES.singleDateDisplay}
+        {/* Banner com a Próxima Data Confirmada & Botão para Solicitar Outra Data via WhatsApp */}
+        {pkgSection.nextConfirmedDate && (
+          <div className="mb-12 flex flex-wrap items-center gap-4">
+            {/* Pílula com a Próxima Saída Confirmada */}
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#FFF7F2] border border-[#FCD9C6] text-ink-900 shadow-xs">
+              <Calendar className="w-5 h-5 text-terracotta-500 shrink-0" strokeWidth={1.5} />
+              <span className="text-sm sm:text-base font-medium text-ink-900">
+                {pkgSection.nextConfirmedDate.prefix}{' '}
+                <strong className="font-bold underline decoration-terracotta-500 underline-offset-4 decoration-2">
+                  {pkgSection.nextConfirmedDate.date}
                 </strong>
               </span>
             </div>
-          </div>
-        </div>
 
-        {/* Loading Skeleton */}
-        {loading ? (
-          <div className="text-center">
-            <div className="animate-pulse space-y-8">
-              <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="h-96 rounded-2xl bg-stone-200"></div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : apiPackages.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-stone-600">Erro ao carregar pacotes. Verifique a conexão.</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-3 text-sm font-semibold text-orange-600 underline hover:text-orange-700"
-            >
-              Tentar novamente
-            </button>
-          </div>
-        ) : (
-          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3 items-stretch">
-            {apiPackages.map(pkg => {
-              const isPopular = pkg.popular && !pkg.disabled;
-              const isDisabled = pkg.disabled;
-
-              return (
-                <Card
-                  key={pkg.id}
-                  interactive={!isDisabled}
-                  className={`relative flex flex-col rounded-3xl border bg-white p-7 transition-all duration-300 ${
-                    isPopular
-                      ? 'border-orange-500 shadow-xl shadow-orange-950/5 ring-1 ring-orange-500/30 md:-translate-y-2'
-                      : 'border-stone-200 shadow-sm hover:border-stone-300 hover:shadow-lg'
-                  } ${isDisabled ? 'opacity-65 grayscale-[30%] bg-stone-50/70' : ''}`}
-                >
-                  {/* Badge de Destaque Superior */}
-                  {isPopular && (
-                    <div className="absolute -top-3 left-6 rounded-full bg-orange-600 px-3.5 py-0.5 text-xs font-mono font-semibold uppercase tracking-wider text-white shadow-sm">
-                      Mais Popular
-                    </div>
-                  )}
-
-                  {/* Header com Insígnia Técnica Minimalista e Status */}
-                  <CardHeader className="p-0 pb-5">
-                    <div className="mb-4 flex items-center justify-between">
-                      {/* Insígnia Técnica Vetorial (Substitui os polígonos genéricos) */}
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-stone-200 bg-stone-100 text-stone-800 shadow-inner">
-                          {renderTechnicalIcon(pkg)}
-                        </div>
-                        <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-stone-500">
-                          {getTechnicalBadge(pkg)}
-                        </span>
-                      </div>
-
-                      {/* Badge de Indisponibilidade */}
-                      {isDisabled && (
-                        <span className="rounded-full border border-stone-300 bg-stone-200/80 px-2.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wider text-stone-600">
-                          Indisponível
-                        </span>
-                      )}
-                    </div>
-
-                    <CardTitle className="text-2xl font-bold tracking-tight text-stone-900">
-                      {pkg.name}
-                    </CardTitle>
-                    <CardDescription className="mt-1 text-sm text-stone-600">
-                      {pkg.description}
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent className="flex flex-1 flex-col p-0">
-                    {/* Bloco de Preço */}
-                    <div className="my-5 border-y border-stone-100 py-4">
-                      {pkg.originalPrice && (
-                        <span className="block text-xs font-mono text-stone-400 line-through">
-                          {formatPrice(pkg.originalPrice)}
-                        </span>
-                      )}
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="text-3xl font-black tracking-tight text-stone-900 font-mono">
-                          {formatPrice(pkg.price)}
-                        </span>
-                        <span className="text-xs font-mono uppercase tracking-wider text-stone-500">
-                          / pessoa
-                        </span>
-                      </div>
-                      <div className="mt-2 flex items-center gap-1.5 text-xs font-mono text-stone-500">
-                        <Clock className="h-3.5 w-3.5 text-stone-400" strokeWidth={1.5} />
-                        <span>{pkg.duration}</span>
-                      </div>
-                    </div>
-
-                    {/* Lista de Features com Ícones Técnicos Consistentes */}
-                    <ul className="mb-6 space-y-2.5 text-sm text-stone-700 flex-1">
-                      {pkg.features.map((feature, index) => (
-                        <li key={index} className="flex items-start gap-2.5">
-                          <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                            <Check className="h-3 w-3" strokeWidth={2} />
-                          </span>
-                          <span className="leading-snug">{cleanItemText(feature)}</span>
-                        </li>
-                      ))}
-
-                      {/* Bônus Exclusivos com Divisor Limpo */}
-                      {pkg.bonus && pkg.bonus.length > 0 && (
-                        <li className="mt-4 border-t border-stone-200/80 pt-3">
-                          <div className="mb-2 flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-wider text-orange-700">
-                            <Gift className="h-3.5 w-3.5 text-orange-600" strokeWidth={1.5} />
-                            <span>BÔNUS EXCLUSIVOS:</span>
-                          </div>
-                          <ul className="space-y-1.5 pl-5">
-                            {pkg.bonus.map((bonus, index) => (
-                              <li
-                                key={index}
-                                className="list-disc text-xs font-medium text-stone-700"
-                              >
-                                {cleanItemText(bonus)}
-                              </li>
-                            ))}
-                          </ul>
-                        </li>
-                      )}
-                    </ul>
-                  </CardContent>
-
-                  <CardFooter className="p-0 pt-2">
-                    <Button
-                      className={`w-full rounded-xl py-3 text-sm font-semibold transition-all ${
-                        isDisabled
-                          ? 'cursor-not-allowed bg-stone-200 text-stone-500 hover:bg-stone-200'
-                          : isPopular
-                            ? 'bg-orange-600 text-white shadow-md shadow-orange-600/20 hover:bg-orange-500'
-                            : 'bg-stone-900 text-white hover:bg-stone-800'
-                      }`}
-                      size="lg"
-                      onClick={() => {
-                        if (isDisabled) {
-                          setWaitlistPackage(pkg.name);
-                        } else {
-                          console.log('Button clicked for package:', pkg.id);
-                          handleAddToCart(pkg.id);
-                        }
-                      }}
-                    >
-                      {isDisabled ? 'Entrar na Lista de Espera' : 'Adicionar ao Carrinho'}
-                    </Button>
-                  </CardFooter>
-                </Card>
-              );
-            })}
+            {/* Botão que encaminha para o WhatsApp para solicitar outra data */}
+            {pkgSection.nextConfirmedDate.otherDateCta && (
+              <a
+                href={pkgSection.nextConfirmedDate.otherDateCta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-forest-700 hover:bg-forest-800 text-white font-mono text-xs font-bold uppercase tracking-wider shadow-xs hover:scale-105 active:scale-95 transition-all"
+              >
+                <MessageCircle className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                <span>{pkgSection.nextConfirmedDate.otherDateCta.label}</span>
+                <span className="text-sm leading-none">›</span>
+              </a>
+            )}
           </div>
         )}
 
-        {/* Suporte & Dúvidas (Fale Conosco) */}
-        <div className="mt-16 text-center">
-          <p className="mb-3 text-sm text-stone-600">Dúvidas sobre qual pacote escolher?</p>
-          <Button
-            variant="ghost"
-            size="md"
-            onClick={() =>
-              openWhatsApp(
-                CONTACT_INFO.phone,
-                'Olá! Gostaria de saber mais sobre os pacotes de escalada da XperienceClimb 🏔️'
-              )
-            }
-            className="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-5 py-2.5 text-sm font-semibold text-stone-800 shadow-sm transition-all hover:bg-stone-50 hover:border-stone-400"
-          >
-            <MessageSquare className="h-4 w-4 text-orange-600" strokeWidth={1.5} />
-            <span>Fale Conosco</span>
-          </Button>
-        </div>
-      </div>
+        {/* Os 3 Cards de Pacotes fiéis ao Design System */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch mb-12">
+          {pkgSection.items.map(pkg => {
+            const isPopular = pkg.statusBadge === 'MAIS PROCURADO';
+            const isDisabled = pkg.disabled;
 
-      <WaitlistModal
-        isOpen={!!waitlistPackage}
-        onClose={() => setWaitlistPackage(null)}
-        packageName={waitlistPackage || ''}
-      />
+            return (
+              <div
+                key={pkg.id}
+                className={`rounded-3xl overflow-hidden border border-sand-200 shadow-soft flex flex-col justify-between transition-all bg-white hover:shadow-hover hover:-translate-y-1`}
+              >
+                <div>
+                  {/* Topo Técnico do Card */}
+                  <div
+                    className={`p-6 relative text-white ${
+                      pkg.headerColor === 'forest'
+                        ? 'bg-forest-700'
+                        : pkg.headerColor === 'terracotta'
+                          ? 'bg-terracotta-500/90'
+                          : 'bg-forest-900/95'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="font-mono text-[11px] font-bold text-sand-200 uppercase tracking-widest">
+                        {pkg.badge}
+                      </span>
+                      {pkg.statusBadge && (
+                        <span
+                          className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider ${
+                            isPopular
+                              ? 'bg-emerald-400 text-forest-950 font-black'
+                              : 'bg-white/20 text-white'
+                          }`}
+                        >
+                          {pkg.statusBadge}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="font-mono text-xs text-sand-300">{pkg.prefix}</div>
+                    <h3 className="font-display text-3xl font-black uppercase tracking-tight text-white">
+                      {pkg.name}
+                    </h3>
+                  </div>
+
+                  {/* Corpo do Card */}
+                  <div className="p-6">
+                    {/* Duração & Nível */}
+                    <div className="flex items-center justify-between text-xs font-mono text-ink-600 pb-3 border-b border-sand-200 mb-4">
+                      <span className="flex items-center gap-1 font-semibold">
+                        <Clock className="w-3.5 h-3.5 text-forest-700" strokeWidth={1.5} />
+                        {pkg.duration}
+                      </span>
+                      <span className={`font-bold ${pkg.levelColor}`}>{pkg.level}</span>
+                    </div>
+
+                    {/* Descrição */}
+                    <p className="text-xs text-ink-600 leading-relaxed mb-5 min-h-[34px]">
+                      {pkg.description}
+                    </p>
+
+                    {/* Bloco de Preços "De / Por" */}
+                    <div className="mb-6 p-4 rounded-2xl bg-sand-50/80 border border-sand-200">
+                      <div className="flex items-baseline gap-2 mb-1">
+                        {pkg.originalPriceFormatted && (
+                          <span className="line-through font-mono text-xs text-ink-400">
+                            {pkg.originalPriceFormatted}
+                          </span>
+                        )}
+                        <span className="font-mono text-[10px] uppercase font-bold text-forest-700">
+                          {isDisabled ? 'Valor Referência:' : 'Por apenas:'}
+                        </span>
+                      </div>
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="font-display text-4xl font-black text-ink-900 tracking-tight">
+                          {pkg.priceFormatted}
+                        </span>
+                        <span className="font-mono text-xs text-ink-500">{pkg.priceUnit}</span>
+                      </div>
+                      {pkg.installment && (
+                        <span className="font-mono text-[10px] text-forest-700 block mt-1">
+                          {pkg.installment}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Lista de Benefícios Inclusos */}
+                    {pkg.features && pkg.features.length > 0 && (
+                      <div className="mb-6">
+                        <span className="font-mono text-[10px] uppercase font-bold text-ink-400 tracking-wider block mb-3">
+                          O que está incluso:
+                        </span>
+                        <ul className="space-y-2">
+                          {pkg.features.map((feature, idx) => (
+                            <li key={idx} className="flex items-start gap-2.5 text-xs text-ink-700">
+                              <Check
+                                className="w-4 h-4 text-forest-600 shrink-0 mt-0.5"
+                                strokeWidth={2.5}
+                              />
+                              <span className="leading-snug">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Bloco de Bônus Exclusivos */}
+                    {pkg.bonus && pkg.bonus.length > 0 && (
+                      <div className="mb-2 p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/80">
+                        <span className="font-mono text-[10px] font-bold tracking-wider text-amber-900 uppercase flex items-center gap-1.5 mb-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                          {pkg.bonusTitle || 'BÔNUS EXCLUSIVOS:'}
+                        </span>
+                        {pkg.bonus.map((b, i) => (
+                          <div
+                            key={i}
+                            className="text-xs font-semibold text-amber-950 flex items-center gap-2"
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                            <span>{b}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Botão de Ação */}
+                <div className="p-6 pt-2">
+                  {!isDisabled ? (
+                    <button
+                      type="button"
+                      onClick={() => handlePackageClick(pkg)}
+                      className="w-full py-4 rounded-2xl bg-terracotta-500 hover:bg-terracotta-600 text-white font-mono text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-sm hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+                    >
+                      <span>{pkg.ctaText}</span>
+                      <span>›</span>
+                    </button>
+                  ) : (
+                    <a
+                      href={pkg.ctaHref || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-4 rounded-2xl bg-sand-100 hover:bg-sand-200 border border-sand-300 text-ink-800 hover:text-ink-950 font-mono text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <MessageCircle className="w-4 h-4 text-forest-700" strokeWidth={1.5} />
+                      <span>{pkg.ctaText}</span>
+                      <span>›</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Banner Horizontal do Pacote Corporativo (Empresas) - Vem antes do Pacote Anual */}
+        {pkgSection.corporateCard && (
+          <div className="mb-8 rounded-3xl bg-forest-900 border border-forest-800 text-white p-8 sm:p-10 shadow-2xl relative overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+              <div className="lg:col-span-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-800 border border-forest-700 font-mono text-[10px] font-bold uppercase tracking-wider text-sun-300 mb-4">
+                  <span>{pkgSection.corporateCard.badge}</span>
+                </div>
+
+                <div className="flex flex-wrap items-baseline gap-4 mb-3">
+                  <h3 className="font-display text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
+                    {pkgSection.corporateCard.title}
+                  </h3>
+                  <span className="font-mono text-xs text-sun-400 font-bold">
+                    ⏱ {pkgSection.corporateCard.duration}
+                  </span>
+                </div>
+
+                <p className="text-sand-200 text-sm leading-relaxed mb-6 max-w-2xl">
+                  {pkgSection.corporateCard.description}
+                </p>
+
+                {/* Grade de Benefícios do Corporativo */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                  {pkgSection.corporateCard.features.map((feat, idx) => (
+                    <div key={idx} className="flex items-start gap-2.5 text-xs text-sand-100">
+                      <Check className="w-4 h-4 text-sun-400 shrink-0 mt-0.5" strokeWidth={2.5} />
+                      <span className="leading-snug">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bônus Corporativo */}
+                {pkgSection.corporateCard.bonus && (
+                  <div className="p-3.5 rounded-2xl bg-forest-800/80 border border-forest-700/60 max-w-xl">
+                    <span className="font-mono text-[10px] font-bold tracking-wider text-sun-300 uppercase flex items-center gap-1.5 mb-1">
+                      <Sparkles className="w-3.5 h-3.5 text-sun-400" strokeWidth={1.5} />
+                      {pkgSection.corporateCard.bonusTitle || 'BÔNUS EXCLUSIVOS:'}
+                    </span>
+                    {pkgSection.corporateCard.bonus.map((b, i) => (
+                      <span key={i} className="text-xs text-white font-medium block">
+                        🎁 {b}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* CTA do Corporativo */}
+              <div className="lg:col-span-4 flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-forest-800/60 border border-forest-700/50">
+                <span className="font-mono text-[11px] text-sand-300 uppercase tracking-widest font-bold mb-2">
+                  {pkgSection.corporateCard.rightTag || 'Grupos & Empresas'}
+                </span>
+                <span className="font-display text-2xl font-black text-sun-300 mb-4">
+                  {pkgSection.corporateCard.rightHighlight || 'SOB CONSULTA'}
+                </span>
+                <a
+                  href={pkgSection.corporateCard.ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={pkgSection.corporateCard.ctaText}
+                  className="w-full py-4 rounded-2xl bg-sun-500 hover:bg-sun-600 text-forest-950 font-mono text-xs font-black uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 ease-out"
+                >
+                  <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
+                  <span>{pkgSection.corporateCard.ctaText}</span>
+                  <span>›</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Banner Horizontal VIP do Programa Anual com todos os benefícios */}
+        {pkgSection.annualCard && (
+          <div className="rounded-3xl bg-forest-900 border border-forest-800 text-white p-8 sm:p-10 shadow-2xl relative overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+              <div className="lg:col-span-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-800 border border-forest-700 font-mono text-[10px] font-bold uppercase tracking-wider text-sun-300 mb-4">
+                  <span>{pkgSection.annualCard.badge}</span>
+                </div>
+
+                <div className="flex flex-wrap items-baseline gap-4 mb-3">
+                  <h3 className="font-display text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
+                    {pkgSection.annualCard.title}
+                  </h3>
+                  <span className="font-mono text-xs text-sun-400 font-bold">
+                    ⏱ {pkgSection.annualCard.duration}
+                  </span>
+                </div>
+
+                <p className="text-sand-200 text-sm leading-relaxed mb-6 max-w-2xl">
+                  {pkgSection.annualCard.description}
+                </p>
+
+                {/* Grade de Benefícios do Anual */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                  {pkgSection.annualCard.features.map((feat, idx) => (
+                    <div key={idx} className="flex items-start gap-2.5 text-xs text-sand-100">
+                      <Check className="w-4 h-4 text-sun-400 shrink-0 mt-0.5" strokeWidth={2.5} />
+                      <span className="leading-snug">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bônus Kit VIP */}
+                {pkgSection.annualCard.bonus && (
+                  <div className="p-3.5 rounded-2xl bg-forest-800/80 border border-forest-700/60 max-w-xl">
+                    <span className="font-mono text-[10px] font-bold tracking-wider text-sun-300 uppercase flex items-center gap-1.5 mb-1">
+                      <Sparkles className="w-3.5 h-3.5 text-sun-400" />
+                      {pkgSection.annualCard.bonusTitle || 'BÔNUS EXCLUSIVOS:'}
+                    </span>
+                    {pkgSection.annualCard.bonus.map((b, i) => (
+                      <span key={i} className="text-xs text-white font-medium block">
+                        🎁 {b}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* CTA do Anual */}
+              <div className="lg:col-span-4 flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-forest-800/60 border border-forest-700/50">
+                <span className="font-mono text-[11px] text-sand-300 uppercase tracking-widest font-bold mb-2">
+                  Passaporte Exclusivo
+                </span>
+                <span className="font-display text-2xl font-black text-sun-300 mb-4">
+                  12 VAGAS / ANO
+                </span>
+                <a
+                  href={pkgSection.annualCard.ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-4 rounded-2xl bg-sun-500 hover:bg-sun-600 text-forest-950 font-mono text-xs font-black uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all"
+                >
+                  <MessageCircle className="w-4 h-4" strokeWidth={2} />
+                  <span>{pkgSection.annualCard.ctaText}</span>
+                  <span>›</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

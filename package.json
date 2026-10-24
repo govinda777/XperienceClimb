@@ -10,12 +10,20 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:unit": "jest --passWithNoTests --silent --watchAll=false --testPathIgnorePatterns=integration",
     "test:pre-commit": "jest --passWithNoTests --silent --watchAll=false --testPathIgnorePatterns=integration",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "test:destinations:unit": "jest src/themes/__tests__/destinations-images.test.tsx --watchAll=false",
+    "test:destinations:e2e": "playwright test tests/e2e/destinations-images.spec.ts",
+    "test:destinations": "npm run test:destinations:unit && npm run test:destinations:e2e",
     "create-tour": "node scripts/create-tour.js",
     "create-theme": "node scripts/create-theme-with-external-images.js",
     "prepare": "husky",
     "type-check": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "pipeline:quick": "npm run type-check && npm run test:unit",
+    "pipeline": "npm run type-check && npm run lint && npm run test:unit && npm run build && npm run test:e2e"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -27,7 +35,6 @@
     ]
   },
   "dependencies": {
-    "@farcaster/mini-app-solana": "^1.1.3",
     "@privy-io/react-auth": "^3.27.0",
     "@radix-ui/react-slot": "^1.3.3",
     "class-variance-authority": "^0.7.1",

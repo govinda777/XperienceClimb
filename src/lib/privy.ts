@@ -4,7 +4,8 @@ export const privyConfig: PrivyClientConfig = {
   loginMethods: ['email'],
   appearance: {
     theme: 'light',
-    accentColor: '#21808D',
+    accentColor: '#2E473B',
+    logo: '/assets/logo.svg',
     showWalletLoginFirst: false,
   },
 };

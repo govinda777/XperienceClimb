@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Ramo botânico minimalista elegante em Verde Floresta -->
+  <path d="M20 100 Q50 70 80 20" stroke="#1B4332" stroke-width="3" stroke-linecap="round" />
+  
+  <!-- Folhas ao longo da haste -->
+  <path d="M80 20 C95 15, 105 30, 80 32 Z" fill="#2D6A4F" stroke="#0F172A" stroke-width="1.8" />
+  <path d="M68 35 C50 30, 45 48, 65 46 Z" fill="#1B4332" stroke="#0F172A" stroke-width="1.8" />
+  <path d="M60 52 C78 50, 85 68, 62 66 Z" fill="#2D6A4F" stroke="#0F172A" stroke-width="1.8" />
+  <path d="M50 68 C32 65, 30 82, 48 80 Z" fill="#1B4332" stroke="#0F172A" stroke-width="1.8" />
+  <path d="M40 82 C55 82, 60 98, 40 96 Z" fill="#2D6A4F" stroke="#0F172A" stroke-width="1.8" />
+</svg>

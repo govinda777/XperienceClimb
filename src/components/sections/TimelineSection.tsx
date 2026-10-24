@@ -2,86 +2,190 @@
 
 import React from 'react';
 import { useTheme } from '@/themes/ThemeProvider';
-import { Mountain, Utensils, Sun, Compass, Clock } from 'lucide-react';
-
-const getTimelineIcon = (activity: string, index: number) => {
-  const act = activity.toLowerCase();
-  if (act.includes('almoço') || act.includes('refeição')) {
-    return <Utensils className="h-5 w-5 text-amber-400" strokeWidth={1.5} />;
-  }
-  if (act.includes('pôr do sol') || act.includes('mirante') || act.includes('sol')) {
-    return <Sun className="h-5 w-5 text-orange-400" strokeWidth={1.5} />;
-  }
-  if (act.includes('escalada') || act.includes('rocha')) {
-    return <Mountain className="h-5 w-5 text-climb-300" strokeWidth={1.5} />;
-  }
-  if (act.includes('encontro') || act.includes('café') || index === 0) {
-    return <Compass className="h-5 w-5 text-emerald-400" strokeWidth={1.5} />;
-  }
-  return <Clock className="h-5 w-5 text-orange-300" strokeWidth={1.5} />;
-};
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
+import {
+  ClimbingRockDrawing,
+  DeliciousLunchDrawing,
+  SunsetCelebrationDrawing,
+  ClimbingNodeIcon,
+  LunchNodeIcon,
+  SunsetNodeIcon,
+} from '@/components/ui/TimelineDrawings';
 
 export function TimelineSection() {
   const { currentTheme } = useTheme();
-  const { timeline } = currentTheme;
+
+  // Consome timelineSection de pedra-bela.ts com fallback
+  const timeline = currentTheme?.timelineSection || pedraBellaTheme.timelineSection!;
+
+  const getIconColor = (color?: 'forest' | 'terracotta' | 'sun') => {
+    switch (color) {
+      case 'forest':
+        return 'bg-forest-700 text-white';
+      case 'terracotta':
+        return 'bg-terracotta-500 text-white';
+      case 'sun':
+        return 'bg-sun-500 text-ink-900';
+      default:
+        return 'bg-forest-700 text-white';
+    }
+  };
+
+  const getTextColor = (color?: 'forest' | 'terracotta' | 'sun') => {
+    switch (color) {
+      case 'forest':
+        return 'text-forest-700';
+      case 'terracotta':
+        return 'text-terracotta-500';
+      case 'sun':
+        return 'text-sun-600';
+      default:
+        return 'text-forest-700';
+    }
+  };
+
+  const getEventDetails = (activity: string, index: number) => {
+    const act = activity.toLowerCase();
+    if (act.includes('escalada')) {
+      return {
+        tag: 'CAP · 01 / VIVÊNCIA ROCHOSA',
+        altitude: 'ALT 1.120m',
+        description:
+          'Instrução técnica de segurança, equipagem individual com materiais homologados UIAA e progressão guiada nas vias de aderência e fendas do monólito.',
+        drawing: (
+          <ClimbingRockDrawing className="w-full h-auto drop-shadow-sm rounded-2xl group-hover:scale-102 transition-transform duration-500 ease-out" />
+        ),
+        nodeIcon: <ClimbingNodeIcon className="w-6 h-6 text-white" />,
+      };
+    }
+    if (act.includes('almoço') || act.includes('almoco')) {
+      return {
+        tag: 'CAP · 02 / RECARGA & CONVÍVIO',
+        altitude: 'ALT 980m',
+        description:
+          'Momento de celebração e pausa gastronômica em restaurante rústico da vila, com autêntica comida no fogão a lenha e opções vegetarianas.',
+        drawing: (
+          <DeliciousLunchDrawing className="w-full h-auto drop-shadow-sm rounded-2xl group-hover:scale-102 transition-transform duration-500 ease-out" />
+        ),
+        nodeIcon: <LunchNodeIcon className="w-6 h-6 text-white" />,
+      };
+    }
+    if (act.includes('sol')) {
+      return {
+        tag: 'CAP · 03 / CUME & CELEBRAÇÃO',
+        altitude: 'ALT 1.100m',
+        description:
+          'Contemplação panorâmica da cordilheira da Mantiqueira direto do platô rochoso, fechando o dia de superação com o espetáculo do pôr do sol dourado.',
+        drawing: (
+          <SunsetCelebrationDrawing className="w-full h-auto drop-shadow-sm rounded-2xl group-hover:scale-102 transition-transform duration-500 ease-out" />
+        ),
+        nodeIcon: <SunsetNodeIcon className="w-6 h-6 text-ink-900" />,
+      };
+    }
+    return {
+      tag: `ETAPA · 0${index + 1}`,
+      altitude: 'PEDRA BELA',
+      description: '',
+      drawing: null,
+      nodeIcon: null,
+    };
+  };
 
   return (
-    <section
-      id="timeline"
-      className="relative bg-[#09151A] py-24 text-white overflow-hidden grain-light"
-    >
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Editorial Section Header */}
-        <div className="text-center mb-16">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-climb-200">
-            <span>ITINERÁRIO DE CAMPO</span>
+    <section id="timeline" className="py-24 relative bg-sand-50 border-t border-sand-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Cabeçalho */}
+        <div className="mb-16 text-center max-w-3xl mx-auto">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-sand-300 bg-sand-200/60 px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-ink-700 font-bold">
+            <span>{timeline.badge}</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-            Como Será o Seu Dia
+          <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight text-ink-900 mb-4">
+            {timeline.title}{' '}
+            <span className="font-serifIt italic font-light text-forest-700 normal-case">
+              {timeline.titleAccent}
+            </span>
           </h2>
-          <p className="text-lg text-neutral-300 max-w-2xl mx-auto">
-            Uma jornada meticulosamente planejada do primeiro contato com a rocha até a celebração
-            do pôr do sol.
+          <p className="text-base sm:text-lg text-ink-600 leading-relaxed max-w-2xl mx-auto">
+            {timeline.subtitle}
           </p>
         </div>
 
-        {/* Vertical Expedition Timeline */}
-        <div className="relative max-w-4xl mx-auto">
-          {/* Vertical dashed line */}
-          <div className="absolute left-6 md:left-1/2 -translate-x-1/2 top-4 bottom-4 w-px border-l-2 border-dashed border-white/20"></div>
+        {/* Timeline Vertical Centralizada */}
+        <div className="relative max-w-5xl mx-auto">
+          {/* Linha Vertical Conectora Tracejada */}
+          <div className="absolute left-6 md:left-1/2 -translate-x-1/2 top-4 bottom-4 w-px border-l-2 border-dashed border-sand-300"></div>
 
-          <div className="space-y-10">
-            {timeline.map((event, index) => {
+          <div className="space-y-12 md:space-y-16">
+            {timeline.events.map((event, index) => {
               const isEven = index % 2 === 0;
+              const details = getEventDetails(event.activity, index);
 
               return (
                 <div
                   key={index}
                   className={`relative flex flex-col md:flex-row items-start md:items-center ${
-                    isEven ? 'md:flex-row-reverse' : ''
+                    !isEven ? 'md:flex-row-reverse' : ''
                   }`}
                 >
-                  {/* Central Node / Anchor Point */}
+                  {/* Ponto Central com Ícone Vetorial */}
                   <div className="absolute left-6 md:left-1/2 -translate-x-1/2 flex items-center justify-center z-10">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-[#0E1E24] shadow-xl backdrop-blur-md">
-                      {getTimelineIcon(event.activity, index)}
+                    <div
+                      className={`w-12 h-12 rounded-2xl ${getIconColor(
+                        event.color
+                      )} flex items-center justify-center shadow-md border-2 border-white transition-transform duration-300 hover:scale-110`}
+                      title={event.activity}
+                    >
+                      {details.nodeIcon || event.icon}
                     </div>
                   </div>
 
-                  {/* Content Card */}
-                  <div className="w-full md:w-1/2 pl-16 md:pl-0 md:px-10">
-                    <div className="group rounded-3xl border border-white/10 bg-white/[0.04] p-6 md:p-8 backdrop-blur-md transition-all duration-300 hover:border-white/25 hover:bg-white/[0.08] hover:-translate-y-1">
-                      <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-orange-400 font-semibold mb-2">
-                        <Clock className="h-3.5 w-3.5" strokeWidth={1.5} />
+                  {/* Card de Conteúdo Editorial com Desenho SVG */}
+                  <div
+                    className={`w-full md:w-1/2 pl-16 md:pl-0 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}
+                  >
+                    <div className="bg-white p-6 sm:p-7 rounded-3xl border border-sand-200 shadow-soft hover:shadow-hover hover:-translate-y-1 transition-all duration-300 ease-out group">
+                      {/* Desenho SVG Autoral com Moldura Suave */}
+                      {details.drawing && (
+                        <div className="mb-5 overflow-hidden rounded-2xl border border-sand-200/60 bg-sand-50/60 p-2 shadow-inner">
+                          {details.drawing}
+                        </div>
+                      )}
+
+                      {/* Header Técnico: Tag Mono e Altitude */}
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <span className="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider text-forest-700 bg-forest-50 px-2.5 py-1 rounded-md border border-forest-100">
+                          {details.tag}
+                        </span>
+                        <span className="font-mono text-[10px] sm:text-xs font-semibold text-ink-500">
+                          {details.altitude}
+                        </span>
+                      </div>
+
+                      {/* Horário com Badge */}
+                      <div
+                        className={`flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider ${getTextColor(
+                          event.color
+                        )} font-bold mb-2`}
+                      >
+                        <span>⏱</span>
                         <span>{event.time}</span>
                       </div>
-                      <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight">
+
+                      {/* Título da Atividade */}
+                      <h3 className="text-xl sm:text-2xl font-bold text-ink-900 tracking-tight mb-2">
                         {event.activity}
                       </h3>
+
+                      {/* Descrição Editorial */}
+                      {details.description && (
+                        <p className="text-xs sm:text-sm text-ink-600 leading-relaxed font-sans">
+                          {details.description}
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  {/* Spacer for desktop symmetry */}
+                  {/* Spacer Desktop para balancear layout */}
                   <div className="hidden md:block md:w-1/2"></div>
                 </div>
               );

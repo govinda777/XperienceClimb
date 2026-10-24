@@ -34,7 +34,7 @@ export default function CookieBanner() {
           serviços personalizados. Saiba mais em nossa{' '}
           <Link
             href="/politica-de-privacidade"
-            className="text-climb-600 underline hover:text-climb-700"
+            className="text-forest-700 underline hover:text-forest-800"
           >
             Política de Privacidade
           </Link>

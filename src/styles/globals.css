@@ -2,8 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import theme-specific styles */
-@import './themes.css';
+.theme-primary-bg {
+  background-color: var(--theme-primary) !important;
+}
+
+.theme-primary-text {
+  color: var(--theme-primary) !important;
+}
+
+.theme-accent-bg {
+  background-color: var(--theme-accent) !important;
+}
+
+.theme-accent-text {
+  color: var(--theme-accent) !important;
+}
+
+.theme-gradient-bg {
+  background: linear-gradient(
+    135deg,
+    var(--theme-gradient-from),
+    var(--theme-gradient-to)
+  ) !important;
+}
 
 /* Global variables & Tokens */
 :root {
@@ -30,22 +51,13 @@
   --input: 45 15% 88%;
   --ring: 187 62% 34%;
 
-  /* Adventure & Rustic Tokens */
-  --ink: #13343b; /* Verde profundo / Ardósia */
-  --paper: #fcfcf9; /* Papel artesanal quente */
-  --climb-verde: #21808d; /* Verde Petróleo */
-  --terracota: #f4a261; /* Terracota acolhedor */
-  --magma: #e76f51; /* Barro queimado */
-  --argila: #b5442f; /* Argila montanha */
-  --chalk: #f7f5ed; /* Giz de magnésio natural */
-
-  /* Climb brand variables */
-  --climb-green: #21808d;
-  --climb-orange: #f4a261;
-  --neutral-bg: #fcfcf9;
-  --neutral-surface: #fffffe;
-  --text-primary: #13343b;
-  --text-secondary: #626c71;
+  /* Design System Tokens */
+  --ink: #1a202c;
+  --paper: #faf8f5;
+  --terracota: #c85a32;
+  --magma: #b84a28;
+  --argila: #9e3e1f;
+  --chalk: #f4f1ea;
 }
 
 .dark {
@@ -85,8 +97,8 @@ body {
 }
 
 body {
-  color: var(--text-primary);
-  background: var(--neutral-bg);
+  color: #1a202c;
+  background: #faf8f5;
 }
 
 a {
@@ -94,9 +106,10 @@ a {
   text-decoration: none;
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling & Fixed header offset */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 /* Custom scrollbar */
@@ -105,16 +118,16 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--neutral-bg);
+  background: #faf8f5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--climb-green);
+  background: #1b4332;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #1d7480;
+  background: #153628;
 }
 
 /* Navigation enhancements */
@@ -124,18 +137,6 @@ html {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-.nav-item-active {
-  background: var(--climb-green);
-  color: white;
-  box-shadow: 0 4px 16px rgba(33, 128, 141, 0.3);
-  transform: scale(1.05);
-}
-
-.nav-item-hover {
-  background: rgba(33, 128, 141, 0.1);
-  transform: scale(1.02);
 }
 
 /* Mobile menu animations */
@@ -152,19 +153,6 @@ html {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Enhanced button styles */
-.btn-primary {
-  background: linear-gradient(135deg, var(--climb-green), #1d7480);
-  color: white;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(33, 128, 141, 0.3);
 }
 
 .btn-whatsapp {
@@ -241,4 +229,19 @@ html {
 .font-mono-tech {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   letter-spacing: 0.15em;
+}
+
+/* Textura de curvas de nível topográficas oficial */
+.topo-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' fill='none'%3E%3Cg stroke='%232D6A4F' stroke-width='1.3' opacity='0.18' stroke-linecap='round'%3E%3Cpath d='M-50,80 Q150,20 350,90 T750,50 T1050,110' /%3E%3Cpath d='M-50,140 Q180,70 380,160 T780,110 T1050,170' /%3E%3Cpath d='M-50,200 Q200,120 420,220 T820,170 T1050,230' /%3E%3Cpath d='M-50,270 Q240,190 460,290 T860,240 T1050,300' /%3E%3Cpath d='M-50,340 Q280,260 500,360 T900,310 T1050,370' /%3E%3Cpath d='M-50,410 Q320,330 540,430 T940,380 T1050,440' /%3E%3Cpath d='M-50,480 Q360,400 580,500 T980,450 T1050,510' /%3E%3Cpath d='M-50,550 Q400,470 620,570 T1020,520 T1050,580' /%3E%3Cpath d='M720,120 C760,90 840,90 880,130 C910,160 890,210 850,230 C800,250 730,220 710,180 C700,150 710,130 720,120 Z' /%3E%3Cpath d='M740,135 C765,115 820,115 850,140 C870,160 860,195 830,210 C795,225 745,200 735,175 C730,155 735,140 740,135 Z' /%3E%3Cpath d='M760,150 C775,135 805,135 825,150 C840,165 830,185 815,195 C795,205 765,190 755,175 C750,160 755,155 760,150 Z' /%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 800px 480px;
+}
+
+/* Sombras suaves e naturais do design system */
+.shadow-soft {
+  box-shadow: 0 10px 30px -5px rgba(27, 67, 50, 0.08);
+}
+.shadow-hover {
+  box-shadow: 0 20px 40px -8px rgba(27, 67, 50, 0.16);
 }

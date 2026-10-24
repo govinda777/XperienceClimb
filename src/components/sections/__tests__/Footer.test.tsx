@@ -1,80 +1,27 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Footer } from '../Footer';
-import { AVAILABLE_DATES } from '@/lib/constants';
-
-// Mock UI components
-jest.mock('@/components/ui', () => ({
-  Button: ({ children, onClick, disabled, variant, size }: any) => (
-    <button onClick={onClick} disabled={disabled} data-variant={variant} data-size={size}>
-      {children}
-    </button>
-  ),
-}));
-
-// Mock utils
-jest.mock('@/lib/utils', () => ({
-  openWhatsApp: jest.fn(),
-  cn: (...args: any[]) => args.filter(Boolean).join(' '),
-}));
-
-// Mock Image
-jest.mock('next/image', () => ({
-  __esModule: true,
-  // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-  default: (props: any) => <img {...props} />,
-}));
-
-// Mock constants
-jest.mock('@/lib/constants', () => ({
-  CONTACT_INFO: {
-    address: 'Test Address',
-    distance: 'Test Distance',
-    phone: '(11) 99999-9999',
-    email: 'test@example.com',
-    instagram: '@test',
-  },
-  AVAILABLE_DATES: {
-    singleDate: '01/01/2026',
-    singleDateISO: '2026-01-01',
-    singleDateDisplay: '1 de Janeiro de 2026',
-  },
-}));
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
 
 describe('Footer Component', () => {
-  it('should render contact information correctly', () => {
+  it('should render brand and contact information from theme', () => {
     render(<Footer />);
 
-    expect(screen.getByText('(11) 99999-9999')).toBeInTheDocument();
-    expect(screen.getByText('test@example.com')).toBeInTheDocument();
-    expect(screen.getByText(/Test Address/)).toBeInTheDocument();
+    const footer = pedraBellaTheme.footerSection!;
+
+    expect(screen.getByText(footer.brand.name)).toBeInTheDocument();
+    expect(screen.getByText(footer.contact.whatsappFormatted)).toBeInTheDocument();
+    expect(screen.getByText(footer.contact.email)).toBeInTheDocument();
+    expect(screen.getByText(footer.contact.instagramHandle)).toBeInTheDocument();
+    expect(screen.getByText(footer.legal.copyright)).toBeInTheDocument();
   });
 
-  it('should call openWhatsApp with the correct message when WhatsApp button is clicked', () => {
-    const { openWhatsApp } = require('@/lib/utils');
+  it('should render navigation links', () => {
     render(<Footer />);
 
-    const whatsappButton = screen.getByText('💬 WhatsApp');
-    fireEvent.click(whatsappButton);
-
-    const expectedMessage = `Olá! Gostaria de mais informações sobre os pacotes de escalada para o dia ${AVAILABLE_DATES.singleDate}`;
-
-    expect(openWhatsApp).toHaveBeenCalledWith('(11) 99999-9999', expectedMessage);
-  });
-
-  it('should render links to Privacy Policy and Terms of Use', () => {
-    render(<Footer />);
-
-    const privacyLink = screen.getByRole('link', { name: /Política de Privacidade/i });
-    expect(privacyLink).toHaveAttribute('href', '/politica-de-privacidade');
-
-    const termsLink = screen.getByRole('link', { name: /Termos de Uso/i });
-    expect(termsLink).toHaveAttribute('href', '/termos-de-uso');
-  });
-
-  it('should display Pedra Bela in address', () => {
-    render(<Footer />);
-
-    expect(screen.getByText(/Pedra Bela, São Paulo/i)).toBeInTheDocument();
+    const footer = pedraBellaTheme.footerSection!;
+    footer.navLinks.forEach(link => {
+      expect(screen.getByText(link.label)).toBeInTheDocument();
+    });
   });
 });
