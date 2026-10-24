@@ -12,14 +12,14 @@ import {
 import { CONTACT_INFO } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'Guia Definitivo de Escalada em Rocha para Iniciantes em SP | Xperience Climb',
+  title: 'Guia de Escalada para Iniciantes em SP',
   description:
     'Aprenda como começar na escalada em rocha natural em São Paulo. Tudo sobre batismo de escalada, equipamentos de segurança homologados UIAA, melhores locais e dicas essenciais.',
   alternates: {
     canonical: 'https://climb.xperiencehubs.com/guia-escalada-iniciantes-sp',
   },
   openGraph: {
-    title: 'Guia Definitivo de Escalada em Rocha para Iniciantes em SP | Xperience Climb',
+    title: 'Guia de Escalada para Iniciantes em SP | Xperience Climb',
     description:
       'Descubra como viver sua primeira experiência de escalada em rocha natural no interior de SP com instrutores credenciados e equipamentos UIAA.',
     url: 'https://climb.xperiencehubs.com/guia-escalada-iniciantes-sp',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Guia Definitivo de Escalada em Rocha para Iniciantes em SP | Xperience Climb',
+    title: 'Guia de Escalada para Iniciantes em SP | Xperience Climb',
     description:
       'Tudo sobre batismo de escalada em rocha em SP: equipamentos, segurança, locais como Pedra Bela e Fazenda Ipanema e dicas para a 1ª subida.',
     images: ['/images/themes/pedra-bela/pedra-santuario-1.jpg'],

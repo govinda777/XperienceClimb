@@ -808,7 +808,7 @@ export class PedraBellaTheme extends BaseTheme {
   // CAMPOS DE COMPATIBILIDADE RETROATIVA
   // =========================================================================
   location = this.createLocationInfo(
-    'Xperience Climb',
+    'Pedra Bela - SP',
     'Pedra do Santuário (Campo Escola)',
     'Pedra Bela',
     'São Paulo',

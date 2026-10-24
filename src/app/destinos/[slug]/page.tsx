@@ -24,7 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const theme = THEMES[slug];
   if (!theme) return {};
 
-  const destinationTitle = `Vivência de Escalada em ${theme.location.name || theme.name} | Xperience Climb`;
+  const destinationTitle = `Vivência de Escalada em ${theme.location.name || theme.name}`;
+  const fullDestinationTitle = `${destinationTitle} | Xperience Climb`;
 
   return {
     title: destinationTitle,
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `https://climb.xperiencehubs.com/destinos/${slug}`,
     },
     openGraph: {
-      title: destinationTitle,
+      title: fullDestinationTitle,
       description: theme.seo.description,
       url: `https://climb.xperiencehubs.com/destinos/${slug}`,
       images: [
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title: destinationTitle,
+      title: fullDestinationTitle,
       description: theme.seo.description,
       images: [theme.seo.ogImage || '/images/site-og.jpg'],
     },

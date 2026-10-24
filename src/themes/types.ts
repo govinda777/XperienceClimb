@@ -130,6 +130,10 @@ export interface TimelineEvent {
   activity: string;
   icon?: string;
   color?: 'forest' | 'terracotta' | 'sun';
+  tag?: string;
+  altitude?: string;
+  description?: string;
+  drawingType?: 'climbing' | 'lunch' | 'sunset';
 }
 
 export interface BeginnerInfo {
