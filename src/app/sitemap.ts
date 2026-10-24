@@ -6,25 +6,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: baseUrl,
-      lastModified: new Date('2026-10-11T00:00:00-03:00'),
+      lastModified: new Date('2026-10-24T00:00:00-03:00'),
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/destinos/pedra-bela`,
-      lastModified: new Date('2026-10-11T00:00:00-03:00'),
+      lastModified: new Date('2026-10-24T00:00:00-03:00'),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/destinos/fazenda-ipanema`,
-      lastModified: new Date('2026-10-11T00:00:00-03:00'),
+      lastModified: new Date('2026-10-24T00:00:00-03:00'),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/guia-escalada-iniciantes-sp`,
-      lastModified: new Date('2026-10-11T00:00:00-03:00'),
+      lastModified: new Date('2026-10-24T00:00:00-03:00'),
       changeFrequency: 'weekly',
       priority: 0.8,
     },

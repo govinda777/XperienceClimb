@@ -2,11 +2,11 @@
   "metadata": {
     "domain": "climb.xperiencehubs.com",
     "client_name": "Xperience Climb",
-    "period": "Ciclo de Setembro de 2026 (Auditoria Técnica & Ingestão GSC)",
-    "emission_date": "21 de Setembro de 2026",
+    "period": "Ciclo de Outubro de 2026 (Auditoria Técnica Free-SEO & Grafo Automatizado)",
+    "emission_date": "24 de Outubro de 2026",
     "platform_name": "OpenSEO",
     "report_title": "Relatório Executivo de Performance SEO e Inteligência de Mercado",
-    "executive_summary": "No ciclo de setembro de 2026, a Xperience Climb consolidou sua presença nos motores de busca com a ativação e indexação da propriedade oficial no Google Search Console e a obtenção de nota máxima (100/100) na auditoria técnica do OpenSEO. As primeiras consultas reais já começaram a registrar impressões com posicionamento privilegiado (#1.0 para 'rock climbing' e #2.3 para 'pedra bela escalada'). O diagnóstico avançado do Farol (Lighthouse) eliminou o timeout de execução através do isolamento de iframes de autenticação para bots e posterização sob demanda do vídeo do Hero, alcançando networkidle em 1,7s a 2,9s. O plano tático prioriza agora a captura de tráfego de topo e meio de funil para vivências de escalada no interior de SP."
+    "executive_summary": "No ciclo de outubro de 2026, a Xperience Climb elevou sua saúde técnica de SEO para 99/100 com a implementação das rotas multi-destinos SSR (/destinos/pedra-bela e /destinos/fazenda-ipanema), publicação do Guia Definitivo de Escalada para Iniciantes em SP (/guia-escalada-iniciantes-sp), geração das imagens OpenGraph 1200x630px otimizadas e modularização do grafo Schema.org JSON-LD sem colisões de FAQPage. Além disso, foi implantada uma suíte automatizada de engenharia de SEO em Jest e Playwright (validando similaridade Jaccard, paridade SSR Wave 1, unicidade de N-gramas e prevenção de páginas órfãs)."
   },
   "kpis": {
     "total_clicks": {
@@ -392,30 +392,30 @@
     {
       "priority": "P1 - Imediata",
       "category": "Arquitetura",
-      "task": "Implementar rotas estáticas multi-destinos (/destinos/[slug]) da ADR 0003 e sincronizar sitemap.xml",
+      "task": "Implementar rotas estáticas multi-destinos (/destinos/[slug]) com SSR real e sincronizar sitemap.xml",
       "expected_impact": "+15% de expansão em impressões orgânicas de cauda longa regional",
-      "status": "Em Andamento"
+      "status": "Concluído"
     },
     {
       "priority": "P1 - Imediata",
       "category": "Conversão",
-      "task": "Publicar 'Guia Definitivo de Escalada em Rocha para Iniciantes em SP' para 4.400 buscas/mês",
+      "task": "Publicar 'Guia de Escalada em Rocha para Iniciantes em SP' (/guia-escalada-iniciantes-sp) com Schema Article + FAQPage",
       "expected_impact": "Consolidar autoridade temática e capturar tráfego de topo de funil",
-      "status": "Planejado"
+      "status": "Concluído"
     },
     {
       "priority": "P2 - Média",
+      "category": "Qualidade",
+      "task": "Implantar suíte automatizada de testes de SEO (Jest + Playwright) para validar grafo, Jaccard e JSON-LD",
+      "expected_impact": "Zero regressões de metadados, imagens 404 ou páginas órfãs em produção",
+      "status": "Concluído"
+    },
+    {
+      "priority": "P3 - Melhoria",
       "category": "Autoridade",
       "task": "Realizar assessoria digital e link building com portais de ecoturismo e esportes de aventura de SP",
       "expected_impact": "Elevar o Domain Authority (DA) de 38 para 44+",
       "status": "Planejado"
-    },
-    {
-      "priority": "P3 - Melhoria",
-      "category": "Técnica",
-      "task": "Converter ativos visuais de alta resolução em carregadores responsivos WebP nativos no Next.js",
-      "expected_impact": "Aceleração do Core Web Vitals (LCP < 1,8s na Home)",
-      "status": "Agendado"
     }
   ],
   "api_cost_summary": {

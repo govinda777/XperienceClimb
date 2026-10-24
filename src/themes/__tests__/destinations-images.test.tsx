@@ -1,10 +1,22 @@
 import fs from 'fs';
 import path from 'path';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
 import { generateStaticParams } from '@/app/destinos/[slug]/page';
 import { pedraBellaTheme, fazendaIpanemaTheme } from '@/themes/configs';
 import { THEME_IDS, isValidThemeId } from '@/lib/theme-utils';
 import { COMMUNITY_DATA } from '@/lib/community-data';
 import { TourRepository } from '@/infrastructure/repositories/TourRepository';
+import { Navigation } from '@/components/layout/Navigation';
+import {
+  HeroSection,
+  AboutSection,
+  BeginnerSection,
+  SafetySection,
+  GallerySection,
+  CommunitySection,
+  Footer,
+} from '@/components/sections';
 import type { ThemeConfig } from '@/themes/types';
 
 const THEMES_BY_SLUG: Record<string, ThemeConfig> = {
@@ -12,17 +24,56 @@ const THEMES_BY_SLUG: Record<string, ThemeConfig> = {
   'fazenda-ipanema': fazendaIpanemaTheme,
 };
 
+let activeTestTheme: ThemeConfig = pedraBellaTheme;
+
+jest.mock('next/navigation', () => ({
+  usePathname: () => `/destinos/${activeTestTheme.id}`,
+  useRouter: () => ({ push: jest.fn(), replace: jest.fn(), prefetch: jest.fn() }),
+  useSearchParams: () => new URLSearchParams(),
+}));
+
+jest.mock('@/themes/ThemeProvider', () => ({
+  useTheme: () => ({
+    currentTheme: activeTestTheme,
+    availableThemes: [pedraBellaTheme, fazendaIpanemaTheme],
+    setTheme: jest.fn(),
+    isLoading: false,
+    refreshThemes: jest.fn(),
+  }),
+  ThemeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 /**
- * Valida se o arquivo físico existe em `public/`, não está vazio
- * e possui assinatura binária (magic bytes / estrutura SVG) válida
- * compatível com sua extensão para evitar imagens corrompidas ou quebradas.
+ * Extrai o caminho local (em `public/`) a partir de um atributo `src` de `<img>`
+ * (suporta tanto caminhos diretos `/images/...` quanto URLs otimizadas `/_next/image?url=...`).
+ */
+function resolveLocalPublicPathFromImgSrc(src: string): string {
+  if (src.startsWith('/_next/image')) {
+    const urlObj = new URL(src, 'http://localhost');
+    const encodedUrl = urlObj.searchParams.get('url');
+    return encodedUrl ? decodeURIComponent(encodedUrl) : src;
+  }
+  return src;
+}
+
+const validatedFilesCache = new Set<string>();
+
+/**
+ * Valida rapidamente (lendo apenas os primeiros 16 bytes para binários) se o arquivo físico
+ * existe em `public/`, não está vazio e possui assinatura binária (magic bytes / estrutura SVG)
+ * válida compatível com sua extensão para evitar imagens corrompidas ou quebradas.
  */
 function assertValidPublicMediaFile(mediaUrl: string, publicDir: string) {
   expect(typeof mediaUrl).toBe('string');
-  expect(mediaUrl.startsWith('/')).toBe(true);
+  const normalizedUrl = resolveLocalPublicPathFromImgSrc(mediaUrl);
+  expect(normalizedUrl.startsWith('/')).toBe(true);
 
-  const cleanRelativePath = mediaUrl.split('?')[0].replace(/^\/+/, '');
+  const cleanRelativePath = normalizedUrl.split('?')[0].replace(/^\/+/, '');
   const fullPath = path.join(publicDir, cleanRelativePath);
+
+  if (validatedFilesCache.has(fullPath)) {
+    return;
+  }
 
   expect(fs.existsSync(fullPath)).toBe(true);
 
@@ -31,32 +82,44 @@ function assertValidPublicMediaFile(mediaUrl: string, publicDir: string) {
   expect(stats.size).toBeGreaterThan(0);
 
   const ext = path.extname(fullPath).toLowerCase();
-  const buffer = fs.readFileSync(fullPath);
 
-  if (ext === '.jpg' || ext === '.jpeg') {
-    // JPEG magic bytes: FF D8 FF
-    expect(buffer.length).toBeGreaterThan(100);
-    expect(buffer[0]).toBe(0xff);
-    expect(buffer[1]).toBe(0xd8);
-    expect(buffer[2]).toBe(0xff);
-  } else if (ext === '.png') {
-    // PNG magic bytes: 89 50 4E 47 0D 0A 1A 0A
-    expect(buffer.length).toBeGreaterThan(100);
-    expect(buffer[0]).toBe(0x89);
-    expect(buffer[1]).toBe(0x50);
-    expect(buffer[2]).toBe(0x4e);
-    expect(buffer[3]).toBe(0x47);
+  if (ext === '.jpg' || ext === '.jpeg' || ext === '.png' || ext === '.mp4') {
+    const header = Buffer.alloc(16);
+    const fd = fs.openSync(fullPath, 'r');
+    try {
+      const bytesRead = fs.readSync(fd, header, 0, 16, 0);
+      expect(bytesRead).toBeGreaterThanOrEqual(8);
+    } finally {
+      fs.closeSync(fd);
+    }
+
+    if (ext === '.jpg' || ext === '.jpeg') {
+      // JPEG magic bytes: FF D8 FF
+      expect(stats.size).toBeGreaterThan(100);
+      expect(header[0]).toBe(0xff);
+      expect(header[1]).toBe(0xd8);
+      expect(header[2]).toBe(0xff);
+    } else if (ext === '.png') {
+      // PNG magic bytes: 89 50 4E 47
+      expect(stats.size).toBeGreaterThan(100);
+      expect(header[0]).toBe(0x89);
+      expect(header[1]).toBe(0x50);
+      expect(header[2]).toBe(0x4e);
+      expect(header[3]).toBe(0x47);
+    } else if (ext === '.mp4') {
+      // MP4 box signature 'ftyp' nos bytes 4..8
+      expect(stats.size).toBeGreaterThan(1000);
+      expect(header.subarray(4, 8).toString('ascii')).toBe('ftyp');
+    }
   } else if (ext === '.svg') {
-    const content = buffer.toString('utf8');
+    const content = fs.readFileSync(fullPath, 'utf8');
     expect(content).toContain('<svg');
     expect(content).toContain('</svg>');
-  } else if (ext === '.mp4') {
-    // MP4 box signature 'ftyp'
-    expect(buffer.length).toBeGreaterThan(1000);
-    expect(buffer.subarray(4, 8).toString('ascii')).toBe('ftyp');
   } else {
     throw new Error(`Extensão de mídia não suportada ou inesperada: ${ext} em ${mediaUrl}`);
   }
+
+  validatedFilesCache.add(fullPath);
 }
 
 /**
@@ -144,6 +207,10 @@ describe('Validação Automatizada de Todos os Destinos e Integridade de Imagens
   describe.each(destinationSlugs)('Destino: /destinos/%s', slug => {
     const theme = THEMES_BY_SLUG[slug];
 
+    beforeEach(() => {
+      activeTestTheme = theme;
+    });
+
     it('possui configuração completa de seções obrigatórias e textos de acessibilidade (alt)', () => {
       expect(theme).toBeDefined();
       expect(theme.id).toBe(slug);
@@ -179,6 +246,40 @@ describe('Validação Automatizada de Todos os Destinos e Integridade de Imagens
       for (const mediaPath of mediaPaths) {
         assertValidPublicMediaFile(mediaPath, publicDir);
       }
+    });
+
+    it('renderiza todas as seções visuais do destino no DOM sem nenhuma tag <img> quebrada ou sem src válido', () => {
+      const { container, getByRole } = render(
+        <div>
+          <Navigation />
+          <HeroSection />
+          <AboutSection />
+          <BeginnerSection />
+          <GallerySection />
+          <SafetySection />
+          <CommunitySection />
+          <Footer />
+        </div>
+      );
+
+      const collectAndValidateDomImages = () => {
+        const imgElements = Array.from(container.querySelectorAll('img'));
+        expect(imgElements.length).toBeGreaterThan(10);
+
+        for (const imgEl of imgElements) {
+          const srcAttr = imgEl.getAttribute('src');
+          expect(srcAttr).toBeTruthy();
+          assertValidPublicMediaFile(srcAttr!, publicDir);
+        }
+      };
+
+      // 1. Valida todas as tags <img> na renderização inicial (aba Instrutores + Galeria Todas)
+      collectAndValidateDomImages();
+
+      // 2. Alterna para a aba "Locais" na seção Comunidade e valida as imagens renderizadas
+      const locaisBtn = getByRole('button', { name: /Locais/i });
+      fireEvent.click(locaisBtn);
+      collectAndValidateDomImages();
     });
   });
 
