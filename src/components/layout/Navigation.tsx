@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from '@/themes/ThemeProvider';
@@ -91,7 +92,7 @@ export function Navigation() {
           className="flex items-center gap-3 group"
           aria-label="Xperience Climb - Início"
         >
-          <img
+          <Image
             src={brand.icon.startsWith('/') ? brand.icon : '/assets/logo.svg'}
             alt="Logo Xperience Climb"
             width={48}

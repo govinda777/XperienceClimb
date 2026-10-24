@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -123,7 +124,7 @@ export default function GuiaIniciantesPage() {
             href="/"
             className="flex items-center gap-3 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800 group"
           >
-            <img
+            <Image
               src="/assets/logo.svg"
               alt="Logo Xperience Climb"
               width={40}

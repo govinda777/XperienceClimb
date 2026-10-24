@@ -1,10 +1,11 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-sand-50 flex flex-col items-center justify-center px-4 text-center">
       <div className="max-w-md mx-auto">
-        <img
+        <Image
           src="/assets/logo.svg"
           alt="Logo Xperience Climb"
           width={64}

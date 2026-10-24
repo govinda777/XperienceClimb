@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from '@/themes/ThemeProvider';
 import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
@@ -22,7 +23,7 @@ export function Footer() {
           {/* COL 1: Marca & Descrição */}
           <div className="md:col-span-1">
             <Link href="#hero" className="inline-flex items-center gap-3 mb-4 group">
-              <img
+              <Image
                 src={footer.brand.logo || '/assets/logo.svg'}
                 alt="Logo Xperience Climb"
                 width={48}

@@ -63,15 +63,19 @@ export function HeroSection() {
           {/* COLUNA DA DIREITA: CARD FOTOGRÁFICO COM RAMOS BOTÂNICOS E METADADOS */}
           <div className="lg:col-span-6 relative flex justify-center">
             {/* Ramo Botânico saindo sutilmente da borda da foto */}
-            <img
+            <Image
               src={hero.photo.botanicalLeavesSvg}
               alt=""
+              width={96}
+              height={96}
               aria-hidden="true"
               className="absolute -top-10 -right-4 w-24 h-24 pointer-events-none select-none z-20"
             />
-            <img
+            <Image
               src={hero.photo.botanicalLeavesSvg}
               alt=""
+              width={112}
+              height={112}
               aria-hidden="true"
               className="absolute -bottom-8 -left-8 w-28 h-28 pointer-events-none select-none z-20 transform rotate-180"
             />

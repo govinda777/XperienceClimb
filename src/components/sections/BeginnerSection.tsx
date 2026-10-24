@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from '@/themes/ThemeProvider';
 import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
@@ -23,9 +24,11 @@ export function BeginnerSection() {
             <div className="bg-white p-7 rounded-3xl shadow-2xl border-4 border-white text-ink-900 max-w-sm w-full transform -rotate-2">
               {/* Ilustração SVG Oficial badge-iniciantes.svg */}
               <div className="flex justify-center mb-4 bg-sand-50 rounded-2xl p-2 border border-sand-200">
-                <img
+                <Image
                   src={beginner.polaroid.illustrationSvg}
                   alt={beginner.polaroid.alt}
+                  width={320}
+                  height={192}
                   className="w-full h-48 object-contain"
                 />
               </div>

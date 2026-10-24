@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useTheme } from '@/themes/ThemeProvider';
 import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
 
@@ -29,7 +30,14 @@ export function SafetySection() {
           {/* LADO ESQUERDO: ILUSTRAÇÕES DE CAMPING E EQUIPAMENTOS */}
           <div className="lg:col-span-6 flex flex-wrap items-center justify-center gap-6 p-8 bg-white rounded-3xl border border-sand-200 shadow-soft">
             {safety.equipmentIcons.map((icon, idx) => (
-              <img key={idx} src={icon.src} alt={icon.alt} className="w-20 h-24 object-contain" />
+              <Image
+                key={idx}
+                src={icon.src}
+                alt={icon.alt}
+                width={80}
+                height={96}
+                className="w-20 h-24 object-contain"
+              />
             ))}
           </div>
 
