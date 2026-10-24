@@ -10,5 +10,4 @@ export * from './BeginnerSection';
 export * from './ScheduleSection';
 export * from './TimelineSection';
 export * from './CalendarSection';
-export * from './AnnualPackageSection';
 export * from './FAQSection';

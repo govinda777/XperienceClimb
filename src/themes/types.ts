@@ -304,31 +304,6 @@ export interface PackagesSectionConfig {
   annualCard?: PackageAnnualBannerConfig;
 }
 
-export interface AnnualPackageBenefit {
-  icon: string;
-  title: string;
-  description: string;
-}
-
-export interface AnnualPackageSectionConfig {
-  badge: string;
-  title: string;
-  titleAccent: string;
-  description: string;
-  benefits: AnnualPackageBenefit[];
-  card: {
-    badge: string;
-    spots: string;
-    title: string;
-    description: string;
-    priceLabel: string;
-    priceNotes: string;
-    discountNote: string;
-    ctaText: string;
-    ctaHref: string;
-  };
-}
-
 export interface ScheduleSectionConfig {
   badge: string;
   title: string;
@@ -546,7 +521,6 @@ export interface ThemeConfig {
   beginnerSection?: BeginnerSectionConfig;
   calendarSection?: CalendarSectionConfig;
   packagesSection?: PackagesSectionConfig;
-  annualPackageSection?: AnnualPackageSectionConfig;
   scheduleSection?: ScheduleSectionConfig;
   safetySection?: SafetySectionConfig;
   timelineSection?: TimelineSectionConfig;

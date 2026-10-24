@@ -6,7 +6,6 @@ import type {
   BeginnerSectionConfig,
   CalendarSectionConfig,
   PackagesSectionConfig,
-  AnnualPackageSectionConfig,
   ScheduleSectionConfig,
   SafetySectionConfig,
   TimelineSectionConfig,
@@ -369,52 +368,6 @@ export class PedraBellaTheme extends BaseTheme {
       ctaText: 'Entrar na Lista VIP WhatsApp',
       ctaHref:
         'https://wa.me/5511995413539?text=Ol%C3%A1!%20Gostaria%20de%20entrar%20na%20lista%20VIP%20do%20Programa%20Xperience%20Anual.',
-    },
-  };
-
-  // =========================================================================
-  // 7. EXPEDIÇÃO ANUAL VIP (#anual)
-  // =========================================================================
-  annualPackageSection: AnnualPackageSectionConfig = {
-    badge: '👑 PROGRAMA ANUAL DE AVENTURA',
-    title: 'XPERIENCE ANUAL',
-    titleAccent: 'o passaporte definitivo',
-    description:
-      'Uma jornada de 12 meses explorando os picos mais emblemáticos de São Paulo e Mantiqueira. Uma saída a cada dois meses com transporte executivo de SP, hospedagens selecionadas e todo o suporte técnico incluso.',
-    benefits: [
-      {
-        icon: '🚐',
-        title: 'Transporte Incluso',
-        description: 'Van executiva saindo da capital SP',
-      },
-      {
-        icon: '🍽️',
-        title: 'Gastronomia Premium',
-        description: 'Almoços e cafés coloniais típicos',
-      },
-      {
-        icon: '🏔️',
-        title: '6 Destinos Exclusivos',
-        description: 'Roteiros inéditos a cada bimestre',
-      },
-      {
-        icon: '🎁',
-        title: 'Kit Xperience VIP',
-        description: 'Mochila, camiseta técnica e cantil',
-      },
-    ],
-    card: {
-      badge: 'Turma Exclusiva',
-      spots: '12 vagas / ano',
-      title: 'Assinatura Anual',
-      description:
-        'Garanta seu calendário de aventuras do ano inteiro sem se preocupar com trânsito, logística ou equipamentos.',
-      priceLabel: 'Sob Consulta',
-      priceNotes: '(em até 12x)',
-      discountNote: '✓ Desconto progressivo para casais ou duplas',
-      ctaText: 'Solicitar Proposta Completa',
-      ctaHref:
-        'https://wa.me/5511995413539?text=Olá!%20Gostaria%20de%20receber%20a%20proposta%20detalhada%20do%20Xperience%20Anual',
     },
   };
 
@@ -789,16 +742,15 @@ export class PedraBellaTheme extends BaseTheme {
       { label: '02 · Batismo de Escalada', href: '#batismo' },
       { label: '03 · Calendário de Saídas', href: '#calendario' },
       { label: '04 · Pacotes & Investimento', href: '#pacotes' },
-      { label: '05 · Plano Anual VIP', href: '#anual' },
-      { label: '06 · Logística & Checklist', href: '#programacao' },
-      { label: '07 · Itinerário do Dia', href: '#timeline' },
+      { label: '05 · Logística & Checklist', href: '#programacao' },
+      { label: '06 · Itinerário do Dia', href: '#timeline' },
     ],
     experienceLinks: [
-      { label: '08 · Galeria de Fotos e Vídeos', href: '#galeria' },
-      { label: '09 · Protocolos de Segurança', href: '#seguranca' },
-      { label: '10 · Guias & Instrutores', href: '#comunidade' },
-      { label: '11 · Como Chegar', href: '#localizacao' },
-      { label: '12 · Dúvidas Frequentes', href: '#faq' },
+      { label: '07 · Galeria de Fotos e Vídeos', href: '#galeria' },
+      { label: '08 · Protocolos de Segurança', href: '#seguranca' },
+      { label: '09 · Guias & Instrutores', href: '#comunidade' },
+      { label: '10 · Como Chegar', href: '#localizacao' },
+      { label: '11 · Dúvidas Frequentes', href: '#faq' },
     ],
     contact: {
       whatsapp: 'https://wa.me/5511995413539',
@@ -1039,7 +991,6 @@ export class PedraBellaTheme extends BaseTheme {
       beginnerSection: this.beginnerSection,
       calendarSection: this.calendarSection,
       packagesSection: this.packagesSection,
-      annualPackageSection: this.annualPackageSection,
       scheduleSection: this.scheduleSection,
       safetySection: this.safetySection,
       timelineSection: this.timelineSection,

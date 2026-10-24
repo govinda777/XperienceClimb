@@ -6,7 +6,6 @@ import {
   BeginnerSection,
   CalendarSection,
   PackagesSection,
-  AnnualPackageSection,
   ScheduleSection,
   TimelineSection,
   GallerySection,
@@ -57,7 +56,6 @@ export default function Home() {
       <BeginnerSection />
       <CalendarSection />
       <PackagesSection />
-      <AnnualPackageSection />
       <ScheduleSection />
       <TimelineSection />
       <GallerySection />
