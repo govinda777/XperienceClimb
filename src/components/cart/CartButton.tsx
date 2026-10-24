@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui';
 import { useCartStore } from '@/store/useCartStore';
-import { ShoppingCart } from 'lucide-react';
+import { useTheme } from '@/themes/ThemeProvider';
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
 
 export function CartButton() {
   const { getTotalItems, toggleCart } = useCartStore();
+  const { currentTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -17,24 +18,42 @@ export function CartButton() {
     return null;
   }
 
-  const totalItems = getTotalItems();
+  const rawTotal = getTotalItems ? getTotalItems() : 0;
+  const totalItems = typeof rawTotal === 'number' && rawTotal > 0 ? rawTotal : 0;
+  const floating = currentTheme?.floatingCta || pedraBellaTheme.floatingCta!;
 
-  if (totalItems === 0) return null;
+  const handleClick = (e: React.MouseEvent) => {
+    if (totalItems > 0) {
+      e.preventDefault();
+      toggleCart();
+    }
+  };
 
   return (
-    <div className="fixed bottom-6 right-6 z-40">
-      <Button
-        onClick={toggleCart}
-        size="lg"
-        className="relative h-16 w-16 rounded-full bg-orange-400 p-0 text-white shadow-2xl hover:bg-orange-500"
+    <aside aria-label="Acesso Rápido ao Carrinho" className="fixed bottom-6 right-6 z-50">
+      <a
+        href={floating.href}
+        onClick={handleClick}
+        role="button"
+        className="flex items-center gap-3 px-5 py-3.5 rounded-full bg-forest-800 hover:bg-forest-900 text-white font-mono text-xs font-bold shadow-2xl border-2 border-forest-600 hover:scale-105 active:scale-95 transition-all group cursor-pointer"
       >
-        <ShoppingCart className="h-6 w-6" />
-        {totalItems > 0 && (
-          <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-            {totalItems}
+        <span className="relative w-7 h-7 rounded-full bg-terracotta-500 text-white flex items-center justify-center text-sm shadow-sm group-hover:rotate-12 transition-transform">
+          {floating.icon}
+          {totalItems > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-amber-400 text-ink-900 text-[10px] font-black flex items-center justify-center shadow">
+              {totalItems}
+            </span>
+          )}
+        </span>
+        <div className="flex flex-col text-left">
+          <span className="text-[9px] uppercase tracking-wider text-sand-300 leading-none">
+            {totalItems > 0 ? `Carrinho (${totalItems})` : floating.tag}
           </span>
-        )}
-      </Button>
-    </div>
+          <span className="text-xs text-white font-bold leading-tight mt-0.5">
+            {totalItems > 0 ? 'Ver Reserva ↗' : floating.title}
+          </span>
+        </div>
+      </a>
+    </aside>
   );
 }

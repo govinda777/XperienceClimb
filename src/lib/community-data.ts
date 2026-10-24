@@ -92,7 +92,7 @@ export const CERTIFIED_INSTRUCTORS: CertifiedInstructor[] = [
   {
     id: 'celso-ossamu',
     name: 'Celso Ossamu',
-    photo: '/images/themes/pedra-bela/escalada-1.jpg',
+    photo: '/images/themes/pedra-bela/escalada-1.png',
     bio: 'Instrutor principal da XperienceClimb com mais de 15 anos de experiência em escalada. Especialista em escalada esportiva e tradicional, com foco em segurança e desenvolvimento técnico.',
     certifications: [
       {
@@ -382,7 +382,7 @@ export const VISITED_LOCATIONS: VisitedLocation[] = [
       'Destino de escalada em formação rochosa única, com um mirante de 360 graus da paisagem e vias de nível fácil a intermediário.',
     images: [
       {
-        url: '/images/themes/pedra-bela/escalada-1.jpg',
+        url: '/images/themes/pedra-bela/escalada-1.png',
         caption: 'Escalada na formação principal',
         category: 'route',
         photographer: 'Ana Silva',

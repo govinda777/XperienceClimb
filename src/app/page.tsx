@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen pt-20">
       <Navigation />
       <HeroSection />
       <AboutSection />
@@ -65,7 +65,6 @@ export default function Home() {
       <CommunitySection />
       <LocationSection />
       <FAQSection />
-      {/* <TestimonialsSection /> */}
       <Footer />
 
       {/* Floating Cart Button */}

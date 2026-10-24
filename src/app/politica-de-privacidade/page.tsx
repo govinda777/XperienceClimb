@@ -23,12 +23,14 @@ export default function PoliticaDePrivacidadePage() {
         <div className="container mx-auto flex items-center justify-between px-4 py-6">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-semibold text-climb-600 transition-colors hover:text-climb-700"
+            className="flex items-center gap-2 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar para a Página Inicial
           </Link>
-          <span className="text-xs text-neutral-500">Última atualização: {lastUpdated}</span>
+          <span className="text-xs text-neutral-700 font-medium">
+            Última atualização: {lastUpdated}
+          </span>
         </div>
       </header>
 
@@ -43,7 +45,7 @@ export default function PoliticaDePrivacidadePage() {
               <h1 className="text-3xl font-bold text-neutral-900 md:text-4xl">
                 Política de Privacidade
               </h1>
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-neutral-700">
                 Xperience Climb • Conformidade com a Lei Geral de Proteção de Dados (LGPD)
               </p>
             </div>
@@ -52,7 +54,7 @@ export default function PoliticaDePrivacidadePage() {
           <div className="prose prose-neutral max-w-none space-y-8 leading-relaxed text-neutral-700">
             <section>
               <h2 className="text-xl font-bold text-neutral-900 flex items-center gap-2">
-                <FileText className="h-5 w-5 text-climb-600" />
+                <FileText className="h-5 w-5 text-forest-700" />
                 1. Visão Geral e Compromisso
               </h2>
               <p>
@@ -71,7 +73,7 @@ export default function PoliticaDePrivacidadePage() {
 
             <section>
               <h2 className="text-xl font-bold text-neutral-900 flex items-center gap-2">
-                <Eye className="h-5 w-5 text-climb-600" />
+                <Eye className="h-5 w-5 text-forest-700" />
                 2. Quais Dados Coletamos
               </h2>
               <p>
@@ -100,7 +102,7 @@ export default function PoliticaDePrivacidadePage() {
 
             <section>
               <h2 className="text-xl font-bold text-neutral-900 flex items-center gap-2">
-                <Lock className="h-5 w-5 text-climb-600" />
+                <Lock className="h-5 w-5 text-forest-700" />
                 3. Finalidades do Tratamento de Dados
               </h2>
               <p>Seus dados pessoais são utilizados para:</p>
@@ -190,14 +192,14 @@ export default function PoliticaDePrivacidadePage() {
               <div className="flex flex-col sm:flex-row gap-4 text-sm font-medium">
                 <a
                   href={`mailto:${CONTACT_INFO.email}`}
-                  className="inline-flex items-center gap-2 text-climb-600 hover:text-climb-700"
+                  className="inline-flex items-center gap-2 text-forest-700 hover:text-forest-800"
                 >
                   <Mail className="h-4 w-4" />
                   {CONTACT_INFO.email}
                 </a>
                 <a
                   href={`tel:${CONTACT_INFO.phone}`}
-                  className="inline-flex items-center gap-2 text-climb-600 hover:text-climb-700"
+                  className="inline-flex items-center gap-2 text-forest-700 hover:text-forest-800"
                 >
                   <Phone className="h-4 w-4" />
                   {CONTACT_INFO.phone}
@@ -213,10 +215,10 @@ export default function PoliticaDePrivacidadePage() {
             >
               Voltar para a Página Inicial
             </Link>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-600">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-700">
               <Link
                 href="/termos-de-uso"
-                className="font-medium text-climb-600 hover:text-climb-700 underline"
+                className="font-medium text-forest-700 hover:text-forest-800 underline"
               >
                 Termos de Uso e Condições
               </Link>

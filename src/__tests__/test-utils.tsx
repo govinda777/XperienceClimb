@@ -79,6 +79,7 @@ export const resetAuthMocks = () => {
 export const createCartStoreState = (items: CartItem[] = [], isOpen = false) => ({
   items,
   isOpen,
+  isCheckoutOpen: false,
   addItem: jest.fn(),
   removeItem: jest.fn(),
   updateQuantity: jest.fn(),
@@ -86,6 +87,8 @@ export const createCartStoreState = (items: CartItem[] = [], isOpen = false) => 
   toggleCart: jest.fn(),
   openCart: jest.fn(),
   closeCart: jest.fn(),
+  openCheckout: jest.fn(),
+  setCheckoutOpen: jest.fn(),
   getTotalPrice: jest.fn(() =>
     items.reduce((total, item) => total + item.price * item.quantity, 0)
   ),

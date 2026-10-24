@@ -144,3 +144,16 @@ vite.config.ts.timestamp-*
 # Playwright
 playwright-report/
 test-results/
+
+# pnpm
+.pnpm-store/
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# Local design prototypes & exports
+prototipo.html
+public/prototipo.html
+XperienceClimb*.html
+*.pdf
+
+

@@ -18,7 +18,7 @@ export async function GET(_request: Request) {
         description: pkg.description,
         features: pkg.features || [],
         shape: pkg.shape || 'hexagon',
-        color: pkg.color || 'climb-300',
+        color: pkg.color || 'forest-500',
         duration: pkg.duration || '1 dia',
         maxParticipants: pkg.maxParticipants || 8,
         popular: pkg.popular || false,

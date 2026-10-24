@@ -1,193 +1,239 @@
 'use client';
 
-import React, { useState } from 'react';
-import Image, { StaticImageData } from 'next/image';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { X, ZoomIn } from 'lucide-react';
 import { useTheme } from '@/themes/ThemeProvider';
-import { normalizeImageUrl } from '@/lib/image-utils';
-import { Play, X, Camera } from 'lucide-react';
-
-interface GalleryImage {
-  src: string | StaticImageData;
-  alt: string;
-  title: string;
-  category: string;
-  isExternal?: boolean;
-  externalDomain?: string;
-  isVideo?: boolean;
-}
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
+import { GalleryImageConfig } from '@/themes/types';
 
 export function GallerySection() {
   const { currentTheme } = useTheme();
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [activeTab, setActiveTab] = useState<string>('all');
+  const [selectedPhoto, setSelectedPhoto] = useState<GalleryImageConfig | null>(null);
 
-  const filteredImages =
-    selectedCategory === 'all'
-      ? currentTheme.gallery.images
-      : currentTheme.gallery.images.filter(img => img.category === selectedCategory);
+  // Consome gallerySection de pedra-bela.ts com fallback
+  const gallery = currentTheme?.gallerySection || pedraBellaTheme.gallerySection!;
+  const categories = gallery.categories || [
+    { id: 'all', label: 'Todas' },
+    { id: 'escalada', label: 'Escalada' },
+    { id: 'grupo', label: 'Grupo & Base' },
+    { id: 'paisagem', label: 'Cume & Paisagem' },
+    { id: 'videos', label: 'Vídeos' },
+  ];
 
-  const handleImageError = (image: GalleryImage) => {
-    const imgSrc = typeof image.src === 'string' ? image.src : 'Local Image';
-    console.warn(`Failed to load image: ${imgSrc}`);
+  // Fecha modal ao pressionar ESC
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedPhoto(null);
+      }
+    };
+    if (selectedPhoto) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedPhoto]);
+
+  const getTagColorClass = (color?: 'forest' | 'terracotta' | 'sun') => {
+    switch (color) {
+      case 'forest':
+        return 'bg-forest-700 text-white';
+      case 'terracotta':
+        return 'bg-terracotta-500 text-white';
+      case 'sun':
+        return 'bg-sun-500 text-ink-900';
+      default:
+        return 'bg-forest-700 text-white';
+    }
   };
 
+  const filteredImages =
+    activeTab === 'all'
+      ? gallery.images
+      : activeTab === 'videos'
+        ? []
+        : gallery.images.filter(img => img.category === activeTab);
+
+  const showVideos = activeTab === 'all' || activeTab === 'videos';
+
   return (
-    <>
-      <section id="galeria" className="py-24 bg-stone-100/60 text-stone-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-stone-300 bg-stone-200/60 px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-stone-700">
-              <Camera className="h-3.5 w-3.5 text-stone-600" strokeWidth={1.5} />
-              <span>REGISTROS VISUAIS</span>
+    <section id="galeria" className="py-24 relative bg-sand-100/60 border-t border-sand-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Cabeçalho */}
+        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-forest-700 font-bold mb-2">
+              <span>{gallery.badge}</span>
             </div>
-
-            <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-stone-900 mb-4">
-              Galeria de Experiências
+            <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight text-ink-900">
+              {gallery.title}{' '}
+              <span className="font-serifIt italic font-light text-terracotta-500 normal-case">
+                {gallery.titleAccent}
+              </span>
             </h2>
-            <p className="text-lg text-stone-600 max-w-2xl mx-auto mb-10">
-              Conheça a imponência de {currentTheme.location.name} e a atmosfera das nossas saídas
-              na rocha.
-            </p>
-
-            {/* Functional Pill Filters */}
-            <div className="flex flex-wrap justify-center gap-2.5">
-              {Object.entries(currentTheme.gallery.categories).map(([key, label]) => {
-                const isActive = selectedCategory === key;
-                return (
-                  <button
-                    key={key}
-                    onClick={() => setSelectedCategory(key)}
-                    className={`rounded-full px-5 py-2 text-xs font-mono uppercase tracking-wider transition-all duration-300 focus:outline-none ${
-                      isActive
-                        ? 'bg-stone-900 text-white shadow-md shadow-stone-900/20'
-                        : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50 hover:text-stone-900'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
           </div>
+          <p className="font-mono text-xs text-ink-600 max-w-sm leading-relaxed">
+            {gallery.subtitle}
+          </p>
+        </div>
 
-          {/* Clean Photography Grid - Breathable and Uncluttered */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredImages.map((image, index) => (
-              <div
-                key={`gallery-img-${index}`}
-                className="group relative overflow-hidden rounded-3xl border border-stone-200/80 bg-stone-200 shadow-sm transition-all duration-500 ease-out hover:-translate-y-1.5 hover:shadow-2xl cursor-pointer"
-                onClick={() => setSelectedImage(image)}
+        {/* Abas de Categorias Interativas */}
+        <div className="flex flex-wrap items-center gap-2 mb-10">
+          {categories.map(cat => {
+            const isActive = activeTab === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveTab(cat.id)}
+                className={`px-4 py-2 rounded-full font-mono text-xs font-bold uppercase tracking-wider transition-all duration-300 focus:outline-none ${
+                  isActive
+                    ? 'bg-forest-800 text-white shadow-md shadow-forest-900/20'
+                    : 'bg-white/80 border border-sand-200 text-ink-600 hover:bg-white hover:text-ink-900 hover:border-sand-300'
+                }`}
               >
-                <div className="aspect-[4/3] relative">
-                  {image.isVideo ? (
-                    <div className="relative w-full h-full bg-black flex items-center justify-center">
-                      <video
-                        src={typeof image.src === 'string' ? image.src : ''}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        preload="none"
-                        muted
-                        loop
-                        playsInline
-                        onMouseOver={e => e.currentTarget.play()}
-                        onMouseOut={e => {
-                          e.currentTarget.pause();
-                          e.currentTarget.currentTime = 0;
-                        }}
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black/40 backdrop-blur-md border border-white/20 text-white transition-transform duration-300 group-hover:scale-110">
-                          <Play
-                            className="h-6 w-6 fill-current text-white ml-0.5"
-                            strokeWidth={1.5}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <Image
-                      src={normalizeImageUrl(image.src)}
-                      alt={image.alt}
-                      fill
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                      onError={() => handleImageError(image)}
-                      unoptimized={image.isExternal}
-                      placeholder={typeof image.src !== 'string' ? 'blur' : undefined}
-                    />
-                  )}
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
 
-                  {/* Subtle Gradient & Hover Caption */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+        {/* Grid Editorial com Fotos Reais Inéditas */}
+        {filteredImages.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {filteredImages.map((photo, index) => (
+              <div
+                key={photo.src + index}
+                onClick={() => setSelectedPhoto(photo)}
+                className="group relative rounded-3xl overflow-hidden shadow-soft border border-sand-200 bg-white h-72 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 380px"
+                  unoptimized={photo.isExternal}
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity pointer-events-none"></div>
 
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-amber-300 block mb-1">
-                      {currentTheme.gallery.categories[image.category] || image.category}
-                    </span>
-                    <h3 className="text-lg font-bold leading-tight drop-shadow-sm">
-                      {image.title}
-                    </h3>
-                    <p className="mt-1 text-xs text-stone-200 line-clamp-1 opacity-90">
-                      {image.alt}
-                    </p>
-                  </div>
+                {/* Ícone de Zoom no hover */}
+                <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-md p-2 rounded-full text-white">
+                  <ZoomIn className="w-4 h-4" strokeWidth={1.5} />
+                </div>
+
+                <div className="absolute bottom-4 left-4 right-4 text-white z-10">
+                  <span
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider inline-block mb-1.5 ${getTagColorClass(
+                      photo.tagColor
+                    )}`}
+                  >
+                    {photo.tag}
+                  </span>
+                  <h4 className="font-bold text-sm text-white drop-shadow-sm leading-snug">
+                    {photo.title}
+                  </h4>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        )}
 
-      {/* Lightbox Modal */}
-      {selectedImage && (
+        {/* Bloco de Vídeos Reais de Pedra Bela */}
+        {showVideos && gallery.videos.length > 0 && (
+          <div>
+            <div className="mb-6 flex items-center gap-3">
+              <span className="font-mono text-xs uppercase tracking-widest text-forest-700 font-bold">
+                Gravações em Campo
+              </span>
+              <div className="h-px bg-sand-200 flex-1"></div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {gallery.videos.map((vid, vIdx) => (
+                <div
+                  key={vIdx}
+                  className="bg-white p-5 rounded-3xl shadow-soft border border-sand-200 transition-all duration-300 hover:shadow-lg"
+                >
+                  <div className="relative rounded-2xl overflow-hidden bg-black aspect-video mb-4">
+                    <video controls preload="metadata" className="w-full h-full object-cover">
+                      <source src={vid.src} type="video/mp4" />
+                      Seu navegador não suporta a tag de vídeo.
+                    </video>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span
+                        className={`font-mono text-[10px] font-bold uppercase tracking-wider ${
+                          vid.tagColor === 'forest' ? 'text-forest-700' : 'text-terracotta-500'
+                        }`}
+                      >
+                        {vid.tag}
+                      </span>
+                      <h4 className="font-bold text-ink-900 text-sm mt-0.5">{vid.title}</h4>
+                    </div>
+                    <span className="text-xl">{vid.icon}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox Modal para Visualização em Tela Cheia */}
+      {selectedPhoto && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 transition-all duration-300 animate-fadeIn"
+          onClick={() => setSelectedPhoto(null)}
         >
           <div
-            className="relative max-w-4xl max-h-[90vh] w-full"
+            className="relative max-w-5xl w-full max-h-[90vh] bg-stone-900 rounded-3xl overflow-hidden shadow-2xl border border-white/10"
             onClick={e => e.stopPropagation()}
           >
+            {/* Botão Fechar */}
             <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute -top-12 right-0 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all focus:outline-none"
-              aria-label="Fechar modal"
+              onClick={() => setSelectedPhoto(null)}
+              className="absolute top-4 right-4 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-black/60 text-white border border-white/20 hover:bg-black/90 transition-all focus:outline-none"
+              aria-label="Fechar visualização"
             >
-              <X className="h-5 w-5" strokeWidth={1.5} />
+              <X className="w-5 h-5" strokeWidth={1.5} />
             </button>
 
-            <div className="relative overflow-hidden rounded-2xl bg-black shadow-2xl">
-              {selectedImage.isVideo ? (
-                <video
-                  src={typeof selectedImage.src === 'string' ? selectedImage.src : ''}
-                  className="max-h-[80vh] w-full object-contain"
-                  controls
-                  autoPlay
-                />
-              ) : (
-                <div className="relative h-[75vh] w-full">
-                  <Image
-                    src={normalizeImageUrl(selectedImage.src)}
-                    alt={selectedImage.alt}
-                    fill
-                    className="object-contain"
-                    onError={() => handleImageError(selectedImage)}
-                    unoptimized={selectedImage.isExternal}
-                    placeholder={typeof selectedImage.src !== 'string' ? 'blur' : undefined}
-                  />
-                </div>
-              )}
+            {/* Imagem Ampliada */}
+            <div className="relative w-full h-[65vh] bg-black">
+              <Image
+                src={selectedPhoto.src}
+                alt={selectedPhoto.alt}
+                fill
+                unoptimized={selectedPhoto.isExternal}
+                className="object-contain"
+                priority
+              />
+            </div>
 
-              <div className="p-6 bg-stone-900/90 text-white backdrop-blur-md border-t border-white/10">
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
-                  {currentTheme.gallery.categories[selectedImage.category] ||
-                    selectedImage.category}
+            {/* Informações da Imagem */}
+            <div className="p-6 bg-forest-900 text-white border-t border-forest-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider inline-block mb-1.5 ${getTagColorClass(
+                    selectedPhoto.tagColor
+                  )}`}
+                >
+                  {selectedPhoto.tag}
                 </span>
-                <h3 className="text-xl font-bold tracking-tight">{selectedImage.title}</h3>
-                <p className="text-sm text-stone-300 mt-1">{selectedImage.alt}</p>
+                <h3 className="text-xl font-bold">{selectedPhoto.title}</h3>
+                <p className="text-xs text-stone-300 mt-1 max-w-2xl">{selectedPhoto.alt}</p>
               </div>
+              <button
+                onClick={() => setSelectedPhoto(null)}
+                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-mono uppercase tracking-wider transition-all self-start sm:self-auto"
+              >
+                Voltar à galeria
+              </button>
             </div>
           </div>
         </div>
       )}
-    </>
+    </section>
   );
 }

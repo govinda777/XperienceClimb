@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 260" fill="none">
+  <!-- ================= FUNDO SUTIL DE MONTANHA E SOL ================= -->
+  <!-- Linha de rocha / solo de montanha -->
+  <path d="M15 232 Q170 218 325 230" stroke="#0F172A" stroke-width="3" stroke-linecap="round" />
+  <path d="M35 238 Q85 234 115 238 M215 238 Q265 234 295 238" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" />
+  
+  <!-- Solzinho dourado de cume -->
+  <circle cx="288" cy="46" r="22" fill="#E09F3E" opacity="0.25" />
+  <circle cx="288" cy="46" r="16" stroke="#E09F3E" stroke-width="2.8" fill="#FDFBF7" />
+  <path d="M288 20 L288 26 M314 46 L308 46 M304 30 L299 35 M304 62 L299 57 M272 30 L277 35 M272 62 L277 57" stroke="#E09F3E" stroke-width="2.2" stroke-linecap="round" />
+
+  <!-- Doodles de comemoração acima do cume -->
+  <path d="M164 52 L164 42 M150 56 L144 48 M178 56 L184 48" stroke="#E09F3E" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- ================= AMIGO 1 (À ESQUERDA - RELAXADO SENTADO NA MOCHILA) ================= -->
+  <!-- Mochila cargueira de montanha (Verde Floresta) -->
+  <rect x="26" y="142" width="40" height="60" rx="10" fill="#1B4332" stroke="#0F172A" stroke-width="2.8" />
+  <rect x="30" y="146" width="32" height="20" rx="5" fill="#2D6A4F" stroke="#0F172A" stroke-width="2" />
+  <path d="M36 176 L56 176 M36 186 L56 186" stroke="#E09F3E" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Pernas sentadas e sapatilhas -->
+  <path d="M62 176 L48 198 L36 230" stroke="#0F172A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M68 176 L80 198 L88 230" stroke="#0F172A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+  <ellipse cx="32" cy="232" rx="7.5" ry="4.5" fill="#C85A32" stroke="#0F172A" stroke-width="2" />
+  <ellipse cx="91" cy="232" rx="7.5" ry="4.5" fill="#C85A32" stroke="#0F172A" stroke-width="2" />
+
+  <!-- Tronco (Camiseta Verde) -->
+  <rect x="50" y="125" width="28" height="38" rx="7" fill="#2D6A4F" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M57 125 Q64 131 71 125" stroke="#0F172A" stroke-width="2" fill="none" />
+
+  <!-- Cabeça e Capacete Verde -->
+  <circle cx="64" cy="100" r="15" fill="#FFE5D9" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M49 100 C49 84, 79 84, 79 100 Z" fill="#1B4332" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M52 101 L64 116 L76 101" stroke="#0F172A" stroke-width="1.8" fill="none" />
+  <!-- Rosto Amigável -->
+  <circle cx="59" cy="100" r="2" fill="#0F172A" />
+  <circle cx="69" cy="100" r="2" fill="#0F172A" />
+  <path d="M60 107 Q64 111 68 107" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
+
+  <!-- BRAÇO 1 DO AMIGO 1 (Esquerdo - Acenando alegremente 👋) -->
+  <path d="M51 132 L36 118 L28 96" stroke="#0F172A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="28" cy="94" r="4.5" fill="#FFE5D9" stroke="#0F172A" stroke-width="2" />
+  <path d="M25 90 L22 84 M28 89 L28 82 M31 90 L33 83 M33 94 L37 91" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
+
+  <!-- BRAÇO 2 DO AMIGO 1 (Direito - Apoiado relaxadamente no joelho) -->
+  <path d="M78 132 L92 148 L84 172" stroke="#0F172A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="82" cy="173" r="4.5" fill="#FFE5D9" stroke="#0F172A" stroke-width="2" />
+
+  <!-- ================= AMIGO 2 (NO CENTRO - COMEMORANDO COM OS DOIS BRAÇOS ERGUIDOS 🙌) ================= -->
+  <!-- Pernas e sapatilhas -->
+  <path d="M152 170 L142 198 L136 230" stroke="#0F172A" stroke-width="3.2" stroke-linecap="round" />
+  <path d="M176 170 L186 198 L192 230" stroke="#0F172A" stroke-width="3.2" stroke-linecap="round" />
+  <ellipse cx="132" cy="232" rx="8" ry="4.5" fill="#C85A32" stroke="#0F172A" stroke-width="2" />
+  <ellipse cx="196" cy="232" rx="8" ry="4.5" fill="#C85A32" stroke="#0F172A" stroke-width="2" />
+
+  <!-- Bermuda -->
+  <path d="M147 156 L181 156 L184 174 L168 174 L164 165 L160 174 L144 174 Z" fill="#0F172A" />
+
+  <!-- Tronco (Camiseta Amarela Mostarda) -->
+  <rect x="146" y="112" width="36" height="46" rx="8" fill="#E09F3E" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M157 112 Q164 118 171 112" stroke="#0F172A" stroke-width="2" fill="none" />
+
+  <!-- Cabeça e Capacete Amarelo Sol -->
+  <circle cx="164" cy="86" r="16" fill="#FFE5D9" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M148 86 C148 68, 180 68, 180 86 Z" fill="#E09F3E" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M150 87 L164 103 L178 87" stroke="#0F172A" stroke-width="1.8" fill="none" />
+  <!-- Olhos e Sorriso Feliz de Vitória -->
+  <path d="M156 86 Q159 82 162 86 M166 86 Q169 82 172 86" stroke="#0F172A" stroke-width="2.2" stroke-linecap="round" />
+  <path d="M157 92 Q164 103 171 92 Z" fill="#0F172A" />
+
+  <!-- BRAÇO 1 DO AMIGO 2 (Esquerdo - Erguido para o alto em vitória \) -->
+  <path d="M147 120 L130 98 L114 74" stroke="#0F172A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="112" cy="72" r="5" fill="#FFE5D9" stroke="#0F172A" stroke-width="2" />
+  <path d="M107 68 L101 64 M110 66 L108 58 M115 67 L117 59 M118 71 L123 68" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
+
+  <!-- BRAÇO 2 DO AMIGO 2 (Direito - Erguido para o alto em vitória /) -->
+  <path d="M181 120 L198 98 L214 74" stroke="#0F172A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="216" cy="72" r="5" fill="#FFE5D9" stroke="#0F172A" stroke-width="2" />
+  <path d="M221 68 L227 64 M218 66 L220 58 M213 67 L211 59 M210 71 L205 68" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
+
+  <!-- ================= AMIGO 3 (À DIREITA - DE PÉ COM CADEIRINHA E CORDA COM 2 BRAÇOS) ================= -->
+  <!-- Pernas e sapatilhas -->
+  <path d="M242 174 L238 202 L234 230" stroke="#0F172A" stroke-width="3.2" stroke-linecap="round" />
+  <path d="M264 174 L270 202 L274 230" stroke="#0F172A" stroke-width="3.2" stroke-linecap="round" />
+  <ellipse cx="230" cy="232" rx="7.5" ry="4" fill="#C85A32" stroke="#0F172A" stroke-width="2" />
+  <ellipse cx="278" cy="232" rx="7.5" ry="4" fill="#C85A32" stroke="#0F172A" stroke-width="2" />
+
+  <!-- Arnês / Cadeirinha de Escalada em Terracota -->
+  <rect x="236" y="152" width="34" height="12" rx="3" fill="#C85A32" stroke="#0F172A" stroke-width="2.4" />
+  <path d="M242 164 Q240 176 248 176 Q252 176 252 164" fill="none" stroke="#0F172A" stroke-width="2" />
+  <rect x="265" y="160" width="5" height="9" rx="2.5" fill="none" stroke="#E09F3E" stroke-width="1.8" />
+
+  <!-- Tronco (Camiseta Off-White) -->
+  <rect x="238" y="112" width="32" height="42" rx="6" fill="#FDFBF7" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M245 112 L245 152 M263 112 L263 152" stroke="#0F172A" stroke-width="1.5" stroke-dasharray="2 2" />
+
+  <!-- Cabeça e Capacete Terracota -->
+  <circle cx="253" cy="88" r="15" fill="#FFE5D9" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M239 88 C239 72, 267 72, 267 88 Z" fill="#C85A32" stroke="#0F172A" stroke-width="2.8" />
+  <path d="M241 89 L253 103 L265 89" stroke="#0F172A" stroke-width="1.8" fill="none" />
+  <!-- Rosto Confiante e Alegre -->
+  <circle cx="248" cy="88" r="2" fill="#0F172A" />
+  <circle cx="258" cy="88" r="2" fill="#0F172A" />
+  <path d="M249 95 Q253 100 258 95" stroke="#0F172A" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Meada de Corda de Escalada (Coiled Rope) -->
+  <path d="M214 96 C200 96, 196 126, 214 126 C228 126, 226 96, 214 96" stroke="#2D6A4F" stroke-width="3.5" fill="none" />
+  <path d="M214 96 C204 100, 202 122, 215 122 C226 122, 224 100, 214 96" stroke="#E09F3E" stroke-width="2.2" fill="none" stroke-dasharray="4 2" />
+  <!-- Chicote da corda conectando à outra mão -->
+  <path d="M216 125 C226 148, 256 156, 274 156" stroke="#2D6A4F" stroke-width="3" stroke-linecap="round" fill="none" />
+
+  <!-- BRAÇO 1 DO AMIGO 3 (Esquerdo - Segurando a corda para cima 🧗) -->
+  <path d="M239 120 L226 110 L216 96" stroke="#0F172A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="214" cy="94" r="4.5" fill="#FFE5D9" stroke="#0F172A" stroke-width="2" />
+
+  <!-- BRAÇO 2 DO AMIGO 3 (Direito - Segurando o chicote da corda junto ao arnês) -->
+  <path d="M269 120 L284 136 L276 156" stroke="#0F172A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="275" cy="156" r="4.5" fill="#FFE5D9" stroke="#0F172A" stroke-width="2" />
+</svg>

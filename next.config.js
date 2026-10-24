@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  productionBrowserSourceMaps: false,
+  productionBrowserSourceMaps: true,
   compress: true,
 
   images: {
@@ -38,6 +38,16 @@ const nextConfig = {
         ],
       },
     ];
+  },
+  webpack: config => {
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      {
+        module: /ox.*virtualMasterPool/,
+        message: /Critical dependency: the request of a dependency is an expression/,
+      },
+    ];
+    return config;
   },
 };
 

@@ -5,7 +5,8 @@ import { CartItem } from '@/types';
 interface CartStore {
   items: CartItem[];
   isOpen: boolean;
-  
+  isCheckoutOpen: boolean;
+
   // Actions
   addItem: (item: Omit<CartItem, 'id' | 'addedAt'>) => void;
   removeItem: (id: string) => void;
@@ -14,7 +15,9 @@ interface CartStore {
   toggleCart: () => void;
   openCart: () => void;
   closeCart: () => void;
-  
+  openCheckout: () => void;
+  setCheckoutOpen: (open: boolean) => void;
+
   // Computed
   getTotalPrice: () => number;
   getTotalItems: () => number;
@@ -26,12 +29,13 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       isOpen: false,
+      isCheckoutOpen: false,
 
-      addItem: (newItem) => {
+      addItem: newItem => {
         const items = get().items;
         const existingItemIndex = items.findIndex(
-          (item) => item.packageId === newItem.packageId && 
-                   item.participantName === newItem.participantName
+          item =>
+            item.packageId === newItem.packageId && item.participantName === newItem.participantName
         );
 
         if (existingItemIndex >= 0) {
@@ -43,18 +47,21 @@ export const useCartStore = create<CartStore>()(
           // Add new item
           const id = `${newItem.packageId}-${Date.now()}`;
           set({
-            items: [...items, { 
-              ...newItem, 
-              id, 
-              addedAt: new Date() 
-            }]
+            items: [
+              ...items,
+              {
+                ...newItem,
+                id,
+                addedAt: new Date(),
+              },
+            ],
           });
         }
       },
 
-      removeItem: (id) => {
-        set((state) => ({
-          items: state.items.filter((item) => item.id !== id)
+      removeItem: id => {
+        set(state => ({
+          items: state.items.filter(item => item.id !== id),
         }));
       },
 
@@ -64,10 +71,8 @@ export const useCartStore = create<CartStore>()(
           return;
         }
 
-        set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id ? { ...item, quantity } : item
-          )
+        set(state => ({
+          items: state.items.map(item => (item.id === id ? { ...item, quantity } : item)),
         }));
       },
 
@@ -76,41 +81,43 @@ export const useCartStore = create<CartStore>()(
       },
 
       toggleCart: () => {
-        set((state) => ({ isOpen: !state.isOpen }));
+        set(state => ({ isOpen: !state.isOpen, isCheckoutOpen: false }));
       },
 
       openCart: () => {
-        set({ isOpen: true });
+        set({ isOpen: true, isCheckoutOpen: false });
       },
 
       closeCart: () => {
-        set({ isOpen: false });
+        set({ isOpen: false, isCheckoutOpen: false });
+      },
+
+      openCheckout: () => {
+        set({ isOpen: true, isCheckoutOpen: true });
+      },
+
+      setCheckoutOpen: (isCheckoutOpen: boolean) => {
+        set({ isCheckoutOpen });
       },
 
       getTotalPrice: () => {
-        return get().items.reduce(
-          (total, item) => total + item.price * item.quantity,
-          0
-        );
+        return get().items.reduce((total, item) => total + item.price * item.quantity, 0);
       },
 
       getTotalItems: () => {
-        return get().items.reduce(
-          (total, item) => total + item.quantity,
-          0
-        );
+        return get().items.reduce((total, item) => total + item.quantity, 0);
       },
 
-      getItemCount: (packageId) => {
-        return get().items
-          .filter((item) => item.packageId === packageId)
+      getItemCount: packageId => {
+        return get()
+          .items.filter(item => item.packageId === packageId)
           .reduce((total, item) => total + item.quantity, 0);
       },
     }),
     {
       name: 'xperience-climb-cart',
       version: 1,
-      partialize: (state) => ({ items: state.items }), // Only persist items, not isOpen
+      partialize: state => ({ items: state.items }), // Only persist items, not isOpen
     }
   )
-); 
+);

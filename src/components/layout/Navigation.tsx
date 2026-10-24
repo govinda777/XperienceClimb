@@ -1,357 +1,99 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { cn, openWhatsApp } from '@/lib/utils';
-import { NAVIGATION_ITEMS, CONTACT_INFO } from '@/lib/constants';
-import { LoginButton } from '@/components/auth';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useTheme } from '@/themes/ThemeProvider';
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
+import { Menu, X } from 'lucide-react';
 
 export function Navigation() {
-  const [activeSection, setActiveSection] = useState('hero');
-  const [isVisible, setIsVisible] = useState(true);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const { currentTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = NAVIGATION_ITEMS.map(item => item.id);
-      const scrollPosition = window.scrollY + 100;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const element = document.getElementById(sections[i]);
-        if (element && element.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i]);
-          break;
-        }
-      }
-
-      // Hide navigation when scrolling down, show when scrolling up
-      const currentScrollY = window.scrollY;
-      setIsVisible(currentScrollY < 100 || currentScrollY < lastScrollY);
-      lastScrollY = currentScrollY;
-    };
-
-    let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Close dropdowns when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (openDropdown && !(event.target as Element).closest('.dropdown-container')) {
-        setOpenDropdown(null);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [openDropdown]);
-
-  const handleNavClick = (targetId: string) => {
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
-      setOpenDropdown(null);
-    }
-  };
-
-  const getItemsByGroup = (groupKey: string) => {
-    return NAVIGATION_ITEMS.filter(item => item.group === groupKey);
-  };
-
-  const renderDropdownMenu = (groupKey: string, groupLabel: string) => {
-    const items = getItemsByGroup(groupKey);
-    const isOpen = openDropdown === groupKey;
-
-    return (
-      <div className="relative dropdown-container" key={groupKey}>
-        <button
-          onClick={() => setOpenDropdown(isOpen ? null : groupKey)}
-          className={cn(
-            'flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-200 font-medium',
-            'hover:bg-climb-500/10 hover:scale-105 active:scale-95',
-            isOpen ? 'bg-climb-500/10 text-climb-700' : 'text-climb-600 hover:text-climb-700'
-          )}
-        >
-          <span className="text-sm">{groupLabel}</span>
-          <span
-            className={cn('text-xs transition-transform duration-200', isOpen ? 'rotate-180' : '')}
-          >
-            ▼
-          </span>
-        </button>
-
-        {isOpen && (
-          <div className="absolute top-full left-0 mt-2 bg-white/95 backdrop-blur-lg rounded-xl border border-white/30 shadow-xl py-2 min-w-[200px] z-50">
-            {items.map(item => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={e => {
-                  e.preventDefault();
-                  handleNavClick(item.id);
-                }}
-                className={cn(
-                  'flex items-center space-x-2 w-full px-4 py-2.5 text-left transition-all duration-200',
-                  'hover:bg-climb-500/10',
-                  activeSection === item.id
-                    ? 'bg-climb-500 text-white'
-                    : 'text-climb-600 hover:text-climb-700'
-                )}
-              >
-                <span className="text-base">{item.icon}</span>
-                <span className="text-sm">{item.label}</span>
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
+  // Carrega configurações de marca do tema com fallback
+  const brand = currentTheme?.brand || pedraBellaTheme.brand!;
 
   return (
-    <>
-      {/* Desktop Navigation */}
-      <nav
-        className={cn(
-          'fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 hidden lg:block',
-          isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        )}
-      >
-        <div className="bg-white/95 backdrop-blur-lg rounded-2xl border border-white/30 shadow-xl px-6 py-3">
-          <div className="flex items-center space-x-1">
-            {/* Main Navigation Items (always visible) */}
-            <div className="flex items-center space-x-1">
-              {getItemsByGroup('main').map(item => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  onClick={e => {
-                    e.preventDefault();
-                    handleNavClick(item.id);
-                  }}
-                  className={cn(
-                    'flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-200 font-medium',
-                    'hover:bg-climb-500/10 hover:scale-105 active:scale-95',
-                    activeSection === item.id
-                      ? 'bg-climb-500 text-white shadow-lg scale-105'
-                      : 'text-climb-600 hover:text-climb-700'
-                  )}
-                >
-                  <span className="text-base">{item.icon}</span>
-                  <span className="text-sm">{item.label}</span>
-                </a>
-              ))}
-            </div>
-
-            {/* Separator */}
-            <div className="h-8 w-px bg-gradient-to-b from-transparent via-climb-300 to-transparent mx-3"></div>
-
-            {/* Grouped Navigation Items */}
-            <div className="flex items-center space-x-1">
-              {renderDropdownMenu('services', 'Serviços')}
-              {renderDropdownMenu('content', 'Conteúdo')}
-              {renderDropdownMenu('location', 'Local')}
-            </div>
-
-            {/* Separator */}
-            <div className="h-8 w-px bg-gradient-to-b from-transparent via-climb-300 to-transparent mx-3"></div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-2">
-              {/* WhatsApp Button */}
-              <button
-                onClick={() =>
-                  openWhatsApp(
-                    CONTACT_INFO.phone,
-                    'Olá! Gostaria de mais informações sobre a XperienceClimb 🏔️'
-                  )
-                }
-                className="flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-200 bg-green-500 hover:bg-green-600 text-white shadow-lg hover:scale-105 active:scale-95 font-medium"
-              >
-                <span className="text-base">💬</span>
-                <span className="text-sm">WhatsApp</span>
-              </button>
-
-              {/* Login Button */}
-              <LoginButton variant="outline" size="sm" />
-            </div>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-sand-50/95 backdrop-blur-md border-b border-sand-200 transition-all shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+        {/* Logo XPERIENCE climb com ícone Terracota */}
+        <Link href="#hero" className="flex items-center gap-2.5 group">
+          <div className="w-10 h-10 rounded-xl bg-terracotta-500 flex items-center justify-center font-black text-white text-lg shadow-sm group-hover:scale-105 transition-transform">
+            {brand.icon}
           </div>
-        </div>
-      </nav>
-
-      {/* Mobile Navigation */}
-      <nav
-        className={cn(
-          'fixed top-4 left-4 right-4 z-50 transition-all duration-300 lg:hidden',
-          isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        )}
-      >
-        <div className="bg-white/95 backdrop-blur-lg rounded-2xl border border-white/30 shadow-xl px-4 py-3">
-          <div className="flex items-center justify-between">
-            {/* Logo/Brand */}
-            <div className="flex items-center space-x-2">
-              <span className="text-xl">🏔️</span>
-              <span className="font-bold text-climb-600">XperienceClimb</span>
-            </div>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Alternar menu de navegação"
-              className="flex items-center space-x-1 px-3 py-2 rounded-lg bg-neutral-900 text-white hover:bg-neutral-800 transition-colors"
-            >
-              <span className="text-sm font-medium">Menu</span>
-              <span
-                className={cn(
-                  'text-xs transition-transform duration-200',
-                  isMobileMenuOpen ? 'rotate-180' : ''
-                )}
-              >
-                ▼
+          <div className="flex flex-col">
+            <span className="font-display font-black text-2xl tracking-wider text-ink-900 uppercase leading-none">
+              {brand.name}{' '}
+              <span className="text-terracotta-500 font-serifIt italic font-light lowercase text-xl">
+                {brand.accent}
               </span>
-            </button>
+            </span>
+            <span className="font-mono text-[9px] uppercase tracking-widest text-forest-700 font-semibold">
+              {brand.tagline}
+            </span>
           </div>
+        </Link>
 
-          {/* Mobile Menu Items */}
-          {isMobileMenuOpen && (
-            <div className="mt-4 pt-4 border-t border-climb-200">
-              {/* Main sections */}
-              <div className="mb-4">
-                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">PRINCIPAL</h4>
-                <div className="grid grid-cols-3 gap-2">
-                  {getItemsByGroup('main').map(item => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={cn(
-                        'flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200',
-                        'hover:bg-climb-500/10 active:scale-95',
-                        activeSection === item.id
-                          ? 'bg-climb-500 text-white shadow-md'
-                          : 'text-climb-600 hover:text-climb-700'
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
+        {/* Menu de Navegação Desktop */}
+        <nav
+          aria-label="Navegação Principal"
+          className="hidden md:flex items-center gap-7 lg:gap-8 font-mono text-xs uppercase tracking-wider text-ink-700 font-medium"
+        >
+          {brand.navLinks.map(link => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="hover:text-terracotta-500 transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
 
-              {/* Services */}
-              <div className="mb-4">
-                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">SERVIÇOS</h4>
-                <div className="grid grid-cols-3 gap-2">
-                  {getItemsByGroup('services').map(item => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={cn(
-                        'flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200',
-                        'hover:bg-climb-500/10 active:scale-95',
-                        activeSection === item.id
-                          ? 'bg-climb-500 text-white shadow-md'
-                          : 'text-climb-600 hover:text-climb-700'
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
+        {/* Botão Pill Verde Floresta: Agendar Ida & Toggle Mobile */}
+        <div className="flex items-center gap-3">
+          <a
+            href={brand.cta.href}
+            className="hidden sm:inline-flex items-center px-6 py-2.5 rounded-full bg-forest-700 hover:bg-forest-800 text-white font-mono text-xs font-bold uppercase tracking-wider shadow-sm hover:scale-105 active:scale-95 transition-all"
+          >
+            {brand.cta.label}
+          </a>
 
-              {/* Content and Location */}
-              <div className="mb-4">
-                <h4 className="text-xs font-semibold text-climb-500 mb-2 px-2">CONTEÚDO & LOCAL</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  {getItemsByGroup('content').map(item => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={cn(
-                        'flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200',
-                        'hover:bg-climb-500/10 active:scale-95',
-                        activeSection === item.id
-                          ? 'bg-climb-500 text-white shadow-md'
-                          : 'text-climb-600 hover:text-climb-700'
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </a>
-                  ))}
-                  {getItemsByGroup('location').map(item => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      onClick={e => {
-                        e.preventDefault();
-                        handleNavClick(item.id);
-                      }}
-                      className={cn(
-                        'flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-200',
-                        'hover:bg-climb-500/10 active:scale-95',
-                        activeSection === item.id
-                          ? 'bg-climb-500 text-white shadow-md'
-                          : 'text-climb-600 hover:text-climb-700'
-                      )}
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mobile Action Buttons */}
-              <div className="flex flex-col space-y-2">
-                <button
-                  onClick={() => {
-                    openWhatsApp(
-                      CONTACT_INFO.phone,
-                      'Olá! Gostaria de mais informações sobre a XperienceClimb 🏔️'
-                    );
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="flex items-center justify-center space-x-2 w-full px-4 py-3 rounded-xl bg-green-500 hover:bg-green-600 text-white font-medium transition-colors"
-                >
-                  <span>💬</span>
-                  <span>Falar no WhatsApp</span>
-                </button>
-
-                <div className="flex items-center space-x-2">
-                  <div className="flex-1">
-                    <LoginButton variant="outline" size="sm" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-xl text-ink-700 hover:bg-sand-100 transition-colors"
+            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
-      </nav>
+      </div>
 
-      {/* Mobile Menu Backdrop */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
+      {/* Menu Mobile Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-sand-50/98 border-b border-sand-200 px-6 py-6 transition-all shadow-lg">
+          <nav className="flex flex-col gap-4 font-mono text-xs uppercase tracking-wider text-ink-800 font-medium">
+            {brand.navLinks.map(link => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2 hover:text-terracotta-500 border-b border-sand-200/60 transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+            <a
+              href={brand.cta.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className="mt-2 text-center py-3 rounded-full bg-forest-700 text-white font-mono text-xs font-bold uppercase tracking-wider shadow-sm"
+            >
+              {brand.cta.label}
+            </a>
+          </nav>
+        </div>
       )}
-    </>
+    </header>
   );
 }

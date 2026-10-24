@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110" fill="none">
+  <!-- Cadeira de Camping dobrável em Verde Floresta -->
+  <!-- Encosto e assento de lona verde -->
+  <path d="M25 25 L45 15 L50 48 L28 55 Z" fill="#2D6A4F" stroke="#0F172A" stroke-width="3" stroke-linejoin="round" />
+  <path d="M28 55 L70 42 L65 75 L22 85 Z" fill="#1B4332" stroke="#0F172A" stroke-width="3" stroke-linejoin="round" />
+  <!-- Armação tubular de metal cruzada (X) -->
+  <line x1="26" y1="52" x2="68" y2="100" stroke="#0F172A" stroke-width="3.5" stroke-linecap="round" />
+  <line x1="68" y1="46" x2="24" y2="102" stroke="#0F172A" stroke-width="3.5" stroke-linecap="round" />
+  <line x1="48" y1="18" x2="38" y2="92" stroke="#0F172A" stroke-width="3.5" stroke-linecap="round" />
+  <!-- Pés de borracha -->
+  <rect x="20" y="100" width="8" height="4" rx="2" fill="#C85A32" />
+  <rect x="66" y="98" width="8" height="4" rx="2" fill="#C85A32" />
+</svg>

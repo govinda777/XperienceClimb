@@ -11,7 +11,7 @@ import GoogleScripts from '@/components/analytics/GoogleScripts';
 // import FloatingChatButton from '@/components/chat/FloatingChatButton';
 import StructuredData from '@/components/seo/StructuredData';
 
-import { Inter, Big_Shoulders_Display, Fraunces, JetBrains_Mono } from 'next/font/google';
+import { Inter, Big_Shoulders, Fraunces, JetBrains_Mono } from 'next/font/google';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,11 +19,12 @@ const inter = Inter({
   display: 'swap',
 });
 
-const bigShoulders = Big_Shoulders_Display({
+const bigShoulders = Big_Shoulders({
   subsets: ['latin'],
   weight: ['700', '800', '900'],
   variable: '--font-display',
   display: 'swap',
+  adjustFontFallback: false,
 });
 
 const fraunces = Fraunces({

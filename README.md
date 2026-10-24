@@ -1,558 +1,126 @@
-# 🧗‍♂️ XperienceClimb - Plataforma de Experiências de Escalada
+# 🧗‍♂️ XperienceClimb — Plataforma de Expedições e Escalada em Rocha
 
-Uma plataforma completa de reservas para experiências de escalada no Morro Araçoiaba (Floresta Nacional de Ipanema), desenvolvida com Next.js 15, TypeScript, Privy e múltiplos métodos de pagamento.
+[![Next.js](https://img.shields.io/badge/Next.js-15.0.7-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
+[![Jest Tests](https://img.shields.io/badge/Tests-269%20passed-brightgreen?style=flat&logo=jest)](https://jestjs.io/)
+[![Privy](https://img.shields.io/badge/Auth-Privy%20Web3%20%2B%20Social-blueviolet)](https://privy.io/)
+[![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20DDD-orange)](#-arquitetura)
 
-## 🌟 Características Principais
+O **XperienceClimb** é uma plataforma full-stack moderna de reservas e imersão para vivências de escalada esportiva e montanhismo em rocha natural. Com identidade visual inspirada na alta alfaiataria outdoor (**Arc'teryx / Boulder Aesthetic**), a plataforma oferece uma jornada de contratação fluida, segura e transparente para expedições na **Pedra do Santuário em Pedra Bela (SP)** e outros polos brasileiros de escalada.
 
-- **🏗️ Arquitetura Moderna**: Next.js 15 com App Router, TypeScript e Clean Architecture
-- **🔐 Autenticação Segura**: Integração com Privy para Web3 e autenticação social
-- **💳 Múltiplos Pagamentos**: Mercado Pago, PIX, Bitcoin, USDT e GitHub Sponsors
-- **🎫 Sistema de Cupons**: Descontos personalizáveis com regras de negócio
-- **🎨 Sistema de Temas**: Suporte para múltiplos destinos de escalada
-- **🧪 Testes Abrangentes**: 80+ testes incluindo BDD e integração
-- **📱 Responsivo**: Interface otimizada para todos os dispositivos
+---
 
-## 📋 Índice
+## 🌟 Principais Recursos e Diferenciais
 
-- [🚀 Início Rápido](#-início-rápido)
-- [🏗️ Arquitetura](#️-arquitetura)
-- [💳 Sistema de Pagamentos](#-sistema-de-pagamentos)
-- [🎫 Sistema de Cupons](#-sistema-de-cupons)
-- [🧪 Testes](#-testes)
-- [🔧 Pré-requisitos](#-pré-requisitos)
-- [🚀 Deploy (Vercel)](#-deploy-vercel)
-- [⚙️ Configuração Completa](#️-configuração-completa)
-- [🔐 Configuração das APIs](#-configuração-das-apis)
-- [❌ Resolução de Problemas](#-resolução-de-problemas)
-- [📚 Comandos Úteis](#-comandos-úteis)
+- **🎨 Design System Outdoor Editorial:** Tipografia técnica com tags em mono (`ALT 1.120M`, `GPS 22°42'S`), títulos display e ilustrações vetoriais personalizadas (`ClimbingDoodles`).
+- **🛡️ Checkout com Identificação Prévia (`AuthPromptScreen`):** Garantia de que todos os dados coletados sejam atrelados com segurança ao perfil do participante, evitando cancelamentos ou perda de dados.
+- **📱 Integração Direta com WhatsApp:** O fluxo de fechamento converte o pedido em uma mensagem estruturada e auditável para atendimento consultivo dos instrutores e emissão de apólice do **Seguro Aventura**.
+- **📅 Gestão Dinâmica de Expedições:** Exibição da próxima data confirmada (**28 de Novembro de 2026**) com canal aberto para reserva de datas privativas sob medida.
+- **🗺️ Arquitetura Multi-Destino:** Sistema flexível com `ThemeProvider` e rotação dinâmica por rotas (`/destinos/[slug]`).
+- **🧪 Engenharia com Qualidade Máxima:** 24 suítes de testes automatizados com **269 testes aprovados** (Jest + Testing Library) e compilação de build Next.js com zero erros.
 
-## 🚀 Início Rápido
+---
 
-```bash
-# Clone o repositório
-git clone https://github.com/govinda777/XperienceClimb.git
-cd XperienceClimb
+## 📦 Pacotes de Experiência
 
-# Instale as dependências
-npm install
+| Pacote                   | Modalidade       | Duração          | Preço           | O que inclui                                                                                                                                              |
+| :----------------------- | :--------------- | :--------------- | :-------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **VIA · BATISMO**        | Pacote Agarrão   | 1 dia            | **R$ 277,00**   | Rocha natural, equipamentos UIAA, instrutores certificados, seguro aventura, almoço completo à vontade, café no mirante ao pôr do sol e mentoria de vida. |
+| **CRUX · INTERMEDIÁRIO** | Pacote Crux      | 1 dia + Pernoite | Lista de Espera | Todas as vias do Agarrão + Hospedagem de charme na serra e descanso merecido.                                                                             |
+| **CUME · AVANÇADO**      | Alma Vertical    | 2 dias inteiros  | Lista de Espera | Fim de semana intenso, 2 dias de escalada técnica, hospedagem com café colonial e ascensão a cumes panorâmicos.                                           |
+| **VIP · ANUAL**          | Passaporte Anual | 12 meses         | 12 Vagas/Ano    | Acesso exclusivo ao calendário anual, treinamentos contínuos de técnica e segurança, além de Kit VIP de aventura.                                         |
 
-# Configure as variáveis de ambiente (veja ENV_VARIABLES.txt)
-cp .env.example .env.local
+---
 
-# Execute em modo de desenvolvimento
-npm run dev
-```
+## 🏗️ Arquitetura do Sistema
 
-Acesse http://localhost:3000 para ver a aplicação rodando.
-
-## 🏗️ Arquitetura
-
-O projeto utiliza **Clean Architecture** com **Domain-Driven Design (DDD)**:
+O projeto é estruturado conforme a **Clean Architecture** e o **Domain-Driven Design (DDD)**:
 
 ```
 src/
-├── app/                    # Next.js App Router (Presentation)
-├── components/             # Componentes React
-├── core/                   # Domain Layer
-│   ├── entities/          # Entidades de domínio
-│   ├── repositories/      # Interfaces de repositórios
-│   ├── services/          # Interfaces de serviços
-│   └── use-cases/         # Casos de uso
-├── infrastructure/        # Infrastructure Layer
-│   ├── repositories/      # Implementações de repositórios
-│   └── services/          # Implementações de serviços
-├── hooks/                 # Custom React hooks
-├── store/                 # Estado global (Zustand)
-└── themes/                # Sistema de temas
+├── app/                    # Presentation: Next.js App Router (Páginas, Rotas e APIs)
+├── components/             # Componentes React (CartModal, CheckoutForm, Sections, UI)
+├── core/                   # Domain Layer: Entidades puras, Interfaces e Casos de Uso
+│   ├── entities/          # Order, User, Coupon, Tour
+│   ├── repositories/      # Interfaces (IOrderRepository, IUserRepository)
+│   └── use-cases/         # CreateOrder, ValidateCoupon
+├── infrastructure/         # Infrastructure Layer: Repositórios e Serviços (WhatsAppService)
+├── hooks/                  # Custom Hooks (useAuth)
+├── store/                  # Estado Global Reativo (Zustand: useCartStore)
+├── themes/                 # Motor de Temas Dinâmicos (pedra-bela.ts)
+└── lib/                    # Constantes, utilitários monetários e helpers
 ```
 
-**Principais Tecnologias:**
+Para uma análise detalhada da arquitetura, consulte o documento [`ARQ.md`](ARQ.md) e o compêndio de diagramas em [`docs/FLUXOS_E_DIAGRAMAS.md`](docs/FLUXOS_E_DIAGRAMAS.md).
 
-- **Next.js 15** - Framework React com App Router
-- **TypeScript** - Tipagem estática
-- **Tailwind CSS** - Estilização utilitária
-- **Zustand** - Gerenciamento de estado
-- **Privy** - Autenticação Web3 e social
-- **Jest + React Testing Library** - Testes
+---
 
-## 💳 Sistema de Pagamentos
+## 🚀 Início Rápido
 
-Suporte completo a múltiplos métodos de pagamento:
+### Pré-requisitos
 
-### Métodos Disponíveis
+- **Node.js** >= 18.18.0
+- **npm** (gerenciador oficial do projeto)
 
-- **💳 Cartão de Crédito** - Via Mercado Pago
-- **📱 PIX** - Pagamento instantâneo brasileiro
-- **₿ Bitcoin** - Pagamentos em criptomoeda
-- **💎 USDT** - Stablecoin na rede Ethereum
-- **🐙 GitHub Sponsors** - Patrocínio via GitHub
-- **📞 WhatsApp** - Fallback para finalização manual
-
-### Características
-
-- **Processamento Seguro** - Integração com APIs confiáveis
-- **Webhooks** - Confirmação automática de pagamentos
-- **Conversão de Moeda** - Suporte a BRL, USD e criptomoedas
-- **Fallback Inteligente** - WhatsApp como backup
-
-## 🎫 Sistema de Cupons
-
-Sistema avançado de descontos com regras de negócio:
-
-### Tipos de Desconto
-
-- **Percentual** - Ex: 10% de desconto
-- **Valor Fixo** - Ex: R$ 50 de desconto
-- **Método Específico** - Descontos por forma de pagamento
-
-### Cupons de Teste
-
-| Código      | Tipo       | Valor | Restrições                   |
-| ----------- | ---------- | ----- | ---------------------------- |
-| `WELCOME10` | Percentual | 10%   | Mín. R$ 50, Todos os métodos |
-| `CLIMB50`   | Fixo       | R$ 50 | Mín. R$ 100, Cartão/PIX      |
-| `CRYPTO15`  | Percentual | 15%   | Mín. R$ 30, Apenas crypto    |
-
-### Regras de Negócio
-
-- **Validação em Tempo Real** - Verificação instantânea
-- **Limites de Uso** - Controle de quantidade e usuário
-- **Compatibilidade** - Restrições por método de pagamento
-- **Expiração** - Datas de validade configuráveis
-
-## 🧪 Testes
-
-Suite completa de testes com alta cobertura:
-
-### Tipos de Teste
-
-- **Unit Tests** - Componentes e funções isoladas
-- **Integration Tests** - Fluxos completos de API
-- **BDD Tests** - Cenários de comportamento do usuário
-
-### Executar Testes
+### 1. Clonar e Instalar
 
 ```bash
-# Todos os testes
-npm test
-
-# Com cobertura
-npm run test:coverage
-
-# Testes BDD
-npm run test:bdd
-
-# Testes de pré-commit
-npm run test:pre-commit
+git clone https://github.com/govinda777/XperienceClimb.git
+cd XperienceClimb
+npm install
 ```
 
-### Cobertura Atual
+### 2. Configurar Variáveis de Ambiente
 
-- **80+ testes** implementados
-- **5 suites** de teste
-- **Cobertura > 90%** nas funcionalidades críticas
-
-## 🎨 Sistema de Temas
-
-Suporte para múltiplos destinos de escalada com sistema de imagens externas:
-
-### Características dos Temas
-
-- **🎨 Temas Personalizáveis** - Cores, conteúdo e imagens específicas
-- **🌐 Imagens Externas** - URLs de serviços como Unsplash, Picsum e outros
-- **💾 Economia de Armazenamento** - Não precisa hospedar imagens localmente
-- **🚀 Performance Otimizada** - CDNs especializadas em imagens
-- **🔄 Flexibilidade** - Fácil troca de imagens sem reupload
-
-### Temas Disponíveis
-
-- **🏔️ Fazenda Ipanema** - Escalada na Floresta Nacional de Ipanema
-- **🏞️ Pedra Bela** - Aventura completa com tirolesa e cachoeiras
-- **🌐 Exemplo Externo** - Demonstração do sistema de imagens externas
-
-### Criar Novos Temas
+Crie um arquivo `.env.local` na raiz baseado no exemplo:
 
 ```bash
-# Script interativo para criar temas
-npm run create-theme
-
-# Ou manualmente editando os arquivos de configuração
+cp .env.example .env.local
 ```
 
-### Sistema de Imagens Externas
-
-O projeto suporta URLs externas de serviços confiáveis:
-
-- **Unsplash** - Fotos gratuitas de alta qualidade
-- **Picsum** - Imagens placeholder aleatórias
-- **Placeholder.com** - Placeholders simples
-- **URLs Customizadas** - Qualquer CDN confiável
-
-```typescript
-// Exemplo de configuração
-{
-  src: 'https://images.unsplash.com/photo-123?w=800&h=600&fit=crop',
-  alt: 'Escalada técnica',
-  title: 'Escalada Técnica',
-  category: 'climb',
-  isExternal: true,
-  externalDomain: 'images.unsplash.com'
-}
-```
-
-📚 **Documentação Completa**: [docs/EXTERNAL_IMAGES.md](docs/EXTERNAL_IMAGES.md)
-
-## 🔧 Pré-requisitos
-
-- **Node.js** v18 ou superior
-- **npm** ou **yarn**
-- **Git**
-- Conta na [Vercel](https://vercel.com) (recomendado)
-- Conta no [Privy](https://dashboard.privy.io/) para autenticação
-- Conta no [MercadoPago](https://developers.mercadopago.com/) para pagamentos
-
-## 🚀 Deploy (Vercel)
-
-### Método 1: Deploy via Git (Recomendado)
-
-1. **Faça push do código para GitHub:**
-
-   ```bash
-   git add .
-   git commit -m "Preparar para deploy"
-   git push origin main
-   ```
-
-2. **Conecte com Vercel:**
-   - Acesse [vercel.com](https://vercel.com)
-   - Clique em "New Project"
-   - Importe seu repositório GitHub
-   - Configure as variáveis de ambiente (veja seção abaixo)
-   - Clique em "Deploy"
-
-### Método 2: Deploy via CLI
-
-1. **Instale Vercel CLI:**
-
-   ```bash
-   # Execute o script fornecido (Mac/Linux)
-   chmod +x INSTALL_VERCEL.sh
-   ./INSTALL_VERCEL.sh
-
-   # Ou instale manualmente
-   npm install -g vercel
-   ```
-
-2. **Faça login e deploy:**
-   ```bash
-   vercel login
-   vercel --prod
-   ```
-
-## ⚙️ Configuração Completa
-
-### 1. Variáveis de Ambiente
-
-O arquivo `ENV_VARIABLES.txt` contém todas as variáveis necessárias. Configure-as na **Vercel Dashboard > Settings > Environment Variables**:
-
-#### 🔑 Variáveis Obrigatórias
+Principais chaves necessárias:
 
 ```env
-# Privy (Autenticação)
-NEXT_PUBLIC_PRIVY_APP_ID=seu_privy_app_id
-
-# MercadoPago (Pagamentos)
-NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY=sua_public_key
-MERCADOPAGO_ACCESS_TOKEN=seu_access_token
-
-# URLs da Aplicação (atualize após primeiro deploy)
-NEXT_PUBLIC_APP_URL=https://sua-app.vercel.app
-NEXT_PUBLIC_SUCCESS_URL=https://sua-app.vercel.app/checkout/success
-NEXT_PUBLIC_FAILURE_URL=https://sua-app.vercel.app/checkout/failure
-NEXT_PUBLIC_PENDING_URL=https://sua-app.vercel.app/checkout/pending
+NEXT_PUBLIC_PRIVY_APP_ID=seu_app_id_privy
+NEXT_PUBLIC_WHATSAPP_NUMBER=5511995413539
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-#### ⚡ Deploy com Valores Temporários
-
-Para fazer o primeiro deploy rapidamente, use valores temporários:
-
-```env
-NEXT_PUBLIC_PRIVY_APP_ID=temp_value
-NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY=temp_value
-MERCADOPAGO_ACCESS_TOKEN=temp_value
-NEXT_PUBLIC_APP_URL=https://xperienceclimb.vercel.app
-NEXT_PUBLIC_SUCCESS_URL=https://xperienceclimb.vercel.app/checkout/success
-NEXT_PUBLIC_FAILURE_URL=https://xperienceclimb.vercel.app/checkout/failure
-NEXT_PUBLIC_PENDING_URL=https://xperienceclimb.vercel.app/checkout/pending
-```
-
-> ⚠️ **Importante:** Substitua pelos valores reais após configurar as APIs.
-
-### 2. Configuração do Domínio
-
-Após o primeiro deploy:
-
-1. **Anote a URL gerada:** `https://sua-app.vercel.app`
-2. **Atualize as variáveis de ambiente** com a URL real
-3. **Configure domínio customizado** (opcional):
-   - Vercel Dashboard > Domains
-   - Adicione seu domínio personalizado
-
-## 🔐 Configuração das APIs
-
-### 🎭 Privy (Autenticação)
-
-1. **Acesse:** [dashboard.privy.io](https://dashboard.privy.io/)
-2. **Crie uma aplicação:**
-   - Nome: XperienceClimb
-   - Callback URLs: `https://sua-app.vercel.app`
-3. **Configure login methods:** Email, Google, Apple
-4. **Copie o App ID** e atualize `NEXT_PUBLIC_PRIVY_APP_ID`
-
-### 💳 MercadoPago (Pagamentos)
-
-1. **Acesse:** [developers.mercadopago.com](https://developers.mercadopago.com/)
-2. **Crie uma aplicação:**
-   - Nome: XperienceClimb
-   - Tipo: Checkout Pro
-3. **Configure webhooks:**
-   - URL: `https://sua-app.vercel.app/api/mercadopago/webhook`
-   - Eventos: `payment`, `merchant_order`
-4. **Copie as credenciais:**
-   - Public Key → `NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY`
-   - Access Token → `MERCADOPAGO_ACCESS_TOKEN`
-
-### 🔄 Atualizar Configurações
-
-Após configurar as APIs:
-
-1. **Atualize as variáveis na Vercel**
-2. **Force um novo deploy:**
-   ```bash
-   vercel --prod --force
-   ```
-
-## 🛠️ Deploy Alternativo
-
-### Netlify
-
-1. **Instale Netlify CLI:**
-
-   ```bash
-   npm install -g netlify-cli
-   ```
-
-2. **Build e deploy:**
-
-   ```bash
-   npm run build
-   netlify deploy --prod --dir=.next
-   ```
-
-3. **Configure variáveis:** Netlify Dashboard > Environment Variables
-
-### Docker
-
-1. **Crie Dockerfile:**
-
-   ```dockerfile
-   FROM node:18-alpine
-   WORKDIR /app
-   COPY package*.json ./
-   RUN npm install
-   COPY . .
-   RUN npm run build
-   EXPOSE 3000
-   CMD ["npm", "start"]
-   ```
-
-2. **Build e run:**
-   ```bash
-   docker build -t xperience-climb .
-   docker run -p 3000:3000 xperience-climb
-   ```
-
-## ❌ Resolução de Problemas
-
-### Erro: "Privy App ID not found"
-
-- ✅ Verifique se `NEXT_PUBLIC_PRIVY_APP_ID` está configurado
-- ✅ Confirme que o App ID está correto no Privy Dashboard
-
-### Erro: "MercadoPago public key invalid"
-
-- ✅ Use a **Public Key**, não o Access Token
-- ✅ Verifique se está usando credenciais de produção
-
-### Erro: "Function Runtimes must have a valid version"
-
-- ✅ Arquivo `vercel.json` simplificado para Next.js 14
-- ✅ Next.js App Router gerencia functions automaticamente
-- ✅ Remova configurações desnecessárias de `functions` e `buildCommand`
-
-### Erro de CORS no webhook
-
-- ✅ Configure o webhook URL exatamente como: `https://sua-app.vercel.app/api/mercadopago/webhook`
-- ✅ Headers CORS já estão configurados no `vercel.json`
-
-### Erro TypeScript: "Property 'name' does not exist on type 'Apple'"
-
-- ✅ Privy Apple login não fornece propriedade `name`
-- ✅ Use apenas `user.google?.name` e `user.email?.address`
-- ✅ Corrija também `user.google?.pictureUrl` → `user.google?.picture`
-- ✅ Arquivos `LoginButton.tsx` e `useAuth.ts` já corrigidos
-
-### Erro: "Module has already exported a member named 'Money'"
-
-- ✅ Remova exportação duplicada de `Money` do arquivo `Order.ts`
-- ✅ Importe `Money` de `Package.ts` no `Order.ts`
-- ✅ Mantenha `Money` apenas em um arquivo para evitar conflitos
-
-### Erro: "This expression is not callable" (PackageRepository)
-
-- ✅ `PACKAGES` é um `Record<string, PackageType>`, não array
-- ✅ Use `PACKAGES[id]` ao invés de `PACKAGES.find()`
-- ✅ Use `Object.values(PACKAGES)` ao invés de `PACKAGES.map()`
-
-### Build falha por lint
+### 3. Rodar em Desenvolvimento
 
 ```bash
-# Corrigir problemas de lint
-npm run lint:fix
-
-# Build ignorando avisos
-npm run build -- --no-lint
+npm run dev
 ```
 
-### Problemas de imagens
-
-- ✅ Imagens devem estar em `public/images/`
-- ✅ Referencie como `/images/nome.jpg`
-- ✅ Adicione domínios externos no `next.config.js`
-
-## 📚 Comandos Úteis
-
-### Desenvolvimento
-
-```bash
-npm run dev          # Servidor de desenvolvimento
-npm run build        # Build de produção
-npm run start        # Servidor de produção
-npm run lint         # Verificar lint
-npm run type-check   # Verificar TypeScript
-```
-
-### Deploy
-
-```bash
-vercel               # Deploy preview
-vercel --prod        # Deploy produção
-vercel --force       # Force redeploy
-vercel domains       # Gerenciar domínios
-vercel env           # Gerenciar variáveis
-```
-
-### Debugging
-
-```bash
-vercel logs          # Ver logs da aplicação
-vercel inspect       # Inspecionar deploy
-npm run analyze      # Analisar bundle size
-```
-
-## 🎯 Checklist Final
-
-Antes de considerar o deploy completo:
-
-- [ ] ✅ Aplicação compila sem erros
-- [ ] ✅ Todas as variáveis de ambiente configuradas
-- [ ] ✅ Privy App ID e callback URLs corretos
-- [ ] ✅ MercadoPago credenciais e webhooks configurados
-- [ ] ✅ URLs de checkout atualizadas
-- [ ] ✅ Testes de pagamento funcionando
-- [ ] ✅ Autenticação funcionando
-- [ ] ✅ Imagens carregando corretamente
-- [ ] ✅ Domínio personalizado configurado (se aplicável)
-
-## 🆘 Suporte
-
-Se encontrar problemas:
-
-1. **Verifique os logs:** `vercel logs`
-2. **Teste localmente:** `npm run build && npm start`
-3. **Consulte a documentação:**
-   - [Next.js](https://nextjs.org/docs)
-   - [Vercel](https://vercel.com/docs)
-   - [Privy](https://docs.privy.io/)
-   - [MercadoPago](https://www.mercadopago.com.br/developers/pt/docs)
+Acesse `http://localhost:3000` no seu navegador.
 
 ---
 
-## 🎯 **Status do Deploy**
+## 🛠️ Comandos Disponíveis
 
-✅ **APLICAÇÃO ONLINE!**
-
-**URL de Produção:** https://xperience-climb-1fk4unbis-govinda777s-projects.vercel.app
-
-**Próximos passos:**
-
-1. Configure as variáveis de ambiente com valores reais
-2. Configurar Privy App ID
-3. Configurar credenciais do MercadoPago
-4. Testar funcionalidades completas
-
----
-
-## 🎯 Status do Projeto
-
-### ✅ Funcionalidades Implementadas
-
-- **Sistema de Autenticação** - Privy com Web3 e social login
-- **Carrinho de Compras** - Gerenciamento completo com Zustand
-- **Múltiplos Pagamentos** - 5 métodos diferentes implementados
-- **Sistema de Cupons** - Descontos com regras de negócio
-- **Checkout Multi-step** - Processo guiado de finalização
-- **Testes Abrangentes** - 80+ testes com alta cobertura
-- **Arquitetura Limpa** - Clean Architecture + DDD
-- **Sistema de Temas** - Preparado para múltiplos destinos
-
-### 🔄 Em Desenvolvimento
-
-- **Campo WhatsApp** - Adicionar campo obrigatório no formulário
-- **Melhorias de Interface** - Ajustes no menu, footer e galeria
-- **Seção Cronograma** - Cronograma detalhado da experiência
-- **Seção Parceiros** - Parceiros e colaboradores
-
-### 📈 Métricas do Projeto
-
-- **Arquivos de Código**: 100+ arquivos TypeScript/React
-- **Linhas de Código**: 10,000+ linhas
-- **Componentes**: 30+ componentes reutilizáveis
-- **Testes**: 80+ testes automatizados
-- **Cobertura**: >90% nas funcionalidades críticas
-
-## 🤝 Contribuição
-
-Para contribuir com o projeto:
-
-1. Fork o repositório
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 📞 Suporte
-
-Para suporte e dúvidas:
-
-- **Email**: contato@xperiencehubs.com
-- **WhatsApp**: +55 11 99999-9999
-- **GitHub Issues**: Para bugs e melhorias
+| Comando              | Descrição                                                              |
+| :------------------- | :--------------------------------------------------------------------- |
+| `npm run dev`        | Inicia o servidor local Next.js em modo de desenvolvimento             |
+| `npm run build`      | Compila o build estático otimizado de produção (19 rotas)              |
+| `npm run start`      | Inicia a aplicação compilada em modo de produção                       |
+| `npm run type-check` | Executa o compilador TypeScript (`tsc --noEmit`) sem emitir arquivos   |
+| `npm test`           | Executa a suíte completa de testes automatizados com Jest (269 testes) |
+| `npm run test:watch` | Executa os testes no modo interativo                                   |
+| `npm run lint`       | Executa a verificação e correção de estilo com ESLint e Prettier       |
 
 ---
 
-🚀 **XperienceClimb - Escalando novos horizontes na tecnologia e na natureza!**
+## 📚 Documentação Especializada
+
+- **[CHANGELOG.md](CHANGELOG.md):** Histórico semântico de versões, novidades e correções.
+- **[ARQ.md](ARQ.md):** Documentação arquitetural aprofundada, convenção monetária e padrões de código.
+- **[docs/FLUXOS_E_DIAGRAMAS.md](docs/FLUXOS_E_DIAGRAMAS.md):** Diagramas Mermaid (Sequência de Checkout, Máquina de Estados e Temas).
+- **[Package_Form.md](Package_Form.md):** Especificação completa das 3 etapas do formulário de reserva.
+- **[docs/GLOSSARIO_TECNICO_SEGURANCA.md](docs/GLOSSARIO_TECNICO_SEGURANCA.md):** Glossário de escalada e equipamentos certificados.
+
+---
+
+## 🛡️ Licença e Direitos
+
+Projeto desenvolvido com foco em excelência técnica e turismo de aventura consciente. Todos os direitos reservados à **XperienceClimb**.

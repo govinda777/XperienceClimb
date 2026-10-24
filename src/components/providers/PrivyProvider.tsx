@@ -1,10 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { PrivyProvider as BasePrivyProvider } from '@privy-io/react-auth';
-import { privyConfig } from '@/lib/privy';
+import dynamic from 'next/dynamic';
 import { isBotOrAuditor } from '@/lib/bot-detection';
-import { AuthContext, PrivyConnectedAuthProvider, defaultGuestAuthContext } from '@/hooks/useAuth';
+import { AuthContext, defaultGuestAuthContext } from '@/hooks/useAuth';
+
+// Carrega o pacote pesado do Privy (~450 KiB) apenas sob demanda via dynamic import
+const DynamicPrivyAuthWrapper = dynamic(
+  () => import('./PrivyAuthWrapper').then(mod => mod.PrivyAuthWrapper),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
 
 interface PrivyProviderProps {
   children: React.ReactNode;
@@ -13,27 +21,22 @@ interface PrivyProviderProps {
 export function PrivyProvider({ children }: PrivyProviderProps) {
   const [enabled, setEnabled] = useState(false);
 
+  const rawAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
+  const isRealAppId = Boolean(
+    rawAppId &&
+    rawAppId.length === 25 &&
+    rawAppId !== 'clp1234567890123456789012' &&
+    !rawAppId.startsWith('clp123456')
+  );
+
   useEffect(() => {
-    // Only initialize Privy for real human users; prevent Turnstile hanging in Lighthouse/bots
-    if (!isBotOrAuditor()) {
+    // Inicializa Privy somente para usuários reais no cliente com App ID válido configurado
+    if (!isBotOrAuditor() && isRealAppId) {
       setEnabled(true);
     }
-  }, []);
+  }, [isRealAppId]);
 
-  let appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
-
-  // Fallback for development or environments with missing/invalid ID
-  // to preventing crash on initialization.
-  // Privy App IDs must be strings of length 25 (e.g. clp...)
-  if (!appId || appId.length !== 25) {
-    console.warn(
-      'NEXT_PUBLIC_PRIVY_APP_ID is missing or invalid. Using a dummy ID to prevent crash.'
-    );
-    // Use a dummy ID that satisfies the format check (length 25)
-    appId = 'clp1234567890123456789012';
-  }
-
-  // Ensure any dynamically injected third-party images have an alt attribute for SEO & accessibility
+  // Garante que imagens injetadas dinamicamente possuam alt para acessibilidade e auditorias
   useEffect(() => {
     const fixMissingAlts = () => {
       document.querySelectorAll('img:not([alt])').forEach(img => {
@@ -48,13 +51,9 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
     return () => observer.disconnect();
   }, []);
 
-  if (!enabled) {
+  if (!enabled || !rawAppId || !isRealAppId) {
     return <AuthContext.Provider value={defaultGuestAuthContext}>{children}</AuthContext.Provider>;
   }
 
-  return (
-    <BasePrivyProvider appId={appId} config={privyConfig}>
-      <PrivyConnectedAuthProvider>{children}</PrivyConnectedAuthProvider>
-    </BasePrivyProvider>
-  );
+  return <DynamicPrivyAuthWrapper appId={rawAppId}>{children}</DynamicPrivyAuthWrapper>;
 }

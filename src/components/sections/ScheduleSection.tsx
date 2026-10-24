@@ -2,98 +2,60 @@
 
 import React from 'react';
 import { useTheme } from '@/themes/ThemeProvider';
-import { Button } from '@/components/ui';
-import { openWhatsApp } from '@/lib/utils';
-import { CONTACT_INFO } from '@/lib/constants';
-import {
-  MapPin,
-  Clock,
-  Backpack,
-  Building2,
-  HelpCircle,
-  Navigation,
-  ArrowRight,
-} from 'lucide-react';
+import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
 
 export function ScheduleSection() {
   const { currentTheme } = useTheme();
-  const { logistics, location } = currentTheme;
+
+  // Consome scheduleSection de pedra-bela.ts com fallback
+  const sched = currentTheme?.scheduleSection || pedraBellaTheme.scheduleSection!;
 
   return (
-    <section id="programacao" className="py-24 bg-stone-50">
-      <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          {/* Logistics & Meeting Point */}
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-stone-300 bg-stone-200/60 px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-stone-700">
-              <span>CRONOGRAMA & REQUISITOS</span>
+    <section id="programacao" className="py-24 relative bg-sand-100/80 border-t border-sand-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* COLUNA DA ESQUERDA: JANELA OPERACIONAL & CHECKLIST */}
+          <div className="lg:col-span-7">
+            <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-forest-700 font-bold mb-2">
+              <span>{sched.badge}</span>
             </div>
-            <h2 className="text-4xl font-extrabold tracking-tight text-stone-900 mb-8 md:text-5xl">
-              Programação e Logística
+            <h2 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight text-ink-900 mb-6">
+              {sched.title}{' '}
+              <span className="font-serifIt italic font-light text-terracotta-500 normal-case">
+                {sched.titleAccent}
+              </span>
             </h2>
 
             <div className="space-y-6">
-              {/* Meeting Point Card */}
-              <div className="flex items-start gap-4 rounded-2xl border border-stone-200/80 bg-white p-6 shadow-sm">
-                <div className="flex-shrink-0 w-11 h-11 bg-orange-50 border border-orange-200/60 rounded-xl flex items-center justify-center text-orange-600">
-                  <MapPin className="h-5 w-5" strokeWidth={1.5} />
+              {/* Card Horários */}
+              <div className="bg-white p-6 rounded-3xl border border-sand-200 shadow-soft flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-forest-100 text-forest-700 flex items-center justify-center text-xl flex-shrink-0">
+                  {sched.hoursCard.icon}
                 </div>
-                <div className="flex-1">
-                  <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-orange-600">
-                    Ponto de Encontro
+                <div>
+                  <span className="font-mono text-[10px] font-bold uppercase text-forest-700">
+                    {sched.hoursCard.tag}
                   </span>
-                  <h3 className="text-lg font-bold text-stone-900 mt-0.5 mb-2">Meeting Point</h3>
-                  <p className="text-stone-600 leading-relaxed text-sm mb-4">
-                    {logistics.meetingPoint}
+                  <h3 className="text-xl font-bold text-ink-900 mt-0.5 mb-1">
+                    {sched.hoursCard.time}
+                  </h3>
+                  <p className="text-xs text-ink-600 leading-relaxed">
+                    {sched.hoursCard.description}
                   </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      window.open(location.meetingPointMapsUrl || location.mapsUrl, '_blank')
-                    }
-                    className="gap-2 border-stone-300 text-stone-800 hover:bg-stone-50 hover:border-stone-400"
-                  >
-                    <Navigation className="h-3.5 w-3.5 text-orange-600" strokeWidth={1.5} />
-                    <span>Ver no Google Maps</span>
-                  </Button>
                 </div>
               </div>
 
-              {/* Horários Card */}
-              <div className="flex items-start gap-4 rounded-2xl border border-stone-200/80 bg-white p-6 shadow-sm">
-                <div className="flex-shrink-0 w-11 h-11 bg-emerald-50 border border-emerald-200/60 rounded-xl flex items-center justify-center text-emerald-600">
-                  <Clock className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-                <div className="flex-1">
-                  <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-emerald-700">
-                    Janela Operacional
-                  </span>
-                  <h3 className="text-lg font-bold text-stone-900 mt-0.5 mb-2">Horários</h3>
-                  <p className="text-stone-600 leading-relaxed text-sm">
-                    <strong>Início:</strong> {logistics.schedule.openTime}
-                    <br />
-                    <strong>Término:</strong> {logistics.schedule.closeTime}
-                  </p>
-                  {logistics.schedule.notes && (
-                    <p className="text-xs text-stone-500 mt-2 font-mono">
-                      * {logistics.schedule.notes}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              {/* Checklist / O que considerar */}
-              <div className="bg-stone-100/80 p-6 rounded-2xl border border-stone-200">
-                <h3 className="font-bold text-stone-900 mb-4 flex items-center text-base gap-2">
-                  <Backpack className="h-4 w-4 text-orange-600" strokeWidth={1.5} />
-                  <span>O que considerar para a atividade</span>
+              {/* Card Checklist O que Levar */}
+              <div className="bg-white p-6 sm:p-8 rounded-3xl border border-sand-200 shadow-soft">
+                <h3 className="font-bold text-lg text-ink-900 mb-4 flex items-center gap-2">
+                  <span>{sched.checklistCard.icon}</span>
+                  <span>{sched.checklistCard.title}</span>
                 </h3>
-                <ul className="space-y-2 text-sm text-stone-600">
-                  {logistics.importantNotes.map((note, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-orange-500 font-bold">•</span>
-                      <span>{note}</span>
+                <ul className="space-y-3 font-mono text-xs text-ink-700">
+                  {sched.checklistCard.items.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <span className="text-terracotta-500 font-bold">✔</span>
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -101,57 +63,46 @@ export function ScheduleSection() {
             </div>
           </div>
 
-          {/* Action Cards */}
-          <div className="grid gap-6">
-            <div className="bg-stone-900 p-8 rounded-3xl text-white shadow-xl border border-stone-800">
-              <div className="mb-4 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-climb-300">
-                <Building2 className="h-4 w-4" strokeWidth={1.5} />
-                <span>EXPEDIÇÕES CORPORATIVAS</span>
+          {/* COLUNA DA DIREITA: OS DOIS ACTION CARDS (CORPORATIVO E CANAL TÉCNICO) */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Card 1: Team Building Corporativo */}
+            <div className="bg-forest-900 text-white p-7 sm:p-8 rounded-3xl shadow-xl border border-forest-800">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-800 text-[10px] font-mono font-bold uppercase tracking-wider text-sun-300 mb-3">
+                {sched.corporateCard.badge}
               </div>
-              <h3 className="text-2xl font-bold mb-3 tracking-tight">Team Building na Rocha</h3>
-              <p className="text-neutral-300 mb-8 leading-relaxed text-sm">
-                Leve seu time para as alturas com metodologia de superação e confiança mútua.
-                Programas desenhados sob medida para empresas.
+              <h3 className="text-2xl font-bold mb-2">{sched.corporateCard.title}</h3>
+              <p className="text-xs text-sand-200 leading-relaxed mb-6">
+                {sched.corporateCard.description}
               </p>
-              <Button
-                size="lg"
-                className="w-full gap-2 bg-white text-stone-950 font-bold hover:bg-stone-100 transition-colors"
-                onClick={() =>
-                  openWhatsApp(
-                    CONTACT_INFO.phone,
-                    'Olá! Gostaria de solicitar uma proposta para evento corporativo de team building 🏢'
-                  )
-                }
+              <a
+                href={sched.corporateCard.ctaHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3.5 rounded-xl bg-white text-forest-900 hover:bg-sand-100 font-mono text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-sm transition-all"
               >
-                <span>Solicitar Proposta Corporativa</span>
-                <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
-              </Button>
+                <span>{sched.corporateCard.ctaText}</span>
+                <span>↗</span>
+              </a>
             </div>
 
-            <div className="bg-white p-8 rounded-3xl text-stone-900 shadow-sm border border-stone-200">
-              <div className="mb-4 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-orange-600 font-semibold">
-                <HelpCircle className="h-4 w-4" strokeWidth={1.5} />
-                <span>CANAL TÉCNICO DIRETO</span>
+            {/* Card 2: Dúvidas Técnicas com Guia */}
+            <div className="bg-white text-ink-900 p-7 sm:p-8 rounded-3xl shadow-soft border border-sand-200">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-terracotta-100 text-[10px] font-mono font-bold uppercase tracking-wider text-terracotta-600 mb-3">
+                {sched.guideSupportCard.badge}
               </div>
-              <h3 className="text-2xl font-bold mb-3 tracking-tight">Dúvidas com um Guia?</h3>
-              <p className="text-stone-600 mb-8 leading-relaxed text-sm">
-                Converse diretamente com instrutores certificados sobre grau de esforço físico,
-                calçados adequados e protocolos de segurança.
+              <h3 className="text-2xl font-bold mb-2">{sched.guideSupportCard.title}</h3>
+              <p className="text-xs text-ink-600 leading-relaxed mb-6">
+                {sched.guideSupportCard.description}
               </p>
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full gap-2 border-stone-300 text-stone-900 hover:bg-stone-50 font-bold transition-colors"
-                onClick={() =>
-                  openWhatsApp(
-                    CONTACT_INFO.phone,
-                    'Olá! Gostaria de falar com um guia certificado sobre a atividade de escalada 🏔️'
-                  )
-                }
+              <a
+                href={sched.guideSupportCard.ctaHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3.5 rounded-xl bg-forest-700 hover:bg-forest-800 text-white font-mono text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-sm transition-all"
               >
-                <span>Falar com Guia Certificado</span>
-                <ArrowRight className="h-4 w-4 text-stone-500" strokeWidth={1.5} />
-              </Button>
+                <span>{sched.guideSupportCard.ctaText}</span>
+                <span>↗</span>
+              </a>
             </div>
           </div>
         </div>

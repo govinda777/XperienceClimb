@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XPERIENCE CLIMB - Brand Identity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Deep, premium slate/obsidian background to contrast the card */
+            background-color: #1A1C1E; 
+            background-image: radial-gradient(circle at 50% 0%, #2A2E30 0%, #1A1C1E 100%);
+        }
+        
+        /* Subtle hover effect for the logo card */
+        .logo-card {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+        }
+        .logo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-6 antialiased">
+
+    <!-- Card Container -->
+    <!-- Background is the brand's 'Cream Sand' (#EBE6D8) -->
+    <div class="logo-card bg-[#EBE6D8] w-full max-w-sm rounded-[2rem] shadow-2xl p-10 md:p-14 flex flex-col items-center border border-white/20">
+        
+        <!-- SVG Logo Container -->
+        <!-- viewBox 0 0 400 400 creates a high-res coordinate system. -->
+        <div class="w-full max-w-[280px] aspect-square drop-shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" class="w-full h-full">
+                <defs>
+                    <!-- The clipPath strictly limits all internal geometry to the inner bound of the circle. -->
+                    <!-- The outer circle has radius 152. Stroke 16 is centered on 152. -->
+                    <clipPath id="inner-circle-clip">
+                        <circle cx="200" cy="200" r="152" />
+                    </clipPath>
+                </defs>
+
+                <!-- Base Canvas for the logo (matches card background, ensuring standalone SVG portability) -->
+                <circle cx="200" cy="200" r="160" fill="#EBE6D8" />
+
+                <!-- Group containing all mountain elements, clipped perfectly to the circle -->
+                <g clip-path="url(#inner-circle-clip)">
+                    
+                    <!-- 
+                        All slopes are strictly calculated at dy / dx = 1.8 
+                        This ensures every single line is perfectly parallel.
+                    -->
+
+                    <!-- 1. Terracotta Base Triangle (#B25D42) -->
+                    <!-- Peak at (200, 265). Down to y=370. dx = 105 / 1.8 = 58.33 -->
+                    <path 
+                        d="M 141.67 370 
+                           L 200 265 
+                           L 258.33 370 Z" 
+                        fill="#B25D42" 
+                    />
+
+                    <!-- 2. Inner Green Chevron (#2E473B) -->
+                    <!-- Peak at (200, 195). Down to y=370. dx = 175 / 1.8 = 97.22 -->
+                    <path 
+                        d="M 102.78 370 
+                           L 200 195 
+                           L 297.22 370" 
+                        fill="none" 
+                        stroke="#2E473B" 
+                        stroke-width="16" 
+                        stroke-linejoin="miter" 
+                        stroke-linecap="butt" 
+                    />
+
+                    <!-- 3. Main Outer Mountain Line (#2E473B) -->
+                    <!-- Continuous line forming the 3 peaks. -->
+                    <!-- Center Peak: (200, 125) -->
+                    <!-- Left/Right Valleys: y=233. dx = 108 / 1.8 = 60 => x=140 & 260 -->
+                    <!-- Left/Right Peaks: y=170. dx = 63 / 1.8 = 35 => x=105 & 295 -->
+                    <path 
+                        d="M -6.11 370 
+                           L 105 170 
+                           L 140 233 
+                           L 200 125 
+                           L 260 233 
+                           L 295 170 
+                           L 406.11 370" 
+                        fill="none" 
+                        stroke="#2E473B" 
+                        stroke-width="16" 
+                        stroke-linejoin="miter" 
+                        stroke-linecap="butt" 
+                    />
+
+                    <!-- 4. Terracotta Top Arrow (#B25D42) -->
+                    <!-- Peak at (200, 60). Base at y=90. dx = 30 / 1.8 = 16.67 -->
+                    <path 
+                        d="M 200 60 
+                           L 216.67 90 
+                           L 183.33 90 Z" 
+                        fill="#B25D42" 
+                    />
+                </g>
+
+                <!-- 5. Outer Circle Boundary (#2E473B) -->
+                <!-- Drawn last so the stroke overlays the clipped edges perfectly, hiding any anti-aliasing artifacts -->
+                <circle 
+                    cx="200" cy="200" r="152" 
+                    fill="none" 
+                    stroke="#2E473B" 
+                    stroke-width="16" 
+                />
+            </svg>
+        </div>
+
+        <!-- Typography aligned with the Design System Documentation -->
+        <div class="mt-8 md:mt-10 flex flex-col items-center select-none">
+            <!-- XPERIENCE: Medium weight, wide tracking, modern technical feel -->
+            <span class="text-[#2E473B] font-medium text-lg md:text-xl tracking-[0.35em] leading-none ml-[0.35em]">
+                XPERIENCE
+            </span>
+            <!-- CLIMB: Black weight, sturdy structure, grounded base -->
+            <span class="text-[#B25D42] font-black text-2xl md:text-3xl tracking-widest mt-2 leading-none">
+                CLIMB
+            </span>
+        </div>
+
+    </div>
+
+</body>
+</html>
