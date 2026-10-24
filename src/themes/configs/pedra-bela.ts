@@ -349,6 +349,28 @@ export class PedraBellaTheme extends BaseTheme {
         buttonStyle: 'disabled',
       },
     ],
+    corporateCard: {
+      badge: '🏢 EXPEDIÇÕES CORPORATIVAS & TEAM BUILDING',
+      title: 'XPERIENCE CORPORATIVO',
+      description:
+        'Leve sua equipe e liderança para fora do escritório: uma vivência na rocha natural desenhada para desenvolver confiança mútua, comunicação clara, superação e coesão de time.',
+      duration: '1 ou 2 Dias · Formato Sob Medida',
+      features: [
+        'Dinâmicas práticas de Team Building, liderança e confiança',
+        'Transporte executivo ida e volta (a partir de São Paulo capital)',
+        'Gastronomia completa inclusa (café, almoço regional e pôr do sol)',
+        'Acessível para todos os perfis (sem necessidade de experiência prévia)',
+        'Guias certificados, equipamentos UIAA/CE e Seguro Aventura individual',
+        'Formato flexível: Day-use (1 dia) ou Imersão com pousada (2 dias)',
+      ],
+      bonusTitle: 'BÔNUS EXCLUSIVOS:',
+      bonus: ['Facilitador de Team Building & Coach Executivo + Registro fotográfico da equipe'],
+      rightTag: 'Grupos & Empresas',
+      rightHighlight: 'SOB CONSULTA',
+      ctaText: 'Solicitar Orçamento WhatsApp',
+      ctaHref:
+        'https://wa.me/5511995413539?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20o%20Pacote%20Xperience%20Corporativo%20(Empresas).',
+    },
     annualCard: {
       badge: '👑 PROGRAMA ANUAL DE AVENTURA',
       title: 'XPERIENCE ANUAL',
@@ -365,6 +387,8 @@ export class PedraBellaTheme extends BaseTheme {
       ],
       bonusTitle: 'BÔNUS EXCLUSIVOS:',
       bonus: ['Kit Xperience exclusivo (Mochila técnica, camiseta e cantil)'],
+      rightTag: 'Passaporte Exclusivo',
+      rightHighlight: '12 VAGAS / ANO',
       ctaText: 'Entrar na Lista VIP WhatsApp',
       ctaHref:
         'https://wa.me/5511995413539?text=Ol%C3%A1!%20Gostaria%20de%20entrar%20na%20lista%20VIP%20do%20Programa%20Xperience%20Anual.',

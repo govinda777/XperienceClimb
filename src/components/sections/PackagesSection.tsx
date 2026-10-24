@@ -239,9 +239,81 @@ export function PackagesSection() {
           })}
         </div>
 
+        {/* Banner Horizontal do Pacote Corporativo (Empresas) - Vem antes do Pacote Anual */}
+        {pkgSection.corporateCard && (
+          <div className="mb-8 rounded-3xl bg-forest-900 border border-forest-800 text-white p-8 sm:p-10 shadow-2xl relative overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+              <div className="lg:col-span-8">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-800 border border-forest-700 font-mono text-[10px] font-bold uppercase tracking-wider text-sun-300 mb-4">
+                  <span>{pkgSection.corporateCard.badge}</span>
+                </div>
+
+                <div className="flex flex-wrap items-baseline gap-4 mb-3">
+                  <h3 className="font-display text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
+                    {pkgSection.corporateCard.title}
+                  </h3>
+                  <span className="font-mono text-xs text-sun-400 font-bold">
+                    ⏱ {pkgSection.corporateCard.duration}
+                  </span>
+                </div>
+
+                <p className="text-sand-200 text-sm leading-relaxed mb-6 max-w-2xl">
+                  {pkgSection.corporateCard.description}
+                </p>
+
+                {/* Grade de Benefícios do Corporativo */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                  {pkgSection.corporateCard.features.map((feat, idx) => (
+                    <div key={idx} className="flex items-start gap-2.5 text-xs text-sand-100">
+                      <Check className="w-4 h-4 text-sun-400 shrink-0 mt-0.5" strokeWidth={2.5} />
+                      <span className="leading-snug">{feat}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bônus Corporativo */}
+                {pkgSection.corporateCard.bonus && (
+                  <div className="p-3.5 rounded-2xl bg-forest-800/80 border border-forest-700/60 max-w-xl">
+                    <span className="font-mono text-[10px] font-bold tracking-wider text-sun-300 uppercase flex items-center gap-1.5 mb-1">
+                      <Sparkles className="w-3.5 h-3.5 text-sun-400" strokeWidth={1.5} />
+                      {pkgSection.corporateCard.bonusTitle || 'BÔNUS EXCLUSIVOS:'}
+                    </span>
+                    {pkgSection.corporateCard.bonus.map((b, i) => (
+                      <span key={i} className="text-xs text-white font-medium block">
+                        🎁 {b}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* CTA do Corporativo */}
+              <div className="lg:col-span-4 flex flex-col items-center justify-center text-center p-6 rounded-2xl bg-forest-800/60 border border-forest-700/50">
+                <span className="font-mono text-[11px] text-sand-300 uppercase tracking-widest font-bold mb-2">
+                  {pkgSection.corporateCard.rightTag || 'Grupos & Empresas'}
+                </span>
+                <span className="font-display text-2xl font-black text-sun-300 mb-4">
+                  {pkgSection.corporateCard.rightHighlight || 'SOB CONSULTA'}
+                </span>
+                <a
+                  href={pkgSection.corporateCard.ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={pkgSection.corporateCard.ctaText}
+                  className="w-full py-4 rounded-2xl bg-sun-500 hover:bg-sun-600 text-forest-950 font-mono text-xs font-black uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 ease-out"
+                >
+                  <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
+                  <span>{pkgSection.corporateCard.ctaText}</span>
+                  <span>›</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Banner Horizontal VIP do Programa Anual com todos os benefícios */}
         {pkgSection.annualCard && (
-          <div className="rounded-3xl bg-forest-900 border border-forest-800 text-white p-8 sm:p-10 shadow-2xl relative overflow-hidden">
+          <div className="rounded-3xl bg-forest-900 border border-forest-800 text-white p-8 sm:p-10 shadow-2xl relative overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1 hover:border-white/20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
               <div className="lg:col-span-8">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-forest-800 border border-forest-700 font-mono text-[10px] font-bold uppercase tracking-wider text-sun-300 mb-4">

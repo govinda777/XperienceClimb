@@ -291,6 +291,8 @@ export interface PackageAnnualBannerConfig {
   features: string[];
   bonusTitle?: string;
   bonus?: string[];
+  rightTag?: string;
+  rightHighlight?: string;
   ctaText: string;
   ctaHref: string;
 }
@@ -301,6 +303,7 @@ export interface PackagesSectionConfig {
   titleAccent: string;
   nextConfirmedDate?: PackageConfirmedDateConfig;
   items: PackageCardConfig[];
+  corporateCard?: PackageAnnualBannerConfig;
   annualCard?: PackageAnnualBannerConfig;
 }
 
