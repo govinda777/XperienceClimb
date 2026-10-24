@@ -29,13 +29,22 @@ export default function TermosDeUsoPage() {
     <div className="min-h-screen bg-neutral-50 text-neutral-800">
       {/* Top Header */}
       <header className="border-b border-neutral-200 bg-white">
-        <div className="container mx-auto flex items-center justify-between px-4 py-6">
+        <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800"
+            className="flex items-center gap-3 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800 group"
           >
-            <ArrowLeft className="h-4 w-4" />
-            Voltar para a Página Inicial
+            <img
+              src="/assets/logo.svg"
+              alt="Logo Xperience Climb"
+              width={40}
+              height={40}
+              className="w-10 h-10 shrink-0 group-hover:scale-105 transition-transform duration-300 ease-out"
+            />
+            <span className="flex items-center gap-1.5">
+              <ArrowLeft className="h-4 w-4" />
+              Voltar para a Página Inicial
+            </span>
           </Link>
           <span className="text-xs text-neutral-700 font-medium">
             Última atualização: {lastUpdated}

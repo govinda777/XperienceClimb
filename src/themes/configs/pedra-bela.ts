@@ -29,7 +29,7 @@ export class PedraBellaTheme extends BaseTheme {
     name: 'XPERIENCE',
     accent: 'climb',
     tagline: 'Pedra Bela · SP',
-    icon: '🧗',
+    icon: '/assets/logo.svg',
     navLinks: [
       { label: 'O Lugar', href: '#lugar' },
       { label: 'Batismo', href: '#batismo' },
@@ -782,6 +782,7 @@ export class PedraBellaTheme extends BaseTheme {
       tagline: 'Pedra Bela · SP',
       description: 'Vivências transformadoras de escalada em rocha natural, ecoturismo e aventura.',
       seal: '🛡️ Homologado UIAA & CE',
+      logo: '/assets/logo.svg',
     },
     navLinks: [
       { label: '01 · Natureza de Pedra Bela', href: '#lugar' },

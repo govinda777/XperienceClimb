@@ -497,6 +497,7 @@ export interface FooterConfig {
     tagline: string;
     description: string;
     seal: string;
+    logo?: string;
   };
   navLinks: Array<{ label: string; href: string }>;
   experienceLinks: Array<{ label: string; href: string }>;

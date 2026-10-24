@@ -21,10 +21,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-sand-300">
           {/* COL 1: Marca & Descrição */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-terracotta-500 flex items-center justify-center text-white text-lg">
-                🧗
-              </div>
+            <Link href="#hero" className="inline-flex items-center gap-3 mb-4 group">
+              <img
+                src={footer.brand.logo || '/assets/logo.svg'}
+                alt="Logo Xperience Climb"
+                width={48}
+                height={48}
+                className="w-12 h-12 shrink-0 drop-shadow-sm group-hover:scale-105 transition-transform duration-300 ease-out"
+              />
               <div>
                 <div className="font-display font-black text-2xl tracking-wider text-ink-900 uppercase leading-none">
                   {footer.brand.name}{' '}
@@ -36,7 +40,7 @@ export function Footer() {
                   {footer.brand.tagline}
                 </div>
               </div>
-            </div>
+            </Link>
             <p className="text-xs text-ink-600 font-sans leading-relaxed mb-4">
               {footer.brand.description}
             </p>

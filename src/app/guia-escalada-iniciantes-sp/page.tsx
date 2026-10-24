@@ -64,7 +64,7 @@ export default function GuiaIniciantesPage() {
       name: 'Xperience Climb',
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/images/site-og.jpg`,
+        url: `${baseUrl}/assets/logo.svg`,
       },
     },
     mainEntityOfPage: {
@@ -118,13 +118,22 @@ export default function GuiaIniciantesPage() {
 
       {/* Header */}
       <header className="border-b border-black/10 bg-white/80 backdrop-blur-md sticky top-0 z-40">
-        <div className="container mx-auto flex items-center justify-between px-4 py-4">
+        <div className="container mx-auto flex items-center justify-between px-4 py-3">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800"
+            className="flex items-center gap-3 text-sm font-semibold text-forest-700 transition-colors hover:text-forest-800 group"
           >
-            <ArrowLeft className="h-4 w-4" />
-            Voltar para a Página Inicial
+            <img
+              src="/assets/logo.svg"
+              alt="Logo Xperience Climb"
+              width={40}
+              height={40}
+              className="w-10 h-10 shrink-0 group-hover:scale-105 transition-transform duration-300 ease-out"
+            />
+            <span className="flex items-center gap-1.5">
+              <ArrowLeft className="h-4 w-4" />
+              Voltar para a Página Inicial
+            </span>
           </Link>
           <span className="font-mono text-xs text-neutral-700">Artigo Técnico • {publishDate}</span>
         </div>

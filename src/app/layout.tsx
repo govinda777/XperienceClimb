@@ -55,6 +55,11 @@ export const metadata: Metadata = {
   authors: [{ name: 'Xperience Climb', url: 'https://climb.xperiencehubs.com' }],
   creator: 'Xperience Climb',
   publisher: 'Xperience Climb',
+  icons: {
+    icon: '/assets/logo.svg',
+    shortcut: '/assets/logo.svg',
+    apple: '/assets/logo.svg',
+  },
   alternates: {
     canonical: 'https://climb.xperiencehubs.com',
   },

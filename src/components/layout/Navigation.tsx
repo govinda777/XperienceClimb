@@ -16,11 +16,19 @@ export function Navigation() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-sand-50/95 backdrop-blur-md border-b border-sand-200 transition-all shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-        {/* Logo XPERIENCE climb com ícone Terracota */}
-        <Link href="#hero" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-xl bg-terracotta-500 flex items-center justify-center font-black text-white text-lg shadow-sm group-hover:scale-105 transition-transform">
-            {brand.icon}
-          </div>
+        {/* Logo XPERIENCE climb oficial */}
+        <Link
+          href="#hero"
+          className="flex items-center gap-3 group"
+          aria-label="Xperience Climb - Início"
+        >
+          <img
+            src={brand.icon.startsWith('/') ? brand.icon : '/assets/logo.svg'}
+            alt="Logo Xperience Climb"
+            width={48}
+            height={48}
+            className="w-12 h-12 shrink-0 drop-shadow-sm group-hover:scale-105 transition-transform duration-300 ease-out"
+          />
           <div className="flex flex-col">
             <span className="font-display font-black text-2xl tracking-wider text-ink-900 uppercase leading-none">
               {brand.name}{' '}

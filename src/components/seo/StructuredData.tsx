@@ -12,7 +12,7 @@ export default function StructuredData() {
     name: 'Xperience Climb',
     alternateName: ['XperienceClimb', 'Xperience Climb SP', 'Xperience Climb Batismo'],
     url: baseUrl,
-    logo: `${baseUrl}/images/site-og.jpg`,
+    logo: `${baseUrl}/assets/logo.svg`,
     description:
       'Vivências de escalada em rocha natural e ecoturismo de aventura no interior de SP. Batismo de escalada, guias certificados e equipamentos homologados UIAA/CE.',
     parentOrganization: {

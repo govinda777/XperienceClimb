@@ -4,6 +4,13 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-sand-50 flex flex-col items-center justify-center px-4 text-center">
       <div className="max-w-md mx-auto">
+        <img
+          src="/assets/logo.svg"
+          alt="Logo Xperience Climb"
+          width={64}
+          height={64}
+          className="w-16 h-16 mx-auto mb-6 drop-shadow-sm"
+        />
         <span className="font-mono text-xs uppercase tracking-widest text-terracotta-500 font-bold block mb-3">
           ERRO · 404 · ROTA NÃO ENCONTRADA
         </span>

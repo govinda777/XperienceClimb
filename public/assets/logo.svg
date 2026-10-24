@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+    <defs>
+        <!-- The clipPath strictly limits all internal geometry to the inner bound of the circle. -->
+        <!-- The outer circle has radius 152. Stroke 16 is centered on 152. -->
+        <clipPath id="inner-circle-clip">
+            <circle cx="200" cy="200" r="152" />
+        </clipPath>
+    </defs>
+
+    <!-- Base Canvas for the logo (matches card background, ensuring standalone SVG portability) -->
+    <circle cx="200" cy="200" r="160" fill="#EBE6D8" />
+
+    <!-- Group containing all mountain elements, clipped perfectly to the circle -->
+    <g clip-path="url(#inner-circle-clip)">
+        
+        <!-- 
+            All slopes are strictly calculated at dy / dx = 1.8 
+            This ensures every single line is perfectly parallel.
+        -->
+
+        <!-- 1. Terracotta Base Triangle (#B25D42) -->
+        <!-- Peak at (200, 265). Down to y=370. dx = 105 / 1.8 = 58.33 -->
+        <path 
+            d="M 141.67 370 
+               L 200 265 
+               L 258.33 370 Z" 
+            fill="#B25D42" 
+        />
+
+        <!-- 2. Inner Green Chevron (#2E473B) -->
+        <!-- Peak at (200, 195). Down to y=370. dx = 175 / 1.8 = 97.22 -->
+        <path 
+            d="M 102.78 370 
+               L 200 195 
+               L 297.22 370" 
+            fill="none" 
+            stroke="#2E473B" 
+            stroke-width="16" 
+            stroke-linejoin="miter" 
+            stroke-linecap="butt" 
+        />
+
+        <!-- 3. Main Outer Mountain Line (#2E473B) -->
+        <!-- Continuous line forming the 3 peaks. -->
+        <!-- Center Peak: (200, 125) -->
+        <!-- Left/Right Valleys: y=233. dx = 108 / 1.8 = 60 => x=140 & 260 -->
+        <!-- Left/Right Peaks: y=170. dx = 63 / 1.8 = 35 => x=105 & 295 -->
+        <path 
+            d="M -6.11 370 
+               L 105 170 
+               L 140 233 
+               L 200 125 
+               L 260 233 
+               L 295 170 
+               L 406.11 370" 
+            fill="none" 
+            stroke="#2E473B" 
+            stroke-width="16" 
+            stroke-linejoin="miter" 
+            stroke-linecap="butt" 
+        />
+
+        <!-- 4. Terracotta Top Arrow (#B25D42) -->
+        <!-- Peak at (200, 60). Base at y=90. dx = 30 / 1.8 = 16.67 -->
+        <path 
+            d="M 200 60 
+               L 216.67 90 
+               L 183.33 90 Z" 
+            fill="#B25D42" 
+        />
+    </g>
+
+    <!-- 5. Outer Circle Boundary (#2E473B) -->
+    <!-- Drawn last so the stroke overlays the clipped edges perfectly, hiding any anti-aliasing artifacts -->
+    <circle 
+        cx="200" cy="200" r="152" 
+        fill="none" 
+        stroke="#2E473B" 
+        stroke-width="16" 
+    />
+</svg>
