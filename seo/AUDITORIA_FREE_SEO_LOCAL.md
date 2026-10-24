@@ -35,19 +35,19 @@ Os arquivos de imagem referenciados nos metadados e no JSON-LD **não existem** 
 
 ---
 
-### 2. Duplicação e Estouro de `<title>` nas Subpáginas via `title.template` (Severidade: Alta)
+### 2. ✅ [RESOLVIDO] Duplicação e Estouro de `<title>` nas Subpáginas via `title.template` (Severidade: Alta)
 
-Em [`src/app/layout.tsx`](file:///Users/govinda/projetos/XperienceClimb/src/app/layout.tsx#L47-L50), o template global está definido como `template: '%s | Xperience Climb'`, mas as páginas filhas já incluem `| Xperience Climb` manualmente na string `title`:
+Em [`src/app/layout.tsx`](file:///Users/govinda/projetos/XperienceClimb/src/app/layout.tsx#L47-L50), o template global está definido como `template: '%s | Xperience Climb'`. Os sufixos redundantes e o `location.name` de Pedra Bela foram corrigidos para que o `title.template` componha todos os títulos dentro do limite ideal de ≤ 60 caracteres:
 
-- **Em [`/destinos/pedra-bela`](file:///Users/govinda/projetos/XperienceClimb/src/app/destinos/[slug]/page.tsx#L27-L30):**
-  Como `theme.location.name` em [`pedra-bela.ts`](file:///Users/govinda/projetos/XperienceClimb/src/themes/configs/pedra-bela.ts#L813) está definido como `'Xperience Climb'`, o título final renderizado no navegador e para o Googlebot fica:
-  > ❌ `Vivência de Escalada em Xperience Climb | Xperience Climb | Xperience Climb` _(75 caracteres — marca triplicada e sem o nome da cidade "Pedra Bela")_
-- **Em [`/destinos/fazenda-ipanema`](file:///Users/govinda/projetos/XperienceClimb/src/app/destinos/[slug]/page.tsx#L27-L30):**
-  > ❌ `Vivência de Escalada em Morro Araçoiaba | Xperience Climb | Xperience Climb` _(75 caracteres — sufixo da marca duplicado)_
+- **Em [`/destinos/pedra-bela`](file:///Users/govinda/projetos/XperienceClimb/src/app/destinos/[slug]/page.tsx#L27-L31):**
+  `theme.location.name` em [`pedra-bela.ts`](file:///Users/govinda/projetos/XperienceClimb/src/themes/configs/pedra-bela.ts#L813) atualizado para `'Pedra Bela - SP'`:
+  > ✅ `Vivência de Escalada em Pedra Bela - SP | Xperience Climb` _(57 caracteres)_
+- **Em [`/destinos/fazenda-ipanema`](file:///Users/govinda/projetos/XperienceClimb/src/app/destinos/[slug]/page.tsx#L27-L31):**
+  > ✅ `Vivência de Escalada em Morro Araçoiaba | Xperience Climb` _(57 caracteres)_
 - **Em [`/guia-escalada-iniciantes-sp`](file:///Users/govinda/projetos/XperienceClimb/src/app/guia-escalada-iniciantes-sp/page.tsx#L15):**
-  > ❌ `Guia Definitivo de Escalada em Rocha para Iniciantes em SP | Xperience Climb | Xperience Climb` _(94 caracteres — muito acima do limite recomendado de 60 caracteres)_
+  > ✅ `Guia de Escalada para Iniciantes em SP | Xperience Climb` _(56 caracteres)_
 - **Em [`/checkout`](file:///Users/govinda/projetos/XperienceClimb/src/app/checkout/layout.tsx#L4) e [`/test-e2e`](file:///Users/govinda/projetos/XperienceClimb/src/app/test-e2e/layout.tsx#L4):**
-  > ❌ `Checkout | Xperience Climb | Xperience Climb`
+  > ✅ `Checkout | Xperience Climb` _(26 caracteres)_ e `Ambiente de teste | Xperience Climb` _(35 caracteres)_
 
 ---
 
@@ -110,7 +110,7 @@ Em [`src/app/destinos/[slug]/page.tsx`](file:///Users/govinda/projetos/Xperience
 | :------------------------------------ | :----: | :--------------------------------------------------------------------------------------------------------------------------- |
 | **Title Tag (Home)**                  |   ✅   | 56 caracteres (`Vivência de Escalada em Pedra Bela - SP \| Xperience Climb`)                                                 |
 | **Meta Description (Home)**           |   ✅   | 159 caracteres com CTA e diferenciais técnicos (UIAA/CE, seguro, almoço)                                                     |
-| **Title Tag (Subpáginas)**            |   ❌   | Sufixo `\| Xperience Climb` duplicado/triplicado e título de 94 chars no Guia                                                |
+| **Title Tag (Subpáginas)**            |   ✅   | Todos os títulos utilizam `title.template` sem duplicação e ≤ 60 caracteres                                                  |
 | **Canonical URLs**                    |   ⚠️   | Configuradas com HTTPS, mas `/destinos/pedra-bela` duplica a Home                                                            |
 | **OpenGraph & Twitter Card**          |   ❌   | Imagens `site-og.jpg` e `og-image.jpg` retornam `404`                                                                        |
 | **Viewport & Theme Color**            |   ✅   | Configurados em [`layout.tsx`](file:///Users/govinda/projetos/XperienceClimb/src/app/layout.tsx#L106-L110) sem bloquear zoom |
@@ -127,8 +127,8 @@ Em [`src/app/destinos/[slug]/page.tsx`](file:///Users/govinda/projetos/Xperience
 
 1. **Corrigir Imagens OpenGraph (`P1`):**
    - Criar/apontar `/images/site-og.jpg` (1200x630px) e as imagens OG dos temas para arquivos reais otimizados em `public/images/`.
-2. **Corrigir `title` e `location.name` nas Subpáginas (`P1`):**
-   - Remover o sufixo `| Xperience Climb` redundante das subpáginas (deixando o `title.template` do `layout.tsx` trabalhar), encurtar o título do Guia para ≤ 60 caracteres e corrigir `location.name` em `pedra-bela.ts`.
+2. ~~**Corrigir `title` e `location.name` nas Subpáginas (`P1`):**~~ ✅ **Concluído**
+   - Removido o sufixo `| Xperience Climb` redundante das subpáginas (deixando o `title.template` do `layout.tsx` trabalhar), encurtado o título do Guia para 56 caracteres e corrigido `location.name` em `pedra-bela.ts` para `'Pedra Bela - SP'`.
 3. **Desacoplar e Sincronizar `StructuredData.tsx` (`P1`):**
    - Renderizar `FAQPage`, `Product` e `Event` da Home apenas na Home (evitando duplicidade de `FAQPage` em `/guia-escalada-iniciantes-sp`), corrigir as âncoras `#lugar` e `#batismo`, e alinhar horário (`08:30`–`18:00`) e idade mínima (`12 anos`).
 4. **Eliminar Páginas Órfãs com Links Internos (`P1`):**

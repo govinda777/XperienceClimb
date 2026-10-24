@@ -39,7 +39,16 @@ const nextConfig = {
       },
     ];
   },
-  webpack: config => {
+  webpack: (config, { isServer }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@farcaster/mini-app-solana': false,
+      '@abstract-foundation/agw-client': false,
+      '@solana-program/memo': false,
+      permissionless: false,
+      ...(isServer ? { '@privy-io/react-auth': false } : {}),
+    };
+
     config.ignoreWarnings = [
       ...(config.ignoreWarnings || []),
       {

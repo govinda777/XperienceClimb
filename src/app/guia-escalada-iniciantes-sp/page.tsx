@@ -14,7 +14,7 @@ import { CONTACT_INFO } from '@/lib/constants';
 export const metadata: Metadata = {
   title: 'Guia de Escalada para Iniciantes em SP',
   description:
-    'Aprenda como começar na escalada em rocha natural em São Paulo. Tudo sobre batismo de escalada, equipamentos de segurança homologados UIAA, melhores locais e dicas essenciais.',
+    'Aprenda como começar na escalada em rocha natural em SP. Tudo sobre batismo de escalada, equipamentos homologados UIAA, melhores locais e dicas essenciais.',
   alternates: {
     canonical: 'https://climb.xperiencehubs.com/guia-escalada-iniciantes-sp',
   },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     url: 'https://climb.xperiencehubs.com/guia-escalada-iniciantes-sp',
     images: [
       {
-        url: '/images/themes/pedra-bela/pedra-santuario-1.jpg',
+        url: '/images/themes/pedra-bela/hero.jpg',
         width: 1200,
         height: 630,
         alt: 'Escalador iniciante em rocha natural na Pedra do Santuário em Pedra Bela - SP',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title: 'Guia de Escalada para Iniciantes em SP | Xperience Climb',
     description:
       'Tudo sobre batismo de escalada em rocha em SP: equipamentos, segurança, locais como Pedra Bela e Fazenda Ipanema e dicas para a 1ª subida.',
-    images: ['/images/themes/pedra-bela/pedra-santuario-1.jpg'],
+    images: ['/images/themes/pedra-bela/hero.jpg'],
   },
 };
 
@@ -51,7 +51,7 @@ export default function GuiaIniciantesPage() {
     headline: 'Guia Definitivo de Escalada em Rocha para Iniciantes em SP',
     description:
       'Manual prático e técnico sobre como iniciar na escalada em rocha natural no interior de São Paulo com segurança, homologação UIAA e instrução profissional.',
-    image: `${baseUrl}/images/themes/pedra-bela/pedra-santuario-1.jpg`,
+    image: `${baseUrl}/images/themes/pedra-bela/hero.jpg`,
     datePublished: '2026-10-10T12:00:00-03:00',
     dateModified: '2026-10-10T12:00:00-03:00',
     author: {
@@ -321,7 +321,7 @@ export default function GuiaIniciantesPage() {
                   Crianças e adolescentes podem participar?
                 </h3>
                 <p className="mt-1 text-sm text-neutral-700">
-                  Sim, a idade mínima recomendada é de 8 anos, sempre acompanhados ou com
+                  Sim, a idade mínima recomendada é de 12 anos, sempre acompanhados ou com
                   autorização formal dos responsáveis legais.
                 </p>
               </div>

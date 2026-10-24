@@ -1,0 +1,88 @@
+<svg viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lunchBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FAF5EE" />
+      <stop offset="100%" stop-color="#EFE5D3" />
+    </linearGradient>
+    <linearGradient id="woodGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#794B2E" />
+      <stop offset="100%" stop-color="#53311B" />
+    </linearGradient>
+    <linearGradient id="plateGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F0EBE1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Fundo Ambiente Aconchegante -->
+  <rect width="320" height="220" rx="16" fill="url(#lunchBg)" />
+
+  <!-- Folhagens Botanicas Decorativas -->
+  <g opacity="0.75" transform="translate(10, 8)">
+    <path d="M 0 0 C 25 15, 60 10, 85 0 C 65 18, 30 25, 0 0 Z" fill="#2E473B" />
+    <path d="M 40 8 C 65 25, 105 18, 130 5 C 105 28, 70 30, 40 8 Z" fill="#416B58" />
+    <path d="M 230 0 C 255 18, 290 12, 310 0 C 290 20, 260 22, 230 0 Z" fill="#2E473B" />
+  </g>
+
+  <!-- Mesa Rustica de Madeira -->
+  <path d="M 15 130 L 305 130 L 320 220 L 0 220 Z" fill="url(#woodGrad)" />
+  <rect x="15" y="125" width="290" height="8" rx="2" fill="#8C5837" />
+  <path d="M 25 155 L 295 155" stroke="#422513" stroke-width="1.2" stroke-dasharray="18 8 35 12" opacity="0.6" />
+  <path d="M 20 185 L 300 185" stroke="#422513" stroke-width="1.2" stroke-dasharray="28 12 15 8" opacity="0.6" />
+
+  <!-- Toalha de Mesa de Linho -->
+  <path d="M 70 126 L 250 126 L 260 220 L 60 220 Z" fill="#FAF8F5" opacity="0.95" />
+  <path d="M 95 126 L 85 220 M 130 126 L 120 220 M 165 126 L 160 220 M 200 126 L 200 220 M 235 126 L 240 220" stroke="#B25D42" stroke-width="1" stroke-dasharray="4 4" opacity="0.3" />
+
+  <!-- Prato Caipira de Montanha -->
+  <g transform="translate(160, 162)">
+    <ellipse cx="0" cy="18" rx="58" ry="12" fill="#3D2416" opacity="0.25" />
+    <ellipse cx="0" cy="8" rx="55" ry="24" fill="#B25D42" />
+    <ellipse cx="0" cy="5" rx="52" ry="21" fill="url(#plateGrad)" stroke="#B25D42" stroke-width="1.5" />
+    <ellipse cx="0" cy="5" rx="42" ry="16" fill="#F4EFE6" />
+    <ellipse cx="-12" cy="4" rx="20" ry="10" fill="#FAF5E8" />
+    <ellipse cx="14" cy="5" rx="18" ry="9" fill="#8C5837" />
+    <circle cx="-16" cy="1" r="5" fill="#E07A5F" />
+    <circle cx="-6" cy="-2" r="4.5" fill="#F4A261" />
+    <circle cx="6" cy="-1" r="5" fill="#E76F51" />
+    <circle cx="16" cy="1" r="4" fill="#E0A93B" />
+    <path d="M -4 2 C -2 -5, 4 -5, 6 2 C 2 0, -2 0, -4 2 Z" fill="#2E473B" />
+    <path d="M 2 4 C 6 0, 12 1, 11 6 C 7 4, 4 4, 2 4 Z" fill="#416B58" />
+  </g>
+
+  <!-- Espirais de Vapor Quente -->
+  <path d="M 148 135 C 142 120, 155 105, 146 90 C 140 80, 148 70, 144 60" stroke="#B25D42" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.75" />
+  <path d="M 162 132 C 168 118, 158 102, 166 86 C 172 74, 164 64, 168 52" stroke="#E07A5F" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.65" />
+  <path d="M 174 136 C 180 122, 172 108, 180 94 C 185 84, 180 75, 184 66" stroke="#B25D42" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.5" />
+
+  <!-- Caneca Esmaltada de Cafe -->
+  <g transform="translate(236, 142)">
+    <ellipse cx="14" cy="24" rx="18" ry="6" fill="#3D2416" opacity="0.25" />
+    <path d="M 26 6 C 35 6, 35 20, 26 20" stroke="#2E473B" stroke-width="3.5" fill="none" stroke-linecap="round" />
+    <rect x="0" y="2" width="26" height="22" rx="4" fill="#2E473B" />
+    <ellipse cx="13" cy="2" rx="13" ry="3.5" fill="#416B58" stroke="#EAEAEA" stroke-width="1" />
+    <ellipse cx="13" cy="2.5" rx="10.5" ry="2.5" fill="#2B1810" />
+    <path d="M 13 -4 C 10 -12, 16 -18, 12 -26" stroke="#FAF5EE" stroke-width="1.6" stroke-linecap="round" fill="none" opacity="0.8" />
+  </g>
+
+  <!-- Talheres Rusticos -->
+  <g transform="translate(85, 148)">
+    <path d="M 12 0 L 12 28 M 8 0 L 8 10 C 8 14, 16 14, 16 10 L 16 0" stroke="#8A95A5" stroke-width="1.8" stroke-linecap="round" />
+    <rect x="10.5" y="16" width="3" height="18" rx="1.5" fill="#794B2E" />
+    <path d="M -4 28 L -4 14 C -4 4, 3 2, 3 2 L 3 14 Z" fill="#A4B0BE" />
+    <rect x="-5.5" y="16" width="3" height="18" rx="1.5" fill="#794B2E" />
+  </g>
+
+  <!-- Cestinho de Paes -->
+  <g transform="translate(38, 140)">
+    <ellipse cx="16" cy="18" rx="18" ry="6" fill="#3D2416" opacity="0.2" />
+    <path d="M 0 8 C 0 20, 32 20, 32 8 Z" fill="#C49A6C" stroke="#9E7345" stroke-width="1.5" />
+    <ellipse cx="16" cy="7" rx="12" ry="7" fill="#E0A93B" stroke="#9E7345" stroke-width="1" />
+  </g>
+
+  <!-- Tag Fogao a Lenha -->
+  <g transform="translate(210, 24)">
+    <rect width="96" height="22" rx="6" fill="#B25D42" opacity="0.9" />
+    <text x="48" y="15" fill="#FFFFFF" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">FOGÃO · A · LENHA</text>
+  </g>
+</svg>

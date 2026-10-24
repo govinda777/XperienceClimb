@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { pedraBellaTheme, fazendaIpanemaTheme } from '@/themes/configs';
+import { ThemeProvider } from '@/themes/ThemeProvider';
 import { DestinationThemeSync } from './DestinationThemeSync';
 import Home from '@/app/page';
 
@@ -24,19 +25,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const theme = THEMES[slug];
   if (!theme) return {};
 
-  const destinationTitle = `Vivência de Escalada em ${theme.location.name || theme.name}`;
+  const destinationLabel = slug === 'pedra-bela' ? 'Pedra Bela - SP' : 'Fazenda Ipanema - SP';
+  const destinationTitle = `Vivência de Escalada em ${destinationLabel}`;
   const fullDestinationTitle = `${destinationTitle} | Xperience Climb`;
+  const canonicalUrl =
+    slug === 'pedra-bela'
+      ? 'https://climb.xperiencehubs.com'
+      : `https://climb.xperiencehubs.com/destinos/${slug}`;
 
   return {
     title: destinationTitle,
     description: theme.seo.description,
     alternates: {
-      canonical: `https://climb.xperiencehubs.com/destinos/${slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title: fullDestinationTitle,
       description: theme.seo.description,
-      url: `https://climb.xperiencehubs.com/destinos/${slug}`,
+      url: canonicalUrl,
       images: [
         {
           url: theme.seo.ogImage || '/images/site-og.jpg',
@@ -60,13 +66,13 @@ export default async function DestinoPage({ params }: Props) {
   const theme = THEMES[slug];
 
   if (!theme) {
-    notFound();
+    redirect('/destinos/pedra-bela');
   }
 
   return (
-    <>
+    <ThemeProvider initialThemeId={slug}>
       <DestinationThemeSync slug={slug} />
       <Home />
-    </>
+    </ThemeProvider>
   );
 }

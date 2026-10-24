@@ -5,7 +5,7 @@ import { PrivyProvider as BasePrivyProvider } from '@privy-io/react-auth';
 import { privyConfig } from '@/lib/privy';
 import { PrivyConnectedAuthProvider } from './PrivyConnectedAuthProvider';
 
-interface PrivyAuthWrapperProps {
+export interface PrivyAuthWrapperProps {
   appId: string;
   children: React.ReactNode;
 }

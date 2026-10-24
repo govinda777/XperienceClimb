@@ -91,31 +91,33 @@ export class TourRepository implements ITourRepository {
         country: 'Brazil',
         coordinates: { lat: -23.4255562, lng: -47.5980568 },
         distance: '120km de São Paulo',
-        mapsUrl: 'https://www.google.com/maps/place/Centro+de+Visitantes/@-23.4255562,-47.5980568,775m/data=!3m1!1e3!4m9!1m2!2m1!1sFloresta+Nacional+de+Ipanema,+Iper%C3%B3,+SP!3m5!1s0x94c5f172812051e1:0xc9ab288d76797fad!8m2!3d-23.4254791!4d-47.5979779!16s%2Fg%2F11gj_vn973!5m1!1e1?entry=ttu&g_ep=EgoyMDI1MDcyOS4wIKXMDSoASAFQAw%3D%3D',
+        mapsUrl:
+          'https://www.google.com/maps/place/Centro+de+Visitantes/@-23.4255562,-47.5980568,775m/data=!3m1!1e3!4m9!1m2!2m1!1sFloresta+Nacional+de+Ipanema,+Iper%C3%B3,+SP!3m5!1s0x94c5f172812051e1:0xc9ab288d76797fad!8m2!3d-23.4254791!4d-47.5979779!16s%2Fg%2F11gj_vn973!5m1!1e1?entry=ttu&g_ep=EgoyMDI1MDcyOS4wIKXMDSoASAFQAw%3D%3D',
         directions: [
           {
             step: 1,
             title: 'Saída de São Paulo',
-            description: 'Siga pela Rodovia Raposo Tavares (SP-270) sentido interior'
+            description: 'Siga pela Rodovia Raposo Tavares (SP-270) sentido interior',
           },
           {
             step: 2,
             title: 'Saída Iperó',
-            description: 'Pegue a saída 109 - Iperó/Boituva (aproximadamente 90km)'
+            description: 'Pegue a saída 109 - Iperó/Boituva (aproximadamente 90km)',
           },
           {
             step: 3,
             title: 'Entrada da Floresta',
-            description: 'Siga as placas para "Floresta Nacional de Ipanema" (8km)'
+            description: 'Siga as placas para "Floresta Nacional de Ipanema" (8km)',
           },
           {
             step: 4,
             title: 'Chegada',
-            description: 'Estacionamento gratuito, próximo ao acesso ao setor de escalada'
-          }
-        ]
+            description: 'Estacionamento gratuito, próximo ao acesso ao setor de escalada',
+          },
+        ],
       },
-      description: 'Escalada no coração da Mata Atlântica com formações rochosas de quartzito com mais de 600 milhões de anos.',
+      description:
+        'Escalada no coração da Mata Atlântica com formações rochosas de quartzito com mais de 600 milhões de anos.',
       activities: [
         {
           id: 'rock-climbing',
@@ -124,110 +126,110 @@ export class TourRepository implements ITourRepository {
           icon: '🧗',
           difficulty: 'medium',
           included: true,
-          requirements: ['Idade mínima: 12 anos', 'Condições físicas básicas']
-        }
+          requirements: ['Idade mínima: 12 anos', 'Condições físicas básicas'],
+        },
       ],
       logistics: {
         schedule: {
           openTime: '8h',
           closeTime: '17h',
-          notes: 'Horário de funcionamento do parque'
+          notes: 'Horário de funcionamento do parque',
         },
         meetingPoint: 'Centro de Visitantes da FLONA',
         duration: '1 dia',
         groupSize: {
           min: 2,
-          max: 8
+          max: 8,
         },
         requirements: [
           {
             type: 'age',
             description: 'Idade mínima de 12 anos',
-            mandatory: true
+            mandatory: true,
           },
           {
             type: 'physical',
             description: 'Condições físicas básicas para caminhada',
-            mandatory: true
-          }
+            mandatory: true,
+          },
         ],
-        included: [
-          'Equipamentos de segurança',
-          'Instrutor experiente',
-          'Lanche de trilha'
-        ],
-        notIncluded: [
-          'Transporte até o local',
-          'Refeições principais',
-          'Hospedagem'
-        ],
+        included: ['Equipamentos de segurança', 'Instrutor experiente', 'Lanche de trilha'],
+        notIncluded: ['Transporte até o local', 'Refeições principais', 'Hospedagem'],
         importantNotes: [
           'Horário de funcionamento do parque: 8h às 17h',
           'Estacionamento gratuito disponível',
-          'Enviaremos o cronograma detalhado, no final da compra, para você conferir'
+          'Enviaremos o cronograma detalhado, no final da compra, para você conferir',
         ],
         tips: [
           'Chegue com antecedência',
           'Traga protetor solar',
           'Use roupas adequadas para escalada',
-          'Leve água e lanche extra'
-        ]
+          'Leve água e lanche extra',
+        ],
       },
       pricing: {
         basePrice: 19900, // R$ 199.00 in cents
         currency: 'BRL',
-        cancellationPolicy: 'Cancelamento gratuito até 24h antes da atividade'
+        cancellationPolicy: 'Cancelamento gratuito até 24h antes da atividade',
       },
       availability: {
         available: true,
         spotsLeft: 6,
         weatherDependent: true,
-        restrictions: ['Atividade sujeita a condições climáticas']
+        restrictions: ['Atividade sujeita a condições climáticas'],
       },
       gallery: {
         images: [
           {
             id: 'climb-1',
-            src: '/images/themes/fazenda-ipanema/climb.jpg',
+            src: '/images/themes/fazenda-ipanema/escalada-1.jpg',
             alt: 'Escalador nas rochas do Morro Araçoiaba',
             title: 'Escalada Técnica',
             category: 'climb',
             isPrimary: true,
-            order: 1
+            order: 1,
           },
           {
             id: 'climb-2',
-            src: '/images/themes/fazenda-ipanema/climb-2.jpg',
+            src: '/images/themes/fazenda-ipanema/escalada-2.jpg',
             alt: 'Vista panorâmica durante a escalada',
             title: 'Vista Panorâmica',
             category: 'climb',
-            order: 2
+            order: 2,
           },
           {
             id: 'nature-1',
-            src: '/images/themes/fazenda-ipanema/flona.jpg',
+            src: '/images/themes/fazenda-ipanema/paisagem-1.jpg',
             alt: 'Floresta Nacional de Ipanema',
             title: 'Mata Atlântica Preservada',
             category: 'nature',
-            order: 3
-          }
+            order: 3,
+          },
         ],
         categories: {
           all: 'Todas',
           climb: 'Escalada',
           nature: 'Natureza',
-          equipment: 'Equipamentos'
-        }
+          equipment: 'Equipamentos',
+        },
       },
       seo: {
         title: 'XperienceClimb - Escalada na Fazenda Ipanema',
-        description: 'Viva a experiência definitiva de escalada no Morro Araçoiaba, localizado na Floresta Nacional de Ipanema. Escalada segura com instrutores certificados.',
-        keywords: ['escalada', 'fazenda ipanema', 'morro araçoiaba', 'flona', 'mata atlântica', 'escalada em rocha'],
-        ogImage: '/images/themes/fazenda-ipanema/og-image.jpg'
+        description:
+          'Viva a experiência definitiva de escalada no Morro Araçoiaba, localizado na Floresta Nacional de Ipanema. Escalada segura com instrutores certificados.',
+        keywords: [
+          'escalada',
+          'fazenda ipanema',
+          'morro araçoiaba',
+          'flona',
+          'mata atlântica',
+          'escalada em rocha',
+        ],
+        ogImage: '/images/themes/fazenda-ipanema/og-image.jpg',
       },
       createdAt: new Date('2024-01-01'),
       updatedAt: new Date('2024-01-01'),
-      isActive: false
+      isActive: false,
     };
 
     // Pedra Bela Tour
@@ -243,41 +245,46 @@ export class TourRepository implements ITourRepository {
         country: 'Brazil',
         coordinates: { lat: -22.78544, lng: -46.45512 },
         distance: '150km de São Paulo',
-        mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=-22.78544,-46.45512&travelmode=driving',
+        mapsUrl:
+          'https://www.google.com/maps/dir/?api=1&destination=-22.78544,-46.45512&travelmode=driving',
         directions: [
           {
             step: 1,
             title: 'Saída de São Paulo',
-            description: 'Siga pela Rodovia Fernão Dias (BR-381) sentido Belo Horizonte'
+            description: 'Siga pela Rodovia Fernão Dias (BR-381) sentido Belo Horizonte',
           },
           {
             step: 2,
             title: 'Acesso Pedra Bela',
-            description: 'Pegue a saída para Pedra Bela'
+            description: 'Pegue a saída para Pedra Bela',
           },
           {
             step: 3,
             title: 'Importante',
-            description: 'já próximo a Pedra do Santuário se o maps mandar sair da rodovia `SPA 109/008` e entrar a esquerda sentido `ES`. Manter a direita para continuar na `SPA 109` e NÃO seguir via `Estrada dos Limas`'
+            description:
+              'já próximo a Pedra do Santuário se o maps mandar sair da rodovia `SPA 109/008` e entrar a esquerda sentido `ES`. Manter a direita para continuar na `SPA 109` e NÃO seguir via `Estrada dos Limas`',
           },
           {
             step: 4,
             title: 'Importante',
-            description: 'Uma vez que subirem uma serrinha e cruzarem pelo portal da pedra do santuário, já estão no centro de aventuras, vcs vão seguir mais uns metros e no final da rua virar a direita onde em seguida terminará o `asfalto`. Assim q virarem a direita e avistarem uma estrada de terra o estacionamento e local de encontro estará a esquerda de vcs'
+            description:
+              'Uma vez que subirem uma serrinha e cruzarem pelo portal da pedra do santuário, já estão no centro de aventuras, vcs vão seguir mais uns metros e no final da rua virar a direita onde em seguida terminará o `asfalto`. Assim q virarem a direita e avistarem uma estrada de terra o estacionamento e local de encontro estará a esquerda de vcs',
           },
           {
             step: 5,
             title: 'Ponto de encontro',
-            description: 'https://www.google.com/maps/dir/?api=1&destination=-22.78544,-46.45512&travelmode=driving'
+            description:
+              'https://www.google.com/maps/dir/?api=1&destination=-22.78544,-46.45512&travelmode=driving',
           },
           {
             step: 6,
             title: 'Estacionamento',
-            description: 'Fica bem na base da Pedra a esquerda'
-          }
-        ]
+            description: 'Fica bem na base da Pedra a esquerda',
+          },
+        ],
       },
-      description: 'Aventura completa com tirolesa, escalada e atividades radicais na maior tirolesa da América Latina.',
+      description:
+        'Aventura completa com tirolesa, escalada e atividades radicais na maior tirolesa da América Latina.',
       activities: [
         {
           id: 'zipline',
@@ -286,7 +293,7 @@ export class TourRepository implements ITourRepository {
           icon: '🪂',
           difficulty: 'easy',
           duration: '30 minutos',
-          included: true
+          included: true,
         },
         {
           id: 'rock-climbing-pb',
@@ -294,83 +301,80 @@ export class TourRepository implements ITourRepository {
           description: 'Escalada em paredões naturais com diferentes níveis de dificuldade',
           icon: '🧗',
           difficulty: 'medium',
-          included: true
-        }
+          included: true,
+        },
       ],
       logistics: {
         schedule: {
           openTime: '9h',
-          closeTime: '17h'
+          closeTime: '17h',
         },
         meetingPoint: 'Centro de Aventuras Pedra Bela',
         duration: '1 dia',
         groupSize: {
           min: 4,
-          max: 12
+          max: 12,
         },
         requirements: [
           {
             type: 'age',
             description: 'Idade mínima de 14 anos',
-            mandatory: true
+            mandatory: true,
           },
           {
             type: 'physical',
             description: 'Boa condição física',
-            mandatory: true
-          }
+            mandatory: true,
+          },
         ],
         included: [
           'Todos os equipamentos de segurança',
           'Instrutores certificados',
           'Seguro de acidentes',
-          'Lanche'
+          'Lanche',
         ],
-        notIncluded: [
-          'Transporte',
-          'Hospedagem',
-          'Refeições principais'
-        ],
+        notIncluded: ['Transporte', 'Hospedagem', 'Refeições principais'],
         importantNotes: [
           'Atividade sujeita a condições climáticas',
           'Peso máximo: 120kg',
-          'Uso obrigatório de equipamentos de segurança'
+          'Uso obrigatório de equipamentos de segurança',
         ],
         tips: [
           'Use roupas confortáveis',
           'Traga tênis fechado',
           'Hidrate-se bem',
-          'Chegue 30 minutos antes'
-        ]
+          'Chegue 30 minutos antes',
+        ],
       },
       pricing: {
         basePrice: 29900, // R$ 299.00 in cents
         currency: 'BRL',
-        cancellationPolicy: 'Cancelamento gratuito até 48h antes da atividade'
+        cancellationPolicy: 'Cancelamento gratuito até 48h antes da atividade',
       },
       availability: {
         available: true,
         spotsLeft: 8,
         weatherDependent: true,
-        restrictions: ['Atividade sujeita a condições climáticas', 'Peso máximo: 120kg']
+        restrictions: ['Atividade sujeita a condições climáticas', 'Peso máximo: 120kg'],
       },
       gallery: {
         images: [],
         categories: {
           all: 'Todas',
           adventure: 'Aventura',
-          nature: 'Natureza'
-        }
+          nature: 'Natureza',
+        },
       },
       seo: {
         title: 'XperienceClimb - Aventura na Pedra Bela',
-        description: 'Viva a maior tirolesa da América Latina e outras aventuras radicais na Pedra Bela. Experiência completa de turismo de aventura.',
+        description:
+          'Viva a maior tirolesa da América Latina e outras aventuras radicais na Pedra Bela. Experiência completa de turismo de aventura.',
         keywords: ['tirolesa', 'pedra bela', 'aventura', 'escalada', 'turismo radical'],
-        ogImage: '/images/themes/pedra-bela/og-image.jpg'
+        ogImage: '/images/themes/pedra-bela/og-image.jpg',
       },
       createdAt: new Date('2024-01-01'),
       updatedAt: new Date('2024-01-01'),
-      isActive: true
+      isActive: true,
     };
 
     this.tours.set(fazendaIpanemaTour.id, fazendaIpanemaTour);

@@ -65,12 +65,14 @@ export function HeroSection() {
             {/* Ramo Botânico saindo sutilmente da borda da foto */}
             <img
               src={hero.photo.botanicalLeavesSvg}
-              alt="Folhas botânicas decorativas"
+              alt=""
+              aria-hidden="true"
               className="absolute -top-10 -right-4 w-24 h-24 pointer-events-none select-none z-20"
             />
             <img
               src={hero.photo.botanicalLeavesSvg}
-              alt="Folhas botânicas decorativas"
+              alt=""
+              aria-hidden="true"
               className="absolute -bottom-8 -left-8 w-28 h-28 pointer-events-none select-none z-20 transform rotate-180"
             />
 

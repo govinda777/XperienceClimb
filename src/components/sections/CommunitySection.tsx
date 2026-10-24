@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useTheme } from '@/themes/ThemeProvider';
 import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
 
@@ -99,10 +100,28 @@ export function CommunitySection() {
                 <span>🧑‍🏫</span>
                 <span>Instrutores Certificados</span>
               </h3>
-              <p className="text-sm text-ink-600 mb-8 max-w-3xl leading-relaxed">
+              <p className="text-sm text-ink-600 mb-6 max-w-3xl leading-relaxed">
                 Nossa equipe de instrutores é formada por profissionais experientes e certificados,
                 comprometidos com sua segurança e aprendizado.
               </p>
+
+              <div className="flex flex-wrap items-center gap-3 mb-8 text-xs font-mono">
+                <span className="text-ink-500 uppercase tracking-wider font-semibold">
+                  Picos oficiais em SP:
+                </span>
+                <Link
+                  href="/destinos/pedra-bela"
+                  className="px-3 py-1.5 rounded-full bg-sand-100 hover:bg-sand-200 text-forest-800 font-bold transition-colors"
+                >
+                  📍 Pedra Bela (Pedra do Santuário) ↗
+                </Link>
+                <Link
+                  href="/destinos/fazenda-ipanema"
+                  className="px-3 py-1.5 rounded-full bg-sand-100 hover:bg-sand-200 text-forest-800 font-bold transition-colors"
+                >
+                  📍 Fazenda Ipanema (Morro Araçoiaba) ↗
+                </Link>
+              </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {comm.instructors.map((inst, index) => (

@@ -15,6 +15,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
+    "test:destinations": "jest src/themes/__tests__/destinations-images.test.ts && playwright test tests/e2e/destinations-images.spec.ts",
     "create-tour": "node scripts/create-tour.js",
     "create-theme": "node scripts/create-theme-with-external-images.js",
     "prepare": "husky",

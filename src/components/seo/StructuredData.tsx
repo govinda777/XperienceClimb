@@ -2,7 +2,11 @@ import React from 'react';
 import { CONTACT_INFO, PACKAGES, AVAILABLE_DATES } from '@/lib/constants';
 import { FAQ_DATA } from '@/lib/faq-data';
 
-export default function StructuredData() {
+export interface StructuredDataProps {
+  mode?: 'global' | 'home' | 'all';
+}
+
+export default function StructuredData({ mode = 'all' }: StructuredDataProps = {}) {
   const baseUrl = 'https://climb.xperiencehubs.com';
 
   // 1. Organization & Brand Schema (Knowledge Graph & Entidade de Marca)
@@ -60,8 +64,8 @@ export default function StructuredData() {
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Saturday', 'Sunday'],
-        opens: '08:45',
-        closes: '17:00',
+        opens: '08:30',
+        closes: '18:00',
       },
     ],
     areaServed: [
@@ -112,8 +116,8 @@ export default function StructuredData() {
     name: 'Saída de Escalada em Rocha e Batismo - Pedra Bela',
     description:
       'Experiência imersiva de batismo de escalada em rocha natural no Campo Escola de Pedra Bela - SP com instrutores certificados, seguro aventura e almoço completo incluso.',
-    startDate: `${AVAILABLE_DATES.singleDateISO}T08:45:00-03:00`,
-    endDate: `${AVAILABLE_DATES.singleDateISO}T17:00:00-03:00`,
+    startDate: `${AVAILABLE_DATES.singleDateISO}T08:30:00-03:00`,
+    endDate: `${AVAILABLE_DATES.singleDateISO}T18:00:00-03:00`,
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     eventStatus: 'https://schema.org/EventScheduled',
     image: `${baseUrl}/images/site-og.jpg`,
@@ -171,13 +175,13 @@ export default function StructuredData() {
         '@type': 'SiteNavigationElement',
         position: 1,
         name: 'A Experiência',
-        url: `${baseUrl}/#sobre`,
+        url: `${baseUrl}/#lugar`,
       },
       {
         '@type': 'SiteNavigationElement',
         position: 2,
         name: 'Para Iniciantes',
-        url: `${baseUrl}/#iniciantes`,
+        url: `${baseUrl}/#batismo`,
       },
       {
         '@type': 'SiteNavigationElement',
@@ -208,16 +212,19 @@ export default function StructuredData() {
 
   // Unified Graph
   const eventIsUpcoming = new Date(`${AVAILABLE_DATES.singleDateISO}T23:59:59-03:00`) >= new Date();
+  const globalEntities = [organizationSchema, localBusinessSchema, siteNavigationSchema];
+  const homeEntities = [...productSchemas, ...(eventIsUpcoming ? [eventSchema] : []), faqSchema];
+
+  const graphEntities =
+    mode === 'global'
+      ? globalEntities
+      : mode === 'home'
+        ? homeEntities
+        : [...globalEntities, ...homeEntities];
+
   const structuredDataGraph = {
     '@context': 'https://schema.org',
-    '@graph': [
-      organizationSchema,
-      localBusinessSchema,
-      ...productSchemas,
-      ...(eventIsUpcoming ? [eventSchema] : []),
-      faqSchema,
-      siteNavigationSchema,
-    ],
+    '@graph': graphEntities,
   };
 
   return (

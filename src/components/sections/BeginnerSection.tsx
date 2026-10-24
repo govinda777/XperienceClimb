@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useTheme } from '@/themes/ThemeProvider';
 import { pedraBellaTheme } from '@/themes/configs/pedra-bela';
 
@@ -78,6 +79,16 @@ export function BeginnerSection() {
                   <p className="text-xs text-ink-600 mt-1 leading-relaxed">{card.description}</p>
                 </div>
               ))}
+            </div>
+
+            <div className="mt-6">
+              <Link
+                href="/guia-escalada-iniciantes-sp"
+                className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-ink-900 bg-white/95 hover:bg-white px-5 py-3 rounded-xl shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5"
+              >
+                <span>📖 Ler o Guia Completo de Escalada para Iniciantes em SP</span>
+                <span>→</span>
+              </Link>
             </div>
           </div>
         </div>

@@ -16,6 +16,7 @@ import {
   Footer,
 } from '@/components/sections';
 import { CartButton, CartModal } from '@/components/cart';
+import StructuredData from '@/components/seo/StructuredData';
 
 export const metadata: Metadata = {
   title: 'Vivência de Escalada em Pedra Bela - SP | Xperience Climb',
@@ -50,6 +51,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="min-h-screen pt-20">
+      <StructuredData mode="home" />
       <Navigation />
       <HeroSection />
       <AboutSection />

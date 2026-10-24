@@ -1,0 +1,80 @@
+<svg viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E383F" />
+      <stop offset="50%" stop-color="#242C32" />
+      <stop offset="100%" stop-color="#181E22" />
+    </linearGradient>
+    <linearGradient id="skyAmbient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F7F4EC" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#EDE6D6" stop-opacity="0.4" />
+    </linearGradient>
+    <linearGradient id="ropeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB703" />
+      <stop offset="100%" stop-color="#FB8500" />
+    </linearGradient>
+  </defs>
+
+  <!-- Fundo Atmosferico de Papel Outdoor -->
+  <rect width="320" height="220" rx="16" fill="url(#skyAmbient)" />
+
+  <!-- Linhas Topograficas de Altitude -->
+  <path d="M -10 40 C 60 25, 140 50, 220 30 C 270 18, 305 32, 330 20" stroke="#D8CFBE" stroke-width="1.2" stroke-dasharray="4 4" />
+  <path d="M -10 75 C 80 60, 160 85, 250 65 C 290 55, 315 68, 330 58" stroke="#D8CFBE" stroke-width="1.2" stroke-dasharray="4 4" />
+  <path d="M -10 115 C 90 100, 180 120, 270 105 C 300 100, 320 106, 330 102" stroke="#D8CFBE" stroke-width="1" stroke-dasharray="4 4" />
+
+  <!-- Paredao Granitico de Pedra Bela -->
+  <path d="M 0 0 L 145 0 L 125 45 L 140 85 L 115 130 L 135 180 L 105 220 L 0 220 Z" fill="url(#rockGrad)" />
+  <path d="M 145 0 L 125 45 L 85 30 L 110 0 Z" fill="#3A4750" opacity="0.6" />
+  <path d="M 125 45 L 140 85 L 100 70 L 85 30 Z" fill="#1F262B" opacity="0.8" />
+  <path d="M 140 85 L 115 130 L 75 110 L 100 70 Z" fill="#3A4750" opacity="0.5" />
+  <path d="M 115 130 L 135 180 L 90 165 L 75 110 Z" fill="#1A2024" opacity="0.9" />
+  <path d="M 135 180 L 105 220 L 60 220 L 90 165 Z" fill="#3A4750" opacity="0.6" />
+
+  <!-- Ranhuras e Fissuras Tecnicas -->
+  <path d="M 65 20 L 75 55 L 70 95 L 80 145 L 68 190" stroke="#121619" stroke-width="2" stroke-linecap="round" />
+  <path d="M 110 50 L 118 72 L 108 98" stroke="#52616B" stroke-width="1.5" stroke-linecap="round" />
+  <path d="M 85 135 L 92 155 L 86 175" stroke="#52616B" stroke-width="1.5" stroke-linecap="round" />
+
+  <!-- Chapeleta de Protecao em Aco Inox -->
+  <circle cx="120" cy="98" r="4" fill="#A4B0BE" stroke="#57606F" stroke-width="1.2" />
+  <circle cx="120" cy="98" r="1.8" fill="#2F3542" />
+
+  <!-- Costura Expressa (Quickdraw) -->
+  <rect x="118" y="102" width="4" height="18" rx="2" fill="#2E473B" />
+  <path d="M 117 96 C 114 96 112 100 114 104 C 116 107 121 106 123 104 C 125 101 123 96 117 96 Z" stroke="#FFB703" stroke-width="1.6" fill="none" />
+  <path d="M 118 118 C 115 118 113 123 116 127 C 119 130 124 129 126 126 C 128 122 125 118 118 118 Z" stroke="#FFB703" stroke-width="1.8" fill="none" />
+
+  <!-- Corda Dinamica UIAA -->
+  <path d="M 75 220 C 85 190, 110 155, 120 125 C 125 110, 150 115, 175 108 C 190 104, 198 100, 204 96" stroke="url(#ropeGrad)" stroke-width="3.2" stroke-linecap="round" fill="none" />
+
+  <!-- Escalador em Acao -->
+  <g transform="translate(142, 38)">
+    <path d="M 38 48 L 18 24 L -18 16" stroke="#D48B6A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="-18" cy="16" r="4.5" fill="#B25D42" />
+    <path d="M 46 88 L 22 96 L -8 92" stroke="#1E2832" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M -8 92 L -18 90 L -16 97 L -6 96 Z" fill="#FFB703" stroke="#B25D42" stroke-width="1" />
+    <path d="M 58 88 L 74 114 L 62 136" stroke="#1E2832" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 62 136 L 54 145 L 63 148 L 70 140 Z" fill="#FFB703" stroke="#B25D42" stroke-width="1" />
+    <path d="M 34 50 L 58 46 L 66 84 L 40 88 Z" fill="#2E473B" />
+    <rect x="38" y="80" width="28" height="9" rx="3" fill="#B25D42" />
+    <circle cx="48" cy="84" r="3.5" fill="#FFB703" stroke="#B25D42" stroke-width="1" />
+    <path d="M 56 48 L 76 34 L 56 18" stroke="#D48B6A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="56" cy="18" r="4.5" fill="#B25D42" />
+    <circle cx="48" cy="36" r="8" fill="#D48B6A" />
+    <path d="M 40 33 C 40 22, 58 20, 59 33 Z" fill="#B25D42" />
+    <path d="M 38 33 L 61 33" stroke="#8A3E26" stroke-width="2" stroke-linecap="round" />
+    <path d="M 43 33 L 47 41 L 52 33" stroke="#2A2A2A" stroke-width="1.2" fill="none" />
+    <rect x="31" y="81" width="8" height="11" rx="3" fill="#D48B6A" stroke="#8A3E26" stroke-width="1" />
+  </g>
+
+  <!-- Bromelia de Altitude -->
+  <path d="M 125 180 C 135 174, 145 177, 148 182 C 140 186, 132 185, 125 180 Z" fill="#4A6B53" />
+  <path d="M 126 181 C 132 170, 140 171, 142 176 C 137 179, 131 180, 126 181 Z" fill="#2E473B" />
+
+  <!-- Tag Tecnica -->
+  <g transform="translate(230, 185)">
+    <rect width="78" height="22" rx="6" fill="#181E22" opacity="0.85" />
+    <text x="39" y="15" fill="#FFB703" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">VIA · 5° SUP</text>
+  </g>
+</svg>

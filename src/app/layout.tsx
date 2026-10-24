@@ -113,7 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <head>
-        <StructuredData />
+        <StructuredData mode="global" />
       </head>
       <body
         className={`${inter.className} ${bigShoulders.variable} ${fraunces.variable} ${jetbrainsMono.variable} ${inter.variable} bg-white`}

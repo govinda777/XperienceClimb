@@ -1,25 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
 import { isBotOrAuditor } from '@/lib/bot-detection';
 import { AuthContext, defaultGuestAuthContext } from '@/hooks/useAuth';
-
-// Carrega o pacote pesado do Privy (~450 KiB) apenas sob demanda via dynamic import
-const DynamicPrivyAuthWrapper = dynamic(
-  () => import('./PrivyAuthWrapper').then(mod => mod.PrivyAuthWrapper),
-  {
-    ssr: false,
-    loading: () => null,
-  }
-);
+import type { PrivyAuthWrapperProps } from './PrivyAuthWrapper';
 
 interface PrivyProviderProps {
   children: React.ReactNode;
 }
 
 export function PrivyProvider({ children }: PrivyProviderProps) {
-  const [enabled, setEnabled] = useState(false);
+  const [WrapperComponent, setWrapperComponent] =
+    useState<React.ComponentType<PrivyAuthWrapperProps> | null>(null);
 
   const rawAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
   const isRealAppId = Boolean(
@@ -32,7 +24,9 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
   useEffect(() => {
     // Inicializa Privy somente para usuários reais no cliente com App ID válido configurado
     if (!isBotOrAuditor() && isRealAppId) {
-      setEnabled(true);
+      import('./PrivyAuthWrapper').then(mod => {
+        setWrapperComponent(() => mod.PrivyAuthWrapper);
+      });
     }
   }, [isRealAppId]);
 
@@ -51,9 +45,9 @@ export function PrivyProvider({ children }: PrivyProviderProps) {
     return () => observer.disconnect();
   }, []);
 
-  if (!enabled || !rawAppId || !isRealAppId) {
+  if (!WrapperComponent || !rawAppId || !isRealAppId) {
     return <AuthContext.Provider value={defaultGuestAuthContext}>{children}</AuthContext.Provider>;
   }
 
-  return <DynamicPrivyAuthWrapper appId={rawAppId}>{children}</DynamicPrivyAuthWrapper>;
+  return <WrapperComponent appId={rawAppId}>{children}</WrapperComponent>;
 }

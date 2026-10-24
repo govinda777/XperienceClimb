@@ -66,7 +66,7 @@ export class PedraBellaTheme extends BaseTheme {
       href: '#batismo',
     },
     photo: {
-      src: '/images/themes/pedra-bela/pedra-santuario-1.jpg',
+      src: '/images/themes/pedra-bela/hero.jpg',
       alt: 'Vivência de Escalada na Rocha em Pedra Bela - SP',
       topMetaBadge: "GPS: 22°42'S 46°26'W · ALT 1.120M",
       bottomMetaBadge: 'PEDRA DO SANTUÁRIO · 119 KM DE SP',
@@ -99,7 +99,7 @@ export class PedraBellaTheme extends BaseTheme {
           'Monólito monumental com vias de escalada em granito bem protegidas e vista panorâmica de 360° no topo.',
         tag: '📍 Campo Escola de Escalada',
         image: '/images/themes/pedra-bela/escalada-1.png',
-        alt: 'Pedra do Santuário',
+        alt: 'Monólito da Pedra do Santuário com vias de escalada em rocha em Pedra Bela - SP',
       },
       {
         id: 'almoco-no-mirante',
@@ -109,8 +109,8 @@ export class PedraBellaTheme extends BaseTheme {
         description:
           'Almoço caipira completo à vontade no fogão a lenha após a rocha, finalizado com café no mirante ao pôr do sol.',
         tag: '☕ Fogão a lenha & Mirante',
-        image: '/images/themes/pedra-bela/restaurante.jpg',
-        alt: 'Almoço no Mirante',
+        image: '/images/themes/pedra-bela/restaurante-1.jpg',
+        alt: 'Almoço caipira no fogão a lenha no restaurante do mirante em Pedra Bela - SP',
       },
     ],
   };
@@ -144,7 +144,7 @@ export class PedraBellaTheme extends BaseTheme {
       {
         tag: 'SEGURANÇA',
         tagColor: 'forest',
-        title: 'Cento Equipamento Seguro',
+        title: '100% Equipamento Seguro',
         description:
           'Equipamentos homologados internacionais UIAA/CE colocados e ajustados pelo guia.',
       },
@@ -518,7 +518,7 @@ export class PedraBellaTheme extends BaseTheme {
     ],
     images: [
       {
-        src: '/images/themes/pedra-bela/pedra-bela-1.jpg',
+        src: '/images/themes/pedra-bela/escalada-2.jpg',
         alt: 'Instrutor orientando participante no batismo de escalada em rocha em Pedra Bela SP',
         tag: 'Instrução',
         tagColor: 'forest',
@@ -526,7 +526,7 @@ export class PedraBellaTheme extends BaseTheme {
         category: 'escalada',
       },
       {
-        src: '/images/themes/pedra-bela/pedra-bela-2.jpg',
+        src: '/images/themes/pedra-bela/escalada-3.jpg',
         alt: 'Aventureiros equipados com capacetes e baudriers homologados na base das vias',
         tag: 'Equipamentos',
         tagColor: 'terracotta',
@@ -534,7 +534,7 @@ export class PedraBellaTheme extends BaseTheme {
         category: 'escalada',
       },
       {
-        src: '/images/themes/pedra-bela/pedra-bela-3.jpg',
+        src: '/images/themes/pedra-bela/escalada-4.jpg',
         alt: 'Vista aberta e panorâmica da cordilheira da Mantiqueira a partir de Pedra Bela',
         tag: 'Mantiqueira',
         tagColor: 'forest',
@@ -542,7 +542,7 @@ export class PedraBellaTheme extends BaseTheme {
         category: 'escalada',
       },
       {
-        src: '/images/themes/pedra-bela/pedra-bela-5.jpg',
+        src: '/images/themes/pedra-bela/paisagem-3.jpg',
         alt: 'Escalador superando via escola na rocha natural com acompanhamento e segurança total',
         tag: 'Superação',
         tagColor: 'forest',
@@ -550,7 +550,7 @@ export class PedraBellaTheme extends BaseTheme {
         category: 'paisagem',
       },
       {
-        src: '/images/themes/pedra-bela/pedra-bela-6.jpg',
+        src: '/images/themes/pedra-bela/paisagem-4.jpg',
         alt: 'Aventureiros comemorando a conquista do topo durante o entardecer no mirante',
         tag: 'Pôr do Sol',
         tagColor: 'sun',
@@ -558,7 +558,7 @@ export class PedraBellaTheme extends BaseTheme {
         category: 'paisagem',
       },
       {
-        src: '/images/themes/pedra-bela/pedra-bela-main.jpg',
+        src: '/images/themes/pedra-bela/paisagem-5.jpg',
         alt: 'Foto ampla monumental da Pedra do Santuário destacando-se no relevo',
         tag: 'Monólito',
         tagColor: 'forest',
@@ -566,27 +566,27 @@ export class PedraBellaTheme extends BaseTheme {
         category: 'paisagem',
       },
       {
-        src: 'https://visitesocorrosp.com.br/content/images/2024/09/VS_POSTBLOG1_FEED1-3.png',
-        alt: 'Ângulo panorâmico dos vales e montanhas ao redor da rocha',
+        src: '/images/themes/pedra-bela/paisagem-1.jpg',
+        alt: 'Ângulo panorâmico dos vales e montanhas da Serra da Mantiqueira em Pedra Bela SP',
         tag: 'Mirante 360°',
         tagColor: 'terracotta',
         title: 'Mirante Panorâmico da Região',
         category: 'paisagem',
-        isExternal: true,
+        isExternal: false,
       },
       {
-        src: 'https://onofftransportes.com.br/wp-content/uploads/2017/10/1-maior-santuario-pedra-bela.jpg',
-        alt: 'Igreja no cume da Pedra do Santuário em Pedra Bela SP',
+        src: '/images/themes/pedra-bela/paisagem-2.jpg',
+        alt: 'Entardecer no cume da Pedra do Santuário em Pedra Bela SP',
         tag: 'Cume Histórico',
         tagColor: 'sun',
-        title: 'Capela Histórica no Cume',
+        title: 'Vista do Cume ao Entardecer',
         category: 'paisagem',
-        isExternal: true,
+        isExternal: false,
       },
     ],
     videos: [
       {
-        src: '/images/themes/pedra-bela/pedra-bela--restaurante-muvuca-caipira.mp4',
+        src: '/images/themes/pedra-bela/video-1.mp4',
         tag: 'VÍDEO REAL · GASTRONOMIA',
         tagColor: 'terracotta',
         title: 'Almoço no Restaurante Muvuca Caipira',
@@ -594,7 +594,7 @@ export class PedraBellaTheme extends BaseTheme {
         category: 'videos',
       },
       {
-        src: '/images/themes/pedra-bela/XperienceClimb-03.mp4',
+        src: '/images/themes/pedra-bela/video-2.mp4',
         tag: 'VÍDEO REAL · ESCALADA',
         tagColor: 'forest',
         title: 'A Emoção do Batismo na Rocha',
@@ -644,7 +644,7 @@ export class PedraBellaTheme extends BaseTheme {
         description:
           'Monólito monumental de granito com vias de aderência perfeitas para quem está começando na escalada em rocha natural.',
         highlights: '✓ Setor Escola · 1.100m altitude · Mega Tirolesa',
-        image: '/images/themes/pedra-bela/pedra-santuario-1.jpg',
+        image: '/images/themes/pedra-bela/hero.jpg',
       },
       {
         name: 'Fazenda Ipanema - Morro Araçoiaba',
@@ -653,7 +653,7 @@ export class PedraBellaTheme extends BaseTheme {
         description:
           'Localizado na Floresta Nacional de Ipanema, Unidade de Conservação Federal com vias esportivas em rocha granítica e trilhas históricas.',
         highlights: '✓ Conservação Federal · Vias esportivas · Trilha histórica',
-        image: '/images/themes/pedra-bela/paisagem-1.jpg',
+        image: '/images/themes/fazenda-ipanema/hero.jpg',
       },
     ],
   };
@@ -775,6 +775,8 @@ export class PedraBellaTheme extends BaseTheme {
       { label: '09 · Guias & Instrutores', href: '#comunidade' },
       { label: '10 · Como Chegar', href: '#localizacao' },
       { label: '11 · Dúvidas Frequentes', href: '#faq' },
+      { label: '12 · Guia do Iniciante em SP', href: '/guia-escalada-iniciantes-sp' },
+      { label: '13 · Destino: Fazenda Ipanema', href: '/destinos/fazenda-ipanema' },
     ],
     contact: {
       whatsapp: 'https://wa.me/5511995413539',
@@ -786,8 +788,7 @@ export class PedraBellaTheme extends BaseTheme {
       ctaHref: '#pacotes',
     },
     legal: {
-      copyright:
-        '© 2026 Xperience Climb. Todos os direitos reservados. CNPJ ativo. Feito para inspirar a vida ao ar livre.',
+      copyright: '© 2026 Xperience Climb. Feito para inspirar a vida ao ar livre.',
       privacyHref: '/politica-de-privacidade',
       termsHref: '/termos-de-uso',
       backToTopHref: '#hero',
@@ -868,7 +869,7 @@ export class PedraBellaTheme extends BaseTheme {
         content:
           'Pedra Bela é uma pequena cidade do interior de São Paulo conhecida por sua natureza exuberante e atividades de aventura.',
       },
-      image: '/images/themes/pedra-bela/pedra-santuario-1.jpg',
+      image: '/images/themes/pedra-bela/hero.jpg',
     }
   );
 
@@ -882,7 +883,7 @@ export class PedraBellaTheme extends BaseTheme {
         isExternal: false,
       },
       {
-        src: '/images/themes/pedra-bela/pedra-santuario-1.jpg',
+        src: '/images/themes/pedra-bela/hero.jpg',
         alt: 'Monólito da Pedra do Santuário',
         title: 'Pedra do Santuário',
         category: 'adventure',
@@ -896,7 +897,7 @@ export class PedraBellaTheme extends BaseTheme {
         isExternal: false,
       },
       {
-        src: '/images/themes/pedra-bela/restaurante.jpg',
+        src: '/images/themes/pedra-bela/restaurante-1.jpg',
         alt: 'Almoço caipira no mirante',
         title: 'Almoço Caipira',
         category: 'adventure',
