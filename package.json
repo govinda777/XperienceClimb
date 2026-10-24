@@ -10,12 +10,17 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:unit": "jest --passWithNoTests --silent --watchAll=false --testPathIgnorePatterns=integration",
     "test:pre-commit": "jest --passWithNoTests --silent --watchAll=false --testPathIgnorePatterns=integration",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
     "create-tour": "node scripts/create-tour.js",
     "create-theme": "node scripts/create-theme-with-external-images.js",
     "prepare": "husky",
     "type-check": "tsc --noEmit",
-    "test:e2e": "playwright test"
+    "pipeline:quick": "npm run type-check && npm run test:unit",
+    "pipeline": "npm run type-check && npm run lint && npm run test:unit && npm run build && npm run test:e2e"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

@@ -97,17 +97,66 @@ Acesse `http://localhost:3000` no seu navegador.
 
 ---
 
+## 🧪 Testes Automatizados & Pipeline de CI Local
+
+O projeto conta com uma esteira rigorosa de testes e proteção de branches que impede código quebrado de subir para produção ou falhar no deploy da Vercel.
+
+### 1. Executar a Pipeline Completa Localmente (Espelho do GitHub Actions)
+
+Executa a validação de ponta a ponta: checagem de tipos TypeScript, linter, testes unitários, compilação de produção do Next.js e testes E2E do Playwright:
+
+```bash
+npm run pipeline
+```
+
+### 2. Testes de Unidade (Jest)
+
+Execução rápida (~4 segundos) focada nas regras de negócio, use cases de reservas, stores e componentes:
+
+```bash
+# Rodar todos os testes de unidade uma vez
+npm run test:unit
+
+# Rodar em modo observador (watch) durante o desenvolvimento
+npm run test:watch
+
+# Rodar com relatório de cobertura de código
+npm run test:coverage
+```
+
+### 3. Testes End-to-End (Playwright)
+
+Valida visualmente toda a jornada crítica do usuário: carrinho, formulário de 3 etapas com dados nominais dos participantes, termo de saúde e envio com payload formatado para a Web API do WhatsApp.
+
+```bash
+# Executar em modo headless no terminal (rápido e silencioso)
+npm run test:e2e
+
+# Abrir o painel gráfico interativo com Time Travel Debugging e gravação de passos
+npm run test:e2e:ui
+
+# Visualizar o relatório detalhado do último teste executado
+npm run test:e2e:report
+```
+
+---
+
 ## 🛠️ Comandos Disponíveis
 
-| Comando              | Descrição                                                              |
-| :------------------- | :--------------------------------------------------------------------- |
-| `npm run dev`        | Inicia o servidor local Next.js em modo de desenvolvimento             |
-| `npm run build`      | Compila o build estático otimizado de produção (19 rotas)              |
-| `npm run start`      | Inicia a aplicação compilada em modo de produção                       |
-| `npm run type-check` | Executa o compilador TypeScript (`tsc --noEmit`) sem emitir arquivos   |
-| `npm test`           | Executa a suíte completa de testes automatizados com Jest (269 testes) |
-| `npm run test:watch` | Executa os testes no modo interativo                                   |
-| `npm run lint`       | Executa a verificação e correção de estilo com ESLint e Prettier       |
+| Comando                  | Descrição                                                                               |
+| :----------------------- | :-------------------------------------------------------------------------------------- |
+| `npm run dev`            | Inicia o servidor local Next.js em modo de desenvolvimento (`http://localhost:3000`)    |
+| `npm run build`          | Compila o build estático otimizado de produção (19 rotas)                               |
+| `npm run start`          | Inicia a aplicação compilada em modo de produção                                        |
+| `npm run type-check`     | Executa o compilador TypeScript (`tsc --noEmit`) sem emitir arquivos                    |
+| `npm run lint`           | Executa a verificação e correção de estilo com ESLint e Prettier                        |
+| `npm run test:unit`      | Executa rapidamente a suíte de testes de unidade com Jest (~4s)                         |
+| `npm test`               | Executa a suíte completa de testes automatizados com Jest (269 testes)                  |
+| `npm run test:watch`     | Executa os testes unitários no modo interativo contínuo                                 |
+| `npm run test:e2e`       | Executa os testes ponta a ponta com Playwright em modo headless                         |
+| `npm run test:e2e:ui`    | Abre o painel visual interativo do Playwright com depuração e Time Travel               |
+| `npm run pipeline`       | Executa a esteira completa local (Tipos ➔ Lint ➔ Testes Unitários ➔ Build ➔ Playwright) |
+| `npm run pipeline:quick` | Executa a validação rápida local (Checagem de Tipos + Testes de Unidade)                |
 
 ---
 

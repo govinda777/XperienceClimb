@@ -1,0 +1,44 @@
+name: CI / Quality Assurance
+
+on:
+  push:
+    branches: [main, 'feature/*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar Dependências
+        run: npm ci --prefer-offline
+
+      - name: Checagem de Tipos TypeScript
+        run: npm run type-check
+
+      - name: Linting do Código
+        run: npm run lint
+
+      - name: Testes Unitários (Jest)
+        run: npm run test:unit
+
+      - name: Build de Produção Next.js
+        run: npm run build
+        env:
+          NEXT_PUBLIC_PRIVY_APP_ID: ${{ secrets.NEXT_PUBLIC_PRIVY_APP_ID || 'clp1234567890123456789012' }}
+
+      - name: Instalar Navegadores Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Testes End-to-End (Playwright)
+        run: npm run test:e2e

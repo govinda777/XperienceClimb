@@ -46,13 +46,23 @@ Esta versão consolida o novo **Design System Editorial / Outdoor (estilo Arc'te
   - Eliminado o `alert('Usuário não autenticado')` que bloqueava o formulário de checkout no passo final. O fluxo agora aciona a tela de identificação prévia ou abre diretamente o modal do Privy.
 - **Avisos de Build do Webpack (Critical Dependency):**
   - Configurado filtro de `ignoreWarnings` no [`next.config.js`](next.config.js) para a dependência transitiva `ox/virtualMasterPool.js`.
-- **Tipagem Automática do Next.js:**
-  - Corrigido o pipeline de build e verificação de tipos (`tsc --noEmit`), garantindo 0 erros de tipagem e geração estática de 19 páginas.
+- **Erro de Build na Vercel (Google Font `Big Shoulders`):**
+  - **Causa Raiz:** O arquivo `src/app/layout.tsx` importava a fonte de display como `Big_Shoulders`. Em ambientes de build limpos (como o runner da Vercel sem cache), o Webpack falhava acusando que a fonte era desconhecida no catálogo oficial do Google Fonts.
+  - **Correção:** Atualizado o import para `Big_Shoulders_Display` (correspondente ao `@next/font/google` e `tailwind.config.js`) e sincronizado o `package-lock.json`.
+- **Proteção de Rota de Teste em Produção:**
+  - Inserida verificação de `process.env.NODE_ENV === 'production'` com `notFound()` na rota `src/app/test-e2e/checkout/page.tsx`, garantindo que o ambiente de teste seja inacessível em produção.
 
 ---
 
 ### 🔄 Modificado (Changed)
 
+- **Blindagem de Hooks Git (Husky):**
+  - **Pre-Commit (`.husky/pre-commit`):** Executa `lint-staged`, checagem estrita de tipos (`tsc --noEmit`) e testes unitários (`npm run test:unit`).
+  - **Pre-Push (`.husky/pre-push`):** Executa obrigatoriamente `npm run build` (garantindo que builds quebrados jamais cheguem à Vercel) seguido de `npm run test:e2e -- --reporter=line` (Playwright E2E do checkout em 3 etapas).
+- **Esteira de CI/CD do GitHub Actions (`.github/workflows/ci.yml`):**
+  - Criada pipeline contínua na nuvem para branches `main`, `feature/*` e Pull Requests rodando toda a suíte de testes e validação de build.
+- **Novos Scripts de Qualidade no `package.json`:**
+  - Adicionados `npm run pipeline`, `npm run pipeline:quick`, `npm run test:unit`, `npm run test:e2e:ui` e `npm run test:e2e:report`.
 - **Menu Superior Fixo (`fixed top-0`):**
   - Barra de navegação agora permanece fixa durante o scroll da página, com fundo semitransparente em blur (`backdrop-blur-md`), compensação no topo do elemento principal (`pt-20`) e offset suave para âncoras (`scroll-padding-top: 5rem`).
 - **Limpeza do Card Agarrão:**
@@ -61,7 +71,7 @@ Esta versão consolida o novo **Design System Editorial / Outdoor (estilo Arc'te
   - Removido pacote não utilizado `@farcaster/mini-app-solana` que gerava avisos de peer dependencies.
   - Bloqueados artefatos temporários do pnpm (`pnpm-lock.yaml`, `pnpm-workspace.yaml`, `.pnpm-store/`) no `.gitignore` em favor do padrão estável com `npm` e `package-lock.json`.
 - **Cobertura de Testes:**
-  - 24 suítes de testes automatizados executando e passando integralmente com **269 testes aprovados**.
+  - 24 suítes de testes automatizados executando e passando integralmente com **269 testes aprovados** e testes E2E do Playwright aprovados.
 
 ---
 

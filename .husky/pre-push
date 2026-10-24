@@ -1,1 +1,5 @@
-npx playwright test
+echo "🛡️  [Pre-Push] Verificando compilação de produção Next.js (blindagem Vercel)..."
+npm run build
+
+echo "🧗 [Pre-Push] Executando testes E2E com Playwright..."
+npm run test:e2e -- --reporter=line
